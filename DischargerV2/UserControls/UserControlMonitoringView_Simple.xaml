@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="DischargerV2.UserControls.UserControlMonitoringView_Simple"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DischargerV2"
+             mc:Ignorable="d" 
+             d:DesignHeight="410" d:DesignWidth="620">
+
+    <Border BorderBrush="{StaticResource SolidColorBrush.Grey700}" BorderThickness="1">
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="230"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Content="Simple Mode" Background="{StaticResource SolidColorBrush.Blue30}" Style="{StaticResource Label.H6.Center}"></Label>
+            <StackPanel Grid.Row="1" Margin="20,0,20,0" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel x:Name="xDischargeTypeStackPanel" Width="290" Orientation="Vertical">
+                    <Label Content="Discharge Type" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{StaticResource Label.P1.Center}"></Label>
+                    <Label x:Name="xDischargeTypeLabel" Content="Target Voltage (180.0 V)" Margin="0,10,0,0" Style="{StaticResource Label.H6.Center}"></Label>
+                </StackPanel>
+                <StackPanel x:Name="xStandardVoltageStackPanel" Width="145" Orientation="Vertical">
+                    <Label Content="Standard Voltage" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{StaticResource Label.P1.Center}"></Label>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label x:Name="xStandardVoltageLabel" Content="256.4" Margin="0,10,0,0" Style="{StaticResource Label.H6.Center}"></Label>
+                        <Label Content="V" Margin="10,10,0,0" Style="{StaticResource Label.H6.Center}"></Label>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel x:Name="xStandardCapacityStackPanel" Width="145" Orientation="Vertical">
+                    <Label Content="Standard Capacity" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{StaticResource Label.P1.Center}"></Label>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label x:Name="xStandardCapacityLabel" Content="96.5" Margin="0,10,0,0" Style="{StaticResource Label.H6.Center}"></Label>
+                        <Label Content="A" Margin="10,10,0,0" Style="{StaticResource Label.H6.Center}"></Label>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <Rectangle Grid.Row="2" Width="580" Height="1" Stroke="{StaticResource SolidColorBrush.Grey700}"></Rectangle>
+            <StackPanel Grid.Row="4" HorizontalAlignment="Center" Orientation="Horizontal">
+                <StackPanel x:Name="xMonitorValuesStackPanel" Width="240" Height="230">
+                    <Label Content="Monitor Values" Height="30" Foreground="{StaticResource SolidColorBrush.Blue600}" VerticalContentAlignment="Top" Style="{StaticResource Label.P1.Center}"></Label>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Label Content="Voltage (V)" Width="100" Style="{StaticResource Label.P1.Right}"></Label>
+                        <Border Width="100" Height="40" Margin="20,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Blue30}">
+                            <TextBox x:Name="xVolateTextBox" Text="256.4" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Label Content="Current (A)" Width="100" Style="{StaticResource Label.P1.Right}"></Label>
+                        <Border Width="100" Height="40" Margin="20,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Blue30}">
+                            <TextBox x:Name="xCurrentTextBox" Text="80.2" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Label Content="Temp. (℃)" Width="100" Style="{StaticResource Label.P1.Right}"></Label>
+                        <Border Width="100" Height="40" Margin="20,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Blue30}">
+                            <TextBox x:Name="xTempTextBox" Text="26.4" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel x:Name="xSafetyConditionStackPanel" Width="230" Height="230" Margin="50,0,0,0">
+                    <Label Content="Safety Condition" Height="30" Foreground="{StaticResource SolidColorBrush.Blue600}" VerticalContentAlignment="Top" Style="{StaticResource Label.P1.Center}"></Label>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Border Width="100" Height="40" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyVoltageMinTextBox" Text="0" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                        <Label Content="~" Width="30" VerticalAlignment="Center" Style="{StaticResource Label.H6.Center}"></Label>
+                        <Border Width="100" Height="40" Margin="0,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyVoltageMaxTextBox" Text="500" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Border Width="100" Height="40" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyCurrentMinTextBox" Text="0" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                        <Label Content="~" Width="30" VerticalAlignment="Center" Style="{StaticResource Label.H6.Center}"></Label>
+                        <Border Width="100" Height="40" Margin="0,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyCurrentMaxTextBox" Text="100" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Height="50" Orientation="Horizontal">
+                        <Border Width="100" Height="40" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyTempMinTextBox" Text="-15" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                        <Label Content="~" Width="30" VerticalAlignment="Center" Style="{StaticResource Label.H6.Center}"></Label>
+                        <Border Width="100" Height="40" Margin="0,0,20,0" Style="{StaticResource Border.Corner5}" Background="{StaticResource SolidColorBrush.Grey50}">
+                            <TextBox x:Name="xSafetyTempMaxTextBox" Text="65" Style="{StaticResource TextBox.H6.Center}"></TextBox>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+        
+</UserControl>

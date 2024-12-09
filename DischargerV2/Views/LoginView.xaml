@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="DischargerV2.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
+             xmlns:vm="clr-namespace:DischargerV2.ViewModels"
+             mc:Ignorable="d" 
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             d:DataContext="{d:DesignInstance vm:LoginViewModel}"
+             d:DesignHeight="1080" d:DesignWidth="1920">
+    
+    <Grid Background="{StaticResource Mex/ResColor/surface_page}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Source="{StaticResource Mex/ResImage/bg_login}"/>
+        <StackPanel Grid.Column="1"
+                    Width="555"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Width="320" Height="65" 
+                   Margin="111,0,124,80"
+                   Source="{StaticResource Mex/ResImage/mintech_logo}"/>
+            <Grid Height="40"/>
+            <StackPanel>
+                <Mex:MexLabel Text="ID"
+                              Foreground="{StaticResource Mex/ResColor/text_headings}"
+                              FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                              Margin="0,0,0,4"
+                              HorizontalAlignment="Left"/>
+                <Mex:MexTextBox x:Name="xIdTextBox"
+                                TabIndex="0"
+                                Height="40" CornerRadius="8"
+                                WaterMark="Enter ID"
+                                Text="{Binding UserId, Mode=TwoWay}"
+                                Foreground="{StaticResource Mex/ResColor/text_body}"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+            </StackPanel>
+            <Grid Height="40"/>
+            <StackPanel>
+                <Mex:MexLabel Text="Password"
+                              Focusable="False"
+                              Foreground="{StaticResource Mex/ResColor/text_headings}"
+                              FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                              Margin="0,0,0,4"
+                              HorizontalAlignment="Left"/>
+                <Mex:MexPasswordBox x:Name="xPasswordBox"
+                                    Height="40" CornerRadius="8"
+                                    TabIndex="1"
+                                    WaterMark="Enter Password"
+                                    Text="{Binding Password, Mode=TwoWay}"
+                                    Foreground="{StaticResource Mex/ResColor/text_body}"
+                                    FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    HidePasswordImageSize="24"
+                                    IsHidePassword="True" 
+                                    ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}"/>
+            </StackPanel>
+            <Grid Height="40"/>
+            <Mex:MexButton Grid.Row="3" 
+                           x:Name="xLoginButton"
+                           Height="60"
+                           CornerRadius="8"
+                           TabIndex="2"
+                           Text="Log In"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                           ShadowVisibility="Visible">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding LoginCommand, Mode=TwoWay}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
+            
+            <Grid Height="120"/>
+            <Mex:MexLabel Text="v2.0.0"
+                          HorizontalContentAlignment="Center"
+                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                          FontSet="{StaticResource Mex/ResFontSet/body_lg_regular}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

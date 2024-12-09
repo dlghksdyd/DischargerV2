@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="Border.Grey700.Thick1.Corner5" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SolidColorBrush.Grey700}"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Grey1000.Thick1.Corner5" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SolidColorBrush.Grey1000}"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Grey500.Thick2.Corner10" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="BorderThickness" Value="2"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SolidColorBrush.Grey500}"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Blue800.Thick2.Corner10" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="BorderThickness" Value="2"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SolidColorBrush.Blue800}"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Red500.Thick1.Corner10" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="{DynamicResource SolidColorBrush.Red500}"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Corner5" TargetType="Border">
+        <Setter Property="Padding" Value="0"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+    </Style>
+
+    <Style x:Key="Border.Popup.Corner10" TargetType="Border">
+        <Setter Property="CornerRadius" Value="10"></Setter>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="5"></DropShadowEffect>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
+    

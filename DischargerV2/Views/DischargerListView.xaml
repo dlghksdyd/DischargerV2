@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="DischargerV2.Views.DischargerListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DischargerV2.Views"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             mc:Ignorable="d" d:Background="White"
+             d:DesignHeight="364" d:DesignWidth="1760">
+    <Mex:MexTable ColorStyle="Primary" ColumnCount="10" CornerRadius="10">
+        <Mex:MexTable.Header>
+            <Mex:MexTableHeader Height="52" FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}">
+                <Mex:MexTableHeaderColumn Width="60">No.</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="220">Discharger Name</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="140"></Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="140">Channel</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Status</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Voltage (V)</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Current (A)</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Temperature (℃)</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Progress Time</Mex:MexTableHeaderColumn>
+                <Mex:MexTableHeaderColumn Width="200">Info</Mex:MexTableHeaderColumn>
+            </Mex:MexTableHeader>
+        </Mex:MexTable.Header>
+        <Mex:MexTable.Rows>
+            <Mex:MexTableRow>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+                <Mex:MexTableRowColumn>테스트</Mex:MexTableRowColumn>
+            </Mex:MexTableRow>
+        </Mex:MexTable.Rows>
+    </Mex:MexTable>
+</UserControl>

@@ -1,0 +1,32 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:MExpress.Mex;assembly=MExpress">
+
+    <local:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter"/>
+
+    <ResourceDictionary.MergedDictionaries>
+        <!-- StaticResources -->
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResBorder.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColor.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_Button.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_CheckBox.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_ComboBox.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_ItemBox.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_RadioButton.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColorSet_TextBox.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResFont.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResFontSet.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResImage.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResImageSet_Component.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResImageSet_Toggle.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResScale.xaml"></ResourceDictionary>
+
+        <!-- ComponentResources -->
+        <ResourceDictionary Source="/MExpress;component/Component/MexButton/MexButton.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/Component/MexScrollViewer/MexScrollViewer.xaml"></ResourceDictionary>
+        <!--<ResourceDictionary Source="/MExpress;component/Component/MexTable/MexTable.xaml"></ResourceDictionary>-->
+        <ResourceDictionary Source="/MExpress;component/Component/MexTextBlock/MexTextBlock.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/Component/MexTextBox/MexTextBox.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

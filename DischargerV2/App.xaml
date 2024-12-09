@@ -1,0 +1,30 @@
+﻿<Application x:Class="DischargerV2.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DischargerV2"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"></ResourceDictionary>
+
+                <ResourceDictionary Source="/StyleResources/StyleColor.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleConverter.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleBorder.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleButton.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleCheckBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleComboBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleFont.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleImage.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleLabel.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StylePasswordBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleRichTextBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleStackPanel.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleTabControl.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleTextBlock.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleTextBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/StyleResources/StyleWindow.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

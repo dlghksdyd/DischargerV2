@@ -1,0 +1,799 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:res="clr-namespace:DischargerV2.Resources">
+
+    <!--TemplateBinding xxx <-> Binding xxx, RelativeSource={RelativeSource TemplatedParent}-->
+
+    <Style x:Key="Button.Add.Black" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" BorderThickness="2">
+                        <Border.BorderBrush>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle StrokeDashArray="8" StrokeDashOffset="5"
+                                           Stroke="{StaticResource SolidColorBrush.Grey700}" 
+                                           StrokeThickness="1"
+                                           RadiusX="{Binding CornerRadius.TopRight, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                           RadiusY="{Binding CornerRadius.BottomLeft, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                           Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                           Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.BorderBrush>
+                        <Grid>
+                            <Image x:Name="xCloseImage" Width="20" Height="20" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.plus_black}}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Add.Blue" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" CornerRadius="10" BorderThickness="2">
+                        <Border.BorderBrush>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle StrokeDashArray="8" StrokeDashOffset="-2"
+                                               Stroke="{StaticResource SolidColorBrush.Grey1000}" 
+                                               StrokeThickness="1"
+                                               RadiusX="{Binding CornerRadius.TopRight, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                               RadiusY="{Binding CornerRadius.BottomLeft, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                               Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"
+                                               Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Border.BorderBrush>
+                        <Grid>
+                            <Image x:Name="xCloseImage" Width="40" Height="40" Margin="10"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" 
+                            Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.plus_blue}}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--UserControlLogin-->
+    <Style x:Key="Button.Login" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="250"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="195" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <Label x:Name="label" Content="로그인" Foreground="{StaticResource SolidColorBrush.Blue0}" Style="{DynamicResource Label.H4.Center}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue800}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue800}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--UserControlDischargerList-->
+    <Style x:Key="Button.Reconnect" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="150" Height="35" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="25" Height="25" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_reconnect_enable}}"/>
+                                <Label x:Name="label" Content="Reconnect" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_reconnect_disable}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Button.Error" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Red500}" Width="140" Height="35" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="25" Height="25" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_error_enable}}"/>
+                                <Label x:Name="label" Content="Error" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_error_disable}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Button.ShortAvailable" TargetType="{x:Type Button}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Width="250" Height="35" Background="{StaticResource SolidColorBrush.Green600}" CornerRadius="5" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image x:Name="image" Width="70" Height="20" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg._short}}"/>
+                            <Label x:Name="label" Content="Short Available" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--UserControlModeList-->
+    <Style x:Key="Button.Load" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="120" Height="50" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="30" Height="30" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_load_enable}}"/>
+                                <Label x:Name="label" Content="Load" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_load_disable}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Save" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="120" Height="50" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="30" Height="30" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_save_enable}}"/>
+                                <Label x:Name="label" Content="Save" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_save_disable}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--UserControlSafetyCondition-->
+    <Style x:Key="Button.Start" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="420" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="40" Height="40" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_start_enable}}"/>
+                                <Label x:Name="label" Content="Start Discharge" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H4.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.button_start_disable}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Pause" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="195" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="40" Height="40" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_pause_circle_white}}"/>
+                                <Label x:Name="label" Content="Pause" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H4.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_pause_circle_grey}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Stop" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Width="195" Height="80" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource SolidColorBrush.Blue600}">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="40" Height="40" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_stop_circle_blue}}"/>
+                                <Label x:Name="label" Content="Stop" Margin="10,0,0,0" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{DynamicResource Label.H4.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_stop_circle_grey}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Finish" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="420" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="40" Height="40" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_logout_white}}"/>
+                                <Label x:Name="label" Content="Finish" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H4.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_logout_grey}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.ErrorCode.Green" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Green100}" Width="420" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Foreground="{StaticResource SolidColorBrush.Green700}" Style="{DynamicResource Label.H4.Center}">
+                                    <ContentPresenter/>
+                                </Label>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Green200}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Green200}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.ErrorCode.Red" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{DynamicResource SolidColorBrush.Red100}" Width="420" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Foreground="{DynamicResource SolidColorBrush.Red400}" Style="{DynamicResource Label.H4.Center}">
+                                    <ContentPresenter/>
+                                </Label>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red200}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red200}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--WindowUserCreation-->
+    <Style x:Key="Button.Cancel" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" 
+                            Width="140" Height="60" CornerRadius="10" BorderBrush="{StaticResource SolidColorBrush.Blue600}" BorderThickness="2">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 2 2" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <Label x:Name="label" Content="Cancel" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{DynamicResource Label.H6.Center}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Create" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="140"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="420" Height="80" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="image" Width="40" Height="40" Margin="2.5" Source="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_logout_white}}"/>
+                                <Label x:Name="label" Content="Finish" Margin="10,0,0,0" Foreground="White" Style="{DynamicResource Label.H4.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Source" TargetName="image" Value="{Binding Converter={StaticResource BitmapToImageSourceConverter}, Source={x:Static res:ResourceImg.icon_logout_grey}}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue700}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.AlarmReset.Red" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Red500}" Width="160" Height="60" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Content="Alarm Reset" Margin="0,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Cancel.Red" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Width="160" Height="60" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource SolidColorBrush.Red500}">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Content="Cancel" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Red500}" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Cancel.Blue" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Width="160" Height="60" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource SolidColorBrush.Blue600}">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Content="Cancel" Margin="0,0,0,0" Foreground="{StaticResource SolidColorBrush.Blue600}" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue50}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Ok.Blue" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Blue600}" Width="160" Height="60" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Content="Ok" Margin="0,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue600}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Blue600}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Button.Ok.Red" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{StaticResource SolidColorBrush.Red500}" Width="160" Height="60" CornerRadius="10">
+                        <Grid>
+                            <Border x:Name="InnerBorder" BorderBrush="Black" BorderThickness="0 0 3 3" CornerRadius="10">
+                                <Border.Effect>
+                                    <BlurEffect Radius="10"/>
+                                </Border.Effect>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label x:Name="label" Content="Ok" Margin="0,0,0,0" Foreground="White" Style="{DynamicResource Label.H6.Center}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                            <Setter Property="BorderThickness" TargetName="border" Value="1"/>
+                            <Setter Property="BorderThickness" TargetName="InnerBorder" Value="0"/>
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Grey20}"/>
+                            <Setter Property="Foreground" TargetName="label" Value="{DynamicResource SolidColorBrush.Grey500}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Background" TargetName="border" Value="{DynamicResource SolidColorBrush.Red600}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--TEST-->
+    
+
+</ResourceDictionary>

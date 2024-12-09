@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DischargerV2", "DischargerV2\DischargerV2.csproj", "{28FAEB5B-5CAF-4BFE-93FA-3E0AE175E786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MExpress", "mexpress\MExpress\MExpress.csproj", "{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28FAEB5B-5CAF-4BFE-93FA-3E0AE175E786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28FAEB5B-5CAF-4BFE-93FA-3E0AE175E786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28FAEB5B-5CAF-4BFE-93FA-3E0AE175E786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28FAEB5B-5CAF-4BFE-93FA-3E0AE175E786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FFF06467-0210-42A6-9C16-F77A44CFC6F0}
+	EndGlobalSection
+EndGlobal
