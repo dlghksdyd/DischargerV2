@@ -72,12 +72,6 @@ namespace Ethernet.Client.Discharger
         Error = 15,
     }
 
-    public enum EErrorCode : int
-    {
-        Online = 0,
-        Offline = 1,
-    }
-
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
     public class DCCPacketHeader
     {
@@ -143,7 +137,7 @@ namespace Ethernet.Client.Discharger
             public EReturnCode ReturnCode;
             public short NumberOfChannels;
             public short ChannelNumber;
-            public EErrorCode ErrorCode;
+            public uint ErrorCode;
             public EChannelStatus ChannelStatus;
             public double BatteryVoltage;
             public double BatteryCurrent;

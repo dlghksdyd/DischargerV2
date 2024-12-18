@@ -14,6 +14,10 @@ namespace Ethernet.Client.Common
     {
         OK,
         INVALID_START_PARAMETER,
+
+        FAIL_READ,
+        FAIL_WRITE,
+
         ALREADY_CONNECT,
         FAIL_TO_CONNECT,
     }
@@ -71,12 +75,19 @@ namespace Ethernet.Client.Common
             return true;
         }
 
+        public bool IsConnected()
+        {
+            return EthernetClientBasic.IsConnected(Handle);
+        }
+
         public ENClientStatus Connect(EthernetClientStart parameters)
         {
             if (!IsParameterValid(parameters))
             {
                 return ENClientStatus.INVALID_START_PARAMETER;
             }
+
+            Parameters = parameters;
 
             var result = EthernetClientBasic.Connect(
                 parameters.IpAddress, parameters.EthernetPort, parameters.TimeOutMs, out Handle);
@@ -125,6 +136,29 @@ namespace Ethernet.Client.Common
             }
         }
 
+        public ENClientStatus Write(int handle, byte[] writeBuffer)
+        {
+            ENClientBasicStatus result = EthernetClientBasic.Write(handle, writeBuffer, 0, writeBuffer.Length);
+            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            {
+                return ENClientStatus.FAIL_WRITE;
+            }
+
+            return ENClientStatus.OK;
+        }
+
+        public ENClientStatus Read(int handle, out byte[] readBuffer)
+        {
+            readBuffer = new byte[EthernetClientConstant.MAX_DATA_LENGTH];
+            ENClientBasicStatus result = EthernetClientBasic.Read(handle, readBuffer, 0, readBuffer.Length);
+            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            {
+                return ENClientStatus.FAIL_READ;
+            }
+
+            return ENClientStatus.OK;
+        }
+
         public bool WriteFunctionExample(int handle, byte[] writeBuffer)
         {
             if (writeBuffer == null || writeBuffer.Length == 0)
@@ -132,10 +166,8 @@ namespace Ethernet.Client.Common
                 return true;
             }
 
-            int dataLength = (writeBuffer.Length > EthernetClientConstant.MAX_DATA_LENGTH) ? EthernetClientConstant.MAX_DATA_LENGTH : writeBuffer.Length;
-
-            ENClientBasicStatus result = EthernetClientBasic.Write(handle, writeBuffer, 0, dataLength);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            ENClientStatus result = Write(handle, writeBuffer);
+            if (result != ENClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
 
@@ -148,9 +180,8 @@ namespace Ethernet.Client.Common
         public bool ReadFunctionExample(int handle, out byte[] readBuffer)
         {
             /// 데이터 읽기
-            readBuffer = new byte[EthernetClientConstant.MAX_DATA_LENGTH];
-            ENClientBasicStatus result = EthernetClientBasic.Read(handle, readBuffer, 0, readBuffer.Length);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            ENClientStatus result = Read(handle, out readBuffer);
+            if (result != ENClientStatus.OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
 

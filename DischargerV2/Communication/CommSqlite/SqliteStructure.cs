@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Repository.Structures;
 
 namespace Sqlite.Common
 {
+    public enum EDischargerModel
+    {
+        MBDC,
+    }
+
+    public enum EDischargeType
+    {
+        Load,
+        Regen,
+    }
+
     public class TableUserInfo
     {
         public string UserId;
         public string Password;
         public string UserName;
-        public bool IsAdmin;
     }
 
     public class TableDischargerInfo
@@ -23,7 +32,7 @@ namespace Sqlite.Common
         public short DischargerChannel;
         public double SpecVoltage;
         public double SpecCurrent;
-        public string IpAddress;  // IP or ComPort or Guid
+        public string IpAddress;
         public string TempModuleComPort;
         public int TempModuleChannel;
         public int TempChannel;

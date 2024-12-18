@@ -23,8 +23,8 @@ namespace DischargerV2.ViewModels
             }
             set
             {
-                _userId = value;
                 SetProperty(ref _userId, value);
+                _userId = value;
             }
         }
 
@@ -37,8 +37,8 @@ namespace DischargerV2.ViewModels
             }
             set
             {
-                _password = value;
                 SetProperty(ref _password, value);
+                _password = value;
             }
         }
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,235 +20,554 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Windows.Threading;
 using Ethernet.Client.Common;
-using Repository.Common;
 using Utility.Common;
-using Ethernet.Client.Basic;
-using Repository.Structures;
 
 namespace Ethernet.Client.Discharger
 {
-    public enum EDischargerState
+    public enum EDischargerState : byte
     {
-        Disconnect,
-        Connecting,
-        Connected,
-        Discharging,
-        Pause,
-        Stop,
-        Finish,
-        Alert,
-        Error,
+        None = 0x0,
+
+        Disconnected = 0x10,
+        Connecting = 0x11,
+        Ready = 0x12,
+        Discharging = 0x13,
+        Pause = 0x14,
+
+        SafetyOutOfRange = 0x20,
+        ReturnCodeError = 0x21,
+        ChStatusError = 0x22,
+        DeviceError = 0x23,
+    }
+
+    public enum EDischargerClientError
+    {
+        Ok,
+        InvalidDischargerState,
+        FailProcessPacket,
     }
 
     public class EthernetClientDischargerStart
     {
-        public string DischargerName;
-        public short DischargerChannel;
-        public IPAddress IpAddress;
-        public int EthernetPort;
-        public int TimeOutMs;
+        public string DischargerName = string.Empty;
+        public short DischargerChannel = short.MaxValue;
+        public IPAddress IpAddress = IPAddress.None;
+        public int EthernetPort = int.MaxValue;
+        public int TimeOutMs = int.MaxValue;
+        public double SafetyVoltageMax = double.MaxValue;
+        public double SafetyVoltageMin = double.MaxValue;
+        public double SafetyCurrentMax = double.MaxValue;
+        public double SafetyCurrentMin = double.MaxValue;
     }
 
-    public class ReceiveDischargerData
+    public class DischargerDatas
     {
-        public EErrorCode ErrorCode = EErrorCode.Online;
+        /// <summary>
+        /// 수신 받은 데이터
+        /// </summary>
+        public uint ErrorCode = 0;
+        public EReturnCode ReturnCode = EReturnCode.Success;
         public EChannelStatus ChannelStatus = EChannelStatus.Standby0;
         public double ReceiveBatteryVoltage = 0;
         public double ReceiveDischargeCurrent = 0;
+
+        /// <summary>
+        /// Safety 데이터
+        /// </summary>
+        public double SafetyVoltageMax = 0.0;
+        public double SafetyVoltageMin = 0.0;
+        public double SafetyCurrentMax = 0.0;
+        public double SafetyCurrentMin = 0.0;
+
+        /// <summary>
+        /// 방전시작시간
+        /// </summary>
+        public DateTime DischargingStartTime = DateTime.MinValue;
     }
 
     public class EthernetClientDischarger
     {
+        private class LogArgument
+        {
+            public LogArgument(string logMessage)
+            {
+                LogMessage = logMessage;
+            }
+
+            public string LogMessage { get; set; } = string.Empty;
+            public Dictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
+        }
+
         /// <summary>
         /// key: IP Address
         /// </summary>
-        private static Dictionary<IPAddress, byte> SerialNumbers = new Dictionary<IPAddress, byte>();
+        private static Dictionary<string, byte> _serialNumbers = new Dictionary<string, byte>();
         /// <summary>
         /// key: IP Address
         /// </summary>
-        private static Dictionary<IPAddress, object> SerialNumberDataLock = new Dictionary<IPAddress, object>();
+        private static Dictionary<string, object> _serialNumberDataLock = new Dictionary<string, object>();
 
-        private EthernetClientDischargerStart Parameters = null;
+        private object _packetLock = new object();
 
-        private EthernetClient DischargerClient = null;
+        private EthernetClientDischargerStart _parameters = null;
+        private EthernetClient _dischargerClient = null;
 
         private System.Timers.Timer ReadInfoTimer = null;
 
-        /// <summary>
-        /// 수신 받은 데이터
-        /// </summary>
-        private ReceiveDischargerData ReceiveData = new ReceiveDischargerData();
-        /// <summary>
-        /// 방전기 상태
-        /// </summary>
-        private EDischargerState DischargerState = EDischargerState.Disconnect;
+        private DischargerDatas _dischargerData = new DischargerDatas();
+        private EDischargerState _dischargerState = EDischargerState.None;
 
-        public EthernetClientDischarger(EthernetClientDischargerStart clientStart)
+        private List<string> _traceLogs = new List<string>();
+        private object _traceLogLock = new object();
+
+        public EthernetClientDischarger()
         {
-            Parameters = clientStart;
+            /// nothing to do.
+        }
 
-            if (!SerialNumbers.ContainsKey(Parameters.IpAddress))
+        private void AddTraceLog(LogArgument logFormat)
+        {
+            string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
+            formattedMessage += _parameters.DischargerName + " - ";
+
+            for (int i = 0; i < logFormat.Parameters.Count; i++)
             {
-                SerialNumbers[Parameters.IpAddress] = 0;
+                string key = logFormat.Parameters.Keys.ElementAt(i);
+                string value = logFormat.Parameters.Values.ElementAt(i).ToString();
+
+                if (i == 0)
+                {
+                    formattedMessage += logFormat.LogMessage + " (";
+                }
+
+                formattedMessage += key + ": " + value;
+
+                if (i < logFormat.Parameters.Count - 1)
+                {
+                    formattedMessage += ", ";
+                }
+                else
+                {
+                    formattedMessage += ")";
+                }
             }
 
-            if (!SerialNumberDataLock.ContainsKey(Parameters.IpAddress))
+            lock (_traceLogLock)
             {
-                SerialNumberDataLock[Parameters.IpAddress] = new object();
+                _traceLogs.Add(formattedMessage);
             }
         }
 
-        public bool Start()
+        public bool IsConnected()
         {
+            if (_dischargerClient == null)
+            {
+                return false;
+            }
+
+            return _dischargerClient.IsConnected();
+        }
+
+        private void ChangeDischargerState(EDischargerState dischargerState)
+        {
+            if (_dischargerState != dischargerState)
+            {
+                LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
+                logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
+                logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
+                logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
+                logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
+                logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
+                AddTraceLog(logArgument);
+            }
+
+            _dischargerState = dischargerState;
+        }
+
+        private bool IsParameterValid(EthernetClientDischargerStart parameters)
+        {
+            if (parameters == null)
+            {
+                return false;
+            }
+            if (parameters.DischargerName == string.Empty ||
+                parameters.DischargerChannel == short.MaxValue ||
+                parameters.IpAddress == IPAddress.None ||
+                parameters.EthernetPort == int.MaxValue ||
+                parameters.TimeOutMs == int.MaxValue ||
+                parameters.SafetyVoltageMax == double.MaxValue ||
+                parameters.SafetyVoltageMin == double.MaxValue ||
+                parameters.SafetyCurrentMax == double.MaxValue ||
+                parameters.SafetyCurrentMin == double.MaxValue)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Restart()
+        {
+            Stop();
+
+            return Start(_parameters);
+        }
+
+        public bool Start(EthernetClientDischargerStart parameters)
+        {
+            _parameters = parameters;
+
+            ChangeDischargerState(EDischargerState.Connecting);
+
+            if (!IsParameterValid(_parameters))
+            {
+                ChangeDischargerState(EDischargerState.Disconnected);
+                return false;
+            }
+
+            if (!_serialNumbers.ContainsKey(_parameters.IpAddress.ToString()))
+            {
+                _serialNumbers[_parameters.IpAddress.ToString()] = 0;
+            }
+
+            if (!_serialNumberDataLock.ContainsKey(_parameters.IpAddress.ToString()))
+            {
+                _serialNumberDataLock[_parameters.IpAddress.ToString()] = new object();
+            }
+
             EthernetClientStart clientStart = new EthernetClientStart();
-            clientStart.DeviceName = Parameters.DischargerName;
-            clientStart.IpAddress = Parameters.IpAddress;
-            clientStart.EthernetPort = Parameters.EthernetPort;
-            clientStart.TimeOutMs = Parameters.TimeOutMs;
+            clientStart.DeviceName = _parameters.DischargerName;
+            clientStart.IpAddress = _parameters.IpAddress;
+            clientStart.EthernetPort = _parameters.EthernetPort;
+            clientStart.TimeOutMs = _parameters.TimeOutMs;
             clientStart.WriteFunction = WriteData;
             clientStart.ReadFunction = ReadData;
             clientStart.ParseFunction = ParseData;
-            DischargerClient = new EthernetClient();
+            _dischargerClient = new EthernetClient();
 
-            var result = DischargerClient.Connect(clientStart);
+            var result = _dischargerClient.Connect(clientStart);
             if (result != ENClientStatus.OK)
             {
+                ChangeDischargerState(EDischargerState.Disconnected);
                 return false;
             }
 
             /// 이전 에러 상태 초기화
             SendCommand_ClearAlarm();
 
+            /// Safety Condition 설정
+            bool safetyConditionResult = SendCommand_SetSafetyCondition(
+                _parameters.SafetyVoltageMax, _parameters.SafetyCurrentMin,
+                _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin);
+            if (safetyConditionResult == true)
+            {
+                _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - 2;
+                _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + 2;
+                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - 2;
+                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + 2;
+            }
+
+            ReadInfoTimer?.Stop();
+            ReadInfoTimer = null;
             ReadInfoTimer = new System.Timers.Timer();
             ReadInfoTimer.Interval = 1000;
-            ReadInfoTimer.Elapsed += ReadInfoTimer_Elapsed;
+            ReadInfoTimer.Elapsed += OneSecondTimer_Elapsed;
             ReadInfoTimer.Start();
+
+            ChangeDischargerState(EDischargerState.Ready);
 
             return true;
         }
 
-        public void Dispose()
+        public void Stop()
         {
-            DischargerClient?.Disconnect();
+            _dischargerClient?.Disconnect();
+            _dischargerClient = null;
 
             ReadInfoTimer?.Stop();
             ReadInfoTimer = null;
+
+            ChangeDischargerState(EDischargerState.Disconnected);
         }
 
-        public ReceiveDischargerData GetDatas()
+        public DischargerDatas GetDatas()
         {
             /// Deep Copy
-            ReceiveDischargerData temp = new ReceiveDischargerData();
-            temp.ErrorCode = ReceiveData.ErrorCode;
-            temp.ChannelStatus = ReceiveData.ChannelStatus;
-            temp.ReceiveBatteryVoltage = ReceiveData.ReceiveBatteryVoltage;
-            temp.ReceiveDischargeCurrent = ReceiveData.ReceiveDischargeCurrent;
+            DischargerDatas temp = new DischargerDatas();
+
+            /// receive data
+            temp.ErrorCode = _dischargerData.ErrorCode;
+            temp.ChannelStatus = _dischargerData.ChannelStatus;
+            temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
+            temp.ReceiveDischargeCurrent = double.Parse((_dischargerData.ReceiveDischargeCurrent).ToString("F1"));
+
+            /// safety
+            temp.SafetyCurrentMin = _dischargerData.SafetyCurrentMin;
+            temp.SafetyCurrentMax = _dischargerData.SafetyCurrentMax;
+            temp.SafetyVoltageMin = _dischargerData.SafetyVoltageMin;
+            temp.SafetyVoltageMax = _dischargerData.SafetyVoltageMax;
+
+            /// start time
+            temp.DischargingStartTime = _dischargerData.DischargingStartTime;
 
             return temp;
         }
 
         public EDischargerState GetState()
         {
-            return DischargerState;
+            return _dischargerState;
+        }
+
+        public List<string> GetTraceLogs()
+        {
+            lock (_traceLogLock)
+            {
+                List<string> temp = _traceLogs.ConvertAll(x => x);
+                _traceLogs.Clear();
+
+                return temp;
+            }
         }
 
         private byte GetPacketSerialNumber()
         {
-            lock (SerialNumberDataLock[Parameters.IpAddress])
+            lock (_serialNumberDataLock[_parameters.IpAddress.ToString()])
             {
-                return SerialNumbers[Parameters.IpAddress]++;
+                return _serialNumbers[_parameters.IpAddress.ToString()]++;
             }
         }
 
-        private void ReadInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            bool result = SendCommand_RequestChannelInfo();
-            if (result == false)
+            if (!IsConnected())
             {
+                ChangeDischargerState(EDischargerState.Disconnected);
+                return;
+            }
+
+            if (_dischargerState == EDischargerState.SafetyOutOfRange ||
+                _dischargerState == EDischargerState.ReturnCodeError ||
+                _dischargerState == EDischargerState.ChStatusError ||
+                _dischargerState == EDischargerState.DeviceError)
+            {
+                SendCommand_StopDischarge();
                 ReadInfoTimer?.Stop();
                 ReadInfoTimer = null;
+                return;
+            }
+
+            SendCommand_RequestChannelInfo();
+
+            if (_dischargerState == EDischargerState.Discharging)
+            {
+                if (_dischargerData.ReceiveBatteryVoltage < 1 && _dischargerData.ReceiveDischargeCurrent < 0.1)
+                {
+                    SendCommand_StopDischarge();
+                }
             }
         }
 
-        public bool SendCommand_StartDischarge(EWorkMode workMode, double setValue, double limitingValue)
+        public EDischargerClientError SendCommand_StartDischarge(EWorkMode workMode, double setValue, double limitingValue)
         {
-            byte[] writeBuffer = CreateStartDischargeCommand(
-                Parameters.DischargerChannel, workMode, setValue, limitingValue);
-
-            bool result = DischargerClient.ProcessPacket(writeBuffer);
-            if (result != true)
+            lock (_packetLock)
             {
-                return false;
-            }
+                LogArgument logArgument = new LogArgument("Start Discharge.");
+                logArgument.Parameters["Current"] = -limitingValue;
 
-            return true;
+                if (_dischargerState == EDischargerState.Discharging ||
+                    _dischargerState == EDischargerState.Ready ||
+                    _dischargerState == EDischargerState.Pause)
+                {
+                    byte[] writeBuffer = CreateStartDischargeCommand(
+                        _parameters.DischargerChannel, workMode, setValue, limitingValue);
+
+                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                    if (result != true)
+                    {
+                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
+                        AddTraceLog(logArgument);
+                        return EDischargerClientError.FailProcessPacket;
+                    }
+
+                    if (_dischargerState == EDischargerState.Ready)
+                    {
+                        _dischargerData.DischargingStartTime = DateTime.Now;
+                    }
+                }
+                else
+                {
+                    logArgument.Parameters["Discharger State"] = _dischargerState;
+                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
+                    AddTraceLog(logArgument);
+                    return EDischargerClientError.InvalidDischargerState;
+                }
+
+                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
+                AddTraceLog(logArgument);
+
+                return EDischargerClientError.Ok;
+            }
         }
 
         public bool SendCommand_SetSafetyCondition(double voltageMax, double voltageMin, double currentMax, double currentMin)
         {
-            byte[] writeBuffer = CreateSetSafetyConditionCommand(Parameters.DischargerChannel,
-                voltageMax, voltageMin, currentMax, currentMin);
-
-            bool result = DischargerClient.ProcessPacket(writeBuffer);
-            if (result != true)
+            lock (_packetLock)
             {
-                return false;
-            }
+                LogArgument logArgument = new LogArgument("Set Safety Condition.");
+                logArgument.Parameters["VoltMax"] = voltageMax;
+                logArgument.Parameters["VoltMin"] = voltageMin;
+                logArgument.Parameters["CurrentMax"] = currentMax;
+                logArgument.Parameters["CurrentMin"] = currentMin;
 
-            return true;
+                byte[] writeBuffer = CreateSetSafetyConditionCommand(
+                    _parameters.DischargerChannel,
+                    voltageMax, voltageMin, currentMax, currentMin);
+
+                bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                if (result != true)
+                {
+                    logArgument.Parameters["Result"] = "fail";
+                    AddTraceLog(logArgument);
+                    return false;
+                }
+
+                logArgument.Parameters["Result"] = "success";
+                AddTraceLog(logArgument);
+
+                return true;
+            }
         }
 
-        public bool SendCommand_StopDischarge()
+        public EDischargerClientError SendCommand_StopDischarge()
         {
-            byte[] writeBuffer = CreateStopDischargeCommand(Parameters.DischargerChannel);
-
-            bool result = DischargerClient.ProcessPacket(writeBuffer);
-            if (result != true)
+            lock (_packetLock)
             {
-                return false;
-            }
+                LogArgument logArgument = new LogArgument("Stop Discharge."); ;
 
-            return true;
+                if (_dischargerState == EDischargerState.Discharging ||
+                    _dischargerState == EDischargerState.Pause ||
+                    _dischargerState == EDischargerState.SafetyOutOfRange ||
+                    _dischargerState == EDischargerState.ReturnCodeError ||
+                    _dischargerState == EDischargerState.ChStatusError ||
+                    _dischargerState == EDischargerState.DeviceError)
+                {
+                    byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
+
+                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                    if (result != true)
+                    {
+                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
+                        AddTraceLog(logArgument);
+
+                        return EDischargerClientError.FailProcessPacket;
+                    }
+
+                    if (_dischargerState == EDischargerState.Pause)
+                    {
+                        ChangeDischargerState(EDischargerState.Ready);
+                    }
+                }
+                else
+                {
+                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
+                    AddTraceLog(logArgument);
+
+                    return EDischargerClientError.InvalidDischargerState;
+                }
+
+                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
+                AddTraceLog(logArgument);
+
+                return EDischargerClientError.Ok;
+            }
+        }
+
+        public EDischargerClientError SendCommand_PauseDischarge()
+        {
+            lock (_packetLock)
+            {
+                LogArgument logArgument = new LogArgument("Pause Discharge.");
+
+                if (_dischargerState == EDischargerState.Discharging)
+                {
+                    byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
+
+                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                    if (result != true)
+                    {
+                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
+                        AddTraceLog(logArgument);
+
+                        return EDischargerClientError.FailProcessPacket;
+                    }
+
+                    ChangeDischargerState(EDischargerState.Pause);
+                }
+                else
+                {
+                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
+                    AddTraceLog(logArgument);
+
+                    return EDischargerClientError.InvalidDischargerState;
+                }
+
+                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
+                AddTraceLog(logArgument);
+
+                return EDischargerClientError.Ok;
+            }
         }
 
         public bool SendCommand_ClearAlarm()
         {
-            byte[] writeBuffer = CreateClearAlarmCommand(Parameters.DischargerChannel);
-
-            bool result = DischargerClient.ProcessPacket(writeBuffer);
-            if (result != true)
+            lock (_packetLock)
             {
-                return false;
-            }
+                LogArgument logArgument = new LogArgument("Clear Alarm.");
 
-            return true;
+                byte[] writeBuffer = CreateClearAlarmCommand(_parameters.DischargerChannel);
+
+                bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                if (result != true)
+                {
+                    logArgument.Parameters["Result"] = "success";
+                    AddTraceLog(logArgument);
+
+                    return false;
+                }
+
+                logArgument.Parameters["Result"] = "fail";
+                AddTraceLog(logArgument);
+
+                return true;
+            }
         }
 
         public bool SendCommand_RequestChannelInfo()
         {
-            byte[] writeBuffer = CreateChannelInfoCommand(Parameters.DischargerChannel);
-
-            bool result = DischargerClient.ProcessPacket(writeBuffer);
-            if (result != true)
+            lock (_packetLock)
             {
-                return false;
-            }
+                byte[] writeBuffer = CreateChannelInfoCommand(_parameters.DischargerChannel);
 
-            return true;
+                bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                if (result != true)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
-        private bool ReadData(int _handle, out byte[] _actualReadBuffer)
+        private bool ReadData(int handle, out byte[] actualReadBuffer)
         {
-            /// 데이터 읽기
-            byte[] readBuffer = new byte[EthernetClientConstant.MAX_DATA_LENGTH];
-            ENClientBasicStatus result = EthernetClientBasic.Read(_handle, readBuffer, 0, readBuffer.Length);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            ENClientStatus result = _dischargerClient.Read(handle, out byte[] readBuffer);
+            if (result != ENClientStatus.OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
 
-                _actualReadBuffer = new byte[0];
+                actualReadBuffer = new byte[0];
 
                 return false;
             }
@@ -256,27 +577,27 @@ namespace Ethernet.Client.Discharger
             SetSafetyCondition.Reply reply = dataByteArray.FromByteArrayToPacket<SetSafetyCondition.Reply>();
             if (reply.CommandCode == ECommandCode.ChannelInfo)
             {
-                short length = (short)(Marshal.SizeOf(typeof(Discharger.ChannelInfo.Reply)) + DCCPacketConstant.PACKET_HEADER_SIZE);
-                _actualReadBuffer = readBuffer.ExtractSubArray(0, length);
+                short length = (short)(Marshal.SizeOf(typeof(ChannelInfo.Reply)) + DCCPacketConstant.PACKET_HEADER_SIZE);
+                actualReadBuffer = readBuffer.ExtractSubArray(0, length);
             }
             else
             {
                 short length = (short)(Marshal.SizeOf(typeof(SetSafetyCondition.Reply)) + DCCPacketConstant.PACKET_HEADER_SIZE);
-                _actualReadBuffer = readBuffer.ExtractSubArray(0, length);
+                actualReadBuffer = readBuffer.ExtractSubArray(0, length);
             }
 
             return true;
         }
 
-        private bool WriteData(int _handle, byte[] _writeBuffer)
+        private bool WriteData(int handle, byte[] writeBuffer)
         {
-            if (_writeBuffer == null || _writeBuffer.Length == 0)
+            if (writeBuffer == null || writeBuffer.Length == 0)
             {
                 return true;
             }
 
-            ENClientBasicStatus result = EthernetClientBasic.Write(_handle, _writeBuffer, 0, _writeBuffer.Length);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            ENClientStatus result = _dischargerClient.Write(handle, writeBuffer);
+            if (result != ENClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
 
@@ -286,10 +607,10 @@ namespace Ethernet.Client.Discharger
             return true;
         }
 
-        private bool ParseData(byte[] _readBuffer)
+        private bool ParseData(byte[] readBuffer)
         {
             /// 커맨드 코드 가져오기
-            byte[] dataByteArray = _readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, 6);
+            byte[] dataByteArray = readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, 6);
             SetSafetyCondition.Reply reply = dataByteArray.FromByteArrayToPacket<SetSafetyCondition.Reply>();
 
             if (reply.CommandCode == ECommandCode.RequestCommand)
@@ -297,44 +618,66 @@ namespace Ethernet.Client.Discharger
                 /// 리턴 코드 검사
                 if (reply.ReturnCode != EReturnCode.Success)
                 {
-                    DischargerState = EDischargerState.Error;
-                    return false;
+                    ChangeDischargerState(EDischargerState.ReturnCodeError);
                 }
             }
             else if (reply.CommandCode == ECommandCode.ChannelInfo)
             {
                 short length = (short)Marshal.SizeOf(typeof(ChannelInfo.Reply));
-                dataByteArray = _readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, length);
+                dataByteArray = readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, length);
                 ChannelInfo.Reply channelInfo = dataByteArray.FromByteArrayToPacket<Discharger.ChannelInfo.Reply>();
 
                 /// 채널 상태 업데이트
-                ReceiveData.ErrorCode = channelInfo.ErrorCode;
-                ReceiveData.ChannelStatus = channelInfo.ChannelStatus;
+                _dischargerData.ErrorCode = channelInfo.ErrorCode;
+                _dischargerData.ReturnCode = channelInfo.ReturnCode;
+                _dischargerData.ChannelStatus = channelInfo.ChannelStatus;
 
                 /// 전압, 전류 값 업데이트
-                ReceiveData.ReceiveBatteryVoltage = channelInfo.BatteryVoltage;
-                ReceiveData.ReceiveDischargeCurrent = channelInfo.BatteryCurrent;
+                _dischargerData.ReceiveBatteryVoltage = channelInfo.BatteryVoltage;
+                _dischargerData.ReceiveDischargeCurrent = -channelInfo.BatteryCurrent;
 
-                /// 리턴 코드 검사
-                if (channelInfo.ReturnCode != EReturnCode.Success)
+                if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin || 
+                    channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
+                    (-channelInfo.BatteryCurrent) < _dischargerData.SafetyCurrentMin || 
+                    (-channelInfo.BatteryCurrent) > _dischargerData.SafetyCurrentMax)
                 {
-                    DischargerState = EDischargerState.Error;
-                    return false;
+                    ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                 }
+                else if (channelInfo.ErrorCode != 0) /// 에러코드 검사
+                {
+                    ChangeDischargerState(EDischargerState.DeviceError);
+                }
+                else if (channelInfo.ReturnCode != EReturnCode.Success) /// 리턴 코드 검사
+                {
+                    ChangeDischargerState(EDischargerState.ReturnCodeError);
+                }
+                else if (channelInfo.ChannelStatus == EChannelStatus.Error) /// 채널 상태 검사
+                {
+                    ChangeDischargerState(EDischargerState.ChStatusError);
+                }
+                else if (channelInfo.ChannelStatus == EChannelStatus.Standby0 || channelInfo.ChannelStatus == EChannelStatus.Standby5)
+                {
+                    if (_dischargerState != EDischargerState.Pause)
+                    {
+                        ChangeDischargerState(EDischargerState.Ready);
+                    }
+                }
+                else
+                {
+                    ChangeDischargerState(EDischargerState.Discharging);
+                }
+            }
 
-                /// 에러코드 검사
-                if (channelInfo.ErrorCode != EErrorCode.Online)
-                {
-                    DischargerState = EDischargerState.Error;
-                    return false;
-                }
-
-                /// 채널 상태 검사
-                if (channelInfo.ChannelStatus == EChannelStatus.Error)
-                {
-                    DischargerState = EDischargerState.Error;
-                    return false;
-                }
+            if (_dischargerState == EDischargerState.Discharging ||
+                _dischargerState == EDischargerState.Pause)
+            {
+                LogArgument logArgument = new LogArgument("Discharger Info.");
+                logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
+                logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
+                logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
+                logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
+                logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
+                AddTraceLog(logArgument);
             }
 
             return true;

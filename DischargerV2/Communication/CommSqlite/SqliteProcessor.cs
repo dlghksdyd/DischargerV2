@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
-using Repository.Structures;
 
 namespace Sqlite.Common
 {
@@ -40,7 +39,6 @@ namespace Sqlite.Common
                     UserId = "admin",
                     Password = "1",
                     UserName = "admin",
-                    IsAdmin = true,
                 };
                 SqliteUserInfo.InsertData(userInsert);
             }
@@ -83,14 +81,12 @@ namespace Sqlite.Common
                 query += @"INSERT INTO " + ClassName + " (";
                 query += "'UserId',";
                 query += "'Password',";
-                query += "'UserName',";
-                query += "'IsAdmin'";
+                query += "'UserName'";
                 query += ") ";
                 query += "values (";
                 query += "'" + oneRowData.UserId + "', ";
                 query += "'" + oneRowData.Password + "', ";
-                query += "'" + oneRowData.UserName + "',";
-                query += "'" + oneRowData.IsAdmin + "'";
+                query += "'" + oneRowData.UserName + "'";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -120,7 +116,6 @@ namespace Sqlite.Common
                         oneRow.UserId = reader["UserId"].ToString();
                         oneRow.Password = reader["Password"].ToString();
                         oneRow.UserName = reader["UserName"].ToString();
-                        oneRow.IsAdmin = bool.Parse(reader["IsAdmin"].ToString());
                         table.Add(oneRow);
                     }
                 }
@@ -138,8 +133,7 @@ namespace Sqlite.Common
                 var query = "";
                 query = @"UPDATE " + ClassName + " SET ";
                 query += "\"Password\"='" + oneRowData.Password.ToString() + "',";
-                query += "\"UserName\"='" + oneRowData.UserName.ToString() + "',";
-                query += "\"IsAdmin\"='" + oneRowData.IsAdmin.ToString() + "'";
+                query += "\"UserName\"='" + oneRowData.UserName.ToString() + "'";
                 query += "WHERE \"UserId\"='" + oneRowData.UserId + "'";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))

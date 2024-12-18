@@ -153,26 +153,9 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
-    <Compile Include="Repository\RepoMain.cs" />
-    <Compile Include="Repository\Structures\DischargerConf.cs" />
-    <Compile Include="Repository\Structures\OpPresetMode.cs" />
-    <Compile Include="Repository\Structures\OpSimpleMode.cs" />
-    <Compile Include="Repository\Structures\OpStepMode.cs" />
-    <Compile Include="Resources\ResourceCi.Designer.cs">
-      <DependentUpon>ResourceCi.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\ResourceIcon.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResourceIcon.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\ResourceImg.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ResourceImg.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Repository\RepoDischarger.cs" />
+    <Compile Include="Repository\RepoLog.cs" />
+    <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\UcDbConfiguration.xaml.cs">
       <DependentUpon>UcDbConfiguration.xaml</DependentUpon>
@@ -207,29 +190,8 @@
     <Compile Include="UserControls\UcUserCreate.xaml.cs">
       <DependentUpon>UcUserCreate.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UserControlDischargerList.xaml.cs">
-      <DependentUpon>UserControlDischargerList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlGraph.xaml.cs">
-      <DependentUpon>UserControlGraph.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UcLogin.xaml.cs">
       <DependentUpon>UcLogin.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlModeList.xaml.cs">
-      <DependentUpon>UserControlModeList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlMonitoringView_Button.xaml.cs">
-      <DependentUpon>UserControlMonitoringView_Button.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlMonitoringView_Preset.xaml.cs">
-      <DependentUpon>UserControlMonitoringView_Preset.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlMonitoringView_Simple.xaml.cs">
-      <DependentUpon>UserControlMonitoringView_Simple.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlMonitoringView_Step.xaml.cs">
-      <DependentUpon>UserControlMonitoringView_Step.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UcPopupWarning.xaml.cs">
       <DependentUpon>UcPopupWarning.xaml</DependentUpon>
@@ -258,11 +220,11 @@
     <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="Views\DischargerListView.xaml.cs">
+    <Compile Include="MVVM\ViewModels\LoginViewModel.cs" />
+    <Compile Include="MVVM\Views\DischargerListView.xaml.cs">
       <DependentUpon>DischargerListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="MVVM\Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -277,70 +239,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="StyleResources\StyleBorder.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleCheckBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleColor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleComboBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StyleResources\StyleConverter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleFont.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleImage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleTabControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleLabel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StylePasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleRichTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleStackPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleTextBlock.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleResources\StyleWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\UcDbConfiguration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -385,35 +283,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\UserControlDischargerList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlGraph.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\UcLogin.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlModeList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlMonitoringView_Button.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlMonitoringView_Preset.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlMonitoringView_Simple.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UserControlMonitoringView_Step.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -449,11 +319,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DischargerListView.xaml">
+    <Page Include="MVVM\Views\DischargerListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="MVVM\Views\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -476,18 +346,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceCi.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourceCi.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceIcon.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourceIcon.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\ResourceImg.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourceImg.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -498,10 +356,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Img\img_smart_discharger.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StyleResources\StyleColor\" />
+    <Folder Include="MVVM\Models\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -514,104 +369,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Icon\icon_discharger.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\icon_discharger.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\minus.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Ci\bg_ci_mintech.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Ci\logo_login.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\button_save_disable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\button_save_enable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\button_load_disable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\button_load_enable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\label_vertical_current.png" />
-    <Resource Include="Resources\Img\label_vertical_soc.png" />
-    <Resource Include="Resources\Img\label_vertical_temperature.png" />
-    <Resource Include="Resources\Img\label_vertical_voltage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\icon_logout_grey.png" />
-    <Resource Include="Resources\Img\icon_logout_white.png" />
-    <Resource Include="Resources\Img\icon_pause_circle_grey.png" />
-    <Resource Include="Resources\Img\icon_pause_circle_white.png" />
-    <Resource Include="Resources\Img\icon_stop_circle_grey.png" />
-    <Resource Include="Resources\Img\icon_stop_circle_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\icon_logout_black.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\db_config.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\user_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\icon_info_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\delete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\drop_up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\drop_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\device_register_black.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\device_register_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\close_grey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\close_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\plus_black.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\plus_blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\user_setting_black.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\user_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Img\user_setting_white.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\mexpress\MExpress\MExpress.csproj">

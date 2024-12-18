@@ -16,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ethernet.Client.Discharger;
-using Repository.Common;
 using Serial.Client.Common;
 using Utility.Common;
 
