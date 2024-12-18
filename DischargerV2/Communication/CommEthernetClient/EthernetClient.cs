@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ethernet.Client.Common
 {
-    public enum ENClientStatus : uint
+    public enum EthernetClientStatus : uint
     {
         OK,
         INVALID_START_PARAMETER,
@@ -80,25 +80,25 @@ namespace Ethernet.Client.Common
             return EthernetClientBasic.IsConnected(Handle);
         }
 
-        public ENClientStatus Connect(EthernetClientStart parameters)
+        public EthernetClientStatus Connect(EthernetClientStart parameters)
         {
             if (!IsParameterValid(parameters))
             {
-                return ENClientStatus.INVALID_START_PARAMETER;
+                return EthernetClientStatus.INVALID_START_PARAMETER;
             }
 
             Parameters = parameters;
 
             var result = EthernetClientBasic.Connect(
                 parameters.IpAddress, parameters.EthernetPort, parameters.TimeOutMs, out Handle);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            if (result != EthernetClientBasicStatus.EN_ERROR_OK)
             {
-                return ENClientStatus.FAIL_TO_CONNECT;
+                return EthernetClientStatus.FAIL_TO_CONNECT;
             }
 
             Debug.WriteLine("Connect Ethernet Client.");
 
-            return ENClientStatus.OK;
+            return EthernetClientStatus.OK;
         }
 
         public void Disconnect()
@@ -136,38 +136,40 @@ namespace Ethernet.Client.Common
             }
         }
 
-        public ENClientStatus Write(int handle, byte[] writeBuffer)
+        public EthernetClientStatus Write(int handle, byte[] writeBuffer)
         {
-            ENClientBasicStatus result = EthernetClientBasic.Write(handle, writeBuffer, 0, writeBuffer.Length);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            EthernetClientBasicStatus result = EthernetClientBasic.Write(handle, writeBuffer, 0, writeBuffer.Length);
+            if (result != EthernetClientBasicStatus.EN_ERROR_OK)
             {
-                return ENClientStatus.FAIL_WRITE;
+                return EthernetClientStatus.FAIL_WRITE;
             }
 
-            return ENClientStatus.OK;
+            return EthernetClientStatus.OK;
         }
 
-        public ENClientStatus Read(int handle, out byte[] readBuffer)
+        public EthernetClientStatus Read(int handle, out byte[] readBuffer)
         {
             readBuffer = new byte[EthernetClientConstant.MAX_DATA_LENGTH];
-            ENClientBasicStatus result = EthernetClientBasic.Read(handle, readBuffer, 0, readBuffer.Length);
-            if (result != ENClientBasicStatus.EN_ERROR_OK)
+            EthernetClientBasicStatus result = EthernetClientBasic.Read(handle, ref readBuffer, 0, readBuffer.Length);
+            if (result != EthernetClientBasicStatus.EN_ERROR_OK)
             {
-                return ENClientStatus.FAIL_READ;
+                return EthernetClientStatus.FAIL_READ;
             }
 
-            return ENClientStatus.OK;
+            return EthernetClientStatus.OK;
         }
 
         public bool WriteFunctionExample(int handle, byte[] writeBuffer)
         {
             if (writeBuffer == null || writeBuffer.Length == 0)
             {
-                return true;
+                Debug.WriteLine("Write Error: Write Buffer is Empty.");
+
+                return false;
             }
 
-            ENClientStatus result = Write(handle, writeBuffer);
-            if (result != ENClientStatus.OK)
+            EthernetClientStatus result = Write(handle, writeBuffer);
+            if (result != EthernetClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
 
@@ -180,8 +182,8 @@ namespace Ethernet.Client.Common
         public bool ReadFunctionExample(int handle, out byte[] readBuffer)
         {
             /// 데이터 읽기
-            ENClientStatus result = Read(handle, out readBuffer);
-            if (result != ENClientStatus.OK)
+            EthernetClientStatus result = Read(handle, out readBuffer);
+            if (result != EthernetClientStatus.OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
 
@@ -193,6 +195,13 @@ namespace Ethernet.Client.Common
 
         public bool ParseFunctionExample(byte[] readBuffer)
         {
+            if (readBuffer == null || readBuffer.Length == 0)
+            {
+                Debug.WriteLine("Read Error: Read Buffer is Empty.");
+
+                return false;
+            }
+
             return true;
         }
     }

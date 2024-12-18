@@ -1,64 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility.Common;
 
-namespace Serial.Client.Common
+namespace Serial.Client.Basic
 {
-    public class SRClientConstant
+    public class SerialClientBasicConstant
     {
         public const int MAX_READ_BUFFER_SIZE = 2048;
         public const int MAX_WRITE_BUFFER_SIZE = 2048;
     }
 
-    public enum SRClientStatus : uint
+    public enum ESerialClientBasicStatus : uint
     {
         SR_ERROR_OK,
         SR_ERROR_CONNECT_FAIL,
         SR_ERROR_PORT_ALREADY_EXIST,
-        SR_ERROR_PORT_NOT_EXIST,
         SR_ERROR_PORT_NOT_OPEN,
         SR_ERROR_WRITE_FAIL,
         SR_ERROR_READ_FAIL,
+        SR_ERROR_BUFFER_FLUSH_FAIL,
     }
 
     public static class SerialClientBasic
     {
-        private static object RemoveLock = new object();
-        private static object ErrorLock = new object();
-
-        /// <summary>
-        /// Key: Comport String
-        /// </summary>
-        private static Dictionary<string, SerialPort> Ports = new Dictionary<string, SerialPort>();
-        /// <summary>
-        /// Key: Comport String
-        /// </summary>
-        private static Dictionary<string, object> RWLock = new Dictionary<string, object>();
-
-        public static bool IsConnect(string comPortStr)
+        private class SerialClientInstance
         {
-            if (Ports.ContainsKey(comPortStr))
+            public SerialPort Port = null;
+            public object DataLock = new object();
+        }
+
+        private static object CreationLock = new object();
+
+        /// <summary>
+        /// Key: Comport String (ex. "COM1")
+        /// </summary>
+        private static Dictionary<string, SerialClientInstance> ClientInstances = new Dictionary<string, SerialClientInstance>();
+
+        public static bool IsConnected(string comPortStr)
+        {
+            if (ClientInstances.ContainsKey(comPortStr))
             {
-                if (Ports[comPortStr].IsOpen)
+                if (ClientInstances[comPortStr].Port != null)
                 {
-                    return true;
+                    if (ClientInstances[comPortStr].Port.IsOpen)
+                    {
+                        return true;
+                    }
                 }
             }
 
             return false;
         }
 
-        public static SRClientStatus Connect(string comPortStr, int baudrate)
+        public static ESerialClientBasicStatus Connect(string comPortStr, int baudrate, int timeOutMs)
         {
-            lock (RemoveLock)
+            lock (CreationLock)
             {
-                if (Ports.ContainsKey(comPortStr))
+                if (ClientInstances.ContainsKey(comPortStr))
                 {
-                    return SRClientStatus.SR_ERROR_PORT_ALREADY_EXIST;
+                    return ESerialClientBasicStatus.SR_ERROR_PORT_ALREADY_EXIST;
                 }
 
                 SerialPort port = new SerialPort();
@@ -73,9 +79,9 @@ namespace Serial.Client.Common
                 port.RtsEnable = true;
                 port.DtrEnable = true;
 
-                port.ReadTimeout = 3000;
-                port.ReadBufferSize = SRClientConstant.MAX_READ_BUFFER_SIZE;
-                port.WriteBufferSize = SRClientConstant.MAX_WRITE_BUFFER_SIZE;
+                port.ReadTimeout = timeOutMs;
+                port.ReadBufferSize = SerialClientBasicConstant.MAX_READ_BUFFER_SIZE;
+                port.WriteBufferSize = SerialClientBasicConstant.MAX_WRITE_BUFFER_SIZE;
 
                 try
                 {
@@ -88,16 +94,14 @@ namespace Serial.Client.Common
                     port.Close();
                     port.Dispose();
 
-                    return SRClientStatus.SR_ERROR_CONNECT_FAIL;
+                    return ESerialClientBasicStatus.SR_ERROR_CONNECT_FAIL;
                 }
 
-                port.ErrorReceived += new SerialErrorReceivedEventHandler(EventErrorReceived);
+                ClientInstances[comPortStr] = new SerialClientInstance();
+                ClientInstances[comPortStr].Port = port;
 
-                Ports[comPortStr] = port;
-                RWLock[comPortStr] = new object();
+                return ESerialClientBasicStatus.SR_ERROR_OK;
             }
-
-            return SRClientStatus.SR_ERROR_OK;
         }
 
         public static void Disconnect(string comPortStr)
@@ -107,36 +111,33 @@ namespace Serial.Client.Common
 
         private static void RemovePort(string comPortStr)
         {
-            lock (RemoveLock)
+            lock (CreationLock)
             {
-                if (Ports.ContainsKey(comPortStr))
+                if (ClientInstances.ContainsKey(comPortStr))
                 {
-                    Ports[comPortStr].Close();
-                    Ports[comPortStr].Dispose();
-                    Ports.Remove(comPortStr);
+                    ClientInstances[comPortStr].Port.Close();
+                    ClientInstances[comPortStr].Port.Dispose();
+                    ClientInstances[comPortStr].Port = null;
 
-                    RWLock.Remove(comPortStr);
+                    ClientInstances[comPortStr].DataLock = null;
+
+                    ClientInstances.Remove(comPortStr);
                 }
             }
         }
 
-        public static SRClientStatus Write(string comPortStr, string writeData)
+        public static ESerialClientBasicStatus Write(string comPortStr, string writeData)
         {
-            if (!Ports.ContainsKey(comPortStr))
+            if (!IsConnected(comPortStr))
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_EXIST;
-            }
-
-            if (Ports[comPortStr].IsOpen == false)
-            {
-                return SRClientStatus.SR_ERROR_PORT_NOT_OPEN;
+                return ESerialClientBasicStatus.SR_ERROR_PORT_NOT_OPEN;
             }
 
             try
             {
-                lock (RWLock[comPortStr])
+                lock (ClientInstances[comPortStr].DataLock)
                 {
-                    Ports[comPortStr].Write(writeData);
+                    ClientInstances[comPortStr].Port.Write(writeData);
                 }
             }
             catch (Exception ex)
@@ -146,29 +147,24 @@ namespace Serial.Client.Common
 
                 RemovePort(comPortStr);
 
-                return SRClientStatus.SR_ERROR_WRITE_FAIL;
+                return ESerialClientBasicStatus.SR_ERROR_WRITE_FAIL;
             }
 
-            return SRClientStatus.SR_ERROR_OK;
+            return ESerialClientBasicStatus.SR_ERROR_OK;
         }
 
-        public static SRClientStatus Write(string comPortStr, byte[] buffer, int offset, int length)
+        public static ESerialClientBasicStatus Write(string comPortStr, byte[] data, int offset, int length)
         {
-            if (!Ports.ContainsKey(comPortStr))
+            if (!IsConnected(comPortStr))
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_EXIST;
-            }
-
-            if (Ports[comPortStr].IsOpen == false)
-            {
-                return SRClientStatus.SR_ERROR_PORT_NOT_OPEN;
+                return ESerialClientBasicStatus.SR_ERROR_PORT_NOT_OPEN;
             }
 
             try
             {
-                lock (RWLock[comPortStr])
+                lock (ClientInstances[comPortStr].DataLock)
                 {
-                    Ports[comPortStr].Write(buffer, offset, length);
+                    ClientInstances[comPortStr].Port.Write(data, offset, length);
                 }
             }
             catch (Exception ex)
@@ -178,31 +174,26 @@ namespace Serial.Client.Common
 
                 RemovePort(comPortStr);
 
-                return SRClientStatus.SR_ERROR_WRITE_FAIL;
+                return ESerialClientBasicStatus.SR_ERROR_WRITE_FAIL;
             }
 
-            return SRClientStatus.SR_ERROR_OK;
+            return ESerialClientBasicStatus.SR_ERROR_OK;
         }
 
-        public static SRClientStatus ReadTo(string comPortStr, string breakStr, out string readStr)
+        public static ESerialClientBasicStatus ReadTo(string comPortStr, out string data, string breakStr)
         {
-            readStr = "";
+            data = null;
 
-            if (!Ports.ContainsKey(comPortStr))
+            if (!IsConnected(comPortStr))
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_EXIST;
-            }
-
-            if (Ports[comPortStr].IsOpen == false)
-            {
-                return SRClientStatus.SR_ERROR_PORT_NOT_OPEN;
+                return ESerialClientBasicStatus.SR_ERROR_PORT_NOT_OPEN;
             }
 
             try
             {
-                lock (RWLock[comPortStr])
+                lock (ClientInstances[comPortStr].DataLock)
                 {
-                    readStr = Ports[comPortStr].ReadTo(breakStr);
+                    data = ClientInstances[comPortStr].Port.ReadTo(breakStr);
                 }
             }
             catch (Exception ex)
@@ -212,29 +203,25 @@ namespace Serial.Client.Common
 
                 RemovePort(comPortStr);
 
-                return SRClientStatus.SR_ERROR_READ_FAIL;
+                return ESerialClientBasicStatus.SR_ERROR_READ_FAIL;
             }
 
-            return SRClientStatus.SR_ERROR_OK;
+            return ESerialClientBasicStatus.SR_ERROR_OK;
         }
 
-        public static SRClientStatus Read(string comPortStr, byte[] buffer, int offset, int dataLength)
+        public static ESerialClientBasicStatus Read(string comPortStr, ref byte[] data, int offset, int dataLength)
         {
-            if (!Ports.ContainsKey(comPortStr))
+            if (!IsConnected(comPortStr))
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_EXIST;
-            }
-
-            if (Ports[comPortStr].IsOpen == false)
-            {
-                return SRClientStatus.SR_ERROR_PORT_NOT_OPEN;
+                return ESerialClientBasicStatus.SR_ERROR_PORT_NOT_OPEN;
             }
 
             try
             {
-                lock (RWLock[comPortStr])
+                lock (ClientInstances[comPortStr].DataLock)
                 {
-                    Ports[comPortStr].Read(buffer, offset, dataLength);
+                    int readByte = ClientInstances[comPortStr].Port.Read(data, offset, dataLength);
+                    data = data.ResizeArray(readByte);
                 }
             }
             catch (Exception ex)
@@ -244,44 +231,31 @@ namespace Serial.Client.Common
 
                 RemovePort(comPortStr);
 
-                return SRClientStatus.SR_ERROR_READ_FAIL;
+                return ESerialClientBasicStatus.SR_ERROR_READ_FAIL;
             }
 
-            return SRClientStatus.SR_ERROR_OK;
+            return ESerialClientBasicStatus.SR_ERROR_OK;
         }
 
-        public static SRClientStatus FlushBuffer(string comPortStr)
+        public static ESerialClientBasicStatus FlushBuffer(string comPortStr)
         {
-            if (!Ports.ContainsKey(comPortStr))
+            if (!IsConnected(comPortStr))
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_EXIST;
+                return ESerialClientBasicStatus.SR_ERROR_PORT_NOT_OPEN;
             }
 
-            if (Ports[comPortStr].IsOpen == false)
+            try
             {
-                return SRClientStatus.SR_ERROR_PORT_NOT_OPEN;
+                ClientInstances[comPortStr].Port.BaseStream.Flush();
             }
-
-            Ports[comPortStr].BaseStream.Flush();
-
-            return SRClientStatus.SR_ERROR_OK;
-        }
-
-        private static void EventErrorReceived(object sender, SerialErrorReceivedEventArgs e)
-        {
-            lock (ErrorLock)
+            catch (Exception ex)
             {
-                SerialError err = e.EventType;
-                switch (err)
-                {
-                    case SerialError.Frame: Debug.WriteLine("[Serial Error] Hardware framing Error"); break;
-                    case SerialError.Overrun: Debug.WriteLine("[Serial Error] Characters buffer over run"); break;
-                    case SerialError.RXOver: Debug.WriteLine("[Serial Error] Input buffer overrun"); break;
-                    case SerialError.RXParity: Debug.WriteLine("[Serial Error] Parity Error"); break;
-                    case SerialError.TXFull: Debug.WriteLine("[Serial Error] Write buffer was fulled"); break;
-                    default: break;
-                }
+                Debug.WriteLine(ex.Message);
+
+                return ESerialClientBasicStatus.SR_ERROR_BUFFER_FLUSH_FAIL;
             }
+            
+            return ESerialClientBasicStatus.SR_ERROR_OK;
         }
     }
 }

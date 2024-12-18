@@ -144,6 +144,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientUtility.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />
     <Compile Include="Communication\CommEthernetClient\EthernetClient.cs" />
@@ -220,11 +221,11 @@
     <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />
-    <Compile Include="MVVM\ViewModels\LoginViewModel.cs" />
-    <Compile Include="MVVM\Views\DischargerListView.xaml.cs">
+    <Compile Include="MVVM\Login\LoginViewModel.cs" />
+    <Compile Include="MVVM\DischargerList\DischargerListView.xaml.cs">
       <DependentUpon>DischargerListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\LoginView.xaml.cs">
+    <Compile Include="MVVM\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -319,11 +320,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Views\DischargerListView.xaml">
+    <Page Include="MVVM\DischargerList\DischargerListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MVVM\Views\LoginView.xaml">
+    <Page Include="MVVM\Login\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -355,9 +356,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MVVM\Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>

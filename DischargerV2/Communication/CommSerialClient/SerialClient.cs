@@ -1,25 +1,45 @@
-﻿using Ethernet.Client.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Utility.Common;
+using Serial.Client.Basic;
+using MS.WindowsAPICodePack.Internal;
 
 namespace Serial.Client.Common
 {
+    public class SerialClientConstant
+    {
+        public const int MAX_READ_BUFFER_SIZE = SerialClientBasicConstant.MAX_READ_BUFFER_SIZE;
+        public const int MAX_WRITE_BUFFER_SIZE = SerialClientBasicConstant.MAX_WRITE_BUFFER_SIZE;
+    }
+
+    public enum ESerialClientStatus : uint
+    {
+        OK,
+
+        INVALID_START_PARAMETER,
+        PORT_ALREADY_EXIST,
+        CONNECT_FAIL,
+
+        FAIL_WRITE,
+        FAIL_READ,
+    }
+
     public class SerialClientStart
     {
-        public string ClientId = "SerialClient";
-        public string ComPort;
-        public int BaudRate;
-        public Encoding Encoding;
+        public string DeviceName = string.Empty;
+        public string ComPortStr = string.Empty;
+        public int BaudRate = int.MaxValue;
+        public int TimeOutMs = int.MaxValue;
+        public Encoding Encoding = Encoding.UTF8;
 
         public SerialClient.DelegateWrite WriteFunction = null;
         public SerialClient.DelegateRead ReadFunction = null;
-        public SerialClient.DelegateReadTo ReadToFunction = null;
         public SerialClient.DelegateParse ParseFunction = null;
     }
 
@@ -30,178 +50,177 @@ namespace Serial.Client.Common
         /// </summary>
         private static Dictionary<string, object> Lock = new Dictionary<string, object>();
 
-        public delegate bool DelegateWrite(string comPortStr, string writeString);
-        public delegate bool DelegateRead(string comPortStr, out string readString);
-        public delegate bool DelegateReadTo(string comPortStr, string breakStr, out string readStr);
-        public delegate bool DelegateParse(string readString);
+        public delegate bool DelegateWrite(string comPortStr, string writeStr);
+        public delegate bool DelegateRead(string comPortStr, out string readStr, string breakStr);
+        public delegate bool DelegateParse(string readStr);
 
-        private DelegateWrite WriteFunction = null;
-        private DelegateRead ReadFunction = null;
-        private DelegateReadTo ReadToFunction = null;
-        private DelegateParse ParseFunction = null;
+        private SerialClientStart Parameters = null;
 
-        private SerialClientStart Params = null;
-
-        public SerialClient(SerialClientStart clientStart)
+        private bool IsParameterValid(SerialClientStart parameters)
         {
-            Params = clientStart;
-
-            if (!Lock.ContainsKey(Params.ComPort))
+            if (parameters == null)
             {
-                Lock[Params.ComPort] = new object();
-
-                WriteFunction = Params.WriteFunction;
-                ReadFunction = Params.ReadFunction;
-                ReadToFunction = Params.ReadToFunction;
-                ParseFunction = Params.ParseFunction;
+                return false;
             }
+            if (parameters.DeviceName == string.Empty ||
+                parameters.ComPortStr == string.Empty ||
+                parameters.BaudRate == int.MaxValue ||
+                parameters.TimeOutMs == int.MaxValue ||
+                parameters.ReadFunction == null ||
+                parameters.ParseFunction == null ||
+                parameters.WriteFunction == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public bool IsRunning()
+        public bool IsConnected()
         {
-            if (SerialClientBasic.IsConnect(Params.ComPort))
+            if (SerialClientBasic.IsConnected(Parameters.ComPortStr))
             {
                 return true;
             }
             return false;
         }
 
-        public bool Connect()
+        public ESerialClientStatus Connect(SerialClientStart parameters)
         {
-            lock (Lock[Params.ComPort])
+            if (!IsParameterValid(parameters))
             {
-                /// 이미 실행 중이라면 바로 리턴
-                if (IsRunning())
-                {
-                    return false;
-                }
-
-                if (Params.ComPort == "")
-                {
-                    MessageBox.Show("Serial: ComPort를 설정해 주세요.");
-                    return false;
-                }
-
-                var result = SerialClientBasic.Connect(Params.ComPort, Params.BaudRate);
-                if (result != SRClientStatus.SR_ERROR_OK)
-                {
-                    return false;
-                }
+                return ESerialClientStatus.INVALID_START_PARAMETER;
             }
-            return true;
+
+            Parameters = parameters;
+
+            var result = SerialClientBasic.Connect(Parameters.ComPortStr, Parameters.BaudRate, Parameters.TimeOutMs);
+            if (result == ESerialClientBasicStatus.SR_ERROR_PORT_ALREADY_EXIST)
+            {
+                return ESerialClientStatus.PORT_ALREADY_EXIST;
+            }
+            else if (result == ESerialClientBasicStatus.SR_ERROR_CONNECT_FAIL)
+            {
+                return ESerialClientStatus.CONNECT_FAIL;
+            }
+
+            Debug.WriteLine("Connect Serial Client.");
+
+            return ESerialClientStatus.OK;
         }
 
         public void Disconnect()
         {
-            lock (Lock[Params.ComPort])
-            {
-                SerialClientBasic.Disconnect(Params.ComPort);
-            }
+            SerialClientBasic.Disconnect(Parameters.ComPortStr);
+
+            Debug.WriteLine("Disconnect Serial Client.");
         }
 
-        public bool ProcessPacket(string writeString)
+        public bool ProcessPacket(string writeString, string breakStr = null)
         {
-            lock (Lock[Params.ComPort])
+            bool writeResult = Parameters.WriteFunction.Invoke(Parameters.ComPortStr, writeString);
+            if (writeResult == false)
             {
-                bool writeResult = WriteFunction.Invoke(Params.ComPort, writeString);
-                if (writeResult == false)
-                {
-                    return false;
-                }
+                return false;
+            }
 
-                string readStr = "";
-                bool readResult = ReadFunction.Invoke(Params.ComPort, out readStr);
-                if (readResult == false)
-                {
-                    return false;
-                }
+            bool readResult = Parameters.ReadFunction.Invoke(Parameters.ComPortStr, out string readStr, breakStr);
+            if (readResult == false)
+            {
+                return false;
+            }
 
-                bool parseResult = ParseFunction.Invoke(readStr);
-                if (parseResult == false)
-                {
-                    return false;
-                }
+            bool parseResult = Parameters.ParseFunction.Invoke(readStr);
+            if (parseResult == false)
+            {
+                return false;
             }
 
             return true;
         }
 
-        public bool ProcessPacket(string writeString, string breakStr)
+        public ESerialClientStatus Write(string comPortStr, string writeStr)
         {
-            lock (Lock[Params.ComPort])
+            ESerialClientBasicStatus result = SerialClientBasic.Write(comPortStr, writeStr);
+            if (result != ESerialClientBasicStatus.SR_ERROR_OK)
             {
-                bool writeResult = WriteFunction.Invoke(Params.ComPort, writeString);
-                if (writeResult == false)
+                return ESerialClientStatus.FAIL_WRITE;
+            }
+
+            return ESerialClientStatus.OK;
+        }
+
+        public ESerialClientStatus Read(string comPortStr, out string readStr, string breakStr)
+        {
+            if (breakStr == null)
+            {
+                byte[] readBuffer = new byte[SerialClientConstant.MAX_READ_BUFFER_SIZE];
+
+                ESerialClientBasicStatus result = SerialClientBasic.Read(comPortStr, ref readBuffer, 0, readBuffer.Length);
+                if (result != ESerialClientBasicStatus.SR_ERROR_OK)
                 {
-                    return false;
+                    readStr = null;
+                    return ESerialClientStatus.FAIL_READ;
                 }
 
-                string readStr = "";
-                bool readResult = ReadToFunction.Invoke(Params.ComPort, breakStr, out readStr);
-                if (readResult == false)
+                readStr = readBuffer.FromByteArrayToString(Parameters.Encoding);
+            }
+            else
+            {
+                ESerialClientBasicStatus result = SerialClientBasic.ReadTo(comPortStr, out readStr, breakStr);
+                if (result != ESerialClientBasicStatus.SR_ERROR_OK)
                 {
-                    return false;
-                }
-
-                bool parseResult = ParseFunction.Invoke(readStr);
-                if (parseResult == false)
-                {
-                    return false;
+                    readStr = null;
+                    return ESerialClientStatus.FAIL_READ;
                 }
             }
 
-            return true;
+            return ESerialClientStatus.OK;
         }
 
-        private bool WriteData(string comPortStr, string writeStr)
+        public bool WriteFunctionExample(string comPortStr, string writeStr)
         {
-            SRClientStatus result = SerialClientBasic.Write(comPortStr, writeStr);
-            if (result != SRClientStatus.SR_ERROR_OK)
+            if (writeStr == null || writeStr.Length == 0)
+            {
+                Debug.WriteLine("Write Error: Write String is Empty.");
+
+                return false;
+            }
+
+            ESerialClientStatus result = Write(comPortStr, writeStr);
+            if (result != ESerialClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
 
-                throw new NotImplementedException();
+                return false;
             }
 
-            throw new NotImplementedException();
+            return true;
         }
 
-        private bool ReadData(string comPortStr, out string readString)
+        public bool ReadFunctionExample(string comPortStr, out string readStr, string breakStr)
         {
-            readString = "";
-
-            /// 데이터 읽기
-            byte[] readBuffer = new byte[SRClientConstant.MAX_READ_BUFFER_SIZE];
-            SRClientStatus result = SerialClientBasic.Read(comPortStr, readBuffer, 0, readBuffer.Length);
-            if (result != SRClientStatus.SR_ERROR_OK)
+            ESerialClientStatus result = Read(comPortStr, out readStr, breakStr);
+            if (result != ESerialClientStatus.OK) 
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
 
-                throw new NotImplementedException();
+                return false;
             }
 
-            readString = readBuffer.FromByteArrayToString(Params.Encoding);
-
-            throw new NotImplementedException();
+            return true;
         }
 
-        private bool ReadDataTo(string comPortStr, string breakStr, out string readStr)
+        public bool ParseFunctionExample(string readStr)
         {
-            /// 데이터 읽기
-            SRClientStatus result = SerialClientBasic.ReadTo(comPortStr, breakStr, out readStr);
-            if (result != SRClientStatus.SR_ERROR_OK)
+            if (readStr == null || readStr.Length == 0)
             {
-                Debug.WriteLine("Read Error: " + result.ToString());
+                Debug.WriteLine("Read Error: Read String is Empty.");
 
-                throw new NotImplementedException();
+                return false;
             }
 
-            throw new NotImplementedException();
-        }
-
-        private bool ParseData(string readString)
-        {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

@@ -66,8 +66,8 @@ namespace Serial.Client.TempModule
         public bool Start()
         {
             SerialClientStart clientStart = new SerialClientStart();
-            clientStart.ClientId = "TempModule";
-            clientStart.ComPort = Param.ComPort;
+            clientStart.DeviceName = "TempModule";
+            clientStart.ComPortStr = Param.ComPort;
             clientStart.BaudRate = Param.BaudRate;
             clientStart.Encoding = Param.Encoding;
             clientStart.WriteFunction = WriteData;
@@ -108,7 +108,7 @@ namespace Serial.Client.TempModule
 
         private void ReadInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (TempModuleClient.IsRunning())
+            if (TempModuleClient.IsConnected())
             {
                 ProcessPacket();
             }
@@ -129,8 +129,8 @@ namespace Serial.Client.TempModule
         private bool ReadDataTo(string comPortStr, string breakStr, out string readStr)
         {
             /// 데이터 읽기
-            SRClientStatus result = SerialClientBasic.ReadTo(comPortStr, breakStr, out readStr);
-            if (result != SRClientStatus.SR_ERROR_OK)
+            SerialClientBasicStatus result = SerialClientBasic.ReadTo(comPortStr, breakStr, out readStr);
+            if (result != SerialClientBasicStatus.SR_ERROR_OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
 
@@ -142,8 +142,8 @@ namespace Serial.Client.TempModule
 
         private bool WriteData(string comPortStr, string writeData)
         {
-            SRClientStatus result = SerialClientBasic.Write(comPortStr, writeData);
-            if (result != SRClientStatus.SR_ERROR_OK)
+            SerialClientBasicStatus result = SerialClientBasic.Write(comPortStr, writeData);
+            if (result != SerialClientBasicStatus.SR_ERROR_OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
 

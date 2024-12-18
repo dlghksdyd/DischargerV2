@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ethernet.Client.Basic
 {
-    public enum ENClientBasicStatus : uint
+    public enum EthernetClientBasicStatus : uint
     {
         EN_ERROR_OK,
 
@@ -36,6 +36,9 @@ namespace Ethernet.Client.Basic
 
         private static object CreationLock = new object();
 
+        /// <summary>
+        /// Key: handle.
+        /// </summary>
         private static Dictionary<int, EthernetClientInstance> ClientInstances = new Dictionary<int, EthernetClientInstance>();
 
         private static int GetUnusedHandle()
@@ -63,13 +66,13 @@ namespace Ethernet.Client.Basic
             return ClientInstances[handle].Client.Connected;
         }
 
-        public static ENClientBasicStatus Disconnect(int handle)
+        public static EthernetClientBasicStatus Disconnect(int handle)
         {
             lock (CreationLock)
             {
                 if (!ClientInstances.ContainsKey(handle))
                 {
-                    return ENClientBasicStatus.EN_ERROR_CLIENT_NOT_EXIST;
+                    return EthernetClientBasicStatus.EN_ERROR_CLIENT_NOT_EXIST;
                 }
 
                 ClientInstances[handle].Stream?.Close();
@@ -77,11 +80,11 @@ namespace Ethernet.Client.Basic
                 ClientInstances[handle].DataLock = null;
                 ClientInstances.Remove(handle);
 
-                return ENClientBasicStatus.EN_ERROR_OK;
+                return EthernetClientBasicStatus.EN_ERROR_OK;
             }
         }
 
-        public static ENClientBasicStatus Connect(IPAddress serverIpAddress, int port, int timeOutMs, out int handle)
+        public static EthernetClientBasicStatus Connect(IPAddress serverIpAddress, int port, int timeOutMs, out int handle)
         {
             lock (CreationLock)
             {
@@ -100,22 +103,22 @@ namespace Ethernet.Client.Basic
 
                     Disconnect(handle);
 
-                    return ENClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                    return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
                 }
 
                 ClientInstances[handle].Client.ReceiveTimeout = timeOutMs;
                 ClientInstances[handle].Stream = ClientInstances[handle].Client.GetStream();
                 ClientInstances[handle].DataLock = new object();
 
-                return ENClientBasicStatus.EN_ERROR_OK;
+                return EthernetClientBasicStatus.EN_ERROR_OK;
             }
         }
 
-        public static ENClientBasicStatus Write(int handle, byte[] data, int offset, int dataLength)
+        public static EthernetClientBasicStatus Write(int handle, byte[] data, int offset, int dataLength)
         {
             if (!IsConnected(handle))
             {
-                return ENClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
+                return EthernetClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
             }
 
             lock (ClientInstances[handle].DataLock)
@@ -130,25 +133,26 @@ namespace Ethernet.Client.Basic
 
                     Disconnect(handle);
 
-                    return ENClientBasicStatus.EN_ERROR_WRITE_FAIL;
+                    return EthernetClientBasicStatus.EN_ERROR_WRITE_FAIL;
                 }
 
-                return ENClientBasicStatus.EN_ERROR_OK;
+                return EthernetClientBasicStatus.EN_ERROR_OK;
             }
         }
 
-        public static ENClientBasicStatus Read(int handle, byte[] data, int offset, int dataLength)
+        public static EthernetClientBasicStatus Read(int handle, ref byte[] data, int offset, int dataLength)
         {
             if (!IsConnected(handle))
             {
-                return ENClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
+                return EthernetClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
             }
 
             lock (ClientInstances[handle].DataLock)
             {
                 try
                 {
-                    ClientInstances[handle].Stream.Read(data, offset, dataLength);
+                    int readByte = ClientInstances[handle].Stream.Read(data, offset, dataLength);
+                    data = data.ResizeArray(readByte);
                 }
                 catch (Exception e)
                 {
@@ -156,23 +160,34 @@ namespace Ethernet.Client.Basic
 
                     Disconnect(handle);
 
-                    return ENClientBasicStatus.EN_ERROR_READ_FAIL;
+                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
                 }
 
-                return ENClientBasicStatus.EN_ERROR_OK;
+                return EthernetClientBasicStatus.EN_ERROR_OK;
             }
         }
 
-        public static ENClientBasicStatus FlushReceiveBuffer(int handle)
+        public static EthernetClientBasicStatus FlushReceiveBuffer(int handle)
         {
             if (!IsConnected(handle))
             {
-                return ENClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
+                return EthernetClientBasicStatus.EN_ERROR_CLIENT_NOT_CONNECTED;
             }
 
             ClientInstances[handle].Stream.Flush();
 
-            return ENClientBasicStatus.EN_ERROR_OK;
+            return EthernetClientBasicStatus.EN_ERROR_OK;
+        }
+
+        private static T[] ResizeArray<T>(this T[] oldArray, int length)
+        {
+            T[] newArray = new T[oldArray.Length];
+
+            Array.Copy(oldArray, newArray, oldArray.Length);
+
+            Array.Resize(ref newArray, length);
+
+            return newArray;
         }
     }
 }

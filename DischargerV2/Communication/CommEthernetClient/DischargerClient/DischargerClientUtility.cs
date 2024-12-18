@@ -12,6 +12,21 @@ namespace Ethernet.Client.Discharger
 {
     public static class DischargerClientUtility
     {
+        public static string GetRawDataHexString(this byte[] data)
+        {
+            string hexString = "";
+            for (int i = 0; i < data.Length; i++)
+            {
+                hexString += data[i].ToString("X");
+                if (i != data.Length - 1)
+                {
+                    hexString += " ";
+                }
+            }
+
+            return hexString;
+        }
+
         public static T[] ExtractSubArray<T>(this T[] data, int startIdx, int length)
         {
             T[] result = new T[length];
