@@ -22,7 +22,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Ethernet.Client.Common;
-using Utility.Common;
 
 namespace Ethernet.Client.Discharger
 {
@@ -121,11 +120,6 @@ namespace Ethernet.Client.Discharger
 
         private List<string> _traceLogs = new List<string>();
         private object _traceLogLock = new object();
-
-        public EthernetClientDischarger()
-        {
-            /// nothing to do.
-        }
 
         private void AddTraceLog(LogArgument logFormat)
         {
@@ -759,7 +753,6 @@ namespace Ethernet.Client.Discharger
             data.WorkMode = (double)workMode;
             data.SetValue = setValue;
             data.LimitingValue = limitingValue;
-
             byte[] dataByteArray = data.FromPacketToByteArray();
 
             /// 테일 생성
