@@ -42,6 +42,7 @@ namespace Serial.Client.TempModule
         public string DeviceName = string.Empty;
         public string ComPort = string.Empty;
         public int BaudRate = int.MaxValue;
+        public int TimeOutMs = int.MaxValue;
         public Encoding Encoding = Encoding.UTF8;
         public int TempModuleChannel = int.MaxValue;
         public int TempChannelCount = int.MaxValue;
@@ -168,6 +169,7 @@ namespace Serial.Client.TempModule
             clientStart.DeviceName = _parameters.DeviceName;
             clientStart.ComPortStr = _parameters.ComPort;
             clientStart.BaudRate = _parameters.BaudRate;
+            clientStart.TimeOutMs = _parameters.TimeOutMs;
             clientStart.Encoding = _parameters.Encoding;
             clientStart.WriteFunction = WriteData;
             clientStart.ReadFunction = ReadData;
