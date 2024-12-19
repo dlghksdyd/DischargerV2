@@ -148,12 +148,12 @@ namespace Serial.Client.TempModule
 
         public bool IsConnected()
         {
-            if (_tempModuleClient.IsConnected())
+            if (_tempModuleClient == null)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return _tempModuleClient.IsConnected();
         }
 
         public ETempModuleClientError Start(SerialClientTempModuleStart parameters)
