@@ -17,122 +17,263 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ethernet.Client.Discharger;
 using Serial.Client.Common;
-using Utility.Common;
 
 namespace Serial.Client.TempModule
 {
-    public class SerialClientTempModuleStart
-    {
-        public string ComPort;
-        public int BaudRate;
-        public Encoding Encoding;
-        public int TempModuleChannel;
-        public int TempChannelCount;
-    }
-
     public enum ETempModuleState
     {
-        Disconnect,
-        Connecting,
-        Connected,
+        None = 0x0,
+
+        Disconnect = 0x10,
+        Connected = 0x11,
     }
 
-    public partial class SerialClientTempModule
+    public enum ETempModuleClientError
     {
-        private SerialClient TempModuleClient = null;
+        Ok,
 
-        private System.Timers.Timer ReadInfoTimer = null;
+        INVALID_PARAMETER,
+        FAIL_TO_CONNECT,
 
-        private SerialClientTempModuleStart Param = null;
+        FAIL_PROCESS_PACKET,
+    }
 
-        private List<double> TempDatas; // 수신 받은 온도 데이터
+    public class SerialClientTempModuleStart
+    {
+        public string DeviceName = string.Empty;
+        public string ComPort = string.Empty;
+        public int BaudRate = int.MaxValue;
+        public Encoding Encoding = Encoding.UTF8;
+        public int TempModuleChannel = int.MaxValue;
+        public int TempChannelCount = int.MaxValue;
+    }
 
+    public class TempModuleDatas
+    {
         /// <summary>
-        /// 온도 모듈 상태
+        /// 수신 받은 데이터
         /// </summary>
-        public ETempModuleState TempModuleState = ETempModuleState.Disconnect;
+        public List<double> TempDatas = new List<double>();
+    }
 
-        public SerialClientTempModule(SerialClientTempModuleStart clientStart)
+    public class SerialClientTempModule
+    {
+        private class LogArgument
         {
-            Param = clientStart;
-
-            TempDatas = new List<double>();
-            for (int i = 0; i < Param.TempChannelCount; i++)
+            public LogArgument(string logMessage)
             {
-                TempDatas.Add(0);
+                LogMessage = logMessage;
+            }
+
+            public string LogMessage { get; set; } = string.Empty;
+            public Dictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
+        }
+
+        private SerialClient _tempModuleClient = null;
+
+        private System.Timers.Timer _readInfoTimer = null;
+
+        private SerialClientTempModuleStart _parameters = null;
+
+        private TempModuleDatas _tempModuleDatas = new TempModuleDatas();
+
+        private ETempModuleState _tempModuleState = ETempModuleState.None;
+
+        private List<string> _traceLogs = new List<string>();
+        private object _traceLogLock = new object();
+
+        private void AddTraceLog(LogArgument logFormat)
+        {
+            string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
+            formattedMessage += _parameters.DeviceName + " - ";
+
+            for (int i = 0; i < logFormat.Parameters.Count; i++)
+            {
+                string key = logFormat.Parameters.Keys.ElementAt(i);
+                string value = logFormat.Parameters.Values.ElementAt(i).ToString();
+
+                if (i == 0)
+                {
+                    formattedMessage += logFormat.LogMessage + " (";
+                }
+
+                formattedMessage += key + ": " + value;
+
+                if (i < logFormat.Parameters.Count - 1)
+                {
+                    formattedMessage += ", ";
+                }
+                else
+                {
+                    formattedMessage += ")";
+                }
+            }
+
+            lock (_traceLogLock)
+            {
+                _traceLogs.Add(formattedMessage);
             }
         }
 
-        public bool Start()
+        private bool IsParameterValid(SerialClientTempModuleStart parameters)
         {
-            SerialClientStart clientStart = new SerialClientStart();
-            clientStart.DeviceName = "TempModule";
-            clientStart.ComPortStr = Param.ComPort;
-            clientStart.BaudRate = Param.BaudRate;
-            clientStart.Encoding = Param.Encoding;
-            clientStart.WriteFunction = WriteData;
-            clientStart.ReadToFunction = ReadDataTo;
-            clientStart.ParseFunction = ParseData;
-            TempModuleClient = new SerialClient(clientStart);
-
-            if (!TempModuleClient.Connect())
+            if (parameters == null)
             {
                 return false;
             }
 
-            ReadInfoTimer = new System.Timers.Timer();
-            ReadInfoTimer.Interval = 1000;
-            ReadInfoTimer.Elapsed += ReadInfoTimer_Elapsed;
-            ReadInfoTimer.Start();
+            if (parameters.DeviceName == string.Empty ||
+                parameters.ComPort == string.Empty ||
+                parameters.BaudRate == int.MaxValue ||
+                parameters.TempModuleChannel == int.MaxValue ||
+                parameters.TempChannelCount == int.MaxValue)
+            {
+                return false;
+            }
 
             return true;
         }
 
-        public List<double> GetDatas()
+        private void ChangeTempModuleState(ETempModuleState state)
         {
-            return TempDatas.ConvertAll(x => x);  // deep copy.
+            if (_tempModuleState != state)
+            {
+                LogArgument logArgument = new LogArgument("Enter " + state + " State.");
+                AddTraceLog(logArgument);
+            }
+
+            _tempModuleState = state;
+        }
+
+        public bool IsConnected()
+        {
+            if (_tempModuleClient.IsConnected())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public ETempModuleClientError Start(SerialClientTempModuleStart parameters)
+        {
+            if (!IsParameterValid(parameters))
+            {
+                return ETempModuleClientError.INVALID_PARAMETER;
+            }
+
+            _parameters = parameters;
+
+            SerialClientStart clientStart = new SerialClientStart();
+            clientStart.DeviceName = _parameters.DeviceName;
+            clientStart.ComPortStr = _parameters.ComPort;
+            clientStart.BaudRate = _parameters.BaudRate;
+            clientStart.Encoding = _parameters.Encoding;
+            clientStart.WriteFunction = WriteData;
+            clientStart.ReadFunction = ReadData;
+            clientStart.ParseFunction = ParseData;
+            _tempModuleClient = new SerialClient();
+
+            var result = _tempModuleClient.Connect(clientStart);
+            if (result != ESerialClientStatus.OK)
+            {
+                LogArgument logArgument = new LogArgument("Fail to connect.");
+                AddTraceLog(logArgument);
+
+                ChangeTempModuleState(ETempModuleState.Disconnect);
+
+                return ETempModuleClientError.FAIL_TO_CONNECT;
+            }
+
+            /// 온도 데이터 리스트 초기화
+            _tempModuleDatas.TempDatas = new List<double>();
+            for (int i = 0; i < _parameters.TempChannelCount; i++)
+            {
+                _tempModuleDatas.TempDatas.Add(0.0);
+            }
+
+            _readInfoTimer?.Stop();
+            _readInfoTimer = null;
+            _readInfoTimer = new System.Timers.Timer();
+            _readInfoTimer.Interval = 1000;
+            _readInfoTimer.Elapsed += OneSecondTimer_Elapsed;
+            _readInfoTimer.Start();
+
+            ChangeTempModuleState(ETempModuleState.Connected);
+
+            return ETempModuleClientError.Ok;
+        }
+
+        public TempModuleDatas GetDatas()
+        {
+            TempModuleDatas temp = new TempModuleDatas();
+            temp.TempDatas = _tempModuleDatas.TempDatas.ConvertAll(x => x);
+
+            return temp;
         }
 
         public ETempModuleState GetState()
         {
-            return TempModuleState;
+            return _tempModuleState;
         }
 
-        public void Dispose()
+        public List<string> GetTraceLogs()
         {
-            TempModuleClient?.Disconnect();
-
-            ReadInfoTimer?.Stop();
-            ReadInfoTimer = null;
-        }
-
-        private void ReadInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (TempModuleClient.IsConnected())
+            lock (_traceLogLock)
             {
-                ProcessPacket();
+                List<string> temp = _traceLogs.ConvertAll(x => x);
+                _traceLogs.Clear();
+
+                return temp;
             }
         }
 
-        private bool ProcessPacket()
+        public void Stop()
         {
-            string writeString = "#" + Param.TempModuleChannel.ToString("D2") + "\r\n";
-            bool result = TempModuleClient.ProcessPacket(writeString, "\r");
+            _tempModuleClient?.Disconnect();
+            _tempModuleClient = null;
+
+            _readInfoTimer?.Stop();
+            _readInfoTimer = null;
+        }
+
+        private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!_tempModuleClient.IsConnected())
+            {
+                ChangeTempModuleState(ETempModuleState.Disconnect);
+
+                return;
+            }
+
+            SendCommand_RequestTemperature();
+        }
+
+        private ETempModuleClientError SendCommand_RequestTemperature()
+        {
+            string writeString = "#" + _parameters.TempModuleChannel.ToString("D2") + "\r\n";
+
+            bool result = _tempModuleClient.ProcessPacket(writeString, "\r");
             if (result == false)
             {
-                return false;
+                LogArgument logArgument = new LogArgument("Fail to process request temperature command.");
+                AddTraceLog(logArgument);
+
+                return ETempModuleClientError.FAIL_PROCESS_PACKET;
             }
 
-            return true;
+            return ETempModuleClientError.Ok;
         }
 
-        private bool ReadDataTo(string comPortStr, string breakStr, out string readStr)
+        private bool ReadData(string comPortStr, out string readStr, string breakStr)
         {
-            /// 데이터 읽기
-            SerialClientBasicStatus result = SerialClientBasic.ReadTo(comPortStr, breakStr, out readStr);
-            if (result != SerialClientBasicStatus.SR_ERROR_OK)
+            ESerialClientStatus result = _tempModuleClient.Read(comPortStr, out readStr, breakStr);
+            if (result != ESerialClientStatus.OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
+
+                LogArgument logArgument = new LogArgument("Fail to read data.");
+                AddTraceLog(logArgument);
 
                 return false;
             }
@@ -142,10 +283,23 @@ namespace Serial.Client.TempModule
 
         private bool WriteData(string comPortStr, string writeData)
         {
-            SerialClientBasicStatus result = SerialClientBasic.Write(comPortStr, writeData);
-            if (result != SerialClientBasicStatus.SR_ERROR_OK)
+            if (writeData == null || writeData.Length == 0)
+            {
+                Debug.WriteLine("Write Error: Write String is Empty.");
+
+                LogArgument logArgument = new LogArgument("Write data is empty.");
+                AddTraceLog(logArgument);
+
+                return false;
+            }
+
+            ESerialClientStatus result = _tempModuleClient.Write(comPortStr, writeData);
+            if (result != ESerialClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
+
+                LogArgument logArgument = new LogArgument("Fail to write data.");
+                AddTraceLog(logArgument);
 
                 return false;
             }
@@ -155,15 +309,20 @@ namespace Serial.Client.TempModule
 
         private bool ParseData(string readStr)
         {
+            LogArgument logArgument = new LogArgument("Read Temperature Data.");
+            logArgument.Parameters["RawData"] = readStr;
+            AddTraceLog(logArgument);
+
             // 데이터 read (ex>">+025.12+020.45+012.78+018.97+003.24+015.35+008.07+014.79")
             readStr = readStr.Replace(">", "");
 
-            for (int i = 0; i < Param.TempChannelCount; i++)
+            for (int i = 0; i < _parameters.TempChannelCount; i++)
             {
                 double tempData = double.Parse(readStr.Substring(i * 7, 7));
 
-                TempDatas[i] = tempData;
+                _tempModuleDatas.TempDatas[i] = tempData;
             }
+
             return true;
         }
     }

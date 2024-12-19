@@ -6,9 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Utility.Common;
 using Serial.Client.Basic;
-using MS.WindowsAPICodePack.Internal;
 
 namespace Serial.Client.Common
 {
@@ -163,7 +161,7 @@ namespace Serial.Client.Common
                     return ESerialClientStatus.FAIL_READ;
                 }
 
-                readStr = readBuffer.FromByteArrayToString(Parameters.Encoding);
+                readStr = ConvertByteArrayToString(readBuffer, Parameters.Encoding);
             }
             else
             {
@@ -221,6 +219,11 @@ namespace Serial.Client.Common
             }
 
             return true;
+        }
+
+        private string ConvertByteArrayToString(byte[] byteArray, Encoding encoding)
+        {
+            return encoding.GetString(byteArray).Replace("\0", String.Empty);
         }
     }
 }

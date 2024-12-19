@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Utility.Common;
 
 namespace Serial.Client.Basic
 {
@@ -256,6 +254,17 @@ namespace Serial.Client.Basic
             }
             
             return ESerialClientBasicStatus.SR_ERROR_OK;
+        }
+
+        private static T[] ResizeArray<T>(this T[] oldArray, int length)
+        {
+            T[] newArray = new T[oldArray.Length];
+
+            Array.Copy(oldArray, newArray, oldArray.Length);
+
+            Array.Resize(ref newArray, length);
+
+            return newArray;
         }
     }
 }
