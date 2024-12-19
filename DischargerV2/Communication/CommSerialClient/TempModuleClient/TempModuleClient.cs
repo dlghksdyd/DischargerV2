@@ -15,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ethernet.Client.Discharger;
 using Serial.Client.Common;
 
 namespace Serial.Client.TempModule
@@ -235,6 +234,8 @@ namespace Serial.Client.TempModule
 
             _readInfoTimer?.Stop();
             _readInfoTimer = null;
+
+            ChangeTempModuleState(ETempModuleState.Disconnect);
         }
 
         private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
