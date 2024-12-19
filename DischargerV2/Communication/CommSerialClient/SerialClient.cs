@@ -76,6 +76,11 @@ namespace Serial.Client.Common
 
         public bool IsConnected()
         {
+            if (Parameters == null)
+            {
+                return false;
+            }
+
             if (SerialClientBasic.IsConnected(Parameters.ComPortStr))
             {
                 return true;

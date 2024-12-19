@@ -85,6 +85,7 @@ namespace Serial.Client.TempModule
         {
             string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
             formattedMessage += _parameters.DeviceName + " - ";
+            formattedMessage += logFormat.LogMessage + " ";
 
             for (int i = 0; i < logFormat.Parameters.Count; i++)
             {
@@ -93,7 +94,7 @@ namespace Serial.Client.TempModule
 
                 if (i == 0)
                 {
-                    formattedMessage += logFormat.LogMessage + " (";
+                    formattedMessage += "(";
                 }
 
                 formattedMessage += key + ": " + value;

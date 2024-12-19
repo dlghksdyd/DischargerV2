@@ -125,6 +125,7 @@ namespace Ethernet.Client.Discharger
         {
             string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
             formattedMessage += _parameters.DischargerName + " - ";
+            formattedMessage += logFormat.LogMessage + " ";
 
             for (int i = 0; i < logFormat.Parameters.Count; i++)
             {
@@ -133,7 +134,7 @@ namespace Ethernet.Client.Discharger
 
                 if (i == 0)
                 {
-                    formattedMessage += logFormat.LogMessage + " (";
+                    formattedMessage += "(";
                 }
 
                 formattedMessage += key + ": " + value;
