@@ -43,10 +43,7 @@ namespace Serial.Client.Common
 
     public class SerialClient
     {
-        /// <summary>
-        /// Key: ComPort String
-        /// </summary>
-        private static Dictionary<string, object> Lock = new Dictionary<string, object>();
+        private static object PacketLock = new object();
 
         public delegate bool DelegateWrite(string comPortStr, string writeStr);
         public delegate bool DelegateRead(string comPortStr, out string readStr, string breakStr);
@@ -121,25 +118,28 @@ namespace Serial.Client.Common
 
         public bool ProcessPacket(string writeString, string breakStr = null)
         {
-            bool writeResult = Parameters.WriteFunction.Invoke(Parameters.ComPortStr, writeString);
-            if (writeResult == false)
+            lock (PacketLock)
             {
-                return false;
-            }
+                bool writeResult = Parameters.WriteFunction.Invoke(Parameters.ComPortStr, writeString);
+                if (writeResult == false)
+                {
+                    return false;
+                }
 
-            bool readResult = Parameters.ReadFunction.Invoke(Parameters.ComPortStr, out string readStr, breakStr);
-            if (readResult == false)
-            {
-                return false;
-            }
+                bool readResult = Parameters.ReadFunction.Invoke(Parameters.ComPortStr, out string readStr, breakStr);
+                if (readResult == false)
+                {
+                    return false;
+                }
 
-            bool parseResult = Parameters.ParseFunction.Invoke(readStr);
-            if (parseResult == false)
-            {
-                return false;
-            }
+                bool parseResult = Parameters.ParseFunction.Invoke(readStr);
+                if (parseResult == false)
+                {
+                    return false;
+                }
 
-            return true;
+                return true;
+            }
         }
 
         public ESerialClientStatus Write(string comPortStr, string writeStr)
