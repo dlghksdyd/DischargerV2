@@ -111,9 +111,12 @@ namespace Serial.Client.Common
 
         public void Disconnect()
         {
-            SerialClientBasic.Disconnect(Parameters.ComPortStr);
+            if (Parameters != null)
+            {
+                SerialClientBasic.Disconnect(Parameters.ComPortStr);
 
-            Debug.WriteLine("Disconnect Serial Client.");
+                Debug.WriteLine("Disconnect Serial Client.");
+            }
         }
 
         public bool ProcessPacket(string writeString, string breakStr = null)
