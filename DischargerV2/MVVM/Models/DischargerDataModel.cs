@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Ethernet.Client.Discharger;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,16 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _voltage, value);
+            }
+        }
+
+        private EDischargerState _state = EDischargerState.None;
+        public EDischargerState State
+        {
+            get { return _state; }
+            set
+            {
+                SetProperty(ref _state, value);
             }
         }
     }

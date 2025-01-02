@@ -73,11 +73,9 @@ namespace DischargerV2.MVVM.ViewModels
                 parameters.SafetyCurrentMin = 0 - 2;
 
                 Clients[info.DischargerName] = new EthernetClientDischarger();
-                var result = Clients[info.DischargerName].Start(parameters);
-                if (result)
-                {
-                    DischargerData[info.DischargerName] = new DischargerDataModel();
-                }
+                Clients[info.DischargerName].Start(parameters);
+
+                DischargerData[info.DischargerName] = new DischargerDataModel();
             }
 
             OneSeccondTimer?.Stop();
@@ -94,6 +92,9 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerDatas dischargerDatas = Clients[data.Key].GetDatas();
                 data.Value.Voltage = dischargerDatas.ReceiveBatteryVoltage;
                 data.Value.Current = dischargerDatas.ReceiveDischargeCurrent;
+
+                EDischargerState dischargerState = Clients[data.Key].GetState();
+                data.Value.State = dischargerState;
             }
         }
     }
