@@ -45,25 +45,21 @@
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                     </StackPanel>
                     <!--Edit-->
-                    <Mex:MexButton Grid.Column="2"
-                                   x:Name="xEditButton"
-                                   Width="48" Height="48"
+                    <Mex:MexButton x:Name="xEditButton" Grid.Column="2"
+                                   Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
-                                   IconWidth="24" IconHeight="24"
-                                   LeftIconSet="{StaticResource Mex/ResImageSet_Component/EditIconOutline}"
-                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"
-                                   ShadowVisibility="Collapsed"/>
+                                   ImageWidth="24" ImageHeight="24"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/EditIconOutline}"
+                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                     <!--Delete-->
-                    <Mex:MexButton Grid.Column="4" 
-                                   x:Name="xDeleteButton"
-                                   Width="48" Height="48"
+                    <Mex:MexButton x:Name="xDeleteButton" Grid.Column="4" 
+                                   Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
-                                   IconWidth="24" IconHeight="24"
-                                   LeftIconSet="{StaticResource Mex/ResImageSet_Component/DeleteIconOutline}"
-                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"
-                                   ShadowVisibility="Collapsed"/>
+                                   ImageWidth="24" ImageHeight="24"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/DeleteIconOutline}"
+                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                 </Grid>
             </Border>
             <Grid Grid.Row="1">
@@ -91,9 +87,9 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xTypeTextBlock"
-                          Text="Load"
-                          Foreground="{StaticResource Mex/ResColor/text_headings}"
-                          FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                                          Text="Load"
+                                          Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </StackPanel>
                 </Border>
                 <!--Channel-->

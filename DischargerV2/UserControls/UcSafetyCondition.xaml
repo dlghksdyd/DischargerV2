@@ -30,17 +30,18 @@
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Mex:MexTextBox x:Name="xVoltMinTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" Margin="8"
+                    <Mex:MexTextBlock Text="~" 
+                                      Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Mex:MexTextBox x:Name="xVoltMaxTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
@@ -60,17 +61,18 @@
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Mex:MexTextBox x:Name="xCurrMinTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" Margin="8"
+                    <Mex:MexTextBlock Text="~" 
+                                      Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Mex:MexTextBox x:Name="xCurrMaxTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
@@ -90,17 +92,18 @@
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Mex:MexTextBox x:Name="xTempMinTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" Margin="8"
+                    <Mex:MexTextBlock Text="~" 
+                                      Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Mex:MexTextBox x:Name="xTempMaxTextBox"
-                                    Width="100" Padding="12,8,12,8"
+                                    Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"

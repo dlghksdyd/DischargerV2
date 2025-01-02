@@ -17,19 +17,19 @@
                     Width="555"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Width="320" Height="65" 
-                   Margin="111,0,124,80"
+                   Margin="111,0,124,0"
                    Source="{StaticResource Mex/ResImage/mintech_logo}"/>
-            <Grid Height="40"/>
+            <Grid Height="80"/>
             <StackPanel>
                 <Mex:MexLabel Text="ID"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                              Margin="0,0,0,4"
                               HorizontalAlignment="Left"/>
+                <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xIdTextBox"
-                                Height="40" CornerRadius="8"
+                                Padding="12,8,12,8" 
+                                CornerRadius="8"
                                 WaterMark="Enter ID"
-                                Foreground="{StaticResource Mex/ResColor/text_body}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
@@ -38,26 +38,26 @@
                 <Mex:MexLabel Text="Password"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                              Margin="0,0,0,4"
                               HorizontalAlignment="Left"/>
+                <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xPasswordBox"
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8" 
+                                    CornerRadius="8"
                                     WaterMark="Enter Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
-                                    HidePasswordImageSize="24"
+                                    ImageSizeHidePassword="24"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     IsHidePassword="True" 
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <Grid Height="40"/>
-            <Mex:MexButton Grid.Row="3" 
-                           x:Name="xLoginButton"
-                           Height="60"
+            <Mex:MexButton x:Name="xLoginButton" Grid.Row="3" 
+                           Padding="24,16,24,16" Width="555"
                            CornerRadius="8"
                            Text="Log in"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           ShadowVisibility="Visible"
+                           IsShadow="True"
                            MouseLeftButtonDown="xLoginButton_MouseLeftButtonDown"/>
             <Grid Height="120"/>
             <Mex:MexLabel Text="v2.0.0"

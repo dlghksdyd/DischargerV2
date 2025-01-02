@@ -56,7 +56,7 @@
                                     ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                     VerticalContentAlignment="Center"
                                     IsChecked="True" />
-                <Grid Width="24"/>
+                <Grid Width="16"/>
                 <Mex:MexRadioButton x:Name="xAdminRadioButton" GroupName="Permission"
                                     Text="Admin"
                                     TextPadding="12" ButtonSize="24"
@@ -72,7 +72,8 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xIdTextBox" 
-                                Height="40" CornerRadius="8"
+                                Padding="12,8,12,8"
+                                CornerRadius="8"
                                 WaterMark="Enter ID"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
@@ -84,10 +85,11 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xPasswordBox" 
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8"
+                                    CornerRadius="8"
                                     WaterMark="Enter Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <!--Confirm Password-->
@@ -97,10 +99,11 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xConfirmPasswordBox" 
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8"
+                                    CornerRadius="8"
                                     WaterMark="Re-enter Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <!--User Name-->
@@ -110,7 +113,8 @@
                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xUserNameTextBox" 
-                                Height="40" CornerRadius="8"
+                                Padding="12,8,12,8"
+                                CornerRadius="8"
                                 WaterMark="Enter User Name"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
@@ -120,20 +124,18 @@
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton x:Name="xCreateButton"
-                           CornerRadius="8" 
                            Padding="24,10,24,10"
+                           CornerRadius="8" 
                            Text="Create"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"/>
             <Grid Width="12"/>
             <Mex:MexButton x:Name="xCancelButton"
-                           CornerRadius="8" 
                            Padding="24,10,24,10"
+                           CornerRadius="8" 
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"/>
         </StackPanel>
     </Grid>
 </UserControl>

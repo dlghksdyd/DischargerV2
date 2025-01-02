@@ -47,16 +47,16 @@
                                         </VisualBrush.Visual>
                                     </VisualBrush>
                                 </Border.BorderBrush>
-                                <Mex:MexButton Width="172" Height="40"
-                                               CornerRadius="8"
+                                <Mex:MexButton x:Name="xAddButton" 
+                                               Padding="24,9,24,9"
                                                BorderThickness="1"
+                                               CornerRadius="8"
+                                               ImageWidth="20" ImageHeight="20"
+                                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddUserIconOutline}"
                                                Text="Add New User"
+                                               TextPadding="12,0,0,0"
                                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
-                                               TextLeftMargin="12"
-                                               IconWidth="20" IconHeight="20"
-                                               LeftIconSet="{StaticResource Mex/ResImageSet_Component/AddUserIconOutline}"
                                                ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
-                                               Cursor="Hand" 
                                                MouseLeftButtonDown="MexButton_MouseLeftButtonDown"/>
                             </Border>
                             <local:UcUserInfo Width="360" Height="144" Margin="20,20,0,0"/>

@@ -53,7 +53,8 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xIdTextBox" 
-                                Height="40" CornerRadius="8"
+                                Padding="12,8,12,8"
+                                CornerRadius="8"
                                 Text="mintech"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
@@ -66,10 +67,11 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xCurrentPasswordBox" 
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8"
+                                    CornerRadius="8"
                                     WaterMark="Enter Current Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <!--New Password-->
@@ -79,10 +81,11 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xNewPasswordBox" 
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8"
+                                    CornerRadius="8"
                                     WaterMark="Enter New Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <!--Confirm New Password-->
@@ -92,23 +95,25 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xConfirmNewPasswordBox" 
-                                    Height="40" CornerRadius="8"
+                                    Padding="12,8,12,8"
+                                    CornerRadius="8"
                                     WaterMark="Re-enter New Password"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <!--User Name-->
             <StackPanel Grid.Row="8" Orientation="Vertical">
                 <Mex:MexTextBlock Text="User Name"
-                      Foreground="{StaticResource Mex/ResColor/text_body}"
-                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xUserNameTextBox" 
-                    Height="40" CornerRadius="8"
-                    Text="민테크"
-                    FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                    ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                                Padding="12,8,12,8"
+                                CornerRadius="8"
+                                Text="민테크"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
         </Grid>
         <!--Cancel & Create Button-->
@@ -119,16 +124,14 @@
                            Padding="24,10,24,10"
                            Text="Create"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"/>
             <Grid Width="12"/>
             <Mex:MexButton x:Name="xCancelButton"
                            CornerRadius="8" 
                            Padding="24,10,24,10"
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"/>
         </StackPanel>
     </Grid>
 </UserControl>

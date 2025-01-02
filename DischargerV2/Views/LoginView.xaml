@@ -53,8 +53,8 @@
                                     Text="{Binding Password, Mode=TwoWay}"
                                     Foreground="{StaticResource Mex/ResColor/text_body}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                                    HidePasswordImageSet="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
-                                    HidePasswordImageSize="24"
+                                    ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
+                                    ImageSizeHidePassword="24"
                                     IsHidePassword="True" 
                                     ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}"/>
             </StackPanel>
@@ -62,12 +62,12 @@
             <Mex:MexButton Grid.Row="3" 
                            x:Name="xLoginButton"
                            Height="60"
+                           IsShadow="True"
                            CornerRadius="8"
                            TabIndex="2"
                            Text="Log In"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                           ShadowVisibility="Visible">
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding LoginCommand, Mode=TwoWay}"
