@@ -35,8 +35,17 @@ namespace DischargerV2.MVVM.ViewModels
 
         public System.Timers.Timer OneSeccondTimer { get; private set; } = null;
 
+        private static DischargerViewModel _instance = null;
+
+        public static DischargerViewModel Instance()
+        {
+            return _instance;
+        }
+
         public DischargerViewModel()
         {
+            _instance = this;
+
             InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);
         }
 
