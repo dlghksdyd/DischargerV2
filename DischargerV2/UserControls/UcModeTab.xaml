@@ -9,19 +9,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="448" d:DesignWidth="1238" 
              MinHeight="448" MinWidth="1238">
-    
-    <Border CornerRadius="8"
-            BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-            BorderThickness="1">
+
+    <Border x:Name="xClipBorder">
+        <Border.Clip>
+            <RectangleGeometry RadiusX="8.5" RadiusY="8.5"
+                               Rect="0,0,1238,448"/>
+        </Border.Clip>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="248"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Border CornerRadius="7.5,0,0,7.5" 
-                        Background="{StaticResource Mex/ResColor/surface_primary}"/>
-                <StackPanel x:Name="xModeSelectStackPanel" Orientation="Vertical" Margin="0,20,0,20">
+            <Grid Grid.Column="0" Background="{StaticResource Mex/ResColor/surface_primary}">
+                <StackPanel x:Name="xModeSelectStackPanel" 
+                            Orientation="Vertical" Margin="1,20,0,20">
                     <Mex:MexTextBlock x:Name="xPresetTextBlock"
                                       Text="Pre-set Mode"
                                       Foreground="{StaticResource Mex/ResColor/text_action}"
@@ -61,12 +62,14 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="1">
-                <Border CornerRadius="0,7.5,7.5,0" 
-                        BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                        BorderThickness="1,0,0,0"
-                        Background="{StaticResource Mex/ResColor/surface_page}"/>
-                <uc:UcModePreset/>
+                <uc:UcModePreset x:Name="xUcModePreset" Visibility="Hidden"/>
+                <uc:UcModeStep x:Name="xUcModeStep" Visibility="Visible"/>
+                <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                        BorderThickness="1,0,0,0"/>
             </Grid>
+            <Border x:Name="xBorder" Grid.ColumnSpan="100" Grid.RowSpan="100" 
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}" 
+                    BorderThickness="1" CornerRadius="8"></Border>
         </Grid>
     </Border>
 </UserControl>

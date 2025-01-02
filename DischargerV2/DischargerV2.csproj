@@ -161,6 +161,9 @@
     <Compile Include="UserControls\UcDbConfiguration.xaml.cs">
       <DependentUpon>UcDbConfiguration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UcModeStep.xaml.cs">
+      <DependentUpon>UcModeStep.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UcModePreset.xaml.cs">
       <DependentUpon>UcModePreset.xaml</DependentUpon>
     </Compile>
@@ -241,6 +244,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControls\UcDbConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcModeStep.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

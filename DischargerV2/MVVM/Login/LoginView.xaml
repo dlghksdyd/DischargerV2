@@ -22,16 +22,16 @@
             <Image Width="320" Height="65" 
                    Margin="111,0,124,80"
                    Source="{StaticResource Mex/ResImage/mintech_logo}"/>
-            <Grid Height="40"/>
+            <Grid Height="80"/>
             <StackPanel>
                 <Mex:MexLabel Text="ID"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                              Margin="0,0,0,4"
                               HorizontalAlignment="Left"/>
-                <Mex:MexTextBox x:Name="xIdTextBox"
-                                TabIndex="0"
-                                Height="40" CornerRadius="8"
+                <Grid Height="4"/>
+                <Mex:MexTextBox x:Name="xIdTextBox" TabIndex="0"
+                                Padding="12,8,12,8" 
+                                CornerRadius="8"
                                 WaterMark="Enter ID"
                                 Text="{Binding UserId, Mode=TwoWay}"
                                 Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -44,11 +44,11 @@
                               Focusable="False"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                              Margin="0,0,0,4"
                               HorizontalAlignment="Left"/>
-                <Mex:MexPasswordBox x:Name="xPasswordBox"
-                                    Height="40" CornerRadius="8"
-                                    TabIndex="1"
+                <Grid Height="4"/>
+                <Mex:MexPasswordBox x:Name="xPasswordBox" TabIndex="1"
+                                    Padding="12,8,12,8" 
+                                    CornerRadius="8"
                                     WaterMark="Enter Password"
                                     Text="{Binding Password, Mode=TwoWay}"
                                     Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -59,15 +59,13 @@
                                     ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}"/>
             </StackPanel>
             <Grid Height="40"/>
-            <Mex:MexButton Grid.Row="3" 
-                           x:Name="xLoginButton"
-                           Height="60"
-                           IsShadow="True"
+            <Mex:MexButton x:Name="xLoginButton" Grid.Row="3" TabIndex="2"
+                           Padding="24,16,24,16" Width="555"
                            CornerRadius="8"
-                           TabIndex="2"
                            Text="Log In"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}">
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                           IsShadow="True">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding LoginCommand, Mode=TwoWay}"
@@ -75,7 +73,6 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Mex:MexButton>
-            
             <Grid Height="120"/>
             <Mex:MexLabel Text="v2.0.0"
                           HorizontalContentAlignment="Center"
