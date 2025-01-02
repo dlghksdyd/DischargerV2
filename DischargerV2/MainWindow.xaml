@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DischargerV2"
         xmlns:uc="clr-namespace:DischargerV2.UserControls"
-        xmlns:view="clr-namespace:DischargerV2.Views"
+        xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         x:Class="DischargerV2.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="1030" Width="1920" MaxHeight="1080" MaxWidth="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">

@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DischargerV2.ViewModels
+namespace DischargerV2.MVVM.ViewModels
 {
-    public class LoginViewModel : BindableBase
+    public class ViewModelLogin : BindableBase
     {
         public DelegateCommand LoginCommand { get; set; }
 
@@ -40,7 +40,7 @@ namespace DischargerV2.ViewModels
             }
         }
 
-        public LoginViewModel()
+        public ViewModelLogin()
         {
             LoginCommand = new DelegateCommand(Login);
         }

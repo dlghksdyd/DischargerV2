@@ -154,9 +154,9 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
-    <Compile Include="MVVM\Models\DischargerDataModel.cs" />
-    <Compile Include="MVVM\Models\TempModuleDataModel.cs" />
-    <Compile Include="MVVM\ViewModels\DischargerViewModel.cs" />
+    <Compile Include="MVVM\Models\ModelDischargerData.cs" />
+    <Compile Include="MVVM\Models\ModelTempModuleData.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="Repository\RepoDischarger.cs" />
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
@@ -225,9 +225,9 @@
     <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />
-    <Compile Include="MVVM\Login\LoginViewModel.cs" />
-    <Compile Include="MVVM\Login\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
+    <Compile Include="MVVM\ViewModels\ViewModelLogin.cs" />
+    <Compile Include="MVVM\Views\ViewLogin.xaml.cs">
+      <DependentUpon>ViewLogin.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -321,7 +321,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\Login\LoginView.xaml">
+    <Page Include="MVVM\Views\ViewLogin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

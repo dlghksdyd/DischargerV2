@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class TempModuleDataModel : BindableBase
+    public class ModelTempModuleData : BindableBase
     {
         private List<double> _temperatureList = new List<double>();
         public List<double> TemperatureList

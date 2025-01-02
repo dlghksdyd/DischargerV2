@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class DischargerDataModel : BindableBase
+    public class ModelDischargerData : BindableBase
     {
         private double _current = 0;
         public double Current

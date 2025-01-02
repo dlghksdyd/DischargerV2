@@ -1,5 +1,4 @@
-﻿using Discharger.MVVM.Repository;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using Microsoft.WindowsAPICodePack.Shell;
 using Prism.Commands;
@@ -16,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class DischargerViewModel
+    public class ViewModelDischarger
     {
         #region Command
 
@@ -31,18 +30,18 @@ namespace DischargerV2.MVVM.ViewModels
         /// <summary>
         /// Key: discharger name
         /// </summary>
-        public Dictionary<string, DischargerDataModel> DischargerData { get; private set; } = new Dictionary<string, DischargerDataModel>();
+        public Dictionary<string, ModelDischargerData> DischargerData { get; private set; } = new Dictionary<string, ModelDischargerData>();
 
         public System.Timers.Timer OneSeccondTimer { get; private set; } = null;
 
-        private static DischargerViewModel _instance = null;
+        private static ViewModelDischarger _instance = null;
 
-        public static DischargerViewModel Instance()
+        public static ViewModelDischarger Instance()
         {
             return _instance;
         }
 
-        public DischargerViewModel()
+        public ViewModelDischarger()
         {
             _instance = this;
 
@@ -75,7 +74,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Clients[info.DischargerName] = new EthernetClientDischarger();
                 Clients[info.DischargerName].Start(parameters);
 
-                DischargerData[info.DischargerName] = new DischargerDataModel();
+                DischargerData[info.DischargerName] = new ModelDischargerData();
             }
 
             OneSeccondTimer?.Stop();
