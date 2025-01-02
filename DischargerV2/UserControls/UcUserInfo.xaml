@@ -58,7 +58,8 @@
             <Grid Grid.Row="1">
                 <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                         BorderThickness="0,1,0,0"/>
-                <StackPanel Orientation="Vertical" Margin="24,12,24,12"
+                <StackPanel Orientation="Vertical" 
+                            Margin="24,12,24,12"
                             HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Mex:MexTextBlock Text="Name"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"

@@ -8,31 +8,36 @@
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="1920">
 
-    <Grid Background="{StaticResource Mex/ResColor/surface_primary}">
-        <StackPanel Orientation="Horizontal" Margin="40,20,40,20">
-            <Image Width="197" Height="40" 
+    <Border Background="{StaticResource Mex/ResColor/surface_primary}"
+            Padding="40,20,40,20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="197"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" 
+                   Width="197" Height="40" 
                    Source="{StaticResource Mex/ResImage/mintech_logo}"/>
-            <Grid Width="40"/>
-            <Mex:MexTextBlock x:Name="xDateTimeTextBlock"
-                              Width="1430" Height="40"
+            <Mex:MexTextBlock x:Name="xDateTimeTextBlock" Grid.Column="2" 
                               Text="2024-11-01 15:32:34"
                               Padding="8"
                               Foreground="{StaticResource Mex/ResColor/text_body}"
                               FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
                               HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Grid Width="40"/>
-            <Mex:MexButton x:Name="xSettingButton" 
-                           Width="133" Height="40"
+            <Mex:MexButton x:Name="xSettingButton" Grid.Column="4" 
+                           Padding="24,9,24,9"
                            CornerRadius="4"
                            Text="Settings"
                            Foreground="{StaticResource Mex/ResColor/text_on_action}"
                            FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
-                           TextLeftMargin="12"
-                           IconWidth="20" IconHeight="20"
-                           LeftIconSet="{StaticResource Mex/ResImageSet_Component/SettingsPrimaryFill}"
+                           TextPadding="12,0,0,0"
+                           ImageWidth="20" ImageHeight="20"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsPrimaryFill}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        </StackPanel>
-        
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

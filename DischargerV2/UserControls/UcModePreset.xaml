@@ -25,10 +25,11 @@
                 <Mex:MexLabel Text="Battery Type" 
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                              IconWidth="6" IconHeight="6"
-                              LeftIcon="{StaticResource Mex/ResImage/asterisk}"
-                              IconVerticalAlignment="Top" Margin="-6,0,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                              ImageWidth="6" ImageHeight="6"
+                              ImageLeft="{StaticResource Mex/ResImage/asterisk}"
+                              Margin="-6,0,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                              VerticalContentAlignment="Top"/>
                 <Grid Height="16"/>
                 <Mex:MexItemBox Height="192"/>
                 

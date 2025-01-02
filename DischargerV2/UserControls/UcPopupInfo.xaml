@@ -27,38 +27,35 @@
                           Text="Confirm Exit"
                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                          TextMargin="12 0 0 0"
-                          IconWidth="24" IconHeight="24"
-                          LeftIcon="{StaticResource Mex/ResImage/info}"
+                          TextPadding="12,0,0,0"
+                          ImageWidth="24" ImageHeight="24"
+                          ImageLeft="{StaticResource Mex/ResImage/info}"
                           HorizontalAlignment="Left"/>
             <Image x:Name="xCloseImage" 
                    Width="28" Height="28"
                    Source="{StaticResource Mex/ResImage/close_popup}"
                    HorizontalAlignment="Right"/>
         </Grid>
-        <Mex:MexTextBlock Grid.Row="2"
-                          x:Name="xContentTextBlock"
+        <Mex:MexTextBlock x:Name="xContentTextBlock" Grid.Row="2"
                           Text="Do you want to exit?&#10;"
                           Foreground="{StaticResource Mex/ResColor/text_body}"
                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton x:Name="xExitButton"
-                           Width="107" Height="44"
+                           Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Exit"
                            Foreground="{StaticResource Mex/ResColor/text_on_action}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"/>
             <Grid Width="12"/>
             <Mex:MexButton x:Name="xCancelButton"
-                           Width="99" Height="44"
+                           Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           ShadowVisibility="Collapsed"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"/>
         </StackPanel>
     </Grid>
 </UserControl>

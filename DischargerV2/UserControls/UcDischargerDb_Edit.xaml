@@ -40,34 +40,31 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xModelTextBox"
-                                        Width="196" HorizontalAlignment="Left"
-                                        CornerRadius="8"
+                                        Padding="12,8,12,8" Width="220"
                                         BorderThickness="1"
-                                        WaterMark="Enter Name"
+                                        CornerRadius="8"
+                                        WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                        HorizontalAlignment="Left"/>
                     </StackPanel>
                     <!--CheckNSave-->
-                    <Mex:MexButton Grid.Column="2"
-                                   x:Name="xCheckNSaveButton"
-                                   Width="48" Height="48"
+                    <Mex:MexButton x:Name="xCheckNSaveButton" Grid.Column="2"
+                                   Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
-                                   IconWidth="24" IconHeight="24"
-                                   LeftIconSet="{StaticResource Mex/ResImageSet_Component/SaveIconOutline}"
-                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"
-                                   ShadowVisibility="Collapsed"/>
+                                   ImageWidth="24" ImageHeight="24"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SaveIconOutline}"
+                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                     <!--Cancel-->
-                    <Mex:MexButton Grid.Column="4" 
-                                   x:Name="xDeletxCancelButtoneButton"
-                                   Width="48" Height="48"
+                    <Mex:MexButton x:Name="xDeletxCancelButtoneButton" Grid.Column="4" 
+                                   Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
-                                   IconWidth="24" IconHeight="24"
-                                   LeftIconSet="{StaticResource Mex/ResImageSet_Component/CloseIconOutline}"
-                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"
-                                   ShadowVisibility="Collapsed"/>
+                                   ImageWidth="24" ImageHeight="24"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseIconOutline}"
+                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                 </Grid>
             </Border>
             <Grid Grid.Row="1">
@@ -95,11 +92,10 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xTypeComboBox"
-                                         Height="40"
+                                         Padding="12,8,12,8"
                                          WaterMark="Select"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         DropDownImageSet="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
                                          ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"/>
                     </StackPanel>
                 </Border>
@@ -115,7 +111,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xChannelTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8"
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -133,7 +129,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xVoltSpecTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8"
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -151,7 +147,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrSpecTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8" 
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -169,7 +165,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xColtMaxTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8"
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -187,7 +183,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xVoltMinTextBox"
-                                                Height="40" 
+                                                Padding="12,8,12,8"
                                                 WaterMark="Enter"
                                                 Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -205,7 +201,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrMaxTextBox"
-                                         Height="40" 
+                                         Padding="12,8,12,8"
                                          WaterMark="Enter"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -223,7 +219,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrMinTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8" 
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -241,7 +237,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xTempMaxTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8"
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
@@ -258,7 +254,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xTempMinTextBox"
-                                        Height="40" 
+                                        Padding="12,8,12,8"
                                         WaterMark="Enter"
                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}">

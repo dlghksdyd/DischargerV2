@@ -17,11 +17,6 @@
         </Grid.RowDefinitions>
         <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
         <!--<view:Login Grid.Row="1"></view:Login>-->
-        <Mex:MexComboBox Grid.Row="1" x:Name="xMexComboBox"
-                 Width="190" Height="40" 
-                 WaterMark="ComboBox TEST"
-                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                 ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}">
-        </Mex:MexComboBox>
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" x:Name="xTopRectangle" Fill="#22000000" Visibility="Hidden"></Rectangle>
     </Grid>
 </Window>
