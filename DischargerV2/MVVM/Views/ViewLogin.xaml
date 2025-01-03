@@ -63,7 +63,6 @@
                            Padding="24,16,24,16" Width="555"
                            CornerRadius="8"
                            Text="Log In"
-                           Width="550"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            IsShadow="True">
