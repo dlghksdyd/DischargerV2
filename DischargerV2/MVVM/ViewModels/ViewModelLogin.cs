@@ -18,7 +18,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelLoginUserInfo LoginUserInfo { get; set; } = new ModelLoginUserInfo();
+        public ModelLoginUserInfo Model { get; set; } = new ModelLoginUserInfo();
         #endregion
 
         private static ViewModelLogin _instance = null;
@@ -39,7 +39,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
 
-            TableUserInfo user = userInfos.Find(x => x.UserId == LoginUserInfo.UserId && x.Password == LoginUserInfo.Password);
+            TableUserInfo user = userInfos.Find(x => x.UserId == Model.UserId && x.Password == Model.Password);
 
             if (user != null)
             {

@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +25,18 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Dictionary<string, DischargerDatas> _dischargerDatas = new Dictionary<string, DischargerDatas>();
-        /// <summary>
-        /// Key: discharger name
-        /// </summary>
-        public Dictionary<string, DischargerDatas> DischargerDatas
+        private List<string> _dischargerNameList = new List<string>();
+        public List<string> DischargerNameList
+        {
+            get { return _dischargerNameList; }
+            set
+            {
+                SetProperty(ref _dischargerNameList, value);
+            }
+        }
+
+        private ObservableCollection<DischargerDatas> _dischargerDatas = new ObservableCollection<DischargerDatas>();
+        public ObservableCollection<DischargerDatas> DischargerDatas
         {
             get { return _dischargerDatas; }
             set
@@ -37,11 +45,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Dictionary<string, DischargerInfo> _dischargerInfos = new Dictionary<string, DischargerInfo>();
-        /// <summary>
-        /// Key: discharger name
-        /// </summary>
-        public Dictionary<string, DischargerInfo> DischargerInfos
+        private ObservableCollection<DischargerInfo> _dischargerInfos = new ObservableCollection<DischargerInfo>();
+        public ObservableCollection<DischargerInfo> DischargerInfos
         {
             get { return _dischargerInfos; }
             set
@@ -50,16 +55,13 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Dictionary<string, EDischargerState> _states = new Dictionary<string, EDischargerState>();
-        /// <summary>
-        /// Key: Discharger Name
-        /// </summary>
-        public Dictionary<string, EDischargerState> DischargerStates
+        private ObservableCollection<EDischargerState> _dischargerStates = new ObservableCollection<EDischargerState>();
+        public ObservableCollection<EDischargerState> DischargerStates
         {
-            get { return _states; }
+            get { return _dischargerStates; }
             set
             {
-                SetProperty(ref _states, value);
+                SetProperty(ref _dischargerStates, value);
             }
         }
     }

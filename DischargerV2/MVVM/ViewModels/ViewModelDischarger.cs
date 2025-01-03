@@ -2,16 +2,19 @@
 using Ethernet.Client.Discharger;
 using Microsoft.WindowsAPICodePack.Shell;
 using Prism.Commands;
+using Prism.Mvvm;
 using Serial.Client.TempModule;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -44,6 +47,8 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
+            InitializeDischarger();
+
             InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);
             FinalizeDischargerCommand = new DelegateCommand(FinalizeDischarger);
         }
@@ -56,10 +61,13 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (var info in infos)
             {
-                Model.DischargerDatas[info.DischargerName] = new DischargerDatas();
-                Model.DischargerStates[info.DischargerName] = EDischargerState.None;
-                InitializeDischargerInfos(info.DischargerName);
-                InitializeDischargerClients(info.DischargerName);
+                Model.DischargerDatas.Add(new DischargerDatas());
+                Model.DischargerStates.Add(EDischargerState.None);
+
+                var dischargerInfo = InitializeDischargerInfos(info.DischargerName);
+                InitializeDischargerClients(dischargerInfo);
+
+                Model.DischargerNameList.Add(info.DischargerName);
             }
 
             OneSecondTimer?.Stop();
@@ -80,13 +88,14 @@ namespace DischargerV2.MVVM.ViewModels
             }
             _clients.Clear();
 
+            Model.DischargerNameList.Clear();
             Model.SelectedDischargerName = string.Empty;
             Model.DischargerDatas.Clear();
             Model.DischargerInfos.Clear();
             Model.DischargerStates.Clear();
         }
 
-        private void InitializeDischargerInfos(string name)
+        private DischargerInfo InitializeDischargerInfos(string name)
         {
             List<TableDischargerInfo> infoTable = SqliteDischargerInfo.GetData();
             TableDischargerInfo info = infoTable.Find(x => x.DischargerName == name);
@@ -99,50 +108,47 @@ namespace DischargerV2.MVVM.ViewModels
             modelTable = (from one in modelTable where one.SpecCurrent == info.SpecCurrent select one).ToList();
             TableDischargerModel model = modelTable.First();
 
-            Model.DischargerInfos[name] = new DischargerInfo();
-            Model.DischargerInfos[name].Name = name;
-            Model.DischargerInfos[name].Channel = info.DischargerChannel;
-            Model.DischargerInfos[name].IpAddress = IPAddress.Parse(info.IpAddress);
-            Model.DischargerInfos[name].EthernetPort = 10004;
-            Model.DischargerInfos[name].TimeOutMs = 5000;
-            Model.DischargerInfos[name].SpecVoltage = info.SpecVoltage;
-            Model.DischargerInfos[name].SpecCurrent = info.SpecCurrent;
-            Model.DischargerInfos[name].SafetyVoltageMax = model.SafetyVoltMax;
-            Model.DischargerInfos[name].SafetyVoltageMin = model.SafetyVoltMin;
-            Model.DischargerInfos[name].SafetyCurrentMax = model.SafetyCurrentMax;
-            Model.DischargerInfos[name].SafetyCurrentMin = model.SafetyCurrentMin;
-            Model.DischargerInfos[name].SafetyTempMax = model.SafetyTempMax;
-            Model.DischargerInfos[name].SafetyTempMin = model.SafetyTempMin;
+            DischargerInfo dischargerInfo = new DischargerInfo();
+            dischargerInfo.Name = name;
+            dischargerInfo.Channel = info.DischargerChannel;
+            dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
+            dischargerInfo.EthernetPort = 10004;
+            dischargerInfo.TimeOutMs = 5000;
+            dischargerInfo.SpecVoltage = info.SpecVoltage;
+            dischargerInfo.SpecCurrent = info.SpecCurrent;
+            dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;
+            dischargerInfo.SafetyVoltageMin = model.SafetyVoltMin;
+            dischargerInfo.SafetyCurrentMax = model.SafetyCurrentMax;
+            dischargerInfo.SafetyCurrentMin = model.SafetyCurrentMin;
+            dischargerInfo.SafetyTempMax = model.SafetyTempMax;
+            dischargerInfo.SafetyTempMin = model.SafetyTempMin;
+            Model.DischargerInfos.Add(dischargerInfo);
+
+            return dischargerInfo;
         }
 
-        private void InitializeDischargerClients(string name)
+        private void InitializeDischargerClients(DischargerInfo info)
         {
             EthernetClientDischargerStart parameters = new EthernetClientDischargerStart();
-            parameters.DischargerName = Model.DischargerInfos[name].Name;
-            parameters.DischargerChannel = Model.DischargerInfos[name].Channel;
-            parameters.IpAddress = Model.DischargerInfos[name].IpAddress;
-            parameters.EthernetPort = Model.DischargerInfos[name].EthernetPort;
-            parameters.TimeOutMs = Model.DischargerInfos[name].TimeOutMs;
-            parameters.SafetyVoltageMax = Model.DischargerInfos[name].SafetyVoltageMax;
-            parameters.SafetyVoltageMin = Model.DischargerInfos[name].SafetyVoltageMin;
-            parameters.SafetyCurrentMax = Model.DischargerInfos[name].SafetyCurrentMax;
-            parameters.SafetyCurrentMin = Model.DischargerInfos[name].SafetyCurrentMin;
-            _clients[name] = new EthernetClientDischarger();
-            _clients[name].Start(parameters);
+            parameters.DischargerName = info.Name;
+            parameters.DischargerChannel = info.Channel;
+            parameters.IpAddress = info.IpAddress;
+            parameters.EthernetPort = info.EthernetPort;
+            parameters.TimeOutMs = info.TimeOutMs;
+            parameters.SafetyVoltageMax = info.SafetyVoltageMax;
+            parameters.SafetyVoltageMin = info.SafetyVoltageMin;
+            parameters.SafetyCurrentMax = info.SafetyCurrentMax;
+            parameters.SafetyCurrentMin = info.SafetyCurrentMin;
+            _clients[info.Name] = new EthernetClientDischarger();
+            _clients[info.Name].Start(parameters);
         }
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
-            List<string> dischargerNameList = new List<string>();
-            foreach (var name in Model.DischargerDatas.Keys)
+            for (int i = 0; i < Model.DischargerNameList.Count; i++)
             {
-                dischargerNameList.Add(name);
-            }
-
-            foreach (var name in dischargerNameList)
-            {
-                Model.DischargerDatas[name] = _clients[name].GetDatas();
-                Model.DischargerStates[name] = _clients[name].GetState();
+                Model.DischargerDatas[i] = _clients[Model.DischargerNameList[i]].GetDatas();
+                Model.DischargerStates[i] = _clients[Model.DischargerNameList[i]].GetState();
             }
         }
     }

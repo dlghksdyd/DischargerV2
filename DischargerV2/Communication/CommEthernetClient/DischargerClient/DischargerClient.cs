@@ -66,24 +66,24 @@ namespace Ethernet.Client.Discharger
         /// <summary>
         /// 수신 받은 데이터
         /// </summary>
-        public uint ErrorCode = 0;
-        public EReturnCode ReturnCode = EReturnCode.Success;
-        public EChannelStatus ChannelStatus = EChannelStatus.Standby0;
-        public double ReceiveBatteryVoltage = 0;
-        public double ReceiveDischargeCurrent = 0;
+        public uint ErrorCode { get; set; } = 0;
+        public EReturnCode ReturnCode { get; set; } = EReturnCode.Success;
+        public EChannelStatus ChannelStatus { get; set; } = EChannelStatus.Standby0;
+        public double ReceiveBatteryVoltage { get; set; } = 0;
+        public double ReceiveDischargeCurrent { get; set; } = 0;
 
         /// <summary>
         /// Safety 데이터
         /// </summary>
-        public double SafetyVoltageMax = 0.0;
-        public double SafetyVoltageMin = 0.0;
-        public double SafetyCurrentMax = 0.0;
-        public double SafetyCurrentMin = 0.0;
+        public double SafetyVoltageMax { get; set; } = 0.0;
+        public double SafetyVoltageMin { get; set; } = 0.0;
+        public double SafetyCurrentMax { get; set; } = 0.0;
+        public double SafetyCurrentMin { get; set; } = 0.0;
 
         /// <summary>
         /// 방전시작시간
         /// </summary>
-        public DateTime DischargingStartTime = DateTime.MinValue;
+        public DateTime DischargingStartTime { get; set; } = DateTime.MinValue;
     }
 
     public class DischargerInfo
