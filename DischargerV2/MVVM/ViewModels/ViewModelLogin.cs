@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using DischargerV2.MVVM.Models;
+using Prism.Commands;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System;
@@ -12,36 +13,25 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelLogin : BindableBase
     {
+        #region Command
         public DelegateCommand LoginCommand { get; set; }
+        #endregion
 
-        private string _userId;
-        public string UserId
-        {
-            get
-            {
-                return _userId;
-            }
-            set
-            {
-                SetProperty(ref _userId, value);
-            }
-        }
+        #region Model
+        public ModelLoginUserInfo Model { get; set; } = new ModelLoginUserInfo();
+        #endregion
 
-        private string _password;
-        public string Password
+        private static ViewModelLogin _instance = null;
+
+        public static ViewModelLogin Instance()
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                SetProperty(ref _password, value);
-            }
+            return _instance;
         }
 
         public ViewModelLogin()
         {
+            _instance = this;
+
             LoginCommand = new DelegateCommand(Login);
         }
 
@@ -49,7 +39,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
 
-            TableUserInfo user = userInfos.Find(x => x.UserId == _userId && x.Password == _password);
+            TableUserInfo user = userInfos.Find(x => x.UserId == Model.UserId && x.Password == Model.Password);
 
             if (user != null)
             {

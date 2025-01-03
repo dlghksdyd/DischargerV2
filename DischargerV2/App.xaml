@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
+            <vm:ViewModelLogin x:Key="ViewModelLogin"></vm:ViewModelLogin>
             <vm:ViewModelDischarger x:Key="DischargerViewModel"></vm:ViewModelDischarger>
             
             <ResourceDictionary.MergedDictionaries>

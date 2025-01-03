@@ -4,10 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
-             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              mc:Ignorable="d" 
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             d:DataContext="{d:DesignInstance vm:ViewModelLogin}"
+             DataContext="{StaticResource ViewModelLogin}"
              d:DesignHeight="1080" d:DesignWidth="1920">
     
     <Grid Background="{StaticResource Mex/ResColor/surface_page}">

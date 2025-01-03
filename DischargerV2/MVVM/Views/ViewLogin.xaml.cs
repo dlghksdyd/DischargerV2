@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DischargerV2.MVVM.ViewModels;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -22,13 +21,9 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewLogin : UserControl
     {
-        private ViewModelLogin ViewModel = new ViewModelLogin();
-
         public ViewLogin()
         {
             InitializeComponent();
-
-            this.DataContext = ViewModel;
         }
     }
 }
