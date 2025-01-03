@@ -86,6 +86,34 @@ namespace Ethernet.Client.Discharger
         public DateTime DischargingStartTime = DateTime.MinValue;
     }
 
+    public class DischargerInfo
+    {
+        /// <summary>
+        /// 방전기 정보
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+        public short Channel { get; set; } = short.MaxValue;
+        public IPAddress IpAddress { get; set; }
+        public int EthernetPort { get; set; } = int.MaxValue;
+        public int TimeOutMs { get; set; } = int.MaxValue;
+
+        /// <summary>
+        /// 방전기 스펙
+        /// </summary>
+        public double SpecVoltage { get; set; } = double.MaxValue;
+        public double SpecCurrent { get; set; } = double.MaxValue;
+
+        /// <summary>
+        /// 안전 조건
+        /// </summary>
+        public double SafetyVoltageMax { get; set; } = double.MaxValue;
+        public double SafetyVoltageMin { get; set; } = double.MaxValue;
+        public double SafetyCurrentMax { get; set; } = double.MaxValue;
+        public double SafetyCurrentMin { get; set; } = double.MaxValue;
+        public double SafetyTempMax { get; set; } = double.MaxValue;
+        public double SafetyTempMin { get; set; } = double.MaxValue;
+    }
+
     public class EthernetClientDischarger
     {
         private class LogArgument

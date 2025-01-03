@@ -154,11 +154,10 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
-    <Compile Include="MVVM\Models\ModelDischargerData.cs" />
+    <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
     <Compile Include="MVVM\Models\ModelTempModuleData.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
-    <Compile Include="Repository\RepoDischarger.cs" />
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />
