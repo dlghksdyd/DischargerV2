@@ -6,14 +6,11 @@
              xmlns:local="clr-namespace:DischargerV2"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
-             d:DesignHeight="448" d:DesignWidth="990" 
-             MinHeight="448" MinWidth="990">
+             d:DesignHeight="440" d:DesignWidth="990"
+             Background="{StaticResource Mex/ResColor/surface_page}">
 
-    <Border CornerRadius="0,7.5,7.5,0" 
-            BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-            BorderThickness="1,0,0,0"
-            Background="{StaticResource Mex/ResColor/surface_page}">
-        <Grid Margin="32,24">
+    <Border Margin="32,24,32,24">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -21,7 +18,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Vertical">
+            <StackPanel x:Name="xBatteryTypeStackPanel" Grid.Row="0" 
+                        Orientation="Vertical">
                 <Mex:MexLabel Text="Battery Type" 
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
@@ -31,14 +29,104 @@
                               HorizontalAlignment="Left" VerticalAlignment="Center"
                               VerticalContentAlignment="Top"/>
                 <Grid Height="16"/>
-                <Mex:MexItemBox Height="192"/>
-                
+                <Mex:MexItemBox Width="{Binding ElementName=xBatteryTypeStackPanel, Path=ActualWidth}" 
+                                IsParent="False"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                ItemSourceHeight="48"
+                                ItemSourceViewCount="4"
+                                ItemSourcePadding="16,12,16,12"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                ColorSet="{StaticResource Mex/ResColorSet_ItemBox/Primary}">
+                    <Mex:MexScrollViewer>
+                        <StackPanel Orientation="Vertical">
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 1"/>
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 2"/>
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 3"/>
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 4"/>
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 5"/>
+                            <Mex:MexTextBlock Text="EV6 Long Range Pack 6"/>
+                        </StackPanel>
+                    </Mex:MexScrollViewer>
+                </Mex:MexItemBox>
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-
+                <Mex:MexTextBlock Text="Current SoC (%)"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                <Grid Width="12"/>
+                <Mex:MexTextBox x:Name="xCurrentSocTextBox"
+                                Padding="12,8,12,8" Width="120"
+                                Text="0"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
             <StackPanel Grid.Row="4" Orientation="Vertical">
-
+                <Mex:MexLabel Text="Discharge Type" 
+                              Foreground="{StaticResource Mex/ResColor/text_headings}"
+                              FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                              ImageWidth="6" ImageHeight="6"
+                              ImageLeft="{StaticResource Mex/ResImage/asterisk}"
+                              Margin="-6,0,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                              VerticalContentAlignment="Top"/>
+                <Grid Height="16"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Mex:MexRadioButton x:Name="xFullDischargeRadioButton" GroupName="DischargeType" Grid.Column="0"
+                                        Text="Full Discharge"
+                                        TextPadding="12" ButtonSize="24"
+                                        Foreground="{StaticResource Mex/ResColor/text_body}"
+                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                        ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
+                                        VerticalContentAlignment="Center"
+                                        IsChecked="False"/>
+                    <Mex:MexRadioButton x:Name="xCompleteDischargeRadioButton" GroupName="DischargeType" Grid.Column="2"
+                                        Text="0V Discharge"
+                                        TextPadding="12" ButtonSize="24"
+                                        Foreground="{StaticResource Mex/ResColor/text_body}"
+                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                        ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
+                                        VerticalContentAlignment="Center"
+                                        IsChecked="False"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="4">
+                        <Mex:MexRadioButton x:Name="xTargetVoltDischargeRadioButton" GroupName="DischargeType"
+                                            Text="Target Voltage (V)"
+                                            TextPadding="12,0,0,0" ButtonSize="24"
+                                            Foreground="{StaticResource Mex/ResColor/text_body}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
+                                            VerticalContentAlignment="Center"
+                                            IsChecked="False"/>
+                        <Grid Width="12"/>
+                        <Mex:MexTextBox x:Name="xTargetVoltTextBox"
+                                        Padding="12,8,12,8" Width="125"
+                                        WaterMark="Enter Voltage"
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="6">
+                        <Mex:MexRadioButton x:Name="xTargetSoCDischargeRadioButton" GroupName="DischargeType"
+                                            Text="Target SoC (%)"
+                                            TextPadding="12,0,0,0" ButtonSize="24"
+                                            Foreground="{StaticResource Mex/ResColor/text_body}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
+                                            VerticalContentAlignment="Center"
+                                            IsChecked="False"/>
+                        <Grid Width="12"/>
+                        <Mex:MexTextBox x:Name="xTargetSoCTextBox"
+                                        Padding="12,8,12,8" Width="120"
+                                        WaterMark="Enter SoC"
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </Grid>
     </Border>

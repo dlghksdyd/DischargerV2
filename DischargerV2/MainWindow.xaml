@@ -17,6 +17,8 @@
         </Grid.RowDefinitions>
         <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
         <view:ViewLogin Grid.Row="1"></view:ViewLogin>
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" x:Name="xTopRectangle" Fill="#22000000" Visibility="Hidden"></Rectangle>
+        <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
+                   Fill="#22000000" 
+                   Visibility="Hidden"></Rectangle>
     </Grid>
 </Window>
