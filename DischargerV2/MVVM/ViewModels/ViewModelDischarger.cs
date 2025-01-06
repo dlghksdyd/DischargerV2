@@ -18,12 +18,23 @@ using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
 {
+    public class StartDischargerCommandParam
+    {
+        public string DischargerName { get; set; } = string.Empty;
+        public double Current { get; set; } = 0.0;
+        public double Voltage { get; set; } = 0.0;
+    }
+
     public class ViewModelDischarger
     {
         #region Command
 
         public DelegateCommand InitializeDischargerCommand { get; set; }
         public DelegateCommand FinalizeDischargerCommand { get; set; }
+
+        public DelegateCommand<StartDischargerCommandParam> StartDischargerCommand { get; set; }
+        public DelegateCommand<string> StopDischargerCommand { get; set; }
+        public DelegateCommand<string> PauseDischargerCommand { get; set; }
 
         #endregion
 
@@ -51,6 +62,26 @@ namespace DischargerV2.MVVM.ViewModels
 
             InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);
             FinalizeDischargerCommand = new DelegateCommand(FinalizeDischarger);
+
+            StartDischargerCommand = new DelegateCommand<StartDischargerCommandParam>(StartDischarger);
+            StopDischargerCommand = new DelegateCommand<string>(StopDischarger);
+            PauseDischargerCommand = new DelegateCommand<string>(PauseDischarger);
+        }
+
+        private void StartDischarger(StartDischargerCommandParam param)
+        {
+            _clients[param.DischargerName].SendCommand_StartDischarge(
+                EWorkMode.CcCvMode, param.Voltage, param.Current);
+        }
+
+        private void StopDischarger(string dischargerName)
+        {
+            _clients[dischargerName].SendCommand_StopDischarge();
+        }
+
+        private void PauseDischarger(string dischargerName)
+        {
+            _clients[dischargerName].SendCommand_PauseDischarge();
         }
 
         private void InitializeDischarger()
