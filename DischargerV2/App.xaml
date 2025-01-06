@@ -3,14 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:DischargerV2"
              StartupUri="MainWindow.xaml"
-             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
-             xmlns:converter="clr-namespace:DischargerV2.MVVM.Converter">
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLogin x:Key="ViewModelLogin"></vm:ViewModelLogin>
-            <vm:ViewModelDischarger x:Key="DischargerViewModel"></vm:ViewModelDischarger>
-
-            <converter:StartDischargerParameterConverter x:Key="StartDischargerParameterConverter"></converter:StartDischargerParameterConverter>
+            <vm:ViewModelDischarger x:Key="ViewModelDischarger"></vm:ViewModelDischarger>
+            <vm:StartDischargerCommandParamConverter x:Key="StartDischargerCommandParamConverter"></vm:StartDischargerCommandParamConverter>
             
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"></ResourceDictionary>
