@@ -42,7 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -165,6 +165,12 @@
     <Compile Include="UserControls\UcDbConfiguration.xaml.cs">
       <DependentUpon>UcDbConfiguration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UcModeSimple.xaml.cs">
+      <DependentUpon>UcModeSimple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcModeStep_Step.xaml.cs">
+      <DependentUpon>UcModeStep_Step.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UcModeStep.xaml.cs">
       <DependentUpon>UcModeStep.xaml</DependentUpon>
     </Compile>
@@ -245,6 +251,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControls\UcDbConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcModeSimple.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcModeStep_Step.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

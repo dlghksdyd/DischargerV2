@@ -40,39 +40,38 @@
                                ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
                                HorizontalAlignment="Right"/>
             </Grid>
-            <Grid Grid.Row="4">
-                <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Background="{StaticResource Mex/ResColor/surface_primary}">
-                    <Mex:MexScrollViewer BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                                         BorderThickness="0,0,1,0">
-                        <!--<Border Width="1533" Height="807">
-                            <StackPanel Orientation="Vertical"
-                                        HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Image Width="60" Height="81"
-                                       Source="{StaticResource Mex/ResImage/Inbox}"/>
-                                <Grid Height="7"/>
-                                <Mex:MexTextBlock Text="No Data"
-                                                  Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                                  FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
-                            </StackPanel>
-                        </Border>-->
+            <Border Grid.Row="4"
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="{StaticResource Mex/ResColor/surface_primary}">
+                <Mex:MexScrollViewer BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                                     BorderThickness="0,0,1,0">
+                    <!--<Border Width="1533" Height="807">
                         <StackPanel Orientation="Vertical"
-                                    Margin="20">
-                            <local:UcDischargerDb_Edit/>
-                            <Grid Height="12"/>
-                            <local:UcDischargerDb/>
-                            <Grid Height="12"/>
-                            <local:UcDischargerDb/>
-                            <Grid Height="12"/>
-                            <local:UcDischargerDb/>
-                            <Grid Height="12"/>
-                            <local:UcDischargerDb/>
+                                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Width="60" Height="81"
+                                    Source="{StaticResource Mex/ResImage/Inbox}"/>
+                            <Grid Height="7"/>
+                            <Mex:MexTextBlock Text="No Data"
+                                                Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                                FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                         </StackPanel>
-                    </Mex:MexScrollViewer>
-                </Border>
-            </Grid>
+                    </Border>-->
+                    <StackPanel Orientation="Vertical"
+                                Margin="20">
+                        <local:UcDischargerDb_Edit/>
+                        <Grid Height="12"/>
+                        <local:UcDischargerDb/>
+                        <Grid Height="12"/>
+                        <local:UcDischargerDb/>
+                        <Grid Height="12"/>
+                        <local:UcDischargerDb/>
+                        <Grid Height="12"/>
+                        <local:UcDischargerDb/>
+                    </StackPanel>
+                </Mex:MexScrollViewer>
+            </Border>
         </Grid>
     </Border>
 </UserControl>

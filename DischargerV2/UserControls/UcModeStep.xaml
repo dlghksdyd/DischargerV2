@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DischargerV2"
+             xmlns:uc="clr-namespace:DischargerV2.UserControls"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
              d:DesignHeight="440" d:DesignWidth="990"
@@ -37,7 +38,7 @@
                                 WaterMark="Enter Standart Capacity"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 HorizontalAlignment="Left"/>
-                <!--<Mex:MexButton x:Name="xLoadButton" Grid.Column="4"
+                <Mex:MexButton x:Name="xLoadButton" Grid.Column="4"
                                Padding="24,9,24,9"
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
@@ -45,18 +46,51 @@
                                Text="Load"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                TextPadding="12,0,0,0"
-                               ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"/>-->
+                               ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"/>
                 <Mex:MexButton x:Name="xSaveButton" Grid.Column="6"
                                Padding="24,9,24,9"
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
-                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component_Test/SettingsPrimaryFill_Test}"
+                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsPrimaryFill}"
                                Text="Save"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                TextPadding="12,0,0,0"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"/>
             </Grid>
-            <Image x:Name="xTestImage" Grid.Row="2" Width="200" Height="200" Source="{StaticResource Mex/ResImage/save}"/>
+            <Border Grid.Row="2"
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Background="{StaticResource Mex/ResColor/surface_primary}">
+                <Mex:MexScrollViewer BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                                     BorderThickness="0,0,1,0">
+                    <StackPanel Orientation="Vertical" 
+                                Margin="12">
+                        <uc:UcModeStep_Step/>
+                        <Grid Height="12"/>
+                        <uc:UcModeStep_Step/>
+                        <Grid Height="12"/>
+                        <uc:UcModeStep_Step/>
+                        <Grid Height="12"/>
+                        <uc:UcModeStep_Step/>
+                        <Grid Height="12"/>
+                        <uc:UcModeStep_Step/>
+                        <Grid Height="12"/>
+                        <uc:UcModeStep_Step/>
+                    </StackPanel>
+                </Mex:MexScrollViewer>
+            </Border>
+            <Mex:MexButton x:Name="xAddStepButton" Grid.Row="4"
+                           Padding="24,9,24,9"
+                           BorderThickness="1"
+                           CornerRadius="8"
+                           ImageWidth="20" ImageHeight="20"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsPrimaryOutline}"
+                           Text="Add Step"
+                           FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
+                           TextPadding="12,0,0,0"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
+                           HorizontalAlignment="Right"/>
         </Grid>
     </Border>
 </UserControl>

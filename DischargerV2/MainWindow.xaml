@@ -16,11 +16,10 @@
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
-        <view:ViewLogin Grid.Row="1"></view:ViewLogin>
+        <!--<view:ViewLogin Grid.Row="1"></view:ViewLogin>-->
         
-        <!--<uc:UcModeTab x:Name="xUcModeTap" Grid.Row="1"
-                      HorizontalAlignment="Center" VerticalAlignment="Center"
-                      MouseDoubleClick="xUcModeTap_MouseDoubleClick"/>-->
+        <uc:UcModeTab x:Name="xUcModeTap" Grid.Row="1"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
         
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                    Fill="#22000000" 

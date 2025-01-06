@@ -8,7 +8,7 @@
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
              d:DesignHeight="448" d:DesignWidth="1238" 
-             MinHeight="448" MinWidth="1238">
+             MaxHeight="448" MaxWidth="1238">
 
     <Border x:Name="xClipBorder">
         <Border.Clip>
@@ -20,7 +20,8 @@
                 <ColumnDefinition Width="248"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Background="{StaticResource Mex/ResColor/surface_primary}">
+            <Grid Grid.Column="0" 
+                  Background="{StaticResource Mex/ResColor/surface_primary}">
                 <StackPanel x:Name="xModeSelectStackPanel" 
                             Orientation="Vertical" Margin="1,20,0,20">
                     <Mex:MexTextBlock x:Name="xPresetTextBlock"
@@ -63,7 +64,8 @@
             </Grid>
             <Grid Grid.Column="1">
                 <uc:UcModePreset x:Name="xUcModePreset" Visibility="Hidden"/>
-                <uc:UcModeStep x:Name="xUcModeStep" Visibility="Visible"/>
+                <uc:UcModeStep x:Name="xUcModeStep" Visibility="Hidden"/>
+                <uc:UcModeSimple x:Name="xUcModeSimple" Visibility="Visible"/>
                 <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                         BorderThickness="1,0,0,0"/>
             </Grid>

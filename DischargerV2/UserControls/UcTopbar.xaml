@@ -30,7 +30,7 @@
               MouseLeave="xMinusImageGrid_MouseLeave" 
               Background="{StaticResource Mex/ResColor/transparent}">
             <Image Width="24" Height="24"
-                   Source="{StaticResource Mex/ResImage/minimize}" />
+                   Source="{StaticResource Mex/ResImage/remove}" />
         </Grid>
         <Grid x:Name="xCloseImageGrid" Grid.Column="4" 
               MouseLeftButtonDown="xCloseImageGrid_MouseLeftButtonDown" 
