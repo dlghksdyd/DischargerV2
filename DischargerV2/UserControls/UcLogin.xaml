@@ -52,7 +52,7 @@
             </StackPanel>
             <Grid Height="40"/>
             <Mex:MexButton x:Name="xLoginButton" Grid.Row="3" 
-                           Padding="24,16,24,16" Width="555"
+                           Padding="24,16,24,16" HorizontalAlignment="Stretch"
                            CornerRadius="8"
                            Text="Log in"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"

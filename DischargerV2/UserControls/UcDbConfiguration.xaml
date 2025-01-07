@@ -45,8 +45,7 @@
                     BorderThickness="1"
                     CornerRadius="8"
                     Background="{StaticResource Mex/ResColor/surface_primary}">
-                <Mex:MexScrollViewer BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                                     BorderThickness="0,0,1,0">
+                <Mex:MexScrollViewer>
                     <!--<Border Width="1533" Height="807">
                         <StackPanel Orientation="Vertical"
                                     HorizontalAlignment="Center" VerticalAlignment="Center">

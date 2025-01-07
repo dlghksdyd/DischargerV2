@@ -8,7 +8,10 @@
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         x:Class="DischargerV2.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1030" Width="1920" MaxHeight="1080" MaxWidth="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
+        Title="MainWindow" 
+        Height="1030" Width="1920" 
+        MaxHeight="1080" MaxWidth="1920" 
+        WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     
     <Grid x:Name="xTopGrid" Cursor="">
         <Grid.RowDefinitions>
@@ -18,14 +21,24 @@
         <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
         <!--<view:ViewLogin Grid.Row="1"></view:ViewLogin>-->
 
-        <Grid Grid.Row="1" Width="1050" Height="500">
+        <Grid Grid.Row="1" 
+              Width="1350" Height="450"
+              Background="AliceBlue">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <uc:UcGraph/>
-            
+            <uc:UcGraph Grid.Column="0"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <uc:UcMonitor_Preset Grid.Row="0"/>
+                <uc:UcMonitor_SafetyCondition Grid.Row="2"/>
+            </Grid>
         </Grid>
         
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

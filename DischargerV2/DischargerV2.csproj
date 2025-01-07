@@ -184,6 +184,18 @@
     <Compile Include="UserControls\UcModeTab.xaml.cs">
       <DependentUpon>UcModeTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UcMonitor_Step.xaml.cs">
+      <DependentUpon>UcMonitor_Step.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcMonitor_Simple.xaml.cs">
+      <DependentUpon>UcMonitor_Simple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcMonitor_Preset.xaml.cs">
+      <DependentUpon>UcMonitor_Preset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcMonitor_SafetyCondition.xaml.cs">
+      <DependentUpon>UcMonitor_SafetyCondition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UcUserSetting.xaml.cs">
       <DependentUpon>UcUserSetting.xaml</DependentUpon>
     </Compile>
@@ -279,6 +291,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\UcModeTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor_Step.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor_Simple.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor_Preset.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor_SafetyCondition.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
