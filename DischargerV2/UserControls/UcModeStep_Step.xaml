@@ -71,7 +71,7 @@
                            BorderThickness="1"
                            CornerRadius="8"
                            ImageWidth="24" ImageHeight="24"
-                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseIconOutline}"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseButtonIcon}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
         </Grid>
     </Border>

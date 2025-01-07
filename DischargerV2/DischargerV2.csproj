@@ -184,6 +184,9 @@
     <Compile Include="UserControls\UcModeTab.xaml.cs">
       <DependentUpon>UcModeTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UcMonitor.xaml.cs">
+      <DependentUpon>UcMonitor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UcMonitor_Step.xaml.cs">
       <DependentUpon>UcMonitor_Step.xaml</DependentUpon>
     </Compile>
@@ -291,6 +294,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\UcModeTab.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

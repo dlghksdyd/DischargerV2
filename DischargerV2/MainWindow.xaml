@@ -22,23 +22,28 @@
         <!--<view:ViewLogin Grid.Row="1"></view:ViewLogin>-->
 
         <Grid Grid.Row="1" 
-              Width="1350" Height="450"
+              Width="350" Height="150"
               Background="AliceBlue">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <uc:UcGraph Grid.Column="0"/>
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <uc:UcMonitor_Preset Grid.Row="0"/>
-                <uc:UcMonitor_SafetyCondition Grid.Row="2"/>
-            </Grid>
+            <Mex:MexComboBox x:Name="xComboBox"
+                             Padding="12,8,12,8" Width="120" Height="50"
+                             WaterMark="Select"
+                             Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                             ImageSizeDropDown="24"
+                             ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
+                             ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"/>
+            <Mex:MexButton x:Name="xAddButton"
+                           Padding="24,10,24,10"
+                           BorderThickness="1"
+                           CornerRadius="8"
+                           ImageWidth="20" ImageHeight="20"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsButtonOutline}"
+                           Text="New Device"
+                           FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
+                           TextPadding="12,0,0,0"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,20,0,0"/>
         </Grid>
         
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

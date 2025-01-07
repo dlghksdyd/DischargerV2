@@ -63,7 +63,7 @@
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
-                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/EditIconOutline}"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/EditButtonIcon}"
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                     <!--Delete-->
                     <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6" 
@@ -71,7 +71,7 @@
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
-                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/DeleteIconOutline}"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/DeleteButtonIcon}"
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>        
                 </Grid>
             </Border>

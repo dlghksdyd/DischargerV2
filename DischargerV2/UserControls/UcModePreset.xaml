@@ -24,7 +24,9 @@
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               ImageWidth="6" ImageHeight="6"
-                              ImageLeft="{StaticResource Mex/ResImage/asterisk}"
+                              ImageLeft="{Binding Source={StaticResource Mex/ResImage/asterisk},
+                                                  Converter={StaticResource ImageColorConverter}, 
+                                                  ConverterParameter={StaticResource Mex/ResColor/icon_error}}"
                               Margin="-6,0,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Center"
                               VerticalContentAlignment="Top"/>
@@ -65,7 +67,9 @@
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               ImageWidth="6" ImageHeight="6"
-                              ImageLeft="{StaticResource Mex/ResImage/asterisk}"
+                              ImageLeft="{Binding Source={StaticResource Mex/ResImage/asterisk},
+                                                  Converter={StaticResource ImageColorConverter}, 
+                                                  ConverterParameter={StaticResource Mex/ResColor/icon_error}}"
                               Margin="-6,0,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Center"
                               VerticalContentAlignment="Top"/>

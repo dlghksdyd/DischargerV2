@@ -48,11 +48,15 @@
                 </StackPanel>
                 <Image x:Name="xEditImage" Grid.Column="1"
                        Width="24" Height="24"
-                       Source="{StaticResource Mex/ResImage/edit}" 
+                       Source="{Binding Source={StaticResource Mex/ResImage/edit},
+                                        Converter={StaticResource ImageColorConverter}, 
+                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                        Cursor="Hand"/>
                 <Image x:Name="xDeleteImage" Grid.Column="3"
                        Width="24" Height="24"
-                       Source="{StaticResource Mex/ResImage/delete}" 
+                       Source="{Binding Source={StaticResource Mex/ResImage/delete},
+                                        Converter={StaticResource ImageColorConverter}, 
+                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                        Cursor="Hand"/>
             </Grid>
             <Grid Grid.Row="1">

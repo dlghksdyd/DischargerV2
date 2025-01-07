@@ -24,7 +24,9 @@
                                   FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 <Image x:Name="xCloseImage" 
                        Width="28" Height="28"
-                       Source="{StaticResource Mex/ResImage/close_popup}"
+                       Source="{Binding Source={StaticResource Mex/ResImage/close},
+                                        Converter={StaticResource ImageColorConverter}, 
+                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                        HorizontalAlignment="Right"/>
             </Grid>
             <Grid Grid.Row="2">
@@ -33,7 +35,7 @@
                                BorderThickness="1"
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
-                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddDeviceIconOutline}"
+                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddDeviceButtonOutline}"
                                Text="New Device"
                                TextPadding="12,0,0,0"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"

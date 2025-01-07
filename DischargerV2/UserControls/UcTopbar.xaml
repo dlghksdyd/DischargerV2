@@ -30,7 +30,9 @@
               MouseLeave="xMinusImageGrid_MouseLeave" 
               Background="{StaticResource Mex/ResColor/transparent}">
             <Image Width="24" Height="24"
-                   Source="{StaticResource Mex/ResImage/remove}" />
+                   Source="{Binding Source={StaticResource Mex/ResImage/remove},
+                                    Converter={StaticResource ImageColorConverter}, 
+                                    ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"/>
         </Grid>
         <Grid x:Name="xCloseImageGrid" Grid.Column="4" 
               MouseLeftButtonDown="xCloseImageGrid_MouseLeftButtonDown" 
@@ -38,7 +40,9 @@
               MouseLeave="xCloseImageGrid_MouseLeave" 
               Background="{StaticResource Mex/ResColor/transparent}">
             <Image Width="24" Height="24"
-                   Source="{StaticResource Mex/ResImage/close}" />
+                   Source="{Binding Source={StaticResource Mex/ResImage/close},
+                                    Converter={StaticResource ImageColorConverter}, 
+                                    ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"/>
         </Grid>
     </Grid>
 </UserControl>

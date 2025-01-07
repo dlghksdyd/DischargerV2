@@ -55,7 +55,7 @@
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
-                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SaveIconOutline}"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SaveButtonIcon}"
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                     <!--Cancel-->
                     <Mex:MexButton x:Name="xDeletxCancelButtoneButton" Grid.Column="4" 
@@ -63,7 +63,7 @@
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
-                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseIconOutline}"
+                                   ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseButtonIcon}"
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
                 </Grid>
             </Border>
@@ -96,6 +96,7 @@
                                          WaterMark="Select"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
                                          ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"/>
                     </StackPanel>
                 </Border>

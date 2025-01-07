@@ -28,11 +28,15 @@
                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                           TextPadding="12 0 0 0"
                           ImageWidth="24" ImageHeight="24"
-                          ImageLeft="{StaticResource Mex/ResImage/warning_amber}"
+                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/warning_amber},
+                                              Converter={StaticResource ImageColorConverter}, 
+                                              ConverterParameter={StaticResource Mex/ResColor/icon_error}}"
                           HorizontalAlignment="Left"/>
             <Image x:Name="xCloseImage" 
                    Width="28" Height="28"
-                   Source="{StaticResource Mex/ResImage/close_popup}"
+                   Source="{Binding Source={StaticResource Mex/ResImage/close},
+                                    Converter={StaticResource ImageColorConverter}, 
+                                    ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                    HorizontalAlignment="Right"/>
         </Grid>
         <Mex:MexTextBlock Grid.Row="2"

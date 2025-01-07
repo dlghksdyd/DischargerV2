@@ -55,7 +55,9 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                   Background="{StaticResource Mex/ResColor/surface_primary}"
                                   ImageWidth="24" ImageHeight="24"
-                                  ImageLeft="{StaticResource Mex/ResImage/person}"
+                                  ImageLeft="{Binding Source={StaticResource Mex/ResImage/person},
+                                                      Converter={StaticResource ImageColorConverter}, 
+                                                      ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                   Cursor="Hand" 
@@ -69,7 +71,9 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                   Background="{StaticResource Mex/ResColor/surface_primary}"
                                   ImageWidth="24" ImageHeight="24"
-                                  ImageLeft="{StaticResource Mex/ResImage/storage}"
+                                  ImageLeft="{Binding Source={StaticResource Mex/ResImage/storage},
+                                                      Converter={StaticResource ImageColorConverter}, 
+                                                      ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                   Cursor="Hand" 
@@ -83,7 +87,9 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                   Background="{StaticResource Mex/ResColor/surface_primary}"
                                   ImageWidth="24" ImageHeight="24"
-                                  ImageLeft="{StaticResource Mex/ResImage/settings}"
+                                  ImageLeft="{Binding Source={StaticResource Mex/ResImage/settings},
+                                                      Converter={StaticResource ImageColorConverter}, 
+                                                      ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                   Cursor="Hand" 
@@ -97,7 +103,9 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                   Background="{StaticResource Mex/ResColor/surface_primary}"
                                   ImageWidth="24" ImageHeight="24"
-                                  ImageLeft="{StaticResource Mex/ResImage/logout}"
+                                  ImageLeft="{Binding Source={StaticResource Mex/ResImage/logout},
+                                                      Converter={StaticResource ImageColorConverter}, 
+                                                      ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                   Cursor="Hand" 
