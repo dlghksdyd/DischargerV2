@@ -18,34 +18,28 @@
             <RowDefinition Height="48"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
-        <!--<view:ViewLogin Grid.Row="1"></view:ViewLogin>-->
-
-        <Grid Grid.Row="1" 
-              Width="350" Height="150"
-              Background="AliceBlue">
-            <Mex:MexComboBox x:Name="xComboBox"
-                             Padding="12,8,12,8" Width="120" Height="50"
-                             WaterMark="Select"
-                             Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                             ImageSizeDropDown="24"
-                             ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                             ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"/>
-            <Mex:MexButton x:Name="xAddButton"
-                           Padding="24,10,24,10"
-                           BorderThickness="1"
-                           CornerRadius="8"
-                           ImageWidth="20" ImageHeight="20"
-                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsButtonOutline}"
-                           Text="New Device"
-                           FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
-                           TextPadding="12,0,0,0"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
-                           HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,20,0,0"/>
+        <uc:UserControlTopbar Grid.Row="0"/>
+        <!--<view:ViewLogin Grid.Row="1"/>-->
+        <Grid x:Name="xMainGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <uc:UcTopmenu Grid.Row="0"
+                          BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                          BorderThickness="0,0,0,1"/>
+            <Grid Grid.Row="1" Margin="80,8,80,40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <uc:UcMonitor_ChannelState Grid.Row="0"/>
+                <uc:UcMonitor Grid.Row="4"/>
+            </Grid>
         </Grid>
-        
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                    Fill="#22000000" 
                    Visibility="Hidden"></Rectangle>

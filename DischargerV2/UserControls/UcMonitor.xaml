@@ -15,7 +15,7 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <uc:UcGraph Grid.Column="0"/>
+        <uc:UcMonitor_Graph Grid.Column="0"/>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

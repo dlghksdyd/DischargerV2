@@ -18,12 +18,11 @@
         <Image Grid.Column="1" 
                Margin="6"
                Source="{StaticResource Mex/ResImage/icon_discharger}"/>
-        <Mex:MexLabel Grid.Column="2" 
-                      Padding="8,0,8,0"
-                      Content="Smart Discharger v2.0.0" 
-                      Foreground="{StaticResource Mex/ResColor/text_headings}" 
-                      FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                      VerticalAlignment="Center"/>
+        <Mex:MexTextBlock Grid.Column="2" 
+                          Padding="8,0,8,0"
+                          Text="Smart Discharger v2.0.0" 
+                          Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                          FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
         <Grid x:Name="xMinusImageGrid" Grid.Column="3" 
               MouseLeftButtonDown="xMinusImageGrid_MouseLeftButtonDown" 
               MouseEnter="xMinusImageGrid_MouseEnter" 
