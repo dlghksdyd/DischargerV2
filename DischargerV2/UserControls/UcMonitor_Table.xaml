@@ -16,51 +16,61 @@
                       CornerRadius="8" 
                       BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                       BorderThickness="1"
-                      ColumnCount="9">
+                      ColumnCount="10">
             <Mex:MexTable.Header>
                 <Mex:MexTableHeader Height="45">
                     <Mex:MexTableHeaderColumn Width="60">
-                        <Mex:MexTextBlock Text="No."
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="No."
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
-                    <Mex:MexTableHeaderColumn Width="360">
-                        <Mex:MexTextBlock Text="Discharger name"
+                    <Mex:MexTableHeaderColumn Width="227">
+                        <Mex:MexTextBlock Margin="16,0,6,0" 
+                                          Text="Discharger name"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
+                    <Mex:MexTableHeaderColumn Width="133"/>
                     <Mex:MexTableHeaderColumn Width="140">
-                        <Mex:MexTextBlock Text="Channel"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Channel"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Status"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Status"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Voltage (V)"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Voltage (V)"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Current (A)"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Current (A)"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Temperature (℃)"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Temperature (℃)"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Progress Time"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Progress Time"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="200">
-                        <Mex:MexTextBlock Text="Info"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Info"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
@@ -69,41 +79,40 @@
             <Mex:MexTable.Rows>
                 <Mex:MexTableRow Height="45">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="1"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="1"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Hidden" 
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1"
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Hidden" 
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"/>     
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
+                                          Text="1"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -117,63 +126,66 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1000.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1000.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="45">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="2"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="2"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Visible"
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="2"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Visible" 
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="2"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -187,63 +199,67 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1000.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1000.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="45">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="3"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="3"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Hidden"
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Hidden"
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
+                                      HorizontalAlignment="Right"/>     
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -257,27 +273,31 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="500.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="500.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="16,0,16,0">
                             <Image Width="24" Height="24"
                                    Source="{Binding Source={StaticResource Mex/ResImage/refresh},
                                                     Converter={StaticResource ImageColorConverter},
@@ -292,41 +312,41 @@
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="45">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="4"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="4"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Hidden"
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Hidden"
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
+                                      HorizontalAlignment="Right"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -340,63 +360,67 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="500.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="500.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="45">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Hidden"
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="2"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Hidden"
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
+                                      HorizontalAlignment="Right"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="2"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -410,27 +434,31 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1000.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1000.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="16,0,16,0">
                             <Image Width="24" Height="24"
                                    Source="{Binding Source={StaticResource Mex/ResImage/error_outline},
                                                     Converter={StaticResource ImageColorConverter},
@@ -445,41 +473,41 @@
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="46">
                     <Mex:MexTableRowColumn HorizontalContentAlignment="Center">
-                        <Mex:MexTextBlock Text="6"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="6"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="328">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Mex:MexTextBlock Text="Discharger name example" Grid.Column="0"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Mex:MexLabel Grid.Column="1" Visibility="Hidden"
-                                          CornerRadius="4"
-                                          Background="{StaticResource Mex/ResColor/surface_success}"
-                                          Padding="8,0,8,0"
-                                          Text="Short Available" 
-                                          Foreground="{StaticResource Mex/ResColor/text_success}"
-                                          TextPadding="4,0,0,0"
-                                          FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
-                                          ImageWidth="16" ImageHeight="16"
-                                          ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
-                                                              Converter={StaticResource ImageColorConverter}, 
-                                                              ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                          HorizontalAlignment="Right"/>
-                        </Grid>
-                    </Mex:MexTableRowColumn>
-                    <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="2"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="Discharger name example" 
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168">
+                        <Mex:MexLabel Visibility="Hidden"
+                                      Margin="-8,0,16,0"
+                                      CornerRadius="4"
+                                      Background="{StaticResource Mex/ResColor/surface_success}"
+                                      Padding="8,0,8,0"
+                                      Text="Short Available" 
+                                      Foreground="{StaticResource Mex/ResColor/text_success}"
+                                      TextPadding="4,0,0,0"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}"
+                                      ImageWidth="16" ImageHeight="16"
+                                      ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt},
+                                                          Converter={StaticResource ImageColorConverter}, 
+                                                          ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
+                                      HorizontalAlignment="Right"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="2"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    </Mex:MexTableRowColumn>
+                    <Mex:MexTableRowColumn>
+                        <Grid Width="168" Margin="16,0,16,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -493,27 +521,31 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="1000.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="1000.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="100.0"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="100.0"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="28.5"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="28.5"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Text="00:00:00"
+                        <Mex:MexTextBlock Margin="16,0,16,0"
+                                          Text="00:00:00"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="16,0,16,0">
                             <Image Width="24" Height="24"
                                    Source="{Binding Source={StaticResource Mex/ResImage/error_outline},
                                                     Converter={StaticResource ImageColorConverter},
