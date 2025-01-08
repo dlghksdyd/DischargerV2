@@ -7,11 +7,14 @@
              xmlns:uc="clr-namespace:DischargerV2.UserControls"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1300">
+             d:DesignHeight="448" d:DesignWidth="1760"
+             MinHeight="448" MinWidth="1760">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
@@ -25,5 +28,6 @@
             <uc:UcMonitor_Preset Grid.Row="0"/>
             <uc:UcMonitor_SafetyCondition Grid.Row="2"/>
         </Grid>
+        <uc:UcMonitor_State Grid.Column="4"/>
     </Grid>
 </UserControl>

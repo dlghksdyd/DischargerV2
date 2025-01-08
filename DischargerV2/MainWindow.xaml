@@ -20,7 +20,8 @@
         </Grid.RowDefinitions>
         <uc:UserControlTopbar Grid.Row="0"/>
         <!--<view:ViewLogin Grid.Row="1"/>-->
-        <Grid x:Name="xMainGrid" Grid.Row="1">
+        <Grid x:Name="xMainGrid" Grid.Row="1"
+              Background="{StaticResource Mex/ResColor/surface_page}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -28,16 +29,19 @@
             <uc:UcTopmenu Grid.Row="0"
                           BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                           BorderThickness="0,0,0,1"/>
-            <Grid Grid.Row="1" Margin="80,8,80,40">
+            <Grid Grid.Row="1" 
+                  HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <uc:UcMonitor_ChannelState Grid.Row="0"/>
-                <uc:UcMonitor Grid.Row="4"/>
+                <uc:UcMonitor_Table Grid.Row="2"/>
+                <!--<uc:UcMonitor Grid.Row="4"/>-->
+                <uc:UcSetMode Grid.Row="4"/>
             </Grid>
         </Grid>
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

@@ -169,6 +169,12 @@
     <Compile Include="UserControls\UcMonitor_Graph.xaml.cs">
       <DependentUpon>UcMonitor_Graph.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UcMonitor_State.xaml.cs">
+      <DependentUpon>UcMonitor_State.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcMonitor_Table.xaml.cs">
+      <DependentUpon>UcMonitor_Table.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UcSetMode_Simple.xaml.cs">
       <DependentUpon>UcSetMode_Simple.xaml</DependentUpon>
     </Compile>
@@ -279,6 +285,14 @@
     <Page Include="UserControls\UcMonitor_Graph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UcMonitor_State.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\UcMonitor_Table.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\UcSetMode_Simple.xaml">
       <Generator>MSBuild:Compile</Generator>

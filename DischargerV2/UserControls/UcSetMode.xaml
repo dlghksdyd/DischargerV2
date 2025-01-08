@@ -7,71 +7,95 @@
              xmlns:uc="clr-namespace:DischargerV2.UserControls"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
-             d:DesignHeight="448" d:DesignWidth="1238" 
-             MaxHeight="448" MaxWidth="1238">
+             d:DesignHeight="448" d:DesignWidth="1760" 
+             MaxHeight="448" MaxWidth="1760">
 
-    <Border x:Name="xClipBorder">
-        <Border.Clip>
-            <RectangleGeometry RadiusX="8.5" RadiusY="8.5"
-                               Rect="0,0,1238,448"/>
-        </Border.Clip>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="248"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" 
-                  Background="{StaticResource Mex/ResColor/surface_primary}">
-                <StackPanel x:Name="xModeSelectStackPanel" 
-                            Orientation="Vertical" Margin="1,20,0,20">
-                    <Mex:MexTextBlock x:Name="xPresetTextBlock"
-                                      Text="Pre-set Mode"
-                                      Foreground="{StaticResource Mex/ResColor/text_action}"
-                                      FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                      BorderBrush="{StaticResource Mex/ResColor/border_action_hover}"
-                                      BorderThickness="1,0,0,0"
-                                      Background="{StaticResource Mex/ResColor/surface_action_hover2}"
-                                      Padding="16,12,12,16"
-                                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                      HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
-                                      Cursor="Hand" 
-                                      MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>
-                    <Mex:MexTextBlock x:Name="xStepTextBlock"
-                                      Text="Step Mode"
-                                      Foreground="{StaticResource Mex/ResColor/text_body}"
-                                      FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                      BorderBrush="Transparent"
-                                      BorderThickness="1,0,0,0"
-                                      Background="{StaticResource Mex/ResColor/surface_primary}"
-                                      Padding="16,12,12,16"
-                                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                      HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
-                                      Cursor="Hand" 
-                                      MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>
-                    <Mex:MexTextBlock x:Name="xSimpleTextBlock"
-                                      Text="Simple Mode"
-                                      Foreground="{StaticResource Mex/ResColor/text_body}"
-                                      FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                      BorderBrush="Transparent"
-                                      BorderThickness="1,0,0,0"
-                                      Background="{StaticResource Mex/ResColor/surface_primary}"
-                                      Padding="16,12,12,16"
-                                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                      HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
-                                      Cursor="Hand" 
-                                      MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>      
-                </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="xClipBorder" Grid.Column="0">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="8.5" RadiusY="8.5"
+                           Rect="0,0,1238,448"/>
+            </Border.Clip>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="248"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" 
+                      Background="{StaticResource Mex/ResColor/surface_primary}">
+                    <StackPanel x:Name="xModeSelectStackPanel" 
+                                Orientation="Vertical" Margin="1,20,0,20">
+                        <Mex:MexTextBlock x:Name="xPresetTextBlock"
+                                          Text="Pre-set Mode"
+                                          Foreground="{StaticResource Mex/ResColor/text_action}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="{StaticResource Mex/ResColor/border_action_hover}"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{StaticResource Mex/ResColor/surface_action_hover2}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand" 
+                                          MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>
+                        <Mex:MexTextBlock x:Name="xStepTextBlock"
+                                          Text="Step Mode"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{StaticResource Mex/ResColor/surface_primary}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand" 
+                                          MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>
+                        <Mex:MexTextBlock x:Name="xSimpleTextBlock"
+                                          Text="Simple Mode"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{StaticResource Mex/ResColor/surface_primary}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand" 
+                                          MouseLeftButtonDown="xModeTextBlock_MouseLeftButtonDown"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <uc:UcSetMode_Preset x:Name="xUcSetMode_Preset" Visibility="Hidden"/>
+                    <uc:UcSetMode_Step x:Name="xUcSetMode_Step" Visibility="Hidden"/>
+                    <uc:UcSetMode_Simple x:Name="xUcSetMode_Simple" Visibility="Visible"/>
+                    <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                            BorderThickness="1,0,0,0"/>
+                </Grid>
+                <Border x:Name="xBorder" Grid.ColumnSpan="100" Grid.RowSpan="100" 
+                        BorderBrush="{StaticResource Mex/ResColor/border_primary}" 
+                        BorderThickness="1" CornerRadius="8"></Border>
             </Grid>
-            <Grid Grid.Column="1">
-                <uc:UcSetMode_Preset x:Name="xUcSetMode_Preset" Visibility="Hidden"/>
-                <uc:UcSetMode_Step x:Name="xUcSetMode_Step" Visibility="Hidden"/>
-                <uc:UcSetMode_Simple x:Name="xUcSetMode_Simple" Visibility="Visible"/>
-                <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                        BorderThickness="1,0,0,0"/>
-            </Grid>
-            <Border x:Name="xBorder" Grid.ColumnSpan="100" Grid.RowSpan="100" 
-                    BorderBrush="{StaticResource Mex/ResColor/border_primary}" 
-                    BorderThickness="1" CornerRadius="8"></Border>
+        </Border>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <uc:UcSetMode_SafetyCondition Grid.Row="0"/>
+            <Mex:MexButton x:Name="xStartButton" Grid.Row="2"
+                           Padding="24,16,24,16"
+                           Text="Start Discharge"
+                           TextPadding="12,0,0,0"
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
+                           ImageWidth="28" ImageHeight="28"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
+                           HorizontalAlignment="Stretch"/>
         </Grid>
-    </Border>
+    </Grid>
 </UserControl>
