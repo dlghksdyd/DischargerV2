@@ -8,13 +8,16 @@
              mc:Ignorable="d" 
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Setting}"
-             d:DesignHeight="292" d:DesignWidth="240"
-             MinHeight=" 292" MinWidth="240">
+             d:DesignHeight="300" d:DesignWidth="248"
+             MinHeight=" 300" MinWidth="248">
 
     <Border CornerRadius="8" 
             BorderBrush="{StaticResource Mex/ResColor/border_primary}"
             BorderThickness="1"
-            Background="{StaticResource Mex/ResColor/surface_primary}">
+            Background="{StaticResource Mex/ResColor/surface_primary}" Margin="4">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" Opacity="0.25" BlurRadius="8"/>
+        </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

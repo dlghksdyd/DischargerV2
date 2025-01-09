@@ -6,9 +6,14 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="1920">
-
+    
+    <UserControl.DataContext>
+        <vm:ViewModelTopmenu/>
+    </UserControl.DataContext>
+    
     <Border Background="{StaticResource Mex/ResColor/surface_primary}"
             Padding="40,20,40,20">
         <Grid>
@@ -23,7 +28,7 @@
                    Width="197" Height="40" 
                    Source="{StaticResource Mex/ResImage/mintech_logo}"/>
             <Mex:MexTextBlock x:Name="xDateTimeTextBlock" Grid.Column="2" 
-                              Text="2024-11-01 15:32:34"
+                              Text="{Binding Model.DateTime}"
                               Padding="8"
                               Foreground="{StaticResource Mex/ResColor/text_body}"
                               FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
@@ -41,24 +46,27 @@
                            HorizontalAlignment="Right" VerticalAlignment="Center">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding OpenPopupSettingCommand}"
+                        <b:InvokeCommandAction Command="{Binding ClickSettingButtonCommand}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Mex:MexButton>
-            <Popup x:Name="xPopupSetting"
+            <!--ViewPopup_Setting-->
+            <Popup x:Name="xSettingPopup"
                    Width="Auto" Height="Auto"
-                   IsOpen="{Binding IsPopupOpen}"
-                   StaysOpen="{Binding IsPopupStaysOpen}"
+                   IsOpen="{Binding Model.IsPopupOpen}"
+                   StaysOpen="False"
                    PlacementTarget="{Binding ElementName=xSettingButton}"
                    Placement="Bottom"
-                   HorizontalOffset="-110" VerticalOffset="4"
+                   HorizontalOffset="-115" VerticalOffset="4"
                    AllowsTransparency="True">
-                <view:ViewPopup_Setting/>
+                <view:ViewPopup_Setting>
+                    
+                </view:ViewPopup_Setting>
                 <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="MouseEnter">
-                        <b:InvokeCommandAction Command="{Binding SetPopupStaysOpenCommand}"
-                                               PassEventArgsToCommand="False"/>
+                    <b:EventTrigger EventName="MouseLeftButtonUp">
+                        <b:InvokeCommandAction Command="{Binding SelectSettingPopupCommand}"
+                            PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Popup>

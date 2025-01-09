@@ -43,12 +43,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             if (user != null)
             {
-                /// TODO: 화면 전환
+                Model.Visibility = Visibility.Collapsed;
             }
             else
             {
                 MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
-                    "아이디와 비밀번호를정확히 입력해 주세요.");
+                    "아이디와 비밀번호를 정확히 입력해 주세요.");
             }
         }
     }
