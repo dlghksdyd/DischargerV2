@@ -156,8 +156,18 @@
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
     <Compile Include="MVVM\Models\ModelDischargerData.cs" />
+    <Compile Include="MVVM\Models\ModelTopmenu.cs" />
+    <Compile Include="MVVM\Models\ModelLogin.cs" />
     <Compile Include="MVVM\Models\ModelTempModuleData.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelTopmenu.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_Setting.cs" />
+    <Compile Include="MVVM\Views\ViewTopmenu.xaml.cs">
+      <DependentUpon>ViewTopmenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_Setting.xaml.cs">
+      <DependentUpon>ViewPopup_Setting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Repository\RepoDischarger.cs" />
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
@@ -278,6 +288,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MVVM\Views\ViewTopmenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_Setting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\UcModelRegister.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

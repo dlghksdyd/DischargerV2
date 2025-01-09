@@ -19,16 +19,18 @@
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <uc:UserControlTopbar Grid.Row="0"/>
-        <!--<view:ViewLogin Grid.Row="1"/>-->
+        <!--Main 화면-->
         <Grid x:Name="xMainGrid" Grid.Row="1"
               Background="{StaticResource Mex/ResColor/surface_page}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <uc:UcTopmenu Grid.Row="0"
-                          BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                          BorderThickness="0,0,0,1"/>
+            <Border Grid.Row="0"
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                    BorderThickness="0,0,0,1">
+                <view:ViewTopmenu/>
+            </Border>
             <Grid Grid.Row="1" 
                   HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -40,10 +42,15 @@
                 </Grid.RowDefinitions>
                 <uc:UcMonitor_ChannelState Grid.Row="0"/>
                 <uc:UcMonitor_Table Grid.Row="2"/>
-                <!--<uc:UcMonitor Grid.Row="4"/>-->
-                <uc:UcSetMode Grid.Row="4"/>
+                <Grid Grid.Row="4">
+                    <uc:UcSetMode/>
+                    <!--<uc:UcMonitor/>-->
+                </Grid>
             </Grid>
         </Grid>
+        <!--Login-->
+        <view:ViewLogin Grid.Row="1"/>
+        <!--Popup 활성화 관련-->
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                    Fill="#22000000" 
                    Visibility="Hidden"></Rectangle>

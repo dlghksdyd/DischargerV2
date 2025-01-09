@@ -6,16 +6,16 @@
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              mc:Ignorable="d" 
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             d:DataContext="{d:DesignInstance vm:ViewModelLogin}"
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1080" d:DesignWidth="1920"
+             Visibility="{Binding Visibility}">
     
     <Grid Background="{StaticResource Mex/ResColor/surface_page}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="0" Source="{StaticResource Mex/ResImage/bg_login}"/>
+        <Image Grid.Column="0" 
+               Source="{StaticResource Mex/ResImage/bg_login}"/>
         <StackPanel Grid.Column="1"
                     Width="555"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -36,7 +36,11 @@
                                 Text="{Binding UserId, Mode=TwoWay}"
                                 Foreground="{StaticResource Mex/ResColor/text_body}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
+                    <Mex:MexTextBox.InputBindings>
+                        <KeyBinding Command="{Binding LoginCommand}" Key="Return"/>
+                    </Mex:MexTextBox.InputBindings>
+                </Mex:MexTextBox>
             </StackPanel>
             <Grid Height="40"/>
             <StackPanel>
@@ -56,7 +60,11 @@
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ImageSizeHidePassword="24"
                                     IsHidePassword="True" 
-                                    ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}"/>
+                                    ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}">
+                    <Mex:MexPasswordBox.InputBindings>
+                        <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
+                    </Mex:MexPasswordBox.InputBindings>
+                </Mex:MexPasswordBox>
             </StackPanel>
             <Grid Height="40"/>
             <Mex:MexButton x:Name="xLoginButton" Grid.Row="3" TabIndex="2"
@@ -66,12 +74,10 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            IsShadow="True">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding LoginCommand, Mode=TwoWay}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
+                <Mex:MexButton.InputBindings>
+                    <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
+                    <MouseBinding Command="{Binding LoginCommand}" MouseAction="LeftClick"/>
+                </Mex:MexButton.InputBindings>
             </Mex:MexButton>
             <Grid Height="120"/>
             <Mex:MexLabel Text="v2.0.0"

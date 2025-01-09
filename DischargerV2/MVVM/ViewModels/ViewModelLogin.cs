@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using DischargerV2.MVVM.Models;
+using Prism.Commands;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System;
@@ -12,52 +13,76 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelLogin : BindableBase
     {
-        public DelegateCommand LoginCommand { get; set; }
+        private ModelLogin Model = null;
 
-        private string _userId;
+        public ViewModelLogin()
+        {
+            Model = new ModelLogin();
+        }
+
+        public Visibility Visibility
+        {
+            get
+            {
+                return Model.visibility;
+            }
+            set
+            {
+                SetProperty(ref Model.visibility, value);
+            }
+        }
+
         public string UserId
         {
             get
             {
-                return _userId;
+                return Model.userId;
             }
             set
             {
-                SetProperty(ref _userId, value);
+                SetProperty(ref Model.userId, value);
             }
         }
 
-        private string _password;
         public string Password
         {
             get
             {
-                return _password;
+                return Model.password;
             }
             set
             {
-                SetProperty(ref _password, value);
+                SetProperty(ref Model.password, value);
             }
         }
 
-        public ViewModelLogin()
-        {
-            LoginCommand = new DelegateCommand(Login);
-        }
+        public DelegateCommand LoginCommand => new DelegateCommand(Login);
 
         private void Login()
         {
-            List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
-
-            TableUserInfo user = userInfos.Find(x => x.UserId == _userId && x.Password == _password);
-
-            if (user != null)
+            if (UserId == null || UserId.Length == 0)
             {
-                MessageBox.Show("로그인 성공");
+                MessageBox.Show("아이디를 입력해 주세요.");
+            }
+            else if (Password == null || Password.Length == 0)
+            {
+                MessageBox.Show("비밀번호를 입력해 주세요.");
             }
             else
             {
-                MessageBox.Show("로그인 실패");
+                List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
+
+                TableUserInfo user = userInfos.Find(x => x.UserId == UserId && x.Password == Password);
+
+                if (user != null)
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
+                        "아이디와 비밀번호를정확히 입력해 주세요.");
+                }
             }
         }
     }
