@@ -10,6 +10,6 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelTopmenu : BindableBase
     {
-        
+        public bool isPopupOpen;
     }
 }

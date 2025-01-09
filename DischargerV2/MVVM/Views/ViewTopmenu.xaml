@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DischargerV2"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="1920">
 
@@ -39,10 +39,19 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Mex:MexButton.InputBindings>
-                    <MouseBinding Command="" MouseAction="LeftClick"/>
+                    <MouseBinding Command="{Binding OpenPopupSettingCommand}" MouseAction="LeftClick"/>
                 </Mex:MexButton.InputBindings>
-                <Popup x:Name="xPopupSetting"/>
             </Mex:MexButton>
+            <Popup x:Name="xPopupSetting"
+                   Width="Auto" Height="Auto"
+                   IsOpen="{Binding IsPopupOpen}"
+                   StaysOpen="False"
+                   PlacementTarget="{Binding ElementName=xSettingButton}"
+                   Placement="Bottom"
+                   HorizontalOffset="-110" VerticalOffset="4"
+                   AllowsTransparency="True">
+                <view:ViewPopup_Setting/>
+            </Popup>
         </Grid>
     </Border>
 </UserControl>

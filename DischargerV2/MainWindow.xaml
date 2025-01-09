@@ -48,8 +48,8 @@
                 </Grid>
             </Grid>
         </Grid>
-        <!--Login-->
-        <view:ViewLogin Grid.Row="1"/>
+        <!--Login--><!--
+        <view:ViewLogin Grid.Row="1"/>-->
         <!--Popup 활성화 관련-->
         <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                    Fill="#22000000" 
