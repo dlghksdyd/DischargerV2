@@ -165,7 +165,6 @@
     </Compile>
     <Compile Include="MVVM\Models\ModelTopmenu.cs" />
     <Compile Include="MVVM\Models\ModelLogin.cs" />
-    <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTopmenu.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Setting.cs" />
     <Compile Include="MVVM\Views\ViewTopmenu.xaml.cs">
