@@ -8,17 +8,50 @@
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         x:Class="DischargerV2.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1030" Width="1920" MaxHeight="1080" MaxWidth="1920" WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
+        Title="MainWindow" 
+        Height="1030" Width="1920" 
+        MaxHeight="1080" MaxWidth="1920" 
+        WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
     
     <Grid x:Name="xTopGrid" Cursor="">
         <Grid.RowDefinitions>
             <RowDefinition Height="48"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <uc:UserControlTopbar Grid.Row="0"></uc:UserControlTopbar>
-        <view:ViewLogin Grid.Row="1"></view:ViewLogin>
-        <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" 
-                   Grid.RowSpan="100" Grid.ColumnSpan="100" 
+        <uc:UserControlTopbar Grid.Row="0"/>
+        <!--Main 화면-->
+        <Grid x:Name="xMainGrid" Grid.Row="1"
+              Background="{StaticResource Mex/ResColor/surface_page}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0"
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                    BorderThickness="0,0,0,1">
+                <view:ViewTopmenu/>
+            </Border>
+            <Grid Grid.Row="1" 
+                  HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <uc:UcMonitor_ChannelState Grid.Row="0"/>
+                <uc:UcMonitor_Table Grid.Row="2"/>
+                <Grid Grid.Row="4">
+                    <uc:UcSetMode/>
+                    <!--<uc:UcMonitor/>-->
+                </Grid>
+            </Grid>
+        </Grid>
+        <!--Login-->
+        <view:ViewLogin Grid.Row="1"/>
+        <!--Popup 활성화 관련-->
+        <Rectangle x:Name="xTopRectangle" Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                    Fill="#22000000" 
                    Visibility="Hidden"></Rectangle>
     </Grid>

@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -45,6 +46,37 @@ namespace Utility.Common
             {
                 bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class RectangleInGraphWidthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Canvas graph = value as Canvas;
+
+            return graph.ActualWidth / (int)(graph.ActualWidth / (graph.ActualHeight / 5));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class RectangleInGraphHeightConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Canvas graph = value as Canvas;
+
+            return graph.ActualHeight / 5;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

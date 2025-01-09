@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="DischargerV2.UserControls.UcMonitor_SafetyCondition"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DischargerV2"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             mc:Ignorable="d" 
+             d:DesignHeight="280" d:DesignWidth="530">
+
+    <Border CornerRadius="8"
+            BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+            BorderThickness="1"
+            Background="{StaticResource Mex/ResColor/surface_page}">
+        <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="12"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!--Monitor Value-->
+            <Mex:MexTextBlock Grid.Column="0" Grid.Row="0" 
+                              Text="Monitor Values"
+                              Foreground="{StaticResource Mex/ResColor/text_infomation}"
+                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+            <!--Monitor Value : Voltage-->
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBlock Text="Voltage (V)" Grid.Column="0"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                <Mex:MexTextBox x:Name="xVoltTextBox" Grid.Column="2"
+                                Padding="12,0,12,0" Height="40"
+                                Text="256.4"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                IsReadOnly="True"/>
+            </Grid>
+            <!--Monitor Value : Current-->
+            <Grid Grid.Column="0" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBlock Text="Current (A)" Grid.Column="0"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                <Mex:MexTextBox x:Name="xCurrentTextBox" Grid.Column="2"
+                                Padding="12,0,12,0" Height="40"
+                                Text="80.2"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                IsReadOnly="True"/>
+            </Grid>
+            <!--Monitor Value : Temp-->
+            <Grid Grid.Column="0" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBlock Text="Temp. (℃)" Grid.Column="0"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                <Mex:MexTextBox x:Name="xTempTextBox" Grid.Column="2"
+                                Padding="12,0,12,0" Height="40"
+                                Text="26.4"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                IsReadOnly="True"/>
+            </Grid>
+            <!--Monitor Value : SOC-->
+            <Grid Grid.Column="0" Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBlock Text="SOC (%)" Grid.Column="0"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                <Mex:MexTextBox x:Name="xSocTextBox" Grid.Column="2"
+                                Padding="12,0,12,0" Height="40"
+                                Text="80.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                IsReadOnly="True"/>
+            </Grid>
+            <!--Safety Condition-->
+            <Mex:MexTextBlock Grid.Column="2" Grid.Row="0" 
+                              Text="Safety Condition"
+                              Foreground="{StaticResource Mex/ResColor/text_infomation}"
+                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+            <!--Safety Condition : Voltage-->
+            <Grid Grid.Column="2" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBox x:Name="xVoltMinTextBox" Grid.Column="0"
+                                Padding="12,8,12,8" Height="40" 
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <Mex:MexTextBlock Text="~" Grid.Column="1"
+                                  Margin="8"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Mex:MexTextBox x:Name="xVoltMaxTextBox" Grid.Column="2"
+                                Padding="12,8,12,8" Height="40" 
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+            <!--Safety Condition : Voltage-->
+            <Grid Grid.Column="2" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBox x:Name="xCurrentMinTextBox" Grid.Column="0"
+                                Padding="12,8,12,8" Height="40" 
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <Mex:MexTextBlock Text="~" Grid.Column="1"
+                                  Margin="8"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Mex:MexTextBox x:Name="xCurrentMaxTextBox" Grid.Column="2"
+                                Padding="12,8,12,8" Height="40"
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+            <!--Safety Condition : Temp-->
+            <Grid Grid.Column="2" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Mex:MexTextBox x:Name="xTempMinTextBox" Grid.Column="0"
+                                Padding="12,8,12,8" Height="40" 
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                <Mex:MexTextBlock Text="~" Grid.Column="1"
+                                  Margin="8"
+                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Mex:MexTextBox x:Name="xTempMaxTextBox" Grid.Column="2"
+                                Padding="12,8,12,8" Height="40"
+                                Text="0.0"
+                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

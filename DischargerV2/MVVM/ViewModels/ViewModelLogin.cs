@@ -43,11 +43,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             if (user != null)
             {
-                MessageBox.Show("로그인 성공");
+                /// TODO: 화면 전환
             }
             else
             {
-                MessageBox.Show("로그인 실패");
+                MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
+                    "아이디와 비밀번호를정확히 입력해 주세요.");
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using Sqlite.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,15 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MExpress.Mex;
+using DischargerV2.MVVM.ViewModels;
 
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewLogin.xaml에 대한 상호 작용 논리
+    /// ViewTopmenu.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewLogin : UserControl
+    public partial class ViewTopmenu : UserControl
     {
-        public ViewLogin()
+        public ViewTopmenu()
         {
             InitializeComponent();
         }
