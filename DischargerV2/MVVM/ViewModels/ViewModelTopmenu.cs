@@ -19,5 +19,44 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Model = new ModelTopmenu();
         }
+
+        public bool IsPopupOpen
+        {
+            get
+            {
+                return Model.isPopupOpen;
+            }
+            set
+            {
+                SetProperty(ref Model.isPopupOpen, value);
+            }
+        }
+
+        public bool IsPopupStaysOpen
+        {
+            get
+            {
+                return Model.isPopupStaysOpen;
+            }
+            set
+            {
+                SetProperty(ref Model.isPopupStaysOpen, value);
+            }
+        }
+
+        public DelegateCommand OpenPopupSettingCommand => new DelegateCommand(OpenPopupSetting);
+
+        private void OpenPopupSetting()
+        {
+            IsPopupOpen = !IsPopupOpen;
+            IsPopupStaysOpen = true;
+        }
+
+        public DelegateCommand SetPopupStaysOpenCommand => new DelegateCommand(SetPopupStaysOpen);
+
+        private void SetPopupStaysOpen()
+        {
+            IsPopupStaysOpen = false;
+        }
     }
 }

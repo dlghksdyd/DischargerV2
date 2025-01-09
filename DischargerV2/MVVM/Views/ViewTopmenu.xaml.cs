@@ -22,9 +22,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewTopmenu : UserControl
     {
+        private ViewModelTopmenu ViewModel = new ViewModelTopmenu();
+
         public ViewTopmenu()
         {
             InitializeComponent();
+
+            this.DataContext = ViewModel;
         }
     }
 }
