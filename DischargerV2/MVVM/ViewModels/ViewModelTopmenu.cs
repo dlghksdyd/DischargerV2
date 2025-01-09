@@ -32,11 +32,31 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        public bool IsPopupStaysOpen
+        {
+            get
+            {
+                return Model.isPopupStaysOpen;
+            }
+            set
+            {
+                SetProperty(ref Model.isPopupStaysOpen, value);
+            }
+        }
+
         public DelegateCommand OpenPopupSettingCommand => new DelegateCommand(OpenPopupSetting);
 
         private void OpenPopupSetting()
         {
             IsPopupOpen = !IsPopupOpen;
+            IsPopupStaysOpen = true;
+        }
+
+        public DelegateCommand SetPopupStaysOpenCommand => new DelegateCommand(SetPopupStaysOpen);
+
+        private void SetPopupStaysOpen()
+        {
+            IsPopupStaysOpen = false;
         }
     }
 }

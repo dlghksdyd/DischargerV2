@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              mc:Ignorable="d" 
@@ -38,19 +39,28 @@
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsButtonTertiary}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Mex:MexButton.InputBindings>
-                    <MouseBinding Command="{Binding OpenPopupSettingCommand}" MouseAction="LeftClick"/>
-                </Mex:MexButton.InputBindings>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding OpenPopupSettingCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
             </Mex:MexButton>
             <Popup x:Name="xPopupSetting"
                    Width="Auto" Height="Auto"
                    IsOpen="{Binding IsPopupOpen}"
-                   StaysOpen="False"
+                   StaysOpen="{Binding IsPopupStaysOpen}"
                    PlacementTarget="{Binding ElementName=xSettingButton}"
                    Placement="Bottom"
                    HorizontalOffset="-110" VerticalOffset="4"
                    AllowsTransparency="True">
                 <view:ViewPopup_Setting/>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseEnter">
+                        <b:InvokeCommandAction Command="{Binding SetPopupStaysOpenCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
             </Popup>
         </Grid>
     </Border>
