@@ -33,7 +33,7 @@
                                 Padding="12,8,12,8" 
                                 CornerRadius="8"
                                 WaterMark="Enter ID"
-                                Text="{Binding UserId, Mode=TwoWay}"
+                                Text="{Binding Model.UserId, Mode=TwoWay}"
                                 Foreground="{StaticResource Mex/ResColor/text_body}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
@@ -54,7 +54,7 @@
                                     Padding="12,8,12,8" 
                                     CornerRadius="8"
                                     WaterMark="Enter Password"
-                                    Text="{Binding Password, Mode=TwoWay}"
+                                    Text="{Binding Model.Password, Mode=TwoWay}"
                                     Foreground="{StaticResource Mex/ResColor/text_body}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
