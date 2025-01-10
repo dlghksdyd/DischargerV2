@@ -60,15 +60,13 @@
                    Placement="Bottom"
                    HorizontalOffset="-115" VerticalOffset="4"
                    AllowsTransparency="True">
-                <view:ViewPopup_Setting>
-                    
-                </view:ViewPopup_Setting>
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseLeftButtonUp">
                         <b:InvokeCommandAction Command="{Binding SelectSettingPopupCommand}"
-                            PassEventArgsToCommand="False"/>
+                                               PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
+                <view:ViewPopup_Setting/>
             </Popup>
         </Grid>
     </Border>

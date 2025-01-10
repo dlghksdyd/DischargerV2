@@ -71,7 +71,7 @@
                            IsShadow="True">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding LoginCommand}"
+                        <b:InvokeCommandAction Command="{Binding xLoginButton_ClickCommand}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>

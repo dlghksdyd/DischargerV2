@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Sqlite.Common;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +13,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MExpress.Mex;
-using DischargerV2.MVVM.ViewModels;
 
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewPopup_Setting.xaml에 대한 상호 작용 논리
+    /// ViewMain.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewPopup_Setting : UserControl
+    public partial class ViewMain : Window
     {
-        public ViewPopup_Setting()
+        public static ViewMain Instance;
+
+        public ViewMain()
         {
             InitializeComponent();
+
+            SqliteUtility.InitializeDatabases();
+
+            Instance = this;
         }
     }
 }

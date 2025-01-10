@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +18,11 @@ using DischargerV2.MVVM.ViewModels;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewPopup_Setting.xaml에 대한 상호 작용 논리
+    /// ViewPopup_UserSetting.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewPopup_Setting : UserControl
+    public partial class ViewPopup_UserSetting : UserControl
     {
-        public ViewPopup_Setting()
+        public ViewPopup_UserSetting()
         {
             InitializeComponent();
         }

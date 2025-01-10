@@ -2,17 +2,20 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:DischargerV2"
-             StartupUri="MainWindow.xaml"
-             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels">
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             StartupUri="/MVVM/Views/ViewMain.xaml">
+    
     <Application.Resources>
         <ResourceDictionary>
-            <vm:ViewModelLogin x:Key="ViewModelLogin"></vm:ViewModelLogin>
-            <vm:ViewModelDischarger x:Key="ViewModelDischarger"></vm:ViewModelDischarger>
-            <vm:StartDischargerCommandParamConverter x:Key="StartDischargerCommandParamConverter"></vm:StartDischargerCommandParamConverter>
-            
+            <vm:ViewModelMain x:Key="ViewModelMain"/>
+            <vm:ViewModelLogin x:Key="ViewModelLogin"/>
+            <vm:ViewModelDischarger x:Key="ViewModelDischarger"/>
+            <vm:StartDischargerCommandParamConverter x:Key="StartDischargerCommandParamConverter"/>
+
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
+    
 </Application>

@@ -14,7 +14,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelLogin : BindableBase
     {
         #region Command
-        public DelegateCommand LoginCommand { get; set; }
+        public DelegateCommand xLoginButton_ClickCommand { get; set; }
         #endregion
 
         #region Model
@@ -23,19 +23,26 @@ namespace DischargerV2.MVVM.ViewModels
 
         private static ViewModelLogin _instance = null;
 
-        public static ViewModelLogin Instance()
+        public static ViewModelLogin Instance
         {
-            return _instance;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelLogin();
+                }
+                return _instance;
+            }
         }
 
         public ViewModelLogin()
         {
             _instance = this;
 
-            LoginCommand = new DelegateCommand(Login);
+            xLoginButton_ClickCommand = new DelegateCommand(xLoginButton_Click);
         }
 
-        private void Login()
+        private void xLoginButton_Click()
         {
             List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
 
