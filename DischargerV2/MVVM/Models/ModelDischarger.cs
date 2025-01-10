@@ -25,8 +25,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _dischargerNameList = new List<string>();
-        public List<string> DischargerNameList
+        private ObservableCollection<string> _dischargerNameList = new ObservableCollection<string>();
+        public ObservableCollection<string> DischargerNameList
         {
             get { return _dischargerNameList; }
             set
