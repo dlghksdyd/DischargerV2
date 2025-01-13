@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewTopbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Util="clr-namespace:Utility.Common"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:ViewModelTopbar}"
+             d:DesignHeight="48" d:DesignWidth="1920">
+
+    <Grid Background="{StaticResource Mex/ResColor/surface_page}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="12"></ColumnDefinition>
+            <ColumnDefinition Width="44"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="48"></ColumnDefinition>
+            <ColumnDefinition Width="48"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="1" 
+               Margin="6"
+               Source="{StaticResource Mex/ResImage/icon_discharger}"/>
+        <Mex:MexTextBlock Grid.Column="2" 
+                          Padding="8,0,8,0"
+                          Text="Smart Discharger v2.0.0" 
+                          Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                          FontSet="{StaticResource Mex/ResFontSet/body_md_medium}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonDown">
+                    <b:InvokeCommandAction Command="{Binding xTopbar_MouseLeftButtonDownCommand}"
+                                           PassEventArgsToCommand="False"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Mex:MexTextBlock>
+        <Grid Grid.Column="3" Cursor="Hand"
+              Background="{Binding Model.Background_Minimize}">
+            <Image Width="24" Height="24"
+                   Source="{Binding Source={StaticResource Mex/ResImage/remove},
+                                    Converter={StaticResource ImageColorConverter}, 
+                                    ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseLeftButtonUp">
+                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseLeftButtonUpCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseEnter">
+                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseEnterCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseLeave">
+                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseLeaveCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
+        </Grid>
+        <Grid Grid.Column="4" Cursor="Hand"
+              Background="{Binding Model.Background_Close}">
+            <Image Grid.Column="4" 
+                   Width="24" Height="24" 
+                   Source="{Binding Source={StaticResource Mex/ResImage/close},
+                                    Converter={StaticResource ImageColorConverter}, 
+                                    ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseLeftButtonUp">
+                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseLeftButtonUpCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseEnter">
+                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseEnterCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseLeave">
+                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseLeaveCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
+        </Grid>
+    </Grid>
+</UserControl>

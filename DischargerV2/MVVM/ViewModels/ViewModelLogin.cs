@@ -14,7 +14,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelLogin : BindableBase
     {
         #region Command
-        public DelegateCommand LoginCommand { get; set; }
+        public DelegateCommand xLoginButton_ClickCommand { get; set; }
         #endregion
 
         #region Model
@@ -23,19 +23,26 @@ namespace DischargerV2.MVVM.ViewModels
 
         private static ViewModelLogin _instance = null;
 
-        public static ViewModelLogin Instance()
+        public static ViewModelLogin Instance
         {
-            return _instance;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelLogin();
+                }
+                return _instance;
+            }
         }
 
         public ViewModelLogin()
         {
             _instance = this;
 
-            LoginCommand = new DelegateCommand(Login);
+            xLoginButton_ClickCommand = new DelegateCommand(xLoginButton_Click);
         }
 
-        private void Login()
+        private void xLoginButton_Click()
         {
             List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
 
@@ -43,12 +50,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             if (user != null)
             {
-                /// TODO: 화면 전환
+                Model.Visibility = Visibility.Collapsed;
             }
             else
             {
                 MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
-                    "아이디와 비밀번호를정확히 입력해 주세요.");
+                    "아이디와 비밀번호를 정확히 입력해 주세요.");
             }
         }
     }

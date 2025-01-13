@@ -8,55 +8,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelTopmenu : BindableBase
     {
-        private ModelTopmenu Model = null;
+        #region Command
+        public DelegateCommand ClickSettingButtonCommand { get; set; }
+        public DelegateCommand SelectSettingPopupCommand { get; set; }
+        #endregion
+
+        #region Model
+        public ModelTopmenu Model { get; set; } = new ModelTopmenu();
+        #endregion
 
         public ViewModelTopmenu()
         {
             Model = new ModelTopmenu();
+
+            ClickSettingButtonCommand = new DelegateCommand(ClickSettingButton);
+            SelectSettingPopupCommand = new DelegateCommand(SelectSettingPopup);
+
+            DispatcherTimer DateTimeTimer = new DispatcherTimer();
+            DateTimeTimer.Interval = TimeSpan.FromMilliseconds(100);
+            DateTimeTimer.Tick += new EventHandler(DateTimeTimer_Tick);
+            DateTimeTimer.Start();
         }
 
-        public bool IsPopupOpen
+        private void DateTimeTimer_Tick(object sender, EventArgs e)
         {
-            get
+            try
             {
-                return Model.isPopupOpen;
+                Model.DateTime = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
             }
-            set
-            {
-                SetProperty(ref Model.isPopupOpen, value);
-            }
+            catch { }
         }
 
-        public bool IsPopupStaysOpen
+        private void ClickSettingButton()
         {
-            get
-            {
-                return Model.isPopupStaysOpen;
-            }
-            set
-            {
-                SetProperty(ref Model.isPopupStaysOpen, value);
-            }
+            Model.IsPopupOpen = true;
         }
 
-        public DelegateCommand OpenPopupSettingCommand => new DelegateCommand(OpenPopupSetting);
-
-        private void OpenPopupSetting()
+        private void SelectSettingPopup()
         {
-            IsPopupOpen = !IsPopupOpen;
-            IsPopupStaysOpen = true;
-        }
-
-        public DelegateCommand SetPopupStaysOpenCommand => new DelegateCommand(SetPopupStaysOpen);
-
-        private void SetPopupStaysOpen()
-        {
-            IsPopupStaysOpen = false;
+            Model.IsPopupOpen = false;
         }
     }
 }

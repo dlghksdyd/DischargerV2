@@ -3,11 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
-             mc:Ignorable="d" 
+             xmlns:Util="clr-namespace:Utility.Common"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
              DataContext="{StaticResource ViewModelLogin}"
-             d:DesignHeight="1080" d:DesignWidth="1920">
+             d:DesignHeight="1080" d:DesignWidth="1920"
+             Visibility="{Binding Model.Visibility}">
     
     <Grid Background="{StaticResource Mex/ResColor/surface_page}">
         <Grid.ColumnDefinitions>
@@ -37,9 +41,6 @@
                                 Foreground="{StaticResource Mex/ResColor/text_body}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
-                    <Mex:MexTextBox.InputBindings>
-                        <KeyBinding Command="{Binding LoginCommand}" Key="Return"/>
-                    </Mex:MexTextBox.InputBindings>
                 </Mex:MexTextBox>
             </StackPanel>
             <Grid Height="40"/>
@@ -61,9 +62,6 @@
                                     ImageSizeHidePassword="24"
                                     IsHidePassword="True" 
                                     ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}">
-                    <Mex:MexPasswordBox.InputBindings>
-                        <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
-                    </Mex:MexPasswordBox.InputBindings>
                 </Mex:MexPasswordBox>
             </StackPanel>
             <Grid Height="40"/>
@@ -74,10 +72,12 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            IsShadow="True">
-                <Mex:MexButton.InputBindings>
-                    <KeyBinding Command="{Binding LoginCommand}" Key="Enter"/>
-                    <MouseBinding Command="{Binding LoginCommand}" MouseAction="LeftClick"/>
-                </Mex:MexButton.InputBindings>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding xLoginButton_ClickCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
             </Mex:MexButton>
             <Grid Height="120"/>
             <Mex:MexLabel Text="v2.0.0"

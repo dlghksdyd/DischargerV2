@@ -4,11 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DischargerV2.MVVM.Models
 {
     public class ModelLoginUserInfo : BindableBase
     {
+        private Visibility _visibility;
+        public Visibility Visibility
+        {
+            get
+            {
+                return _visibility;
+            }
+            set
+            {
+                SetProperty(ref _visibility, value);
+            }
+        }
+
         private string _userId;
         public string UserId
         {

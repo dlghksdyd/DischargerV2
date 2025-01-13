@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sqlite.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,21 +13,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MExpress.Mex;
-using DischargerV2.MVVM.ViewModels;
 
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewTopmenu.xaml에 대한 상호 작용 논리
+    /// ViewMain.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewTopmenu : UserControl
+    public partial class ViewMain : Window
     {
-        public ViewTopmenu()
+        public static ViewMain Instance;
+
+        public ViewMain()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelTopmenu();
+            SqliteUtility.InitializeDatabases();
+
+            Instance = this;
         }
     }
 }

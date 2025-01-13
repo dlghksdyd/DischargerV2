@@ -24,10 +24,5 @@ namespace DischargerV2.UserControls
         {
             InitializeComponent();
         }
-
-        private void MexButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

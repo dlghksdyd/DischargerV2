@@ -10,7 +10,30 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelTopmenu : BindableBase
     {
-        public bool isPopupOpen;
-        public bool isPopupStaysOpen = true;
+        private string _datetime = "2025-01-09 15:03:24";
+        public string DateTime
+        {
+            get
+            {
+                return _datetime;
+            }
+            set
+            {
+                SetProperty(ref _datetime, value);
+            }
+        }
+
+        private bool _isPopupOpen;
+        public bool IsPopupOpen
+        {
+            get
+            {
+                return _isPopupOpen;
+            }
+            set
+            {
+                SetProperty(ref _isPopupOpen, value);
+            }
+        }
     }
 }

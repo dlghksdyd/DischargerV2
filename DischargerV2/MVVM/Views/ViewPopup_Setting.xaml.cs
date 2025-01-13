@@ -23,51 +23,11 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewPopup_Setting : UserControl
     {
-        private ViewModelPopup_Setting ViewModel = new ViewModelPopup_Setting();
-
         public ViewPopup_Setting()
         {
             InitializeComponent();
 
-            this.DataContext = ViewModel;
-        }
-
-        private void xItemLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MexLabel mexLabel = sender as MexLabel;
-
-            if (mexLabel == xUserSettingLabel)
-            {
-
-            }
-            else if (mexLabel == xDeviceRegisterLabel)
-            {
-
-            }
-            else if (mexLabel == xDbConfigurationLabel)
-            {
-
-            }
-            else if (mexLabel == xLogoutLabel)
-            {
-
-            }
-            else
-                Debug.WriteLine(string.Format("{0} MouseDown", mexLabel.Name));
-        }
-
-        private void xItemLabel_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MexLabel mexLabel = sender as MexLabel;
-
-            mexLabel.Background = ResColor.surface_action_hover2;
-        }
-
-        private void xItemLabel_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MexLabel mexLabel = sender as MexLabel;
-
-            mexLabel.Background = ResColor.surface_primary;
+            this.DataContext = new ViewModelPopup_Setting();
         }
     }
 }

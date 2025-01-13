@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -54,7 +55,6 @@ namespace Utility.Common
         }
     }
 
-
     public class RectangleInGraphWidthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -77,6 +77,33 @@ namespace Utility.Common
             Canvas graph = value as Canvas;
 
             return graph.ActualHeight / 5;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public Visibility TrueValue { get; set; } = Visibility.Visible;
+        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool boolValue)
+            {
+                if (boolValue)
+                {
+                    return TrueValue;
+                }
+                else
+                {
+                    return FalseValue;
+                }
+            }
+            return Binding.DoNothing;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
