@@ -2,18 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Util="clr-namespace:Utility.Common"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
-             mc:Ignorable="d" 
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Setting}"
              d:DesignHeight="300" d:DesignWidth="248"
              MinHeight=" 300" MinWidth="248">
-
-    <UserControl.DataContext>
-        <vm:ViewModelPopup_Setting/>
-    </UserControl.DataContext>
 
     <Border CornerRadius="8" 
             BorderBrush="{StaticResource Mex/ResColor/border_primary}"

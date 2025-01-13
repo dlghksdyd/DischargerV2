@@ -161,10 +161,12 @@
     <Compile Include="MVVM\Models\ModelTempModule.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Setting.cs" />
     <Compile Include="MVVM\Models\ModelMain.cs" />
+    <Compile Include="MVVM\Models\ModelTopbar.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTempModule.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
     <Compile Include="MVVM\Views\ViewDischargerInfoTable.xaml.cs">
       <DependentUpon>ViewDischargerInfoTable.xaml</DependentUpon>
     </Compile>
@@ -176,6 +178,9 @@
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_UserSetting.xaml.cs">
       <DependentUpon>ViewPopup_UserSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewTopbar.xaml.cs">
+      <DependentUpon>ViewTopbar.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewTopmenu.xaml.cs">
       <DependentUpon>ViewTopmenu.xaml</DependentUpon>
@@ -311,6 +316,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewPopup_UserSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewTopbar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

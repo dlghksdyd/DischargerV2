@@ -18,15 +18,15 @@ using DischargerV2.MVVM.ViewModels;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewTopmenu.xaml에 대한 상호 작용 논리
+    /// ViewTopbar.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewTopmenu : UserControl
+    public partial class ViewTopbar : UserControl
     {
-        public ViewTopmenu()
+        public ViewTopbar()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelTopmenu();
+            this.DataContext = new ViewModelTopbar();
         }
     }
 }

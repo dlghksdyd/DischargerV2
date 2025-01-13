@@ -13,6 +13,19 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelMain : BindableBase
     {
+        private WindowState _windowState = WindowState.Maximized;
+        public WindowState WindowState
+        {
+            get
+            {
+                return _windowState;
+            }
+            set
+            {
+                SetProperty(ref _windowState, value);
+            }
+        }
+
         private bool _isPopupOpen;
         public bool IsPopupOpen
         {

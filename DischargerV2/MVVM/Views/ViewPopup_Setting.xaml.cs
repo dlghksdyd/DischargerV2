@@ -26,6 +26,8 @@ namespace DischargerV2.MVVM.Views
         public ViewPopup_Setting()
         {
             InitializeComponent();
+
+            this.DataContext = new ViewModelPopup_Setting();
         }
     }
 }

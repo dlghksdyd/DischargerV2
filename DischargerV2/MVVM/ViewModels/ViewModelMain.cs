@@ -1,4 +1,5 @@
 ﻿using DischargerV2.MVVM.Models;
+using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -15,6 +16,9 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelMain : BindableBase
     {
+        #region Command
+        #endregion
+
         #region Model
         public ModelMain Model { get; set; } = new ModelMain();
         #endregion

@@ -3,21 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
         xmlns:Util="clr-namespace:Utility.Common"
-        xmlns:uc="clr-namespace:DischargerV2.UserControls"
+        xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:uc="clr-namespace:DischargerV2.UserControls"
         mc:Ignorable="d" 
+        DataContext="{StaticResource ViewModelMain}" 
         Title="MainWindow" 
         Height="1030" Width="1920" 
         MaxHeight="1080" MaxWidth="1920" 
-        WindowStyle="None" WindowState="Maximized" ResizeMode="NoResize">
-
-    <Window.DataContext>
-        <StaticResource ResourceKey="ViewModelMain"/>
-    </Window.DataContext>
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowState="{Binding Model.WindowState}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -30,21 +28,21 @@
             <RowDefinition Height="48"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <uc:UserControlTopbar Grid.Row="0"/>
+        <view:ViewTopbar Grid.Row="0"/>
         <!--Main 화면-->
         <Grid x:Name="xMainGrid" Grid.Row="1"
-          Background="{StaticResource Mex/ResColor/surface_page}">
+              Background="{StaticResource Mex/ResColor/surface_page}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border Grid.Row="0"
-                BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                BorderThickness="0,0,0,1">
+                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                    BorderThickness="0,0,0,1">
                 <view:ViewTopmenu/>
             </Border>
             <Grid Grid.Row="1" 
-              HorizontalAlignment="Center" VerticalAlignment="Center">
+                  HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
@@ -61,7 +59,7 @@
             </Grid>
         </Grid>
         <!--Login-->
-        <view:ViewLogin Grid.Row="1"/>
+        <!--<view:ViewLogin Grid.Row="1"/>-->
         <!--Popup 활성화-->
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 

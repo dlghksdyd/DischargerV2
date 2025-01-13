@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:Util="clr-namespace:Utility.Common"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
-             xmlns:local="clr-namespace:DischargerV2.UserControls"
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:DischargerV2.UserControls"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:ViewModelPopup_Setting}"
              d:DesignHeight="660" d:DesignWidth="872"
              MaxHeight="660" MaxWidth="872">
     
