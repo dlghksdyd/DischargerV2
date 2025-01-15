@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     DataContext = new ViewModelUserSetting_Info()
                     {
-                        IsAdmin = (tblUserInfo[index].UserId.ToUpper() == "ADMIN" && tblUserInfo[index].UserName.ToUpper() == "ADMIN") ? true : false ,
+                        IsAdmin = tblUserInfo[index].IsAdmin,
                         Id = tblUserInfo[index].UserId,
                         Name = tblUserInfo[index].UserName
                     },

@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void xCreateButton_Click()
         {
             List<TblUserInfo> tblUserInfo = DatabaseContext.SelectAllUserinfo();
-            
+
             if (Model.Id == null || Model.Id == "")
             {
                 MessageBox.Show("ID: 필수 정보입니다.");
@@ -83,7 +83,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
             else
             {
-                TblUserInfo userInfo = new TblUserInfo(Model.Id, Model.Password, Model.Name);
+                TblUserInfo userInfo = new TblUserInfo(Model.Id, Model.Password, Model.Name, Model.IsAdmin);
                 DatabaseContext.Insert(userInfo);
 
                 ViewModelMain viewModelMain = ViewModelMain.Instance;

@@ -121,7 +121,7 @@ namespace DischargerV2.Database
                 try
                 {
                     var cmd = new SQLiteCommand(con);
-                    cmd.CommandText = @"SELECT userid, password, username, create_dt 
+                    cmd.CommandText = @"SELECT userid, password, username, create_dt, isAdmin
                                         FROM TblUserInfo WHERE userid='" + id +
                                         "' AND password='" + passwd + "'";
 
@@ -134,6 +134,7 @@ namespace DischargerV2.Database
                             userInfo.Password = reader["password"].ToString();
                             userInfo.UserName = reader["username"].ToString();
                             userInfo.CreateDt = Convert.ToDateTime(reader["create_dt"]);
+                            userInfo.IsAdmin = Convert.ToBoolean(reader["isAdmin"]);
                             result = userInfo;
                         }
                     }
@@ -181,7 +182,7 @@ namespace DischargerV2.Database
                 try
                 {
                     var cmd = new SQLiteCommand(con);
-                    cmd.CommandText = @"SELECT userid, password, username, create_dt 
+                    cmd.CommandText = @"SELECT userid, password, username, create_dt, isAdmin 
                                         FROM TblUserInfo";
 
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -193,6 +194,7 @@ namespace DischargerV2.Database
                             userInfo.Password = reader["password"].ToString();
                             userInfo.UserName = reader["username"].ToString();
                             userInfo.CreateDt = Convert.ToDateTime(reader["create_dt"]);
+                            userInfo.IsAdmin = Convert.ToBoolean(reader["isAdmin"]);
                             result.Add(userInfo);
                         }
                     }

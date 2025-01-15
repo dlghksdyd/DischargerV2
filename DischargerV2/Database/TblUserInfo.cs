@@ -16,14 +16,17 @@ namespace DischargerV2.Database
         public string UserName { get; set; } 
         [Column("create_dt")]
         public DateTime CreateDt { get; set; }
+        [Column("isAdmin")]
+        public bool IsAdmin { get; set; }
 
         public TblUserInfo() { }
 
-        public TblUserInfo(string UserId, string Password, string UserName)
+        public TblUserInfo(string UserId, string Password, string UserName, bool IsAdmin)
         {
             this.UserId = UserId;
             this.Password = Password;
             this.UserName = UserName;
+            this.IsAdmin = IsAdmin;
         }
     }
 }
