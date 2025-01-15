@@ -64,8 +64,15 @@
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 
                 Visibility="{Binding Model.IsPopupOpen,
-                                    Converter={StaticResource BoolToVisibilityConverter}}">
+                                     Converter={StaticResource BoolToVisibilityConverter}}">
             <ContentControl Content="{Binding Model.PopupContent}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
+                Background="#22000000" 
+                Visibility="{Binding Model.IsPopupOpen2,
+                                     Converter={StaticResource BoolToVisibilityConverter}}">
+            <ContentControl Content="{Binding Model.PopupContent2}"
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
     </Grid>

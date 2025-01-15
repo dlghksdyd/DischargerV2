@@ -155,8 +155,16 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
+    <Compile Include="Database\DatabaseContext.cs" />
+    <Compile Include="Database\TblBatteryInfo.cs" />
+    <Compile Include="Database\TblDeviceInfo.cs" />
+    <Compile Include="Database\TblDischargerTypeInfo.cs" />
+    <Compile Include="Database\TblUserInfo.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelPopup_CreateNewUser.cs" />
+    <Compile Include="MVVM\Models\ModelUserSetting_Add.cs" />
+    <Compile Include="MVVM\Models\ModelUserSetting_Info.cs" />
     <Compile Include="MVVM\Models\ModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\Models\ModelTempModule.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Setting.cs" />
@@ -164,6 +172,9 @@
     <Compile Include="MVVM\Models\ModelTopbar.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_CreateNewUser.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Add.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Info.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTempModule.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
@@ -175,6 +186,15 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Setting.cs" />
     <Compile Include="MVVM\Views\ViewMain.xaml.cs">
       <DependentUpon>ViewMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_CreateNewUser.xaml.cs">
+      <DependentUpon>ViewPopup_CreateNewUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewUserSetting_Add.xaml.cs">
+      <DependentUpon>ViewUserSetting_Add.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewUserSetting_Info.xaml.cs">
+      <DependentUpon>ViewUserSetting_Info.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_UserSetting.xaml.cs">
       <DependentUpon>ViewPopup_UserSetting.xaml</DependentUpon>
@@ -312,6 +332,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\ViewMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_CreateNewUser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewUserSetting_Add.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewUserSetting_Info.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

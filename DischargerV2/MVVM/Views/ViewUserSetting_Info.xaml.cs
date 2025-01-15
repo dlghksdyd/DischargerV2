@@ -18,15 +18,15 @@ using DischargerV2.MVVM.ViewModels;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewPopup_UserSetting.xaml에 대한 상호 작용 논리
+    /// ViewUserSetting_Info.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewPopup_UserSetting : UserControl
+    public partial class ViewUserSetting_Info : UserControl
     {
-        public ViewPopup_UserSetting()
+        public ViewUserSetting_Info()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelPopup_UserSetting();
+            this.DataContext = new ViewModelUserSetting_Info();
         }
     }
 }
