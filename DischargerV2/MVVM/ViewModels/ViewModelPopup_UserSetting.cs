@@ -37,9 +37,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xCloseImage_MouseLeftButtonUp()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen = false;
-            viewModelMain.Model.PopupContent = null;
+            Close();
         }
 
         private void LoadUserInfoList()
@@ -75,6 +73,13 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             Model.Content = content;
+        }
+
+        private void Close()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.IsPopupOpen = false;
+            viewModelMain.Model.PopupContent = null;
         }
     }
 }

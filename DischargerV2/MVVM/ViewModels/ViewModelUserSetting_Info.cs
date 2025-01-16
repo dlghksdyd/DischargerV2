@@ -117,6 +117,24 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xDeleteImage_MouseLeftButtonUp()
         {
+            ViewPopup_Warning viewPopup_Warning = new ViewPopup_Warning()
+            {
+                DataContext = new ViewModelPopup_Warning()
+                {
+                    Title = "Delete User 'admin'?",
+                    Comment = "Are you sure you want to delete this user?\r\n" +
+                              "Once you confirm, this user data will be permanetly deleted.",
+                    CallBackDeledate = DeleteUser,
+                }
+            };
+
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.IsPopupOpen2 = true;
+            viewModelMain.Model.PopupContent2 = viewPopup_Warning;
+        }
+
+        public void DeleteUser()
+        {
             DatabaseContext.DeleteUserInfo(Id);
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;

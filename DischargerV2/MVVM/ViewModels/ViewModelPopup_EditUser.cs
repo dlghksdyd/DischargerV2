@@ -90,16 +90,12 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xCloseImage_MouseLeftButtonUp()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen2 = false;
-            viewModelMain.Model.PopupContent2 = null;
+            Close();
         }
 
         private void xCancelButton_Click()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen2 = false;
-            viewModelMain.Model.PopupContent2 = null;
+            Close();
         }
 
         private void xEditButton_Click()
@@ -128,13 +124,24 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 TblUserInfo userInfo = new TblUserInfo(Model.Id, Model.NewPassword, Model.Name, Model.IsAdmin);
                 DatabaseContext.UpdateUserInfo(userInfo);
-
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.Model.IsPopupOpen2 = false;
-                viewModelMain.Model.PopupContent2 = null;
-                viewModelMain.Model.IsPopupOpen = true;
-                viewModelMain.Model.PopupContent = new ViewPopup_UserSetting();
+                Return();
             }
+        }
+
+        private void Close()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.IsPopupOpen2 = false;
+            viewModelMain.Model.PopupContent2 = null;
+        }
+
+        private void Return()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.IsPopupOpen2 = false;
+            viewModelMain.Model.PopupContent2 = null;
+            viewModelMain.Model.IsPopupOpen = true;
+            viewModelMain.Model.PopupContent = new ViewPopup_UserSetting();
         }
     }
 }
