@@ -14,18 +14,31 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class ModelPopup_UserSetting : BindableBase
+    public class ModelPopup_Warning : BindableBase
     {
-        private ObservableCollection<object> _content = new ObservableCollection<object>();
-        public ObservableCollection<object> Content
+        private string _title;
+        public string Title
         {
             get
             {
-                return _content;
+                return _title;
             }
             set
             {
-                SetProperty(ref _content, value);
+                SetProperty(ref _title, value);
+            }
+        }
+
+        private string _comment;
+        public string Comment
+        {
+            get
+            {
+                return _comment;
+            }
+            set
+            {
+                SetProperty(ref _comment, value);
             }
         }
     }

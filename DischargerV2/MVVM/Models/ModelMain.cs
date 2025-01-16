@@ -26,7 +26,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private bool _isPopupOpen;
+        private bool _isPopupOpen = false;
         public bool IsPopupOpen
         {
             get
@@ -36,6 +36,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _isPopupOpen, value);
+            }
+        }
+
+        private bool _isPopupOpen2 = false;
+        public bool IsPopupOpen2
+        {
+            get
+            {
+                return _isPopupOpen2;
+            }
+            set
+            {
+                SetProperty(ref _isPopupOpen2, value);
             }
         }
 
@@ -49,6 +62,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _popupContent, value);
+            }
+        }
+
+        private ContentControl _popupContent2;
+        public ContentControl PopupContent2
+        {
+            get
+            {
+                return _popupContent2;
+            }
+            set
+            {
+                SetProperty(ref _popupContent2, value);
             }
         }
     }

@@ -14,19 +14,20 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
+using DischargerV2.MVVM.Models;
 
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewPopup_UserSetting.xaml에 대한 상호 작용 논리
+    /// ViewPopup_EditUser.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewPopup_UserSetting : UserControl
+    public partial class ViewPopup_EditUser : UserControl
     {
-        public ViewPopup_UserSetting()
+        public ViewPopup_EditUser()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelPopup_UserSetting();
+            this.DataContext = new ViewModelPopup_EditUser();
         }
     }
 }

@@ -8,16 +8,12 @@
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:DischargerV2.UserControls"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance vm:ViewModelPopup_Setting}"
+             xmlns:local="clr-namespace:DischargerV2.UserControls" xmlns:models="clr-namespace:DischargerV2.MVVM.Models"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance models:ModelPopup_UserSetting}"
              d:DesignHeight="660" d:DesignWidth="872"
              MaxHeight="660" MaxWidth="872">
     
-    <UserControl.DataContext>
-        <vm:ViewModelPopup_UserSetting/>
-    </UserControl.DataContext>
-
     <Border Background="{StaticResource Mex/ResColor/surface_primary}"
             CornerRadius="8">
         <Grid Margin="32">
@@ -46,49 +42,17 @@
                 </Image>
             </Grid>
             <Grid Grid.Row="2" Margin="8,0,8,8">
-                <Border CornerRadius="8"
-                        Background="{StaticResource Mex/ResColor/surface_page}">
-                    <Mex:MexScrollViewer>
-                        <WrapPanel Orientation="Horizontal" Width="780">
-                            <Border Width="360" Height="144" Margin="20,20,0,0"
-                                    CornerRadius="8"
-                                    BorderThickness="1"
-                                    Background="Transparent">
-                                <Border.BorderBrush>
-                                    <VisualBrush>
-                                        <VisualBrush.Visual>
-                                            <Rectangle Stroke="{StaticResource Mex/ResColor/border_primary}"
-                                                       StrokeThickness="1"
-                                                       StrokeDashArray="4"
-                                                       RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}"
-                                                       RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}"
-                                                       Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
-                                                       Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}"/>
-                                        </VisualBrush.Visual>
-                                    </VisualBrush>
-                                </Border.BorderBrush>
-                                <Mex:MexButton x:Name="xAddButton" 
-                                               Padding="24,9,24,9"
-                                               BorderThickness="1"
-                                               CornerRadius="8"
-                                               ImageWidth="20" ImageHeight="20"
-                                               ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddUserButtonOutline}"
-                                               Text="Add New User"
-                                               TextPadding="12,0,0,0"
-                                               FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
-                                               ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"/>
-                            </Border>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                            <local:UcUserRegister_Info Width="360" Height="144" Margin="20,20,0,0"/>
-                        </WrapPanel>
-                    </Mex:MexScrollViewer>
-                </Border>
+                <Mex:MexListBox BorderThickness="0" 
+                                CornerRadius="8" 
+                                Background="{StaticResource Mex/ResColor/surface_page}"
+                                Padding="0"
+                                ItemsSource="{Binding Model.Content}">
+                    <Mex:MexListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="780" Orientation="Horizontal" IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Mex:MexListBox.ItemsPanel>
+                </Mex:MexListBox>
             </Grid>
         </Grid>
     </Border>
