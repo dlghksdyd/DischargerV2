@@ -74,7 +74,7 @@
                                     ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                     VerticalContentAlignment="Center"
                                     IsChecked="{Binding Model.IsAdmin, Mode=TwoWay,
-                                                        Converter={StaticResource InvertBoolConverter}, 
+                                                        Converter={StaticResource InvertBoolConverter},
                                                         FallbackValue=true, TargetNullValue=true}"/>
                 <Grid Width="16"/>
                 <Mex:MexRadioButton x:Name="xAdminRadioButton" GroupName="Permission"

@@ -152,6 +152,9 @@ namespace Utility.Common
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+                return false;
+
             if (value is bool boolValue)
             {
                 return !boolValue;
