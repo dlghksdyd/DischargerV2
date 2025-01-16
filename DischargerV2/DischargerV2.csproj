@@ -162,6 +162,7 @@
     <Compile Include="Database\TblUserInfo.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelPopup_EditUser.cs" />
     <Compile Include="MVVM\Models\ModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Add.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Info.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="MVVM\Models\ModelTopbar.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_EditUser.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Info.cs" />
@@ -186,6 +188,9 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Setting.cs" />
     <Compile Include="MVVM\Views\ViewMain.xaml.cs">
       <DependentUpon>ViewMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_EditUser.xaml.cs">
+      <DependentUpon>ViewPopup_EditUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_CreateNewUser.xaml.cs">
       <DependentUpon>ViewPopup_CreateNewUser.xaml</DependentUpon>
@@ -332,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\ViewMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_EditUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

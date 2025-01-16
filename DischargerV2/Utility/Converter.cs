@@ -154,7 +154,7 @@ namespace Utility.Common
         {
             if (value is bool boolValue)
             {
-                return boolValue;
+                return !boolValue;
             }
             return DependencyProperty.UnsetValue;
         }

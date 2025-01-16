@@ -99,7 +99,20 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xEditImage_MouseLeftButtonUp()
         {
+            ViewPopup_EditUser viewPopup_EditUser = new ViewPopup_EditUser()
+            {
+                DataContext = new ViewModelPopup_EditUser()
+                {
+                    IsAdmin = Model.IsAdmin,
+                    Id = Model.Id,
+                    ConfirmCurrentPassword = Model.Password,
+                    Name = Model.Name,
+                }
+            };
 
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.IsPopupOpen2 = true;
+            viewModelMain.Model.PopupContent2 = viewPopup_EditUser;
         }
 
         private void xDeleteImage_MouseLeftButtonUp()

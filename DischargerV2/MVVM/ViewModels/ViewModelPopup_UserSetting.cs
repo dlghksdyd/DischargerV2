@@ -58,6 +58,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         IsAdmin = tblUserInfo[index].IsAdmin,
                         Id = tblUserInfo[index].UserId,
+                        Password = tblUserInfo[index].Password,
                         Name = tblUserInfo[index].UserName
                     },
                     Margin = new Thickness(20, 20, 0, 0)
