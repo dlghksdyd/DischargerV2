@@ -1,5 +1,4 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -51,13 +50,13 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xCreateButton_Click()
         {
-            List<TblUserInfo> tblUserInfo = DatabaseContext.SelectAllUserinfo();
+            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
             if (Model.Id == null || Model.Id == "")
             {
                 MessageBox.Show("ID: 필수 정보입니다.");
             }
-            else if (tblUserInfo.Find(x => x.UserId == Model.Id) != null)
+            else if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
             {
                 MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
             }
@@ -79,8 +78,13 @@ namespace DischargerV2.MVVM.ViewModels
             }
             else
             {
-                TblUserInfo userInfo = new TblUserInfo(Model.Id, Model.Password, Model.Name, Model.IsAdmin);
-                DatabaseContext.Insert(userInfo);
+                TableUserInfo tableUserInfo = new TableUserInfo();
+                tableUserInfo.UserId = Model.Id;
+                tableUserInfo.Password = Model.Password;
+                tableUserInfo.UserName = Model.Name;
+                tableUserInfo.IsAdmin = Model.IsAdmin;
+
+                SqliteUserInfo.InsertData(tableUserInfo);
                 Return();
             }
         }

@@ -44,9 +44,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xLoginButton_Click()
         {
-            List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
+            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-            TableUserInfo user = userInfos.Find(x => x.UserId == Model.UserId && x.Password == Model.Password);
+            TableUserInfo user = tableUserInfoList.Find(x => x.UserId == Model.UserId && x.Password == Model.Password);
 
             if (user != null)
             {

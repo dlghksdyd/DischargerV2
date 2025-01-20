@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
-using DischargerV2.Database;
+using Sqlite.Common;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -47,22 +47,25 @@ namespace DischargerV2.MVVM.Views
         {
             xContentPanel.Children.Clear();
 
-            xContentPanel.Children.Add(new ViewUserSetting_Add() { Margin = new Thickness(20, 20, 0, 0)});
+            xContentPanel.Children.Add(new ViewUserSetting_Add() 
+            { 
+                Margin = (_viewModel.Model.Content.Count > 1) ? new Thickness(20, 20, 0, 0) : new Thickness(20, 20, 0, 20)
+            });
 
-            int oddOrEven = (_viewModel.Model.Content.Count % 2 == 0) ? 3 : 2;
+            int oddOrEven = ((_viewModel.Model.Content.Count + 1) % 2 == 0) ? 2 : 1;
 
             for (int index = 0; index < _viewModel.Model.Content.Count; index++)
             {
-                TblUserInfo tblUserInfo = _viewModel.Model.Content[index];
+                TableUserInfo tableUserInfo = _viewModel.Model.Content[index];
 
                 xContentPanel.Children.Add(new ViewUserSetting_Info()
                 {
                     DataContext = new ViewModelUserSetting_Info()
                     {
-                        IsAdmin = tblUserInfo.IsAdmin,
-                        Id = tblUserInfo.UserId,
-                        Password = tblUserInfo.Password,
-                        Name = tblUserInfo.UserName
+                        IsAdmin = tableUserInfo.IsAdmin,
+                        Id = tableUserInfo.UserId,
+                        Password = tableUserInfo.Password,
+                        Name = tableUserInfo.UserName
                     },
                     Margin = (index < _viewModel.Model.Content.Count - oddOrEven) ? new Thickness(20, 20, 0, 0) : new Thickness(20, 20, 0, 20)
                 });

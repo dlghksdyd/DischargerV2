@@ -1,5 +1,4 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -32,62 +31,32 @@ namespace DischargerV2.MVVM.ViewModels
 
         public bool IsAdmin
         {
-            get
-            {
-                return Model.IsAdmin;
-            }
-            set
-            {
-                Model.IsAdmin = value;
-            }
+            get => Model.IsAdmin;
+            set => Model.IsAdmin = value;
         }
 
         public string Initial
         {
-            get
-            {
-                return Model.Initial;
-            }
-            set
-            {
-                Model.Initial = value;
-            }
+            get => Model.Initial;
+            set => Model.Initial = value;
         }
 
         public string Id
         {
-            get
-            {
-                return Model.Id;
-            }
-            set
-            {
-                Model.Id = value;
-            }
+            get => Model.Id;
+            set => Model.Id = value;
         }
 
         public string Password
         {
-            get
-            {
-                return Model.Password;
-            }
-            set
-            {
-                Model.Password = value;
-            }
+            get => Model.Password;
+            set => Model.Password = value;
         }
 
         public string Name
         {
-            get
-            {
-                return Model.Name;
-            }
-            set
-            {
-                Model.Name = value;
-            }
+            get => Model.Name;
+            set => Model.Name = value;
         }
         #endregion
 
@@ -129,7 +98,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void DeleteUser()
         {
-            DatabaseContext.DeleteUserInfo(Id);
+            SqliteUserInfo.DeleteData(Id);
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);

@@ -1,5 +1,4 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -43,13 +42,13 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadUserInfoList()
         {
-            List<TblUserInfo> tblUserInfo = DatabaseContext.SelectAllUserinfo();
+            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-            ObservableCollection<TblUserInfo> content = new ObservableCollection<TblUserInfo>();
+            ObservableCollection<TableUserInfo> content = new ObservableCollection<TableUserInfo>();
 
-            for (int index = 0; index < tblUserInfo.Count; index++)
+            for (int index = 0; index < tableUserInfoList.Count; index++)
             {
-                content.Add(tblUserInfo[index]);
+                content.Add(tableUserInfoList[index]);
             }
 
             Model.Content = content;
