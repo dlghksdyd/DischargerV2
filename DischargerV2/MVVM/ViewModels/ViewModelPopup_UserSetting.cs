@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +32,7 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelPopup_UserSetting()
         {
             xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-
+            
             LoadUserInfoList();
         }
 
@@ -44,32 +45,11 @@ namespace DischargerV2.MVVM.ViewModels
         {
             List<TblUserInfo> tblUserInfo = DatabaseContext.SelectAllUserinfo();
 
-            ObservableCollection<object> content = new ObservableCollection<object>();
-
-            content.Add(new ViewUserSetting_Add() { Margin = new Thickness(20, 20, 0, 0) });
+            ObservableCollection<TblUserInfo> content = new ObservableCollection<TblUserInfo>();
 
             for (int index = 0; index < tblUserInfo.Count; index++)
             {
-                content.Add(new ViewUserSetting_Info()
-                {
-                    DataContext = new ViewModelUserSetting_Info()
-                    {
-                        IsAdmin = tblUserInfo[index].IsAdmin,
-                        Id = tblUserInfo[index].UserId,
-                        Password = tblUserInfo[index].Password,
-                        Name = tblUserInfo[index].UserName
-                    },
-                    Margin = new Thickness(20, 20, 0, 0)
-                });
-            }
-
-            ViewUserSetting_Info viewUserSetting_Info = content[content.Count - 1] as ViewUserSetting_Info;
-            viewUserSetting_Info.Margin = new Thickness(20, 20, 0, 20);
-
-            if (content.Count % 2 == 0)
-            {
-                viewUserSetting_Info = content[content.Count - 2] as ViewUserSetting_Info;
-                viewUserSetting_Info.Margin = new Thickness(20, 20, 0, 20);
+                content.Add(tblUserInfo[index]);
             }
 
             Model.Content = content;
@@ -78,8 +58,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen = false;
-            viewModelMain.Model.PopupContent = null;
+            viewModelMain.OffPopup();
         }
     }
 }

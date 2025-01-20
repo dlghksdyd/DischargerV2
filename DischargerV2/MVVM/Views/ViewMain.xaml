@@ -7,10 +7,11 @@
         xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+        xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:uc="clr-namespace:DischargerV2.UserControls"
         mc:Ignorable="d" 
-        DataContext="{StaticResource ViewModelMain}" 
+        d:DataContext="{d:DesignInstance vm:ViewModelMain}" 
         Title="MainWindow" 
         Height="1030" Width="1920" 
         MaxHeight="1080" MaxWidth="1920" 
@@ -63,17 +64,37 @@
         <!--Popup 활성화-->
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 
-                Visibility="{Binding Model.IsPopupOpen,
-                                     Converter={StaticResource BoolToVisibilityConverter}}">
-            <ContentControl Content="{Binding Model.PopupContent}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                Visibility="{Binding Model.IsPopupOpen, Mode=TwoWay,
+                                     Converter={StaticResource BoolToVisibilityConverter}, 
+                                     FallbackValue=Collapsed}">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <view:ViewPopup_UserSetting Visibility="{Binding Model.PopupVisibility[0], 
+                                                                 Source={x:Static vm:ViewModelMain.Instance}}"
+                                            DataContext="{Binding Model.ViewModelPopup_UserSetting, 
+                                                                  Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewDischargerInfoTable Visibility="{Binding Model.PopupVisibility[1], 
+                                                                   Source={x:Static vm:ViewModelMain.Instance}}"/>
+            </Grid>
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 
                 Visibility="{Binding Model.IsPopupOpen2,
-                                     Converter={StaticResource BoolToVisibilityConverter}}">
-            <ContentControl Content="{Binding Model.PopupContent2}"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                     Converter={StaticResource BoolToVisibilityConverter}, 
+                                     FallbackValue=Collapsed}">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <view:ViewPopup_CreateNewUser Visibility="{Binding Model.PopupVisibility2[0], 
+                                                                   Source={x:Static vm:ViewModelMain.Instance}}"
+                                              DataContext="{Binding Model.ViewModelPopup_CreateNewUser,
+                                                                    Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_EditUser Visibility="{Binding Model.PopupVisibility2[1], 
+                                                              Source={x:Static vm:ViewModelMain.Instance}}"
+                                         DataContext="{Binding Model.ViewModelPopup_EditUser, 
+                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_Warning Visibility="{Binding Model.PopupVisibility2[2], 
+                                                             Source={x:Static vm:ViewModelMain.Instance}}"
+                                        DataContext="{Binding Model.ViewModelPopup_Warning, 
+                                                              Source={x:Static vm:ViewModelMain.Instance}}"/>
+            </Grid>
         </Border>
     </Grid>
 </Window>

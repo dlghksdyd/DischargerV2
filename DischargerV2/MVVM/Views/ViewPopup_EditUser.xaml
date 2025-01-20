@@ -11,16 +11,15 @@
              xmlns:local="clr-namespace:DischargerV2.UserControls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_EditUser}"
-            d:DesignHeight="636" d:DesignWidth="480"
-MinHeight="636" MinWidth="480"
-Background="{StaticResource Mex/ResColor/surface_page}">
+             d:DesignHeight="636" d:DesignWidth="480"
+             MinHeight="636" MinWidth="480"
+             Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="Border">
                 <Setter Property="CornerRadius" Value="8"></Setter>
             </Style>
-            <Util:InvertBoolConverter x:Key="InvertBoolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -165,7 +164,7 @@ Background="{StaticResource Mex/ResColor/surface_page}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding xCancelButton_ClickCommand}"
-                               PassEventArgsToCommand="False"/>
+                                               PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Mex:MexButton>

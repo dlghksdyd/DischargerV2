@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Views;
+﻿using DischargerV2.Database;
+using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Mvvm;
 using System;
@@ -16,8 +17,8 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelPopup_UserSetting : BindableBase
     {
-        private ObservableCollection<object> _content = new ObservableCollection<object>();
-        public ObservableCollection<object> Content
+        private ObservableCollection<TblUserInfo> _content = new ObservableCollection<TblUserInfo>();
+        public ObservableCollection<TblUserInfo> Content
         {
             get
             {

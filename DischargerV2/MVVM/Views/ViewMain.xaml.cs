@@ -1,4 +1,5 @@
-﻿using Sqlite.Common;
+﻿using DischargerV2.MVVM.ViewModels;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace DischargerV2.MVVM.Views
     {
         public static ViewMain Instance;
 
+        private ViewModelMain ViewModel = new ViewModelMain();
+
         public ViewMain()
         {
             InitializeComponent();
@@ -30,6 +33,15 @@ namespace DischargerV2.MVVM.Views
             SqliteUtility.InitializeDatabases();
 
             Instance = this;
+
+            InitializeUI();
+
+            this.DataContext = ViewModel;
+        }
+
+        private void InitializeUI()
+        {
+
         }
     }
 }

@@ -83,8 +83,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen2 = false;
-            viewModelMain.Model.PopupContent2 = null;
+            viewModelMain.OffPopup2();
         }
     }
 }

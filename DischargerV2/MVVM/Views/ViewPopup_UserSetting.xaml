@@ -10,7 +10,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:DischargerV2.UserControls" xmlns:models="clr-namespace:DischargerV2.MVVM.Models"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance models:ModelPopup_UserSetting}"
+             d:DataContext="{d:DesignInstance vm:ViewModelPopup_UserSetting}"
              d:DesignHeight="660" d:DesignWidth="872"
              MaxHeight="660" MaxWidth="872">
     
@@ -42,17 +42,12 @@
                 </Image>
             </Grid>
             <Grid Grid.Row="2" Margin="8,0,8,8">
-                <Mex:MexListBox BorderThickness="0" 
-                                CornerRadius="8" 
-                                Background="{StaticResource Mex/ResColor/surface_page}"
-                                Padding="0"
-                                ItemsSource="{Binding Model.Content}">
-                    <Mex:MexListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Width="780" Orientation="Horizontal" IsItemsHost="True"/>
-                        </ItemsPanelTemplate>
-                    </Mex:MexListBox.ItemsPanel>
-                </Mex:MexListBox>
+                <Border CornerRadius="8"
+                        Background="{StaticResource Mex/ResColor/surface_page}">
+                    <Mex:MexScrollViewer>
+                        <WrapPanel x:Name="xContentPanel" Orientation="Horizontal" Width="780"/>
+                    </Mex:MexScrollViewer>
+                </Border>
             </Grid>
         </Grid>
     </Border>

@@ -99,38 +99,32 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xEditImage_MouseLeftButtonUp()
         {
-            ViewPopup_EditUser viewPopup_EditUser = new ViewPopup_EditUser()
+            ViewModelPopup_EditUser viewModelPopup_EditUser = new ViewModelPopup_EditUser()
             {
-                DataContext = new ViewModelPopup_EditUser()
-                {
-                    IsAdmin = Model.IsAdmin,
-                    Id = Model.Id,
-                    ConfirmCurrentPassword = Model.Password,
-                    Name = Model.Name,
-                }
+                IsAdmin = Model.IsAdmin,
+                Id = Model.Id,
+                ConfirmCurrentPassword = Model.Password,
+                Name = Model.Name,
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen2 = true;
-            viewModelMain.Model.PopupContent2 = viewPopup_EditUser;
+            viewModelMain.SetViewModelPopup_EditUser(viewModelPopup_EditUser);
+            viewModelMain.OpenPopup2(ModelMain.EPopup2.EditUser);
         }
 
         private void xDeleteImage_MouseLeftButtonUp()
         {
-            ViewPopup_Warning viewPopup_Warning = new ViewPopup_Warning()
+            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
-                DataContext = new ViewModelPopup_Warning()
-                {
-                    Title = "Delete User 'admin'?",
-                    Comment = "Are you sure you want to delete this user?\r\n" +
+                Title = "Delete User 'admin'?",
+                Comment = "Are you sure you want to delete this user?\r\n" +
                               "Once you confirm, this user data will be permanetly deleted.",
-                    CallBackDeledate = DeleteUser,
-                }
+                CallBackDeledate = DeleteUser,
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen2 = true;
-            viewModelMain.Model.PopupContent2 = viewPopup_Warning;
+            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
         }
 
         public void DeleteUser()
@@ -138,8 +132,7 @@ namespace DischargerV2.MVVM.ViewModels
             DatabaseContext.DeleteUserInfo(Id);
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.IsPopupOpen = true;
-            viewModelMain.Model.PopupContent = new ViewPopup_UserSetting();
+            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
     }
 }

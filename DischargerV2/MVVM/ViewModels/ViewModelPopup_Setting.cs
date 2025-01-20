@@ -46,12 +46,12 @@ namespace DischargerV2.MVVM.ViewModels
                     if (name == "xUserSettingLabel")
                     {
                         ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.Model.IsPopupOpen = true;
-                        viewModelMain.Model.PopupContent = new ViewPopup_UserSetting();
+                        viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
                     }
                     else if (name == "xDeviceRegisterLabel")
                     {
-
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
                     }
                     else if (name == "xDbConfigurationLabel")
                     {
@@ -60,8 +60,7 @@ namespace DischargerV2.MVVM.ViewModels
                     else if (name == "xLogoutLabel")
                     {
                         ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.Model.IsPopupOpen = false;
-                        viewModelMain.Model.PopupContent = null;
+                        viewModelMain.OffPopup();
 
                         ViewModelLogin viewModelLogin = ViewModelLogin.Instance;
                         viewModelLogin.Model.UserId = string.Empty;
