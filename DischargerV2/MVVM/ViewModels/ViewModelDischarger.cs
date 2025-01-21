@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -44,7 +45,7 @@ namespace DischargerV2.MVVM.ViewModels
         public double Voltage { get; set; } = 0.0;
     }
 
-    public class ViewModelDischarger
+    public class ViewModelDischarger : BindableBase
     {
         #region Command
 
@@ -64,19 +65,23 @@ namespace DischargerV2.MVVM.ViewModels
         /// </summary>
         private Dictionary<string, EthernetClientDischarger> _clients = new Dictionary<string, EthernetClientDischarger>();
 
-        private static ViewModelDischarger _instance = null;
-
         public ModelDischarger Model { get; set; } = new ModelDischarger();
 
-        public static ViewModelDischarger Instance()
+        private static ViewModelDischarger _instance = null;
+        public static ViewModelDischarger Instance
         {
-            return _instance;
+            get
+            {
+                if (_instance == null )
+                {
+                    _instance = new ViewModelDischarger();
+                }
+                return _instance;
+            }
         }
 
         public ViewModelDischarger()
         {
-            _instance = this;
-
             InitializeDischarger();
 
             InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);

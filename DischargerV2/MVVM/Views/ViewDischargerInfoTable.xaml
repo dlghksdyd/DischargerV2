@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1920"
-             DataContext="{StaticResource ViewModelDischarger}">
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1920">
     <Grid Background="White">
         <Mex:MexTable x:Name="xTable"
                       Width="1760" Height="315"
@@ -125,7 +125,8 @@
                         </Grid>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Mex:MexTextBlock Margin="16,0,16,0"
+                        <Mex:MexTextBlock DataContext="{x:Static vm:ViewModelDischarger.Instance}"
+                                          Margin="16,0,16,0"
                                           Text="{Binding Model.DischargerDatas[0].ReceiveBatteryVoltage}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>

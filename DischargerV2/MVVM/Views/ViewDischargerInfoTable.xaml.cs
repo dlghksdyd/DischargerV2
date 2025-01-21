@@ -30,8 +30,8 @@ namespace DischargerV2.MVVM.Views
         {
             InitializeComponent();
 
-            _viewModelDischarger = ViewModelDischarger.Instance();
-            _viewModelTempModule = new ViewModelTempModule();
+            _viewModelDischarger = ViewModelDischarger.Instance;
+            _viewModelTempModule = ViewModelTempModule.Instance;
 
             InitializeUI();
         }
@@ -86,6 +86,7 @@ namespace DischargerV2.MVVM.Views
                 /// Voltage
                 MexTableRowColumn column5 = new MexTableRowColumn();
                 MexTextBlock textBlock5 = new MexTextBlock();
+                textBlock5.DataContext = _viewModelDischarger;
                 BindingOperations.SetBinding(textBlock5, MexTextBlock.TextProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveBatteryVoltage"));
                 column5.Content = textBlock5;
@@ -94,6 +95,7 @@ namespace DischargerV2.MVVM.Views
                 /// Current
                 MexTableRowColumn column6 = new MexTableRowColumn();
                 MexTextBlock textBlock6 = new MexTextBlock();
+                textBlock6.DataContext = _viewModelDischarger;
                 BindingOperations.SetBinding(textBlock6, MexTextBlock.TextProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveDischargeCurrent"));
                 column6.Content = textBlock6;

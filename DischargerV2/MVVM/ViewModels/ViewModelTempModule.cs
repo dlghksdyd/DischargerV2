@@ -27,19 +27,23 @@ namespace DischargerV2.MVVM.ViewModels
         /// </summary>
         private Dictionary<string, SerialClientTempModule> _clients = new Dictionary<string, SerialClientTempModule>();
 
-        private static ViewModelTempModule _instance = null;
-
         private int _tempChannelCount = 8;
 
-        public static ViewModelTempModule Instance()
+        private static ViewModelTempModule _instance = null;
+        public static ViewModelTempModule Instance
         {
-            return _instance;
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelTempModule();
+                }
+                return _instance;
+            }
         }
 
         public ViewModelTempModule()
         {
-            _instance = this;
-
             InitializeTempModule();
         }
 
