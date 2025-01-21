@@ -1,8 +1,10 @@
 ﻿using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Serial.Client.TempModule;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         #endregion
 
-        public ModelTempModule Model = new ModelTempModule();
+        public ModelTempModule Model { get; set; } = new ModelTempModule();
 
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
 
@@ -27,6 +29,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         private static ViewModelTempModule _instance = null;
 
+        private int _tempChannelCount = 8;
+
         public static ViewModelTempModule Instance()
         {
             return _instance;
@@ -35,11 +39,58 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelTempModule()
         {
             _instance = this;
+
+            InitializeTempModule();
         }
 
-        private void InitializeTempModuleClients()
+        public bool IsConnected(string comPortStr)
         {
-            SerialClientTempModuleStart parameters = new SerialClientTempModuleStart();
+            if (!_clients.ContainsKey(comPortStr))
+            {
+                return false;
+            }
+
+            return _clients[comPortStr].IsConnected();
+        }
+
+        public int GetTempModuleDataIndex(string comPortStr)
+        {
+            return Model.TempModuleComportList.FindIndex(x => x == comPortStr);
+        }
+
+        private void InitializeTempModule()
+        {
+            FinalizeTempModule();
+
+            List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
+
+            foreach (var info in infos)
+            {
+                if (Model.TempModuleComportList.Contains(info.TempModuleComPort))
+                {
+                    continue;
+                }
+                
+                Model.TempModuleComportList.Add(info.TempModuleComPort);
+                Model.TempDatas.Add(new ObservableCollection<double>());
+
+                for (int i = 0; i < _tempChannelCount; i++)
+                {
+                    Model.TempDatas.Last().Add(0.0);
+                }
+
+                SerialClientTempModuleStart parameters = new SerialClientTempModuleStart();
+                parameters.DeviceName = "TempModule";
+                parameters.ComPort = info.TempModuleComPort;
+                parameters.BaudRate = 9600;
+                parameters.TimeOutMs = 2000;
+                parameters.Encoding = Encoding.UTF8;
+                parameters.TempModuleChannel = info.TempModuleChannel;
+                parameters.TempChannelCount = _tempChannelCount;
+
+                _clients[info.TempModuleComPort] = new SerialClientTempModule();
+                _clients[info.TempModuleComPort].Start(parameters);
+            }
 
             OneSecondTimer?.Stop();
             OneSecondTimer = new System.Timers.Timer();
@@ -48,11 +99,43 @@ namespace DischargerV2.MVVM.ViewModels
             OneSecondTimer.Start();
         }
 
+        private void FinalizeTempModule()
+        {
+            OneSecondTimer?.Stop();
+            OneSecondTimer = null;
+
+            /// Client 초기화
+            foreach (var client in _clients)
+            {
+                client.Value.Stop();
+            }
+            _clients.Clear();
+
+            /// Model 초기화
+            Model.TempModuleComportList.Clear();
+            foreach (var datas in Model.TempDatas)
+            {
+                datas.Clear();
+            }
+            Model.TempDatas.Clear();
+        }
+
         private void CopyDataFromTempModuleClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
-            for (int i = 0; i < Model.TempModuleComportList.Count; i++)
+            foreach (var client in _clients)
             {
-                //_clients[Model.TempModuleComportList[i]].GetDatas().TempDatas.ForEach(x => Model.TempDatas);
+                if (!client.Value.IsConnected())
+                {
+                    continue;
+                }
+
+                string comPortStr = client.Key.ToString();
+                int index = Model.TempModuleComportList.FindIndex(x => x == comPortStr);
+
+                for (int i = 0; i < Model.TempDatas[index].Count; i++)
+                {
+                    Model.TempDatas[index][i] = _clients[comPortStr].GetDatas().TempDatas[i];
+                }
             }
         }
     }

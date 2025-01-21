@@ -20,8 +20,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private ObservableCollection<double> _tempDatas = new ObservableCollection<double>();
-        public ObservableCollection<double> TempDatas
+        private ObservableCollection<ObservableCollection<double>> _tempDatas = new ObservableCollection<ObservableCollection<double>>();
+        public ObservableCollection<ObservableCollection<double>> TempDatas
         {
             get { return _tempDatas; }
             set
