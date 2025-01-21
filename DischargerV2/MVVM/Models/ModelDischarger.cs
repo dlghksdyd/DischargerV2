@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
@@ -62,6 +64,46 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _dischargerStates, value);
+            }
+        }
+
+        private ObservableCollection<SolidColorBrush> _stateColor = new ObservableCollection<SolidColorBrush>();
+        public ObservableCollection<SolidColorBrush> StateColor
+        {
+            get {  return _stateColor; }
+            set
+            {
+                SetProperty(ref _stateColor, value);
+            }
+        }
+
+        private ObservableCollection<string> _progressTime = new ObservableCollection<string>();
+        public ObservableCollection<string> ProgressTime
+        {
+            get { return _progressTime; }
+            set
+            {
+                SetProperty(ref _progressTime, value);
+            }
+        }
+
+        private ObservableCollection<Visibility> _reconnectVisibility = new ObservableCollection<Visibility>();
+        public ObservableCollection<Visibility> ReconnectVisibility
+        {
+            get { return _reconnectVisibility; }
+            set
+            {
+                SetProperty(ref _reconnectVisibility, value);
+            }
+        }
+
+        private ObservableCollection<Visibility> _errorVisibility = new ObservableCollection<Visibility>();
+        public ObservableCollection<Visibility> ErrorVisibility
+        {
+            get { return _errorVisibility; }
+            set
+            {
+                SetProperty(ref _errorVisibility, value);
             }
         }
     }

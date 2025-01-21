@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
+using MExpress.Mex;
 using Microsoft.WindowsAPICodePack.Shell;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -15,9 +16,11 @@ using System.Security.RightsManagement;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media.Animation;
+using System.Windows.Media;
 using System.Xml.Linq;
+using static System.Windows.Forms.AxHost;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -56,6 +59,8 @@ namespace DischargerV2.MVVM.ViewModels
         public DelegateCommand<string> StopDischargerCommand { get; set; }
         public DelegateCommand<string> PauseDischargerCommand { get; set; }
 
+        public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
+
         #endregion
 
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
@@ -90,6 +95,13 @@ namespace DischargerV2.MVVM.ViewModels
             StartDischargerCommand = new DelegateCommand<StartDischargerCommandParam>(StartDischarger);
             StopDischargerCommand = new DelegateCommand<string>(StopDischarger);
             PauseDischargerCommand = new DelegateCommand<string>(PauseDischarger);
+
+            ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
+        }
+
+        private void ReconnectDischarger(string dischargerName)
+        {
+            _clients[dischargerName].Restart();
         }
 
         private void StartDischarger(StartDischargerCommandParam param)
@@ -118,6 +130,10 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
                 Model.DischargerStates.Add(EDischargerState.None);
+                Model.StateColor.Add(ResColor.icon_disabled);
+                Model.ProgressTime.Add("00:00:00");
+                Model.ReconnectVisibility.Add(Visibility.Collapsed);
+                Model.ErrorVisibility.Add(Visibility.Collapsed);
 
                 var dischargerInfo = InitializeDischargerInfos(info.DischargerName);
                 InitializeDischargerClients(dischargerInfo);
@@ -148,6 +164,10 @@ namespace DischargerV2.MVVM.ViewModels
             Model.DischargerDatas.Clear();
             Model.DischargerInfos.Clear();
             Model.DischargerStates.Clear();
+            Model.StateColor.Clear();
+            Model.ProgressTime.Clear();
+            Model.ReconnectVisibility.Clear();
+            Model.ErrorVisibility.Clear();
         }
 
         private DischargerInfo InitializeDischargerInfos(string name)
@@ -204,6 +224,65 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.DischargerDatas[i] = _clients[Model.DischargerNameList[i]].GetDatas();
                 Model.DischargerStates[i] = _clients[Model.DischargerNameList[i]].GetState();
+                SetStateColor(Model.DischargerStates[i], i);
+                SetProgressTime(Model.DischargerStates[i], Model.DischargerDatas[i].DischargingStartTime, i);
+                SetVisibility(Model.DischargerStates[i], i);
+            }
+        }
+
+        private void SetVisibility(EDischargerState state, int index)
+        {
+            if (state == EDischargerState.Disconnected)
+            {
+                Model.ReconnectVisibility[index] = Visibility.Visible;
+                Model.ErrorVisibility[index] = Visibility.Collapsed;
+            }
+            else if (state == EDischargerState.SafetyOutOfRange ||
+                state == EDischargerState.ReturnCodeError ||
+                state == EDischargerState.ChStatusError ||
+                state == EDischargerState.DeviceError)
+            {
+                Model.ReconnectVisibility[index] = Visibility.Collapsed;
+                Model.ErrorVisibility[index] = Visibility.Visible;
+            }
+            else
+            {
+                Model.ReconnectVisibility[index] = Visibility.Collapsed;
+                Model.ErrorVisibility[index] = Visibility.Collapsed;
+            }
+        }
+
+        private void SetProgressTime(EDischargerState state, DateTime dischargingStartTime, int index)
+        {
+            if (state == EDischargerState.Discharging &&
+                state == EDischargerState.Pause)
+            {
+                TimeSpan diff = (DateTime.Now - dischargingStartTime);
+                string diffString =
+                    diff.Hours.ToString("D2") + ":" +
+                    diff.Minutes.ToString("D2") + ":" +
+                    diff.Seconds.ToString("D2");
+                Model.ProgressTime[index] = diffString;
+            }
+        }
+
+        private void SetStateColor(EDischargerState state, int index)
+        {
+            if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
+            {
+                Model.StateColor[index] = ResColor.icon_disabled;
+            }
+            else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
+            {
+                Model.StateColor[index] = ResColor.icon_success;
+            }
+            else if (state == EDischargerState.Pause)
+            {
+                Model.StateColor[index] = ResColor.icon_primary;
+            }
+            else
+            {
+                Model.StateColor[index] = ResColor.icon_error;
             }
         }
     }

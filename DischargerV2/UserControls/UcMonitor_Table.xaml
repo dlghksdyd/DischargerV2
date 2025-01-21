@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:DischargerV2"
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              mc:Ignorable="d" 
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              d:DesignHeight="315" d:DesignWidth="1760"
              MinHeight="315" MinWidth="1760">
 
@@ -112,18 +114,14 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <Grid Width="168" Margin="16,0,16,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="16, 0, 16, 0">
                             <Ellipse Width="12" Height="12"
-                                     Fill="{StaticResource Mex/ResColor/icon_success}"/>
+                                         Fill="{StaticResource Mex/ResColor/icon_success}"/>
                             <Mex:MexTextBlock Text="Connected" Grid.Column="1"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                              Padding="8,0,0,0"/>
-                        </Grid>
+                                                  Foreground="{StaticResource Mex/ResColor/text_body}"
+                                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                                  Padding="8,0,0,0"/>
+                        </StackPanel>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
                         <Mex:MexTextBlock Margin="16,0,16,0"
@@ -297,17 +295,35 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     </Mex:MexTableRowColumn>
                     <Mex:MexTableRowColumn>
-                        <StackPanel Orientation="Horizontal" Margin="16,0,16,0">
-                            <Image Width="24" Height="24"
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Margin="16,0,16,0">
+                                <Image Width="24" Height="24" Margin="0 0 8 0"
+                                   Source="{Binding Source={StaticResource Mex/ResImage/error_outline},
+                                                    Converter={StaticResource ImageColorConverter},
+                                                    ConverterParameter={StaticResource Mex/ResColor/icon_error}}"/>
+                                <Mex:MexTextBlock Text="Error"
+                                              Foreground="{StaticResource Mex/ResColor/text_error}"
+                                              FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                              TextDecorations="Underline"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="16,0,16,0" DataContext="{x:Static vm:ViewModelDischarger.Instance}">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="MouseLeftButtonUp">
+                                        <b:InvokeCommandAction Command="{Binding ReconnectDischargerCommand}"
+                                                           PassEventArgsToCommand="False" 
+                                                           CommandParameter="{Binding Model.DischargerNameList[0]}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <Image Width="24" Height="24" Margin="0 0 8 0"
                                    Source="{Binding Source={StaticResource Mex/ResImage/refresh},
                                                     Converter={StaticResource ImageColorConverter},
                                                     ConverterParameter={StaticResource Mex/ResColor/icon_infomation}}"/>
-                            <Grid Width="8"/>
-                            <Mex:MexTextBlock Text="Reconnect"
+                                <Mex:MexTextBlock Text="Reconnect"
                                               Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                               FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                               TextDecorations="Underline"/>
-                        </StackPanel>
+                            </StackPanel>
+                        </Grid>
                     </Mex:MexTableRowColumn>
                 </Mex:MexTableRow>
                 <Mex:MexTableRow Height="45">
