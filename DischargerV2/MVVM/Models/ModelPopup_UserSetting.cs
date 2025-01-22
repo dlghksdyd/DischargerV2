@@ -1,7 +1,7 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Views;
+﻿using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Mvvm;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,8 +17,8 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelPopup_UserSetting : BindableBase
     {
-        private ObservableCollection<TblUserInfo> _content = new ObservableCollection<TblUserInfo>();
-        public ObservableCollection<TblUserInfo> Content
+        private ObservableCollection<TableUserInfo> _content = new ObservableCollection<TableUserInfo>();
+        public ObservableCollection<TableUserInfo> Content
         {
             get
             {

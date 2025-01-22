@@ -53,7 +53,7 @@ namespace DischargerV2.MVVM.ViewModels
                         ViewModelMain viewModelMain = ViewModelMain.Instance;
                         viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
                     }
-                    else if (name == "xDbConfigurationLabel")
+                    else if (name == "xModelRegisterLabel")
                     {
 
                     }

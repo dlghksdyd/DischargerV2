@@ -72,8 +72,10 @@
                                                                  Source={x:Static vm:ViewModelMain.Instance}}"
                                             DataContext="{Binding Model.ViewModelPopup_UserSetting, 
                                                                   Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewDischargerInfoTable Visibility="{Binding Model.PopupVisibility[1], 
-                                                                   Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_DeviceRegister Visibility="{Binding Model.PopupVisibility[1], 
+                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
+                                               DataContext="{Binding Model.ViewModelPopup_DeviceRegister,
+                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
             </Grid>
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

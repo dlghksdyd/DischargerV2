@@ -103,6 +103,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private ViewModelPopup_DeviceRegister _viewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister();
+        public ViewModelPopup_DeviceRegister ViewModelPopup_DeviceRegister
+        {
+            get
+            {
+                return _viewModelPopup_DeviceRegister;
+            }
+            set
+            {
+                SetProperty(ref _viewModelPopup_DeviceRegister, value);
+            }
+        }
+
         private ViewModelPopup_CreateNewUser _viewModelPopup_CreateNewUser = new ViewModelPopup_CreateNewUser();
         public ViewModelPopup_CreateNewUser ViewModelPopup_CreateNewUser
         {

@@ -39,6 +39,7 @@ namespace Sqlite.Common
                     UserId = "admin",
                     Password = "1",
                     UserName = "admin",
+                    IsAdmin = true,
                 };
                 SqliteUserInfo.InsertData(userInsert);
             }
@@ -61,7 +62,7 @@ namespace Sqlite.Common
                 query += "'UserId' TEXT PRIMARY KEY, ";
                 query += "'Password' TEXT, ";
                 query += "'UserName' TEXT, ";
-                query += "'IsAdmin' TEXT";
+                query += "'IsAdmin' BOOL";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -81,12 +82,14 @@ namespace Sqlite.Common
                 query += @"INSERT INTO " + ClassName + " (";
                 query += "'UserId',";
                 query += "'Password',";
-                query += "'UserName'";
+                query += "'UserName',";
+                query += "'IsAdmin'";
                 query += ") ";
                 query += "values (";
                 query += "'" + oneRowData.UserId + "', ";
                 query += "'" + oneRowData.Password + "', ";
-                query += "'" + oneRowData.UserName + "'";
+                query += "'" + oneRowData.UserName + "', ";
+                query += "'" + oneRowData.IsAdmin + "'";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -116,6 +119,7 @@ namespace Sqlite.Common
                         oneRow.UserId = reader["UserId"].ToString();
                         oneRow.Password = reader["Password"].ToString();
                         oneRow.UserName = reader["UserName"].ToString();
+                        oneRow.IsAdmin = (bool)reader["IsAdmin"];
                         table.Add(oneRow);
                     }
                 }
