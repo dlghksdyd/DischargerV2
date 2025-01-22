@@ -50,22 +50,16 @@ namespace DischargerV2.UserControls
 
                 /// No.
                 MexTableRowColumn colNo = new MexTableRowColumn();
-                MexTextBlock tbNo = new MexTextBlock();
-                tbNo.Margin = new Thickness(16, 0, 16, 0);
-                tbNo.Text = (i + 1).ToString();
-                tbNo.Foreground = ResColor.text_body;
-                tbNo.FontSet = ResFontSet.body_md_regular;
-                colNo.Content = tbNo;
+                colNo.Margin = new Thickness(16, 0, 16, 0);
+                colNo.FontSet = ResFontSet.body_md_regular;
+                colNo.Content = (i + 1).ToString(); ;
                 row.Columns.Add(colNo);
 
                 /// Discharger Name
                 MexTableRowColumn colDischargerName = new MexTableRowColumn();
-                MexTextBlock tbDischargerName = new MexTextBlock();
-                tbDischargerName.Margin = new Thickness(16, 0, 16, 0);
-                tbDischargerName.Text = dischargerName;
-                tbDischargerName.Foreground = ResColor.text_body;
-                tbDischargerName.FontSet = ResFontSet.body_md_regular;
-                colDischargerName.Content = tbDischargerName;
+                colDischargerName.Margin = new Thickness(16, 0, 16, 0);
+                colDischargerName.FontSet = ResFontSet.body_md_regular;
+                colDischargerName.Content = dischargerName;
                 row.Columns.Add(colDischargerName);
 
                 /// Short Available
@@ -89,16 +83,15 @@ namespace DischargerV2.UserControls
 
                 /// Channel
                 MexTableRowColumn colChannel = new MexTableRowColumn();
-                MexTextBlock tbChannel = new MexTextBlock();
-                tbChannel.Margin = new Thickness(16, 0, 16, 0);
-                tbChannel.Text = dischargerInfo.DischargerChannel.ToString();
-                tbChannel.Foreground = ResColor.text_body;
-                tbChannel.FontSet = ResFontSet.body_md_regular;
-                colChannel.Content = tbChannel;
+                colChannel.Margin = new Thickness(16, 0, 16, 0);
+                colChannel.FontSet = ResFontSet.body_md_regular;
+                colChannel.Content = dischargerInfo.DischargerChannel.ToString(); ;
                 row.Columns.Add(colChannel);
 
                 /// Status
                 MexTableRowColumn colStatus = new MexTableRowColumn();
+                colStatus.Name = "xStatus" + i;
+                this.RegisterName(colStatus.Name, colStatus);
 
                 StackPanel spStatus = new StackPanel();
                 spStatus.Orientation = Orientation.Horizontal;
@@ -113,9 +106,11 @@ namespace DischargerV2.UserControls
                     new Binding("Model.StateColor[" + i + "]"));
                 spStatus.Children.Add(elStatus);
 
+                Binding bdStatus = new Binding("Foreground");
+                bdStatus.ElementName = "xStatus" + i;
                 MexTextBlock tbStatus = new MexTextBlock();
+                tbStatus.SetBinding(MexTextBlock.ForegroundProperty, bdStatus);
                 tbStatus.DataContext = _viewModelDischarger;
-                tbStatus.Foreground = ResColor.text_body;
                 tbStatus.FontSet = ResFontSet.body_md_regular;
                 tbStatus.Padding = new Thickness(8, 0, 0, 0);
                 BindingOperations.SetBinding(tbStatus, MexTextBlock.TextProperty,
@@ -126,51 +121,39 @@ namespace DischargerV2.UserControls
 
                 /// Voltage
                 MexTableRowColumn colVoltage = new MexTableRowColumn();
-                MexTextBlock tbVoltage = new MexTextBlock();
-                tbVoltage.DataContext = _viewModelDischarger;
-                tbVoltage.Margin = new Thickness(16, 0, 16, 0);
-                tbVoltage.Foreground = ResColor.text_body;
-                tbVoltage.FontSet = ResFontSet.body_md_regular;
-                BindingOperations.SetBinding(tbVoltage, MexTextBlock.TextProperty,
+                colVoltage.DataContext = _viewModelDischarger;
+                colVoltage.Margin = new Thickness(16, 0, 16, 0);
+                colVoltage.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colVoltage, MexTableRowColumn.ContentProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveBatteryVoltage"));
-                colVoltage.Content = tbVoltage;
                 row.Columns.Add(colVoltage);
 
                 /// Current
                 MexTableRowColumn colCurrent = new MexTableRowColumn();
-                MexTextBlock tbCurrent = new MexTextBlock();
-                tbCurrent.DataContext = _viewModelDischarger;
-                tbCurrent.Margin = new Thickness(16, 0, 16, 0);
-                tbCurrent.Foreground = ResColor.text_body;
-                tbCurrent.FontSet = ResFontSet.body_md_regular;
-                BindingOperations.SetBinding(tbCurrent, MexTextBlock.TextProperty,
+                colCurrent.DataContext = _viewModelDischarger;
+                colCurrent.Margin = new Thickness(16, 0, 16, 0);
+                colCurrent.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colCurrent, MexTableRowColumn.ContentProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveDischargeCurrent"));
-                colCurrent.Content = tbCurrent;
                 row.Columns.Add(colCurrent);
 
                 /// Temperature
                 MexTableRowColumn colTemperature = new MexTableRowColumn();
-                MexTextBlock tbTemperature = new MexTextBlock();
-                tbTemperature.DataContext = _viewModelTempModule;
-                tbTemperature.Margin = new Thickness(16, 0, 16, 0);
-                tbTemperature.Foreground = ResColor.text_body;
-                tbTemperature.FontSet = ResFontSet.body_md_regular;
+                colTemperature.DataContext = _viewModelTempModule;
+                colTemperature.Margin = new Thickness(16, 0, 16, 0);
+                colTemperature.FontSet = ResFontSet.body_md_regular;
                 int index = _viewModelTempModule.GetTempModuleDataIndex(dischargerInfo.TempModuleComPort);
-                BindingOperations.SetBinding(tbTemperature, MexTextBlock.TextProperty,
+                BindingOperations.SetBinding(colTemperature, MexTextBlock.ContentProperty,
                     new Binding("Model.TempDatas[" + index + "][" + dischargerInfo.TempChannel + "]"));
-                colTemperature.Content = tbTemperature;
                 row.Columns.Add(colTemperature);
 
                 /// Progress Time
                 MexTableRowColumn colProgressTime = new MexTableRowColumn();
-                MexTextBlock tbProgressTime = new MexTextBlock();
-                tbProgressTime.DataContext = _viewModelDischarger;
-                tbProgressTime.Margin = new Thickness(16, 0, 16, 0);
-                tbProgressTime.Foreground = ResColor.text_body;
-                tbProgressTime.FontSet = ResFontSet.body_md_regular;
-                BindingOperations.SetBinding(tbProgressTime, MexTextBlock.TextProperty,
+                colProgressTime.DataContext = _viewModelDischarger;
+                colProgressTime.Margin = new Thickness(16, 0, 16, 0);
+                colProgressTime.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colProgressTime, MexTableRowColumn.ContentProperty,
                     new Binding("Model.ProgressTime[" + i + "]"));
-                colProgressTime.Content = tbProgressTime;
                 row.Columns.Add(colProgressTime);
 
                 /// Info
@@ -180,8 +163,11 @@ namespace DischargerV2.UserControls
 
                 /// Info -> Error
                 StackPanel spError = new StackPanel();
+                spError.DataContext = _viewModelDischarger;
                 spError.Orientation = Orientation.Horizontal;
                 spError.Margin = new Thickness(16, 0, 16, 0);
+                BindingOperations.SetBinding(spError, StackPanel.VisibilityProperty,
+                    new Binding("Model.ErrorVisibility[" + i + "]"));
                 gridInfo.Children.Add(spError);
                 Image imageError = new Image();
                 imageError.Width = 24;
@@ -191,6 +177,7 @@ namespace DischargerV2.UserControls
                 imageError.Source = (ImageSource)imageErrorConverter.Convert(ResImage.error_outline, null, ResColor.icon_error, null);
                 spError.Children.Add(imageError);
                 MexTextBlock tbError = new MexTextBlock();
+                tbError.Text = "Error";
                 tbError.Foreground = ResColor.text_error;
                 tbError.FontSet = ResFontSet.body_md_medium;
                 tbError.TextDecorations = TextDecorations.Underline;
@@ -198,8 +185,11 @@ namespace DischargerV2.UserControls
 
                 /// Info -> Reconnect
                 StackPanel spReconnect = new StackPanel();
+                spReconnect.DataContext = _viewModelDischarger;
                 spReconnect.Orientation = Orientation.Horizontal;
                 spReconnect.Margin = new Thickness(16, 0, 16, 0);
+                BindingOperations.SetBinding(spReconnect, StackPanel.VisibilityProperty,
+                    new Binding("Model.ReconnectVisibility[" + i + "]"));
                 gridInfo.Children.Add(spReconnect);
                 Image imageReconnect = new Image();
                 imageReconnect.Width = 24;
@@ -209,6 +199,7 @@ namespace DischargerV2.UserControls
                 imageReconnect.Source = (ImageSource)imageReconnectConverter.Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
                 spReconnect.Children.Add(imageReconnect);
                 MexTextBlock tbReconnect = new MexTextBlock();
+                tbReconnect.Text = "Reconnect";
                 tbReconnect.Foreground = ResColor.text_infomation;
                 tbReconnect.FontSet = ResFontSet.body_md_medium;
                 tbReconnect.TextDecorations = TextDecorations.Underline;
