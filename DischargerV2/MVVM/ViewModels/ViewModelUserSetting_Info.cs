@@ -85,10 +85,10 @@ namespace DischargerV2.MVVM.ViewModels
         {
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
-                Title = "Delete User 'admin'?",
-                Comment = "Are you sure you want to delete this user?\r\n" +
-                          "Once you confirm, this user data will be permanetly deleted.",
-                CallBackDeledate = DeleteUser,
+                Title = string.Format("Delete User '{0}'?", Model.Name),
+                Comment = "Are you sure you want to delete this data?\r\n" +
+                          "Once you confirm, this data will be permanetly deleted.",
+                CallBackDelegate = DeleteUser,
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;

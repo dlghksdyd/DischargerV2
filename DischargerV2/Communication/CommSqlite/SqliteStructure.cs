@@ -41,6 +41,7 @@ namespace Sqlite.Common
 
     public class TableDischargerModel
     {
+        public int Id;
         public EDischargerModel Model;
         public EDischargeType Type;
         public int Channel;

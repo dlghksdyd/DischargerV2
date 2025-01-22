@@ -155,10 +155,14 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
+    <Compile Include="MVVM\Models\ModelModelRegister_Edit.cs" />
+    <Compile Include="MVVM\Models\ModelModelRegister_Info.cs" />
+    <Compile Include="MVVM\Models\ModelModelRegister_Add.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister_Edit.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelPopup_ModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelPopup_DeviceRegister.cs" />
     <Compile Include="MVVM\Models\ModelPopup_EditUser.cs" />
     <Compile Include="MVVM\Models\ModelPopup_CreateNewUser.cs" />
@@ -171,10 +175,14 @@
     <Compile Include="MVVM\Models\ModelPopup_Setting.cs" />
     <Compile Include="MVVM\Models\ModelMain.cs" />
     <Compile Include="MVVM\Models\ModelTopbar.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelModelRegister_Edit.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelModelRegister_Info.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelModelRegister_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Edit.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_ModelRegister.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_DeviceRegister.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_EditUser.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_CreateNewUser.cs" />
@@ -185,6 +193,15 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTempModule.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
+    <Compile Include="MVVM\Views\ViewModelRegister_Edit.xaml.cs">
+      <DependentUpon>ViewModelRegister_Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewModelRegister_Info.xaml.cs">
+      <DependentUpon>ViewModelRegister_Info.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewModelRegister_Add.xaml.cs">
+      <DependentUpon>ViewModelRegister_Add.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ViewDeviceRegister_Edit.xaml.cs">
       <DependentUpon>ViewDeviceRegister_Edit.xaml</DependentUpon>
     </Compile>
@@ -199,6 +216,9 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Setting.cs" />
     <Compile Include="MVVM\Views\ViewMain.xaml.cs">
       <DependentUpon>ViewMain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_ModelRegister.xaml.cs">
+      <DependentUpon>ViewPopup_ModelRegister.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_EditUser.xaml.cs">
       <DependentUpon>ViewPopup_EditUser.xaml</DependentUpon>
@@ -352,6 +372,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MVVM\Views\ViewModelRegister_Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewModelRegister_Info.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewModelRegister_Add.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MVVM\Views\ViewDeviceRegister_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -365,6 +397,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\ViewMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_ModelRegister.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

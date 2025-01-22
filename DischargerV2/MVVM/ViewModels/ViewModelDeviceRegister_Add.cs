@@ -90,14 +90,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             SqliteDischargerInfo.InsertData(tableDischargerInfo);
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            Close();
         }
 
         private void xCancelButton_Click()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            Close();
         }
 
         private void LoadModelInfoList()
@@ -156,6 +154,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             Model.CurrSpecList = currSpecList;
             Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+        }
+
+        private void Close()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
     }
 }

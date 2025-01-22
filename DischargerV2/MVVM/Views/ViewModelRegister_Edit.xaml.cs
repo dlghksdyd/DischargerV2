@@ -1,6 +1,4 @@
-﻿using DischargerV2.MVVM.ViewModels;
-using Sqlite.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,27 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MExpress.Mex;
+using DischargerV2.MVVM.ViewModels;
+using Sqlite.Common;
 
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewMain.xaml에 대한 상호 작용 논리
+    /// ViewModelRegister_Edit.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewMain : Window
+    public partial class ViewModelRegister_Edit : UserControl
     {
-        public static ViewMain Instance;
-
-        private ViewModelMain ViewModel = new ViewModelMain();
-
-        public ViewMain()
+        public ViewModelRegister_Edit()
         {
             InitializeComponent();
 
-            SqliteUtility.InitializeDatabases();
-
-            Instance = this;
-
-            this.DataContext = ViewModel;
+            this.DataContext = new ViewModelModelRegister_Edit();
         }
     }
 }

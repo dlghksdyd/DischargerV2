@@ -25,7 +25,7 @@ namespace DischargerV2.MVVM.ViewModels
         public DelegateCommand xConfirmButton_ClickCommand { get; set; }
 
         public delegate void callBackDelegate();
-        public callBackDelegate CallBackDeledate { get; set; }
+        public callBackDelegate CallBackDelegate { get; set; }
         #endregion
 
         #region Model
@@ -75,7 +75,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xConfirmButton_Click()
         {
-            CallBackDeledate();
+            CallBackDelegate();
             Close();
         }
 

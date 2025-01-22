@@ -55,7 +55,8 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else if (name == "xModelRegisterLabel")
                     {
-
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
                     }
                     else if (name == "xLogoutLabel")
                     {

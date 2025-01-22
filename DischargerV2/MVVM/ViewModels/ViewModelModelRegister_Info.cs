@@ -19,7 +19,7 @@ using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class ViewModelDeviceRegister_Info : BindableBase
+    public class ViewModelModelRegister_Info : BindableBase
     {
         #region Command
         public DelegateCommand xEditButton_ClickCommand { get; set; }
@@ -27,70 +27,82 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelDeviceRegister_Info Model { get; set; } = new ModelDeviceRegister_Info();
+        public ModelModelRegister_Info Model { get; set; } = new ModelModelRegister_Info();
 
-        public string Name
+        public int Id
         {
-            get => Model.Name;
-            set => Model.Name = value;
+            get => Model.Id;
+            set => Model.Id = value;
         }
 
-        public string Ip
+        public string DischargerModel
         {
-            get => Model.Ip;
-            set => Model.Ip = value;
+            get => Model.DischargerModel;
+            set => Model.DischargerModel = value;
         }
 
-        public EDischargerModel EModel
+        public string Type
         {
-            get => Model.EModel;
-            set => Model.EModel = value;
+            get => Model.Type;
+            set => Model.Type = value;
         }
 
-        public EDischargeType EType
-        {
-            get => Model.EType;
-            set => Model.EType = value;
-        }
-
-        public short Channel
+        public string Channel
         {
             get => Model.Channel;
             set => Model.Channel = value;
         }
 
-        public double VoltSpec
+        public string VoltSpec
         {
             get => Model.VoltSpec;
             set => Model.VoltSpec = value;
         }
 
-        public double CurrSpec
+        public string CurrSpec
         {
             get => Model.CurrSpec;
             set => Model.CurrSpec = value;
         }
 
-        public string Comport
+        public string VoltMax
         {
-            get => Model.Comport;
-            set => Model.Comport = value;
+            get => Model.VoltMax;
+            set => Model.VoltMax = value;
         }
 
-        public int ModuleChannel
+        public string VoltMin
         {
-            get => Model.ModuleChannel;
-            set => Model.ModuleChannel = value;
+            get => Model.VoltMin;
+            set => Model.VoltMin = value;
         }
 
-        public int TempChannel
+        public string CurrMax
         {
-            get => Model.TempChannel;
-            set => Model.TempChannel = value;
+            get => Model.CurrMax;
+            set => Model.CurrMax = value;
+        }
+
+        public string CurrMin
+        {
+            get => Model.CurrMin;
+            set => Model.CurrMin = value;
+        }
+
+        public string TempMax
+        {
+            get => Model.TempMax;
+            set => Model.TempMax = value;
+        }
+
+        public string TempMin
+        {
+            get => Model.TempMin;
+            set => Model.TempMin = value;
         }
         #endregion
 
-        public ViewModelDeviceRegister_Info()
+        public ViewModelModelRegister_Info()
         {
             xEditButton_ClickCommand = new DelegateCommand(xEditButton_Click);
             xDeleteButton_ClickCommand = new DelegateCommand(xDeleteButton_Click);
@@ -98,20 +110,20 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xEditButton_Click()
         {
-            ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister()
+            ViewModelPopup_ModelRegister viewModelPopup_ModelRegister = new ViewModelPopup_ModelRegister()
             {
-                SelectedItem = Model.Name
+                SelectedId = Model.Id
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_DeviceRegister(viewModelPopup_DeviceRegister);
+            viewModelMain.SetViewModelPopup_ModelRegister(viewModelPopup_ModelRegister);
         }
 
         private void xDeleteButton_Click()
         {
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
-                Title = string.Format("Delete Device '{0}'?", Name),
+                Title = string.Format("Delete Model '{0}'?", Model.DischargerModel),
                 Comment = "Are you sure you want to delete this data?\r\n" +
                           "Once you confirm, this data will be permanetly deleted.",
                 CallBackDelegate = DeleteDevice,
@@ -124,10 +136,10 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void DeleteDevice()
         {
-            SqliteDischargerInfo.DeleteData(Name);
+            SqliteDischargerModel.DeleteData(Model.Id);
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
         }
     }
 }

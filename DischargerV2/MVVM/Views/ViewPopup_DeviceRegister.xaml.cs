@@ -67,7 +67,7 @@ namespace DischargerV2.MVVM.Views
                 spaceGrid.SetBinding(VisibilityProperty, newDeviceVisibilityBinding);
                 xContentPanel.Children.Add(spaceGrid);
 
-                // Device Info
+                // TableDischargerInfo
                 for (int index = 0; index < _viewModel.Model.Content.Count; index++)
                 {
                     TableDischargerInfo tableDischargerInfo = _viewModel.Model.Content[index];

@@ -177,7 +177,7 @@ namespace Sqlite.Common
                 connection.Open();
 
                 string query = @"CREATE TABLE IF NOT EXISTS " + ClassName + "(";
-                query += "'Id' INTEGER AUTO INCREMENT PRIMARY KEY, ";
+                query += "'Id' INTEGER NOT NULL, ";
                 query += "'Model' TEXT, ";
                 query += "'Type' TEXT, ";
                 query += "'Channel' INTEGER, ";
@@ -188,7 +188,8 @@ namespace Sqlite.Common
                 query += "'SafetyCurrentMax' REAL, ";
                 query += "'SafetyCurrentMin' REAL, ";
                 query += "'SafetyTempMax' REAL, ";
-                query += "'SafetyTempMin' REAL";
+                query += "'SafetyTempMin' REAL,";
+                query += "PRIMARY KEY('Id' AUTOINCREMENT)";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -256,6 +257,7 @@ namespace Sqlite.Common
                     while (reader.Read())
                     {
                         TableDischargerModel oneRow = new TableDischargerModel();
+                        oneRow.Id = int.Parse(reader["Id"].ToString());
                         oneRow.Model = (EDischargerModel)Enum.Parse(typeof(EDischargerModel), reader["Model"].ToString());
                         oneRow.Type = (EDischargeType)Enum.Parse(typeof(EDischargeType), reader["Type"].ToString());
                         oneRow.Channel = int.Parse(reader["Channel"].ToString());
@@ -274,6 +276,34 @@ namespace Sqlite.Common
             }
 
             return table;
+        }
+
+        public static void UpdateData(TableDischargerModel oneRowData)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                var query = "";
+                query = @"UPDATE " + ClassName + " SET ";
+                query += "\"Model\"='" + oneRowData.Model.ToString() + "',";
+                query += "\"Type\"='" + oneRowData.Type.ToString() + "',";
+                query += "\"Channel\"='" + oneRowData.Channel.ToString() + "',";
+                query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage.ToString() + "',";
+                query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent.ToString() + "',";
+                query += "\"SafetyVoltMax\"='" + oneRowData.SafetyVoltMax.ToString() + "',";
+                query += "\"SafetyVoltMin\"='" + oneRowData.SafetyVoltMin.ToString() + "',";
+                query += "\"SafetyCurrentMax\"='" + oneRowData.SafetyCurrentMax.ToString() + "',";
+                query += "\"SafetyCurrentMin\"='" + oneRowData.SafetyCurrentMin.ToString() + "',";
+                query += "\"SafetyTempMax\"='" + oneRowData.SafetyTempMax.ToString() + "',";
+                query += "\"SafetyTempMin\"='" + oneRowData.SafetyTempMin.ToString() + "'";
+                query += "WHERE \"Id\"='" + oneRowData.Id + "'";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public static void DeleteData(int id)
