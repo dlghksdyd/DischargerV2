@@ -119,7 +119,7 @@ namespace Sqlite.Common
                         oneRow.UserId = reader["UserId"].ToString();
                         oneRow.Password = reader["Password"].ToString();
                         oneRow.UserName = reader["UserName"].ToString();
-                        oneRow.IsAdmin = (bool)reader["IsAdmin"];
+                        oneRow.IsAdmin = Boolean.Parse(reader["IsAdmin"].ToString());
                         table.Add(oneRow);
                     }
                 }
