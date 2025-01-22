@@ -93,24 +93,29 @@ namespace Ethernet.Client.Basic
                 ClientInstances[handle] = new EthernetClientInstance();
                 ClientInstances[handle].Client = new TcpClient();
 
-                try
+                var waiter = ClientInstances[handle].Client.BeginConnect(serverIpAddress, port, null, null);
+
+                if (waiter.AsyncWaitHandle.WaitOne(timeOutMs, true))
                 {
-                    ClientInstances[handle].Client.Connect(serverIpAddress.ToString(), port);
+                    ClientInstances[handle].Client.EndConnect(waiter);
+
+                    if (ClientInstances[handle].Client.Connected)
+                    {
+                        ClientInstances[handle].Client.ReceiveTimeout = timeOutMs;
+                        ClientInstances[handle].Stream = ClientInstances[handle].Client.GetStream();
+                        ClientInstances[handle].DataLock = new object();
+
+                        return EthernetClientBasicStatus.EN_ERROR_OK;
+                    }
+                    else
+                    {
+                        Disconnect(handle);
+
+                        return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                    }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
 
-                    Disconnect(handle);
-
-                    return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
-                }
-
-                ClientInstances[handle].Client.ReceiveTimeout = timeOutMs;
-                ClientInstances[handle].Stream = ClientInstances[handle].Client.GetStream();
-                ClientInstances[handle].DataLock = new object();
-
-                return EthernetClientBasicStatus.EN_ERROR_OK;
+                return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
             }
         }
 

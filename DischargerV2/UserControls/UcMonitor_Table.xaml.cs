@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.ViewModels;
 using MExpress.Mex;
+using Microsoft.Xaml.Behaviors;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,6 @@ namespace DischargerV2.UserControls
                 MexTableRowColumn colShortAvailable = new MexTableRowColumn();
                 MexLabel lbShortAvailable = new MexLabel();
                 lbShortAvailable.Visibility = Visibility.Visible;
-                lbShortAvailable.Margin = new Thickness(-8, 0, 16, 0);
                 lbShortAvailable.CornerRadius = new CornerRadius(4);
                 lbShortAvailable.Background = ResColor.surface_success;
                 lbShortAvailable.Padding = new Thickness(8, 0, 8, 0);
@@ -190,6 +190,18 @@ namespace DischargerV2.UserControls
                 spReconnect.Margin = new Thickness(16, 0, 16, 0);
                 BindingOperations.SetBinding(spReconnect, StackPanel.VisibilityProperty,
                     new Binding("Model.ReconnectVisibility[" + i + "]"));
+                var reconnectTriggerCollection = Interaction.GetTriggers(spReconnect);
+                var reconnectEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
+                reconnectEventTrigger.EventName = "MouseLeftButtonUp";
+                var reconnectAction = new InvokeCommandAction();
+                reconnectAction.PassEventArgsToCommand = false;
+                reconnectAction.CommandParameter = dischargerName;
+                BindingOperations.SetBinding(reconnectAction, 
+                    InvokeCommandAction.CommandProperty, 
+                    new Binding("ReconnectDischargerCommand"));
+                reconnectEventTrigger.Actions.Add(reconnectAction);
+                reconnectTriggerCollection.Add(reconnectEventTrigger);
+
                 gridInfo.Children.Add(spReconnect);
                 Image imageReconnect = new Image();
                 imageReconnect.Width = 24;

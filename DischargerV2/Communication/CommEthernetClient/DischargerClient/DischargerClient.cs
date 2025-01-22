@@ -233,8 +233,6 @@ namespace Ethernet.Client.Discharger
 
         public bool Restart()
         {
-            Stop();
-
             return Start(_parameters);
         }
 

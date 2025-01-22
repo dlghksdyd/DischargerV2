@@ -101,7 +101,15 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void ReconnectDischarger(string dischargerName)
         {
-            _clients[dischargerName].Restart();
+            int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
+            Model.ReconnectVisibility[index] = Visibility.Collapsed;
+
+            Thread thread = new Thread(
+                delegate()
+                {
+                    _clients[dischargerName].Restart();
+                });
+            thread.Start();
         }
 
         private void StartDischarger(StartDischargerCommandParam param)
@@ -188,7 +196,7 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.Channel = info.DischargerChannel;
             dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
             dischargerInfo.EthernetPort = 10004;
-            dischargerInfo.TimeOutMs = 5000;
+            dischargerInfo.TimeOutMs = 1000;
             dischargerInfo.SpecVoltage = info.SpecVoltage;
             dischargerInfo.SpecCurrent = info.SpecCurrent;
             dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;
