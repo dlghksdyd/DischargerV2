@@ -131,7 +131,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
         }
 
         public void DeleteDevice()

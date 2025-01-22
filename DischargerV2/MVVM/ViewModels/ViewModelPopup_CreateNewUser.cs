@@ -78,27 +78,32 @@ namespace DischargerV2.MVVM.ViewModels
             }
             else
             {
-                TableUserInfo tableUserInfo = new TableUserInfo();
-                tableUserInfo.UserId = Model.Id;
-                tableUserInfo.Password = Model.Password;
-                tableUserInfo.UserName = Model.Name;
-                tableUserInfo.IsAdmin = Model.IsAdmin;
-
-                SqliteUserInfo.InsertData(tableUserInfo);
+                InsertUserInfo();
                 Return();
             }
+        }
+
+        private void InsertUserInfo()
+        {
+            TableUserInfo tableUserInfo = new TableUserInfo();
+            tableUserInfo.UserId = Model.Id;
+            tableUserInfo.Password = Model.Password;
+            tableUserInfo.UserName = Model.Name;
+            tableUserInfo.IsAdmin = Model.IsAdmin;
+
+            SqliteUserInfo.InsertData(tableUserInfo);
         }
 
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
         }
 
         private void Return()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
             viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
     }

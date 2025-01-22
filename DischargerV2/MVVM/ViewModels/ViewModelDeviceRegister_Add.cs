@@ -29,7 +29,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelDeviceRegister_Add Model { get; set; } = new ModelDeviceRegister_Add();
+        public ModelDeviceRegister Model { get; set; } = new ModelDeviceRegister();
         #endregion
 
         private static ViewModelDeviceRegister_Add _instance = null;
@@ -48,8 +48,6 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDeviceRegister_Add()
         {
-            _instance = this;
-
             xComboBox_MouseLeaveCommand = new DelegateCommand(xComboBox_MouseLeave);
             xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
             xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
@@ -64,33 +62,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xAddButton_Click()
         {
-            TableDischargerInfo tableDischargerInfo = new TableDischargerInfo();
-            tableDischargerInfo.DischargerName = Model.Name;
-            tableDischargerInfo.IpAddress = Model.Ip;
-            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            if (!(CheckData() < 0))
             {
-                if (Model.DischargerModel == eDischargerModel.ToString())
-                {
-                    tableDischargerInfo.Model = eDischargerModel;
-                }
+                InsertDischargerInfo();
+                Close();
             }
-            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
-            {
-                if (Model.Type == eDischargerType.ToString())
-                {
-                    tableDischargerInfo.Type = eDischargerType;
-                }
-            }
-            tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
-            tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
-            tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
-            tableDischargerInfo.TempModuleComPort = Model.Comport;
-            tableDischargerInfo.TempModuleChannel = Convert.ToInt32(Model.ModuleChannel);
-            tableDischargerInfo.TempChannel = Convert.ToInt32(Model.TempChannel);
-
-            SqliteDischargerInfo.InsertData(tableDischargerInfo);
-
-            Close();
         }
 
         private void xCancelButton_Click()
@@ -154,6 +130,118 @@ namespace DischargerV2.MVVM.ViewModels
 
             Model.CurrSpecList = currSpecList;
             Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+        }
+
+        private int CheckData()
+        {
+            if (Model.Name == null || Model.Name == "")
+            {
+                MessageBox.Show("Name: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.Ip == null || Model.Ip == "")
+            {
+                MessageBox.Show("Ip: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.DischargerModel == null || Model.DischargerModel == "")
+            {
+                MessageBox.Show("Model: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.Type == null || Model.Type == "")
+            {
+                MessageBox.Show("Type: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.Channel == null || Model.Channel == "")
+            {
+                MessageBox.Show("Channel: 필수 정보입니다.");
+                return -1;
+            }
+            if (!Int16.TryParse(Model.Channel, out Int16 channel))
+            {
+                MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
+                return -1;
+            }
+            if (Model.VoltSpec == null || Model.VoltSpec == "")
+            {
+                MessageBox.Show("VoltSpec: 필수 정보입니다.");
+                return -1;
+            }
+            if (!double.TryParse(Model.VoltSpec, out double voltSpec))
+            {
+                MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
+                return -1;
+            }
+            if (Model.CurrSpec == null || Model.CurrSpec == "")
+            {
+                MessageBox.Show("CurrSpec: 필수 정보입니다.");
+                return -1;
+            }
+            if (!double.TryParse(Model.CurrSpec, out double surrSpec))
+            {
+                MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
+                return -1;
+            }
+            if (Model.ModuleChannel != null)
+            {
+                if (Model.ModuleChannel == "")
+                {
+                    Model.ModuleChannel = null;
+                }
+                else if (!Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
+                {
+                    MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+            }
+            if (Model.TempChannel != null)
+            {
+                if (Model.TempChannel == "")
+                {
+                    Model.TempChannel = null;
+                }
+                else if (!Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
+                {
+                    MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+            }
+            return 0;
+        }
+
+        private void InsertDischargerInfo()
+        {
+            TableDischargerInfo tableDischargerInfo = new TableDischargerInfo();
+
+            tableDischargerInfo.DischargerName = Model.Name;
+            tableDischargerInfo.IpAddress = Model.Ip;
+
+            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            {
+                if (Model.DischargerModel == eDischargerModel.ToString())
+                {
+                    tableDischargerInfo.Model = eDischargerModel;
+                }
+            }
+
+            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+            {
+                if (Model.Type == eDischargerType.ToString())
+                {
+                    tableDischargerInfo.Type = eDischargerType;
+                }
+            }
+
+            tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
+            tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
+            tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+            tableDischargerInfo.TempModuleComPort = Model.Comport;
+            tableDischargerInfo.TempModuleChannel = Convert.ToInt32(Model.ModuleChannel);
+            tableDischargerInfo.TempChannel = Convert.ToInt32(Model.TempChannel);
+
+            SqliteDischargerInfo.InsertData(tableDischargerInfo);
         }
 
         private void Close()

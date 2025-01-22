@@ -84,19 +84,19 @@
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 
-                Visibility="{Binding Model.IsPopupOpen2,
+                Visibility="{Binding Model.IsNestedPopupOpen,
                                      Converter={StaticResource BoolToVisibilityConverter}, 
                                      FallbackValue=Collapsed}">
             <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                <view:ViewPopup_CreateNewUser Visibility="{Binding Model.PopupVisibility2[0], 
+                <view:ViewPopup_CreateNewUser Visibility="{Binding Model.NestedPopupVisibility[0], 
                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
                                               DataContext="{Binding Model.ViewModelPopup_CreateNewUser,
                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_EditUser Visibility="{Binding Model.PopupVisibility2[1], 
+                <view:ViewPopup_EditUser Visibility="{Binding Model.NestedPopupVisibility[1], 
                                                               Source={x:Static vm:ViewModelMain.Instance}}"
                                          DataContext="{Binding Model.ViewModelPopup_EditUser, 
                                                                Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_Warning Visibility="{Binding Model.PopupVisibility2[2], 
+                <view:ViewPopup_Warning Visibility="{Binding Model.NestedPopupVisibility[2], 
                                                              Source={x:Static vm:ViewModelMain.Instance}}"
                                         DataContext="{Binding Model.ViewModelPopup_Warning, 
                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>

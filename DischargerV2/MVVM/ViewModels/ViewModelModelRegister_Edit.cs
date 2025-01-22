@@ -127,34 +127,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xEditButton_Click()
         {
-            TableDischargerModel tableDischargerModel = new TableDischargerModel();
-            tableDischargerModel.Id = Model.Id;
-            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
-            {
-                if (Model.DischargerModel == eDischargerModel.ToString())
-                {
-                    tableDischargerModel.Model = eDischargerModel;
-                }
-            }
-            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
-            {
-                if (Model.Type == eDischargerType.ToString())
-                {
-                    tableDischargerModel.Type = eDischargerType;
-                }
-            }
-            tableDischargerModel.Channel = Convert.ToInt32(Model.Channel);
-            tableDischargerModel.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
-            tableDischargerModel.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
-            tableDischargerModel.SafetyVoltMax = Convert.ToDouble(Model.VoltMax);
-            tableDischargerModel.SafetyVoltMin = Convert.ToDouble(Model.VoltMin);
-            tableDischargerModel.SafetyCurrentMax = Convert.ToDouble(Model.CurrMax);
-            tableDischargerModel.SafetyCurrentMin = Convert.ToDouble(Model.CurrMin);
-            tableDischargerModel.SafetyTempMax = Convert.ToDouble(Model.TempMax);
-            tableDischargerModel.SafetyTempMin = Convert.ToDouble(Model.TempMin);
-
-            SqliteDischargerModel.UpdateData(tableDischargerModel);
-
+            UpdateDischargerModel();
             Close();
         }
 
@@ -182,6 +155,41 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             Model.TypeList = typeList;
+        }
+
+        private void UpdateDischargerModel()
+        {
+            TableDischargerModel tableDischargerModel = new TableDischargerModel();
+
+            tableDischargerModel.Id = Model.Id;
+
+            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            {
+                if (Model.DischargerModel == eDischargerModel.ToString())
+                {
+                    tableDischargerModel.Model = eDischargerModel;
+                }
+            }
+
+            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+            {
+                if (Model.Type == eDischargerType.ToString())
+                {
+                    tableDischargerModel.Type = eDischargerType;
+                }
+            }
+
+            tableDischargerModel.Channel = Convert.ToInt32(Model.Channel);
+            tableDischargerModel.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
+            tableDischargerModel.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+            tableDischargerModel.SafetyVoltMax = Convert.ToDouble(Model.VoltMax);
+            tableDischargerModel.SafetyVoltMin = Convert.ToDouble(Model.VoltMin);
+            tableDischargerModel.SafetyCurrentMax = Convert.ToDouble(Model.CurrMax);
+            tableDischargerModel.SafetyCurrentMin = Convert.ToDouble(Model.CurrMin);
+            tableDischargerModel.SafetyTempMax = Convert.ToDouble(Model.TempMax);
+            tableDischargerModel.SafetyTempMin = Convert.ToDouble(Model.TempMin);
+
+            SqliteDischargerModel.UpdateData(tableDischargerModel);
         }
 
         private void Close()

@@ -56,7 +56,8 @@
                                                        Mode=TwoWay}"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                        IsReadOnly="True"/>
                     </StackPanel>
                     <!--IP Address-->
                     <StackPanel Grid.Column="2" 

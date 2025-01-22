@@ -49,7 +49,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void InitializeModel()
         {
             OffPopup();
-            OffPopup2();
+            OffNestedPopup();
         }
 
         public void OpenPopup(EPopup setPopup)
@@ -78,17 +78,17 @@ namespace DischargerV2.MVVM.ViewModels
             Model.IsPopupOpen = true;
         }
 
-        public void OpenPopup2(EPopup2 setPopup)
+        public void OpenNestedPopup(ENestedPopup setPopup)
         {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
+            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
 
-            foreach (EPopup2 popup in Enum.GetValues(typeof(EPopup2)))
+            foreach (ENestedPopup popup in Enum.GetValues(typeof(ENestedPopup)))
             {
                 popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? Visibility.Visible : Visibility.Collapsed;
             }
 
-            Model.PopupVisibility2 = popupVisibility;
-            Model.IsPopupOpen2 = true;
+            Model.NestedPopupVisibility = popupVisibility;
+            Model.IsNestedPopupOpen = true;
         }
 
         public void OffPopup()
@@ -104,11 +104,11 @@ namespace DischargerV2.MVVM.ViewModels
             Model.IsPopupOpen = false;
         }
 
-        public void OffPopup2()
+        public void OffNestedPopup()
         {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
+            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
 
-            foreach (EPopup popup in Enum.GetValues(typeof(EPopup2)))
+            foreach (EPopup popup in Enum.GetValues(typeof(ENestedPopup)))
             {
                 popupVisibility[(int)popup] = Visibility.Collapsed;
             }
@@ -117,8 +117,8 @@ namespace DischargerV2.MVVM.ViewModels
             Model.ViewModelPopup_EditUser = new ViewModelPopup_EditUser();
             Model.ViewModelPopup_Warning = new ViewModelPopup_Warning();
             
-            Model.PopupVisibility2 = popupVisibility;
-            Model.IsPopupOpen2 = false;
+            Model.NestedPopupVisibility = popupVisibility;
+            Model.IsNestedPopupOpen = false;
         }
 
         public void SetViewModelPopup_DeviceRegister(ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister)

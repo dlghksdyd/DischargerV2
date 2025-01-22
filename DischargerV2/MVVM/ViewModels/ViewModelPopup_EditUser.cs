@@ -134,13 +134,13 @@ namespace DischargerV2.MVVM.ViewModels
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
         }
 
         private void Return()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
             viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
     }

@@ -57,8 +57,55 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xAddButton_Click()
         {
-            InsertDischargerModel();
-            Close();
+            if (Model.DischargerModel == null || Model.DischargerModel == "")
+            {
+                MessageBox.Show("Model: 필수 정보입니다.");
+            }
+            else if (Model.Type == null || Model.Type == "")
+            {
+                MessageBox.Show("Type: 필수 정보입니다.");
+            }
+            else if (Model.Channel == null || Model.Channel == "")
+            {
+                MessageBox.Show("Channel: 필수 정보입니다.");
+            }
+            else if (Model.VoltSpec == null || Model.VoltSpec == "")
+            {
+                MessageBox.Show("VoltSpec: 필수 정보입니다.");
+            }
+            else if (Model.CurrSpec == null || Model.CurrSpec == "")
+            {
+                MessageBox.Show("CurrSpec: 필수 정보입니다.");
+            }
+            else if (Model.VoltMax == null || Model.VoltMax == "")
+            {
+                MessageBox.Show("VoltMax: 필수 정보입니다.");
+            }
+            else if (Model.VoltMin == null || Model.VoltMin == "")
+            {
+                MessageBox.Show("VoltMin: 필수 정보입니다.");
+            }
+            else if (Model.CurrMax == null || Model.CurrMax == "")
+            {
+                MessageBox.Show("CurrMax: 필수 정보입니다.");
+            }
+            else if (Model.CurrMin == null || Model.CurrMin == "")
+            {
+                MessageBox.Show("CurrMin: 필수 정보입니다.");
+            }
+            else if (Model.TempMax == null || Model.TempMax == "")
+            {
+                MessageBox.Show("TempMax: 필수 정보입니다.");
+            }
+            else if (Model.TempMin == null || Model.TempMin == "")
+            {
+                MessageBox.Show("TempMin: 필수 정보입니다.");
+            }
+            else
+            {
+                InsertDischargerModel();
+                Close();
+            }
         }
 
         private void xCancelButton_Click()

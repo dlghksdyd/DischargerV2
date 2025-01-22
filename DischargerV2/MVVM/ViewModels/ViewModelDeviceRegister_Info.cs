@@ -27,7 +27,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelDeviceRegister_Info Model { get; set; } = new ModelDeviceRegister_Info();
+        public ModelDeviceRegister Model { get; set; } = new ModelDeviceRegister();
 
         public string Name
         {
@@ -41,31 +41,31 @@ namespace DischargerV2.MVVM.ViewModels
             set => Model.Ip = value;
         }
 
-        public EDischargerModel EModel
+        public string DischargerModel
         {
-            get => Model.EModel;
-            set => Model.EModel = value;
+            get => Model.DischargerModel;
+            set => Model.DischargerModel = value;
         }
 
-        public EDischargeType EType
+        public string Type
         {
-            get => Model.EType;
-            set => Model.EType = value;
+            get => Model.Type;
+            set => Model.Type = value;
         }
 
-        public short Channel
+        public string Channel
         {
             get => Model.Channel;
             set => Model.Channel = value;
         }
 
-        public double VoltSpec
+        public string VoltSpec
         {
             get => Model.VoltSpec;
             set => Model.VoltSpec = value;
         }
 
-        public double CurrSpec
+        public string CurrSpec
         {
             get => Model.CurrSpec;
             set => Model.CurrSpec = value;
@@ -77,13 +77,13 @@ namespace DischargerV2.MVVM.ViewModels
             set => Model.Comport = value;
         }
 
-        public int ModuleChannel
+        public string ModuleChannel
         {
             get => Model.ModuleChannel;
             set => Model.ModuleChannel = value;
         }
 
-        public int TempChannel
+        public string TempChannel
         {
             get => Model.TempChannel;
             set => Model.TempChannel = value;
@@ -119,7 +119,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
         }
 
         public void DeleteDevice()
