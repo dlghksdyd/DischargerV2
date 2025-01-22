@@ -16,6 +16,7 @@ using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
 using Sqlite.Common;
 using MExpress.Example;
+using System.Runtime.Remoting.Channels;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -24,13 +25,11 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewPopup_DeviceRegister : UserControl
     {
-        private ViewModelPopup_DeviceRegister _viewModel = null;
+        private ViewModelPopup_DeviceRegister _viewModel = new ViewModelPopup_DeviceRegister();
 
         public ViewPopup_DeviceRegister()
         {
             InitializeComponent();
-
-            _viewModel = new ViewModelPopup_DeviceRegister();
 
             this.DataContext = _viewModel;
 
@@ -41,10 +40,10 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel = e.NewValue as ViewModelPopup_DeviceRegister;
 
-            InitializeUI();
+            InitializeUI(_viewModel.Model.SelectedItem);
         }
 
-        private void InitializeUI()
+        private void InitializeUI(string selectedItem = "")
         {
             if (_viewModel.Model.Content.Count > 0)
             {
@@ -53,7 +52,7 @@ namespace DischargerV2.MVVM.Views
 
                 xContentPanel.Children.Clear();
 
-                // New Device
+                // New 
                 Binding newDeviceVisibilityBinding = new Binding();
                 newDeviceVisibilityBinding.Path = new PropertyPath("NewDeviceVisibility");
                 newDeviceVisibilityBinding.Source = _viewModel.Model;
@@ -61,6 +60,7 @@ namespace DischargerV2.MVVM.Views
 
                 ViewDeviceRegister_Add viewDeviceRegister_Add = new ViewDeviceRegister_Add();
                 viewDeviceRegister_Add.SetBinding(VisibilityProperty, newDeviceVisibilityBinding);
+                viewDeviceRegister_Add.IsVisibleChanged += ViewDeviceRegister_Add_IsVisibleChanged;
                 xContentPanel.Children.Add(viewDeviceRegister_Add);
 
                 Grid spaceGrid = new Grid() { Height = 16 };
@@ -73,22 +73,47 @@ namespace DischargerV2.MVVM.Views
                 {
                     TableDischargerInfo tableDischargerInfo = _viewModel.Model.Content[index];
 
-                    xContentPanel.Children.Add(new ViewDeviceRegister_Info()
+                    // Edit
+                    if (tableDischargerInfo.DischargerName == selectedItem)
                     {
-                        DataContext = new ViewModelDeviceRegister_Info()
+                        ViewDeviceRegister_Edit view = new ViewDeviceRegister_Edit();
+
+                        ViewModelDeviceRegister_Edit viewModel = ViewModelDeviceRegister_Edit.Instance;
+                        viewModel.Name = tableDischargerInfo.DischargerName;
+                        viewModel.Ip = tableDischargerInfo.IpAddress;
+                        viewModel.DischargerModel = tableDischargerInfo.Model.ToString();
+                        viewModel.Type = tableDischargerInfo.Type.ToString();
+                        viewModel.Channel = tableDischargerInfo.DischargerChannel.ToString();
+                        viewModel.VoltSpec = tableDischargerInfo.SpecVoltage.ToString();
+                        viewModel.CurrSpec = tableDischargerInfo.SpecCurrent.ToString();
+                        viewModel.Comport = tableDischargerInfo.TempModuleComPort;
+                        viewModel.ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString();
+                        viewModel.TempChannel = tableDischargerInfo.TempChannel.ToString();
+
+                        view.DataContext = viewModel;
+
+                        xContentPanel.Children.Add(view);
+                    }
+                    // Info
+                    else
+                    {
+                        xContentPanel.Children.Add(new ViewDeviceRegister_Info()
                         {
-                            Name = tableDischargerInfo.DischargerName,
-                            Ip = tableDischargerInfo.IpAddress,
-                            EModel = tableDischargerInfo.Model,
-                            EType = tableDischargerInfo.Type,
-                            Channel = tableDischargerInfo.DischargerChannel,
-                            VoltSpec = tableDischargerInfo.SpecVoltage,
-                            CurrSpec = tableDischargerInfo.SpecCurrent,
-                            Comport = tableDischargerInfo.TempModuleComPort,
-                            ModuleChannel = tableDischargerInfo.TempModuleChannel,
-                            TempChannel = tableDischargerInfo.TempChannel,
-                        }
-                    });
+                            DataContext = new ViewModelDeviceRegister_Info()
+                            {
+                                Name = tableDischargerInfo.DischargerName,
+                                Ip = tableDischargerInfo.IpAddress,
+                                EModel = tableDischargerInfo.Model,
+                                EType = tableDischargerInfo.Type,
+                                Channel = tableDischargerInfo.DischargerChannel,
+                                VoltSpec = tableDischargerInfo.SpecVoltage,
+                                CurrSpec = tableDischargerInfo.SpecCurrent,
+                                Comport = tableDischargerInfo.TempModuleComPort,
+                                ModuleChannel = tableDischargerInfo.TempModuleChannel,
+                                TempChannel = tableDischargerInfo.TempChannel,
+                            }
+                        });
+                    }
 
                     if (index < _viewModel.Model.Content.Count - 1)
                     {
@@ -100,6 +125,14 @@ namespace DischargerV2.MVVM.Views
             {
                 xNoDataBorder.Visibility = Visibility.Visible;
                 xContentPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ViewDeviceRegister_Add_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                xScrollViewer.ScrollToVerticalOffset(0);
             }
         }
     }

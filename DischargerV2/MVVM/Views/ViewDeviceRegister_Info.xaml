@@ -48,6 +48,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xDeviceNameTextBlock"
                                           Text="{Binding Model.Name, 
+                                                         Mode=TwoWay,
                                                          FallbackValue=TEST_DEVICE}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
@@ -62,6 +63,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xIpAddressTextBlock"
                                           Text="{Binding Model.Ip, 
+                                                         Mode=TwoWay,
                                                          FallbackValue=192.168.0.5}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
@@ -73,7 +75,14 @@
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
                                    ImageSetLeft="{StaticResource Mex/ResImageSet_Component/EditButtonIcon}"
-                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"/>
+                                   ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:InvokeCommandAction Command="{Binding xEditButton_ClickCommand}"
+                                                       PassEventArgsToCommand="False"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Mex:MexButton>
                     <!--Delete-->
                     <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6" 
                                    Padding="12"
@@ -134,6 +143,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xModelTextBlock"
                                           Text="{Binding Model.EModel, 
+                                                         Mode=TwoWay, 
                                                          FallbackValue=MBDC}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -151,7 +161,8 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xTypeTextBlock"
-                                          Text="{Binding Model.EType, 
+                                          Text="{Binding Model.EType,  
+                                                         Mode=TwoWay,
                                                          FallbackValue=Load}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -170,6 +181,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xChannelTextBlock"
                                           Text="{Binding Model.Channel, 
+                                                         Mode=TwoWay, 
                                                          FallbackValue=1}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -188,6 +200,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xVoltSpecTextBlock"
                                           Text="{Binding Model.VoltSpec, 
+                                                         Mode=TwoWay, 
                                                          FallbackValue=1000}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -205,7 +218,8 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xCurrSpecTextBlock"
-                                          Text="{Binding Model.CurrSpec, 
+                                          Text="{Binding Model.CurrSpec,  
+                                                         Mode=TwoWay,
                                                          FallbackValue=100}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -223,7 +237,8 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xComportTextBlock"
-                                          Text="{Binding Model.Comport, 
+                                          Text="{Binding Model.Comport,  
+                                                         Mode=TwoWay,
                                                          FallbackValue=COM3}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -242,6 +257,7 @@
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xModuleChannelTextBlock"
                                           Text="{Binding Model.ModuleChannel, 
+                                                         Mode=TwoWay, 
                                                          FallbackValue=1}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
@@ -259,7 +275,8 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBlock x:Name="xTempChannelTextBlock"
-                                          Text="{Binding Model.TempChannel, 
+                                          Text="{Binding Model.TempChannel,  
+                                                         Mode=TwoWay,
                                                          FallbackValue=1}"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>

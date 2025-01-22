@@ -10,8 +10,9 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_DeviceRegister}"
-             d:DesignHeight="976" d:DesignWidth="1624"
-             MinHeight="976" MinWidth="1624">
+             d:DesignHeight="976" d:DesignWidth="1631"
+             MinHeight="976" MinWidth="1631"
+             MaxHeight="976" MaxWidth="1631">
 
     <Border Background="{StaticResource Mex/ResColor/surface_page}"
             CornerRadius="8">
@@ -67,7 +68,7 @@
                         BorderThickness="1"
                         CornerRadius="8"
                         Background="{StaticResource Mex/ResColor/surface_primary}">
-                    <Mex:MexScrollViewer>
+                    <Mex:MexScrollViewer x:Name="xScrollViewer">
                         <Grid>
                             <!--NoData-->
                             <Border x:Name="xNoDataBorder" 

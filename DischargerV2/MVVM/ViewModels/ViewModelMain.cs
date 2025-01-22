@@ -117,6 +117,11 @@ namespace DischargerV2.MVVM.ViewModels
             Model.IsPopupOpen2 = false;
         }
 
+        public void SetViewModelPopup_DeviceRegister(ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister)
+        {
+            Model.ViewModelPopup_DeviceRegister = viewModelPopup_DeviceRegister;
+        }
+
         public void SetViewModelPopup_EditUser(ViewModelPopup_EditUser viewModelPopup_EditUser)
         {
             Model.ViewModelPopup_EditUser = viewModelPopup_EditUser;

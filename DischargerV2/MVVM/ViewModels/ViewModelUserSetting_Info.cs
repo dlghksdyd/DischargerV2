@@ -87,7 +87,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Title = "Delete User 'admin'?",
                 Comment = "Are you sure you want to delete this user?\r\n" +
-                              "Once you confirm, this user data will be permanetly deleted.",
+                          "Once you confirm, this user data will be permanetly deleted.",
                 CallBackDeledate = DeleteUser,
             };
 

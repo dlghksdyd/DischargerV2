@@ -43,16 +43,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private int _selectedIndex = -1;
-        public int SelectedIndex
+        private string _selectedItem;
+        public string SelectedItem
         {
             get
             {
-                return _selectedIndex;
+                return _selectedItem;
             }
             set
             {
-                SetProperty(ref _selectedIndex, value);
+                SetProperty(ref _selectedItem, value);
             }
         }
     }

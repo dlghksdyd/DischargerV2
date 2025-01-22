@@ -98,17 +98,36 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void xEditButton_Click()
         {
-            
+            ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister()
+            {
+                SelectedItem = Model.Name
+            };
+
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.SetViewModelPopup_DeviceRegister(viewModelPopup_DeviceRegister);
         }
 
         private void xDeleteButton_Click()
         {
-            
+            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+            {
+                Title = string.Format("Delete Device '{0}'?", Name),
+                Comment = "Are you sure you want to delete this Device?\r\n" +
+                          "Once you confirm, this device data will be permanetly deleted.",
+                CallBackDeledate = DeleteDevice,
+            };
+
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
         }
 
         public void DeleteDevice()
         {
-            
+            SqliteDischargerInfo.DeleteData(Name);
+
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
     }
 }

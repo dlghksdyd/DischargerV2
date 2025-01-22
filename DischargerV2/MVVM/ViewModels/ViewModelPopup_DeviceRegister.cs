@@ -28,6 +28,12 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelPopup_DeviceRegister Model { get; set; } = new ModelPopup_DeviceRegister();
+
+        public string SelectedItem
+        {
+            get => Model.SelectedItem;
+            set => Model.SelectedItem = value; 
+        }
         #endregion
 
         public ViewModelPopup_DeviceRegister()
