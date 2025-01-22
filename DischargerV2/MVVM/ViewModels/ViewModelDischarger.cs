@@ -223,7 +223,13 @@ namespace DischargerV2.MVVM.ViewModels
             parameters.SafetyCurrentMax = info.SafetyCurrentMax;
             parameters.SafetyCurrentMin = info.SafetyCurrentMin;
             _clients[info.Name] = new EthernetClientDischarger();
-            _clients[info.Name].Start(parameters);
+
+            Thread thread = new Thread(
+                delegate ()
+                {
+                    _clients[info.Name].Start(parameters);
+                });
+            thread.Start();
         }
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)
