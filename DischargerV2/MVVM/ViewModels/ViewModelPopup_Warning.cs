@@ -1,5 +1,4 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;

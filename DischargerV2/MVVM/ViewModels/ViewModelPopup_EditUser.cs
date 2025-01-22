@@ -1,5 +1,4 @@
-﻿using DischargerV2.Database;
-using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -122,8 +121,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             else
             {
-                TblUserInfo userInfo = new TblUserInfo(Model.Id, Model.NewPassword, Model.Name, Model.IsAdmin);
-                DatabaseContext.UpdateUserInfo(userInfo);
+                TableUserInfo tableUserInfo = new TableUserInfo();
+                tableUserInfo.UserId = Model.Id;
+                tableUserInfo.Password = Model.NewPassword;
+                tableUserInfo.UserName = Model.Name;
+
+                SqliteUserInfo.UpdateData(tableUserInfo);
                 Return();
             }
         }

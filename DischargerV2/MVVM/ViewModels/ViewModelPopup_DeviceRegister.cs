@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
+using MExpress.Example;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -18,21 +19,29 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class ViewModelPopup_UserSetting : BindableBase
+    public class ViewModelPopup_DeviceRegister : BindableBase
     {
         #region Command
         public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
+        public DelegateCommand xAddButton_ClickCommand { get; set; }
         #endregion
 
         #region Model
-        public ModelPopup_UserSetting Model { get; set; } = new ModelPopup_UserSetting();
+        public ModelPopup_DeviceRegister Model { get; set; } = new ModelPopup_DeviceRegister();
+
+        public string SelectedItem
+        {
+            get => Model.SelectedItem;
+            set => Model.SelectedItem = value; 
+        }
         #endregion
-        
-        public ViewModelPopup_UserSetting()
+
+        public ViewModelPopup_DeviceRegister()
         {
             xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            
-            LoadUserInfoList();
+            xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
+
+            LoadDeviceInfoList();
         }
 
         private void xCloseImage_MouseLeftButtonUp()
@@ -40,15 +49,20 @@ namespace DischargerV2.MVVM.ViewModels
             Close();
         }
 
-        private void LoadUserInfoList()
+        private void xAddButton_Click()
         {
-            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
+            Model.NewDeviceVisibility = Visibility.Visible;
+        }
 
-            ObservableCollection<TableUserInfo> content = new ObservableCollection<TableUserInfo>();
+        private void LoadDeviceInfoList()
+        {
+            List<TableDischargerInfo> tblDeviceInfo = SqliteDischargerInfo.GetData();
 
-            for (int index = 0; index < tableUserInfoList.Count; index++)
+            ObservableCollection<TableDischargerInfo> content = new ObservableCollection<TableDischargerInfo>();
+
+            for (int index = 0; index < tblDeviceInfo.Count; index++)
             {
-                content.Add(tableUserInfoList[index]);
+                content.Add(tblDeviceInfo[index]);
             }
 
             Model.Content = content;

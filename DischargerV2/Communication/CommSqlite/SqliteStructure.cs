@@ -22,6 +22,7 @@ namespace Sqlite.Common
         public string UserId;
         public string Password;
         public string UserName;
+        public bool IsAdmin;
     }
 
     public class TableDischargerInfo

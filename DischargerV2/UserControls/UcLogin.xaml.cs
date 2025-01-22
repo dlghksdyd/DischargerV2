@@ -28,9 +28,9 @@ namespace DischargerV2.UserControls
 
         private void xLoginButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            List<TableUserInfo> userInfos = SqliteUserInfo.GetData();
+            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-            TableUserInfo user = userInfos.Find(x => x.UserId == xIdTextBox.Text && x.Password == xPasswordBox.Text);
+            TableUserInfo user = tableUserInfoList.Find(x => x.UserId == xIdTextBox.Text && x.Password == xPasswordBox.Text);
             
             if (user != null)
             {
