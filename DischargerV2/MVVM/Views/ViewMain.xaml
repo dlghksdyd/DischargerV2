@@ -52,7 +52,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <uc:UcMonitor_ChannelState Grid.Row="0"/>
-                <uc:UcMonitor_Table Grid.Row="2"/>
+                <view:ViewDischargerInfoTable Grid.Row="2"/>
                 <Grid Grid.Row="4">
                     <uc:UcSetMode/>
                     <!--<uc:UcMonitor/>-->

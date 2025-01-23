@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.ViewModels;
 using MExpress.Mex;
+using Microsoft.Xaml.Behaviors;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,10 @@ namespace DischargerV2.MVVM.Views
             _viewModelDischarger = ViewModelDischarger.Instance;
             _viewModelTempModule = ViewModelTempModule.Instance;
 
-            InitializeUI();
+            InitializeUi();
         }
 
-        public void InitializeUI()
+        private void InitializeUi()
         {
             xTable.Rows.Clear();
 
@@ -46,70 +47,177 @@ namespace DischargerV2.MVVM.Views
                 TableDischargerInfo dischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
 
                 MexTableRow row = new MexTableRow();
-                
-                MexTableRowColumn column0 = new MexTableRowColumn();
-                MexTextBlock textBlock0 = new MexTextBlock();
-                textBlock0.Margin = new Thickness(16, 0, 16, 0);
-                textBlock0.Text = (i + 1).ToString();
-                textBlock0.Foreground = ResColor.text_body;
-                textBlock0.FontSet = ResFontSet.body_md_regular;
-                column0.Content = textBlock0;
-                row.Columns.Add(column0);
+                row.Height = 40;
 
-                MexTableRowColumn column1 = new MexTableRowColumn();
-                MexTextBlock textBlock1 = new MexTextBlock();
-                textBlock1.Margin = new Thickness(16, 0, 16, 0);
-                BindingOperations.SetBinding(textBlock1, MexTextBlock.TextProperty, 
-                    new Binding("Model.DischargerNameList[" + i + "]"));
-                textBlock1.Foreground = ResColor.text_body;
-                textBlock1.FontSet = ResFontSet.body_md_regular;
-                column1.Content = textBlock1;
-                row.Columns.Add(column1);
+                /// No.
+                MexTableRowColumn colNo = new MexTableRowColumn();
+                colNo.Margin = new Thickness(16, 0, 16, 0);
+                colNo.FontSet = ResFontSet.body_md_regular;
+                colNo.Content = (i + 1).ToString(); ;
+                row.Columns.Add(colNo);
 
-                MexTableRowColumn column2 = new MexTableRowColumn();
-                MexTextBlock textBlock2 = new MexTextBlock();
-                column2.Content = textBlock2;
-                row.Columns.Add(column2);
+                /// Discharger Name
+                MexTableRowColumn colDischargerName = new MexTableRowColumn();
+                colDischargerName.Margin = new Thickness(16, 0, 16, 0);
+                colDischargerName.FontSet = ResFontSet.body_md_regular;
+                colDischargerName.Content = dischargerName;
+                row.Columns.Add(colDischargerName);
 
-                /// channel
-                MexTableRowColumn column3 = new MexTableRowColumn();
-                MexTextBlock textBlock3 = new MexTextBlock();
-                column3.Content = textBlock3;
-                row.Columns.Add(column3);
+                /// Short Available
+                MexTableRowColumn colShortAvailable = new MexTableRowColumn();
+                MexLabel lbShortAvailable = new MexLabel();
+                lbShortAvailable.Visibility = Visibility.Visible;
+                lbShortAvailable.CornerRadius = new CornerRadius(4);
+                lbShortAvailable.Background = ResColor.surface_success;
+                lbShortAvailable.Padding = new Thickness(8, 0, 8, 0);
+                lbShortAvailable.Text = "Short Available";
+                lbShortAvailable.Foreground = ResColor.text_success;
+                lbShortAvailable.TextPadding = new Thickness(4, 0, 0, 0);
+                lbShortAvailable.FontSet = ResFontSet.body_xs_regular;
+                lbShortAvailable.ImageWidth = 16;
+                lbShortAvailable.ImageHeight = 16;
+                ImageColorConverter imageColorConverter = new ImageColorConverter();
+                lbShortAvailable.ImageLeft = (BitmapSource)imageColorConverter.Convert(ResImage.electric_bolt, null, ResColor.icon_success, null);
+                colShortAvailable.Content = lbShortAvailable;
+                row.Columns.Add(colShortAvailable);
 
-                /// status
-                MexTableRowColumn column4 = new MexTableRowColumn();
-                MexTextBlock textBlock4 = new MexTextBlock();
-                column3.Content = textBlock4;
-                row.Columns.Add(column4);
+                /// Channel
+                MexTableRowColumn colChannel = new MexTableRowColumn();
+                colChannel.Margin = new Thickness(16, 0, 16, 0);
+                colChannel.FontSet = ResFontSet.body_md_regular;
+                colChannel.Content = dischargerInfo.DischargerChannel.ToString(); ;
+                row.Columns.Add(colChannel);
+
+                /// Status
+                MexTableRowColumn colStatus = new MexTableRowColumn();
+                colStatus.Name = "xStatus" + i;
+                this.RegisterName(colStatus.Name, colStatus);
+
+                StackPanel spStatus = new StackPanel();
+                spStatus.Orientation = Orientation.Horizontal;
+                spStatus.Margin = new Thickness(16, 0, 16, 0);
+                colStatus.Content = spStatus;
+
+                Ellipse elStatus = new Ellipse();
+                elStatus.DataContext = _viewModelDischarger;
+                elStatus.Width = 12;
+                elStatus.Height = 12;
+                BindingOperations.SetBinding(elStatus, Ellipse.FillProperty,
+                    new Binding("Model.StateColor[" + i + "]"));
+                spStatus.Children.Add(elStatus);
+
+                Binding bdStatus = new Binding("Foreground");
+                bdStatus.ElementName = "xStatus" + i;
+                MexTextBlock tbStatus = new MexTextBlock();
+                tbStatus.SetBinding(MexTextBlock.ForegroundProperty, bdStatus);
+                tbStatus.DataContext = _viewModelDischarger;
+                tbStatus.FontSet = ResFontSet.body_md_regular;
+                tbStatus.Padding = new Thickness(8, 0, 0, 0);
+                BindingOperations.SetBinding(tbStatus, MexTextBlock.TextProperty,
+                    new Binding("Model.DischargerStates[" + i + "]"));
+                spStatus.Children.Add(tbStatus);
+
+                row.Columns.Add(colStatus);
 
                 /// Voltage
-                MexTableRowColumn column5 = new MexTableRowColumn();
-                MexTextBlock textBlock5 = new MexTextBlock();
-                textBlock5.DataContext = _viewModelDischarger;
-                BindingOperations.SetBinding(textBlock5, MexTextBlock.TextProperty,
+                MexTableRowColumn colVoltage = new MexTableRowColumn();
+                colVoltage.DataContext = _viewModelDischarger;
+                colVoltage.Margin = new Thickness(16, 0, 16, 0);
+                colVoltage.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colVoltage, MexTableRowColumn.ContentProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveBatteryVoltage"));
-                column5.Content = textBlock5;
-                row.Columns.Add(column5);
+                row.Columns.Add(colVoltage);
 
                 /// Current
-                MexTableRowColumn column6 = new MexTableRowColumn();
-                MexTextBlock textBlock6 = new MexTextBlock();
-                textBlock6.DataContext = _viewModelDischarger;
-                BindingOperations.SetBinding(textBlock6, MexTextBlock.TextProperty,
+                MexTableRowColumn colCurrent = new MexTableRowColumn();
+                colCurrent.DataContext = _viewModelDischarger;
+                colCurrent.Margin = new Thickness(16, 0, 16, 0);
+                colCurrent.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colCurrent, MexTableRowColumn.ContentProperty,
                     new Binding("Model.DischargerDatas[" + i + "].ReceiveDischargeCurrent"));
-                column6.Content = textBlock6;
-                row.Columns.Add(column6);
+                row.Columns.Add(colCurrent);
 
                 /// Temperature
-                int tempModuleDataIndex = _viewModelTempModule.GetTempModuleDataIndex(dischargerInfo.TempModuleComPort);
-                MexTableRowColumn column7 = new MexTableRowColumn();
-                MexTextBlock textBlock7 = new MexTextBlock();
-                textBlock7.DataContext = _viewModelTempModule;
-                BindingOperations.SetBinding(textBlock7, MexTextBlock.TextProperty,
-                    new Binding("Model.TempDatas[" + tempModuleDataIndex + "]" + "[" + dischargerInfo.TempChannel + "]"));
-                column7.Content = textBlock7;
-                row.Columns.Add(column7);
+                MexTableRowColumn colTemperature = new MexTableRowColumn();
+                colTemperature.DataContext = _viewModelTempModule;
+                colTemperature.Margin = new Thickness(16, 0, 16, 0);
+                colTemperature.FontSet = ResFontSet.body_md_regular;
+                int index = _viewModelTempModule.GetTempModuleDataIndex(dischargerInfo.TempModuleComPort);
+                BindingOperations.SetBinding(colTemperature, MexTextBlock.ContentProperty,
+                    new Binding("Model.TempDatas[" + index + "][" + dischargerInfo.TempChannel + "]"));
+                row.Columns.Add(colTemperature);
+
+                /// Progress Time
+                MexTableRowColumn colProgressTime = new MexTableRowColumn();
+                colProgressTime.DataContext = _viewModelDischarger;
+                colProgressTime.Margin = new Thickness(16, 0, 16, 0);
+                colProgressTime.FontSet = ResFontSet.body_md_regular;
+                BindingOperations.SetBinding(colProgressTime, MexTableRowColumn.ContentProperty,
+                    new Binding("Model.ProgressTime[" + i + "]"));
+                row.Columns.Add(colProgressTime);
+
+                /// Info
+                MexTableRowColumn colInfo = new MexTableRowColumn();
+                Grid gridInfo = new Grid();
+                colInfo.Content = gridInfo;
+
+                /// Info -> Error
+                StackPanel spError = new StackPanel();
+                spError.DataContext = _viewModelDischarger;
+                spError.Orientation = Orientation.Horizontal;
+                spError.Margin = new Thickness(16, 0, 16, 0);
+                BindingOperations.SetBinding(spError, StackPanel.VisibilityProperty,
+                    new Binding("Model.ErrorVisibility[" + i + "]"));
+                gridInfo.Children.Add(spError);
+                Image imageError = new Image();
+                imageError.Width = 24;
+                imageError.Height = 24;
+                imageError.Margin = new Thickness(0, 0, 8, 0);
+                ImageColorConverter imageErrorConverter = new ImageColorConverter();
+                imageError.Source = (ImageSource)imageErrorConverter.Convert(ResImage.error_outline, null, ResColor.icon_error, null);
+                spError.Children.Add(imageError);
+                MexTextBlock tbError = new MexTextBlock();
+                tbError.Text = "Error";
+                tbError.Foreground = ResColor.text_error;
+                tbError.FontSet = ResFontSet.body_md_medium;
+                tbError.TextDecorations = TextDecorations.Underline;
+                spError.Children.Add(tbError);
+
+                /// Info -> Reconnect
+                StackPanel spReconnect = new StackPanel();
+                spReconnect.DataContext = _viewModelDischarger;
+                spReconnect.Orientation = Orientation.Horizontal;
+                spReconnect.Margin = new Thickness(16, 0, 16, 0);
+                BindingOperations.SetBinding(spReconnect, StackPanel.VisibilityProperty,
+                    new Binding("Model.ReconnectVisibility[" + i + "]"));
+                var reconnectTriggerCollection = Interaction.GetTriggers(spReconnect);
+                var reconnectEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
+                reconnectEventTrigger.EventName = "MouseLeftButtonUp";
+                var reconnectAction = new InvokeCommandAction();
+                reconnectAction.PassEventArgsToCommand = false;
+                reconnectAction.CommandParameter = dischargerName;
+                BindingOperations.SetBinding(reconnectAction,
+                    InvokeCommandAction.CommandProperty,
+                    new Binding("ReconnectDischargerCommand"));
+                reconnectEventTrigger.Actions.Add(reconnectAction);
+                reconnectTriggerCollection.Add(reconnectEventTrigger);
+
+                gridInfo.Children.Add(spReconnect);
+                Image imageReconnect = new Image();
+                imageReconnect.Width = 24;
+                imageReconnect.Height = 24;
+                imageReconnect.Margin = new Thickness(0, 0, 8, 0);
+                ImageColorConverter imageReconnectConverter = new ImageColorConverter();
+                imageReconnect.Source = (ImageSource)imageReconnectConverter.Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
+                spReconnect.Children.Add(imageReconnect);
+                MexTextBlock tbReconnect = new MexTextBlock();
+                tbReconnect.Text = "Reconnect";
+                tbReconnect.Foreground = ResColor.text_infomation;
+                tbReconnect.FontSet = ResFontSet.body_md_medium;
+                tbReconnect.TextDecorations = TextDecorations.Underline;
+                spReconnect.Children.Add(tbReconnect);
+
+                row.Columns.Add(colInfo);
 
                 xTable.Rows.Add(row);
             }
