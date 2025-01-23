@@ -67,7 +67,7 @@ namespace DischargerV2.MVVM.Views
                 spaceGrid.SetBinding(VisibilityProperty, newDeviceVisibilityBinding);
                 xContentPanel.Children.Add(spaceGrid);
 
-                // Device Info
+                // TableDischargerInfo
                 for (int index = 0; index < _viewModel.Model.Content.Count; index++)
                 {
                     TableDischargerInfo tableDischargerInfo = _viewModel.Model.Content[index];
@@ -103,14 +103,14 @@ namespace DischargerV2.MVVM.Views
                             {
                                 Name = tableDischargerInfo.DischargerName,
                                 Ip = tableDischargerInfo.IpAddress,
-                                EModel = tableDischargerInfo.Model,
-                                EType = tableDischargerInfo.Type,
-                                Channel = tableDischargerInfo.DischargerChannel,
-                                VoltSpec = tableDischargerInfo.SpecVoltage,
-                                CurrSpec = tableDischargerInfo.SpecCurrent,
+                                DischargerModel = tableDischargerInfo.Model.ToString(),
+                                Type = tableDischargerInfo.Type.ToString(),
+                                Channel = tableDischargerInfo.DischargerChannel.ToString(),
+                                VoltSpec = tableDischargerInfo.SpecVoltage.ToString(),
+                                CurrSpec = tableDischargerInfo.SpecCurrent.ToString(),
                                 Comport = tableDischargerInfo.TempModuleComPort,
-                                ModuleChannel = tableDischargerInfo.TempModuleChannel,
-                                TempChannel = tableDischargerInfo.TempChannel,
+                                ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString(),
+                                TempChannel = tableDischargerInfo.TempChannel.ToString(),
                             }
                         });
                     }

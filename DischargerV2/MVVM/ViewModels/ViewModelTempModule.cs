@@ -89,7 +89,7 @@ namespace DischargerV2.MVVM.ViewModels
                 parameters.BaudRate = 9600;
                 parameters.TimeOutMs = 2000;
                 parameters.Encoding = Encoding.UTF8;
-                parameters.TempModuleChannel = info.TempModuleChannel;
+                parameters.TempModuleChannel = Convert.ToInt32(info.TempModuleChannel);
                 parameters.TempChannelCount = _tempChannelCount;
 
                 _clients[info.TempModuleComPort] = new SerialClientTempModule();

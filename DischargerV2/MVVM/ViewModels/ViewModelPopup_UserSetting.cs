@@ -21,7 +21,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_UserSetting : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -30,14 +30,15 @@ namespace DischargerV2.MVVM.ViewModels
         
         public ViewModelPopup_UserSetting()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
+            CloseCommand = new DelegateCommand(Close);
             
             LoadUserInfoList();
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
+        private void Close()
         {
-            Close();
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OffPopup();
         }
 
         private void LoadUserInfoList()
@@ -52,12 +53,6 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             Model.Content = content;
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup();
         }
     }
 }

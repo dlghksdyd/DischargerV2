@@ -20,12 +20,11 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_Warning : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
-        public DelegateCommand xConfirmButton_ClickCommand { get; set; }
+        public DelegateCommand ConfirmCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
 
         public delegate void callBackDelegate();
-        public callBackDelegate CallBackDeledate { get; set; }
+        public callBackDelegate CallBackDelegate { get; set; }
         #endregion
 
         #region Model
@@ -58,31 +57,21 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelPopup_Warning()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
-            xConfirmButton_ClickCommand = new DelegateCommand(xConfirmButton_Click);
+            ConfirmCommand = new DelegateCommand(Confirm);
+            CloseCommand = new DelegateCommand(Close);
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
-        {
-            Close();
-        }
 
-        private void xCancelButton_Click()
+        private void Confirm()
         {
-            Close();
-        }
-
-        private void xConfirmButton_Click()
-        {
-            CallBackDeledate();
+            CallBackDelegate();
             Close();
         }
 
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
         }
     }
 }

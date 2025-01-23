@@ -12,31 +12,18 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class ModelDeviceRegister_Edit : BindableBase
+    public class ModelModelRegister : BindableBase
     {
-        private string _name;
-        public string Name
+        private int _id;
+        public int Id
         {
             get
             {
-                return _name;
+                return _id;
             }
             set
             {
-                SetProperty(ref _name, value);
-            }
-        }
-
-        private string _ip;
-        public string Ip
-        {
-            get
-            {
-                return _ip;
-            }
-            set
-            {
-                SetProperty(ref _ip, value);
+                SetProperty(ref _id, value);
             }
         }
 
@@ -105,19 +92,6 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _channelList;
-        public List<string> ChannelList
-        {
-            get
-            {
-                return _channelList;
-            }
-            set
-            {
-                SetProperty(ref _channelList, value);
-            }
-        }
-
         private string _voltSpec = "";
         public string VoltSpec
         {
@@ -128,19 +102,6 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _voltSpec, value);
-            }
-        }
-
-        private List<string> _voltSpecList;
-        public List<string> VoltSpecList
-        {
-            get
-            {
-                return _voltSpecList;
-            }
-            set
-            {
-                SetProperty(ref _voltSpecList, value);
             }
         }
 
@@ -157,56 +118,81 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _currSpecList;
-        public List<string> CurrSpecList
+        private string _voltMax;
+        public string VoltMax
         {
             get
             {
-                return _currSpecList;
+                return _voltMax;
             }
             set
             {
-                SetProperty(ref _currSpecList, value);
+                SetProperty(ref _voltMax, value);
             }
         }
 
-        private string _comport;
-        public string Comport
+        private string _voltMin;
+        public string VoltMin
         {
             get
             {
-                return _comport;
+                return _voltMin;
             }
             set
             {
-                SetProperty(ref _comport, value);
+                SetProperty(ref _voltMin, value);
             }
         }
 
-        private string _moduleChannel;
-        public string ModuleChannel
+        private string _currMax;
+        public string CurrMax
         {
             get
             {
-                return _moduleChannel;
+                return _currMax;
             }
             set
             {
-                SetProperty(ref _moduleChannel, value);
+                SetProperty(ref _currMax, value);
             }
         }
 
-
-        private string _tempChannel;
-        public string TempChannel
+        private string _currMin;
+        public string CurrMin
         {
             get
             {
-                return _tempChannel;
+                return _currMin;
             }
             set
             {
-                SetProperty(ref _tempChannel, value);
+                SetProperty(ref _currMin, value);
+            }
+        }
+
+        private string _tempMax;
+        public string TempMax
+        {
+            get
+            {
+                return _tempMax;
+            }
+            set
+            {
+                SetProperty(ref _tempMax, value);
+            }
+        }
+
+        private string _tempMin;
+        public string TempMin
+        {
+            get
+            {
+                return _tempMin;
+            }
+            set
+            {
+                SetProperty(ref _tempMin, value);
             }
         }
     }

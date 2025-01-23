@@ -22,8 +22,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelUserSetting_Info : BindableBase
     {
         #region Command
-        public DelegateCommand xEditImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xDeleteImage_MouseLeftButtonUpCommand { get; set; }
+        public DelegateCommand OpenPopupEditUserCommand { get; set; }
+        public DelegateCommand OpenPopupDeleteCommand { get; set; }
         #endregion
 
         #region Model
@@ -62,11 +62,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelUserSetting_Info()
         {
-            xEditImage_MouseLeftButtonUpCommand = new DelegateCommand(xEditImage_MouseLeftButtonUp);
-            xDeleteImage_MouseLeftButtonUpCommand = new DelegateCommand(xDeleteImage_MouseLeftButtonUp);
+            OpenPopupEditUserCommand = new DelegateCommand(OpenPopupEditUser);
+            OpenPopupDeleteCommand = new DelegateCommand(OpenPopupDelete);
         }
 
-        private void xEditImage_MouseLeftButtonUp()
+        private void OpenPopupEditUser()
         {
             ViewModelPopup_EditUser viewModelPopup_EditUser = new ViewModelPopup_EditUser()
             {
@@ -78,25 +78,25 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_EditUser(viewModelPopup_EditUser);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.EditUser);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.EditUser);
         }
 
-        private void xDeleteImage_MouseLeftButtonUp()
+        private void OpenPopupDelete()
         {
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
-                Title = "Delete User 'admin'?",
-                Comment = "Are you sure you want to delete this user?\r\n" +
-                          "Once you confirm, this user data will be permanetly deleted.",
-                CallBackDeledate = DeleteUser,
+                Title = string.Format("Delete User '{0}'?", Model.Name),
+                Comment = "Are you sure you want to delete this data?\r\n" +
+                          "Once you confirm, this data will be permanetly deleted.",
+                CallBackDelegate = DeleteUserInfo,
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
         }
 
-        public void DeleteUser()
+        public void DeleteUserInfo()
         {
             SqliteUserInfo.DeleteData(Id);
 

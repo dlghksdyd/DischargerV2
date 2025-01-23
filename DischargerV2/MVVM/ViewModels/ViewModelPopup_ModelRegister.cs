@@ -19,7 +19,7 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class ViewModelPopup_DeviceRegister : BindableBase
+    public class ViewModelPopup_ModelRegister : BindableBase
     {
         #region Command
         public DelegateCommand OpenNewDataCommand { get; set; }
@@ -27,43 +27,43 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelPopup_DeviceRegister Model { get; set; } = new ModelPopup_DeviceRegister();
+        public ModelPopup_ModelRegister Model { get; set; } = new ModelPopup_ModelRegister();
 
-        public string SelectedItem
+        public int SelectedId
         {
-            get => Model.SelectedItem;
-            set => Model.SelectedItem = value; 
+            get => Model.SelectedId;
+            set => Model.SelectedId = value; 
         }
         #endregion
 
-        public ViewModelPopup_DeviceRegister()
+        public ViewModelPopup_ModelRegister()
         {
             OpenNewDataCommand = new DelegateCommand(OpenNewData);
             CloseCommand = new DelegateCommand(Close);
 
-            LoadDischargerInfoList();
+            LoadDischargerModelList();
         }
 
         private void OpenNewData()
         {
-            Model.NewDeviceVisibility = Visibility.Visible;
+            Model.NewDataVisibility = Visibility.Visible;
         }
-
+        
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OffPopup();
         }
 
-        private void LoadDischargerInfoList()
+        private void LoadDischargerModelList()
         {
-            List<TableDischargerInfo> tableDischargerInfo = SqliteDischargerInfo.GetData();
+            List<TableDischargerModel> tableDischargerModel = SqliteDischargerModel.GetData();
 
-            ObservableCollection<TableDischargerInfo> content = new ObservableCollection<TableDischargerInfo>();
+            ObservableCollection<TableDischargerModel> content = new ObservableCollection<TableDischargerModel>();
 
-            for (int index = 0; index < tableDischargerInfo.Count; index++)
+            for (int index = 0; index < tableDischargerModel.Count; index++)
             {
-                content.Add(tableDischargerInfo[index]);
+                content.Add(tableDischargerModel[index]);
             }
 
             Model.Content = content;

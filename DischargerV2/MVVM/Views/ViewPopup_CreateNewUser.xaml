@@ -46,7 +46,7 @@
                    Cursor="Hand">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseLeftButtonUp">
-                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseLeftButtonUpCommand}"
+                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
@@ -156,7 +156,7 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding xCreateButton_ClickCommand}"
+                        <b:InvokeCommandAction Command="{Binding InsertNewDataCommand}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
@@ -170,7 +170,7 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding xCancelButton_ClickCommand}"
+                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>

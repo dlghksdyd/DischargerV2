@@ -88,7 +88,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xAddButton_ClickCommand, 
+                                <b:InvokeCommandAction Command="{Binding InsertNewDataCommand, 
                                                                          Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
@@ -104,7 +104,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xCancelButton_ClickCommand, 
+                                <b:InvokeCommandAction Command="{Binding CloseCommand, 
                                                                          Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
@@ -167,7 +167,7 @@
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
-                                    <b:InvokeCommandAction Command="{Binding xComboBox_MouseLeaveCommand, 
+                                    <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
                                                                              Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
@@ -200,7 +200,7 @@
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
-                                    <b:InvokeCommandAction Command="{Binding xComboBox_MouseLeaveCommand, 
+                                    <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
                                                                              Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
@@ -233,7 +233,7 @@
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
-                                    <b:InvokeCommandAction Command="{Binding xComboBox_MouseLeaveCommand, 
+                                    <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
                                                                              Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
@@ -266,7 +266,7 @@
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
-                                    <b:InvokeCommandAction Command="{Binding xComboBox_MouseLeaveCommand, 
+                                    <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
                                                                              Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
@@ -299,7 +299,7 @@
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="MouseLeave">
-                                    <b:InvokeCommandAction Command="{Binding xComboBox_MouseLeaveCommand, 
+                                    <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
                                                                              Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>

@@ -21,10 +21,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_CreateNewUser : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
-        public DelegateCommand xCreateButton_ClickCommand { get; set; }
-        
+        public DelegateCommand InsertNewDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -33,73 +31,72 @@ namespace DischargerV2.MVVM.ViewModels
         
         public ViewModelPopup_CreateNewUser()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
-            xCreateButton_ClickCommand = new DelegateCommand(xCreateButton_Click);
+            InsertNewDataCommand = new DelegateCommand(InsertNewData);
+            CloseCommand = new DelegateCommand(Close);
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
+        private void InsertNewData()
         {
-            Close();
-        }
-
-        private void xCancelButton_Click()
-        {
-            Close();
-        }
-
-        private void xCreateButton_Click()
-        {
-            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
-
-            if (Model.Id == null || Model.Id == "")
+            if (!(CheckData() < 0))
             {
-                MessageBox.Show("ID: 필수 정보입니다.");
-            }
-            else if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
-            {
-                MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
-            }
-            else if (Model.Password == null || Model.Password == "")
-            {
-                MessageBox.Show("Password: 필수 정보입니다.");
-            }
-            else if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
-            {
-                MessageBox.Show("Confirm Password: 필수 정보입니다.");
-            }
-            else if (Model.Name == null || Model.Name == "")
-            {
-                MessageBox.Show("User Name: 필수 정보입니다.");
-            }
-            else if (Model.Password != Model.ConfirmPassword)
-            {
-                MessageBox.Show("Password가 일치하지 않습니다.");
-            }
-            else
-            {
-                TableUserInfo tableUserInfo = new TableUserInfo();
-                tableUserInfo.UserId = Model.Id;
-                tableUserInfo.Password = Model.Password;
-                tableUserInfo.UserName = Model.Name;
-                tableUserInfo.IsAdmin = Model.IsAdmin;
-
-                SqliteUserInfo.InsertData(tableUserInfo);
-                Return();
+                InsertUserInfo();
+                Close();
             }
         }
 
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
+            viewModelMain.OffNestedPopup();
+            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
 
-        private void Return()
+        private int CheckData()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup2();
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
+
+            if (Model.Id == null || Model.Id == "")
+            {
+                MessageBox.Show("ID: 필수 정보입니다.");
+                return -1;
+            }
+            if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
+            {
+                MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
+                return -1;
+            }
+            if (Model.Password == null || Model.Password == "")
+            {
+                MessageBox.Show("Password: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
+            {
+                MessageBox.Show("Confirm Password: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.Name == null || Model.Name == "")
+            {
+                MessageBox.Show("User Name: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.Password != Model.ConfirmPassword)
+            {
+                MessageBox.Show("Password가 일치하지 않습니다.");
+                return -1;
+            }
+            return 0;
+        }
+
+        private void InsertUserInfo()
+        {
+            TableUserInfo tableUserInfo = new TableUserInfo();
+            tableUserInfo.UserId = Model.Id;
+            tableUserInfo.Password = Model.Password;
+            tableUserInfo.UserName = Model.Name;
+            tableUserInfo.IsAdmin = Model.IsAdmin;
+
+            SqliteUserInfo.InsertData(tableUserInfo);
         }
     }
 }

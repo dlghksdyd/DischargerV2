@@ -19,7 +19,7 @@ namespace DischargerV2.MVVM.Models
             Info
         }
 
-        public enum EPopup2
+        public enum ENestedPopup
         {
             CreateNewUser, EditUser, 
             Warning
@@ -51,16 +51,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private bool _isPopupOpen2 = false;
-        public bool IsPopupOpen2
+        private bool _isNestedPopupOpen = false;
+        public bool IsNestedPopupOpen
         {
             get
             {
-                return _isPopupOpen2;
+                return _isNestedPopupOpen;
             }
             set
             {
-                SetProperty(ref _isPopupOpen2, value);
+                SetProperty(ref _isNestedPopupOpen, value);
             }
         }
 
@@ -77,16 +77,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Visibility[] _popupVisibility2 = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
-        public Visibility[] PopupVisibility2
+        private Visibility[] _nestedPopupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
+        public Visibility[] NestedPopupVisibility
         {
             get
             {
-                return _popupVisibility2;
+                return _nestedPopupVisibility;
             }
             set
             {
-                SetProperty(ref _popupVisibility2, value);
+                SetProperty(ref _nestedPopupVisibility, value);
             }
         }
 
@@ -113,6 +113,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _viewModelPopup_DeviceRegister, value);
+            }
+        }
+
+        private ViewModelPopup_ModelRegister _viewModelPopup_ModelRegister = new ViewModelPopup_ModelRegister();
+        public ViewModelPopup_ModelRegister ViewModelPopup_ModelRegister
+        {
+            get
+            {
+                return _viewModelPopup_ModelRegister;
+            }
+            set
+            {
+                SetProperty(ref _viewModelPopup_ModelRegister, value);
             }
         }
 

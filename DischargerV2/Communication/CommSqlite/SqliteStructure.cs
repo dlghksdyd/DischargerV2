@@ -35,12 +35,13 @@ namespace Sqlite.Common
         public double SpecCurrent;
         public string IpAddress;
         public string TempModuleComPort;
-        public int TempModuleChannel;
-        public int TempChannel;
+        public string TempModuleChannel;
+        public string TempChannel;
     }
 
     public class TableDischargerModel
     {
+        public int Id;
         public EDischargerModel Model;
         public EDischargeType Type;
         public int Channel;

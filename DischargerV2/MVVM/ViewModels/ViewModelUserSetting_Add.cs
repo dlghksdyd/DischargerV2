@@ -19,7 +19,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelUserSetting_Add : BindableBase
     {
         #region Command
-        public DelegateCommand xAddButton_ClickCommand { get; set; }
+        public DelegateCommand OpenPopupNewUserCommand { get; set; }
         #endregion
 
         #region Model
@@ -28,13 +28,13 @@ namespace DischargerV2.MVVM.ViewModels
         
         public ViewModelUserSetting_Add()
         {
-            xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
+            OpenPopupNewUserCommand = new DelegateCommand(OpenPopupNewUser);
         }
 
-        private void xAddButton_Click()
+        private void OpenPopupNewUser()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.CreateNewUser);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.CreateNewUser);
         }
     }
 }

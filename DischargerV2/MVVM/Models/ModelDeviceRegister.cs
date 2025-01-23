@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class ModelDeviceRegister_Info : BindableBase
+    public class ModelDeviceRegister : BindableBase
     {
         private string _name;
         public string Name
@@ -40,34 +40,60 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EDischargerModel _eModel;
-        public EDischargerModel EModel
-        {
-            get
-            { 
-                return _eModel; 
-            }
-            set
-            {
-                SetProperty(ref _eModel, value);
-            }
-        }
-
-        private EDischargeType _eType;
-        public EDischargeType EType
+        private string _dischargerModel = "";
+        public string DischargerModel
         {
             get
             {
-                return _eType;
+                return _dischargerModel;
             }
             set
             {
-                SetProperty(ref _eType, value);
+                SetProperty(ref _dischargerModel, value);
             }
         }
 
-        private short _channel;
-        public short Channel
+        private List<string> _dischargerModelList;
+        public List<string> DischargerModelList
+        {
+            get
+            {
+                return _dischargerModelList;
+            }
+            set
+            {
+                SetProperty(ref _dischargerModelList, value);
+            }
+        }
+
+        private string _type = "";
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                SetProperty(ref _type, value);
+            }
+        }
+
+        private List<string> _typeList;
+        public List<string> TypeList
+        {
+            get
+            {
+                return _typeList;
+            }
+            set
+            {
+                SetProperty(ref _typeList, value);
+            }
+        }
+
+        private string _channel = "";
+        public string Channel
         {
             get
             {
@@ -79,8 +105,21 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private double _voltSpec;
-        public double VoltSpec
+        private List<string> _channelList;
+        public List<string> ChannelList
+        {
+            get
+            {
+                return _channelList;
+            }
+            set
+            {
+                SetProperty(ref _channelList, value);
+            }
+        }
+
+        private string _voltSpec = "";
+        public string VoltSpec
         {
             get
             {
@@ -92,8 +131,21 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private double _currSpec;
-        public double CurrSpec
+        private List<string> _voltSpecList;
+        public List<string> VoltSpecList
+        {
+            get
+            {
+                return _voltSpecList;
+            }
+            set
+            {
+                SetProperty(ref _voltSpecList, value);
+            }
+        }
+
+        private string _currSpec = "";
+        public string CurrSpec
         {
             get
             {
@@ -102,6 +154,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _currSpec, value);
+            }
+        }
+
+        private List<string> _currSpecList;
+        public List<string> CurrSpecList
+        {
+            get
+            {
+                return _currSpecList;
+            }
+            set
+            {
+                SetProperty(ref _currSpecList, value);
             }
         }
 
@@ -118,8 +183,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private int _moduleChannel;
-        public int ModuleChannel
+        private string _moduleChannel;
+        public string ModuleChannel
         {
             get
             {
@@ -132,8 +197,8 @@ namespace DischargerV2.MVVM.Models
         }
 
 
-        private int _tempChannel;
-        public int TempChannel
+        private string _tempChannel;
+        public string TempChannel
         {
             get
             {

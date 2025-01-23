@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewPopup_DeviceRegister"
+﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewPopup_ModelRegister"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,7 +9,7 @@
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance vm:ViewModelPopup_DeviceRegister}"
+             d:DataContext="{d:DesignInstance vm:ViewModelPopup_ModelRegister}"
              d:DesignHeight="976" d:DesignWidth="1631"
              MinHeight="976" MinWidth="1631"
              MaxHeight="976" MaxWidth="1631">
@@ -25,7 +25,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Mex:MexTextBlock Text="Device Register"
+                <Mex:MexTextBlock Text="Model Register"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 <Image x:Name="xCloseImage" 
@@ -50,7 +50,7 @@
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
                                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddDeviceButtonOutline}"
-                               Text="New Device"
+                               Text="New Data"
                                TextPadding="12,0,0,0"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
