@@ -145,7 +145,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Communication\CommSqlite\SqliteDischargerErrorCode.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientUtility.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />

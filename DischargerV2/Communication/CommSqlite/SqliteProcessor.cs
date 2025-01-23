@@ -481,16 +481,208 @@ namespace Sqlite.Common
 
             TableDischargerErrorCode oneRow;
 
-            oneRow = new TableDischargerErrorCode(
-                0x01001000, "ERR_HW_INPUT_REV", 
-                "Cable reverse connection Alarm", "Cable 역결선", 
-                "전류케이블 극성이 반대입니다.", "전류케이블 극성을 확인하십시오.");
+            oneRow = new TableDischargerErrorCode(0x01001000, "ERR_HW_INPUT_REV", "Cable reverse connection Alarm", "Cable 역결선", "전류케이블 극성이 반대입니다.", "전류케이블 극성을 확인하십시오.");
             InsertData(oneRow);
 
-            oneRow = new TableDischargerErrorCode(
-                0x01001100, "ERR_HW_INPUT_CABLE",
-                "Cable connection Alarm", "Cable 결선 오류",
-                "결선을 확인하십시오.", "전류CABLE 또는, 배터리 센싱선 결선을 확인하십시오.");
+            oneRow = new TableDischargerErrorCode(0x01001100, "ERR_HW_INPUT_CABLE", "Cable connection Alarm", "Cable 결선 오류", "결선을 확인하십시오.", "전류CABLE 또는, 배터리 센싱선 결선을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01001200, "ERR_HW_SYNC_REV", "SYNC current reverse connection Alarm", "SYNC전류센서 역결선", "SYNC 전류값의 방향이 반대입니다.", "SYNC 전류센서 극성을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01002000, "ERR_HW_COMM_ID", "ID Setting Alarm", "ID 설정 오류", "ID 설정오류 입니다.", "SINGLE운전 : CAN_ID = 0번, SYNC운전 : CAN_ID = 1~15번");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01002100, "ERR_HW_COMM_LINK", "UI Communication Alarm", "모니터링 통신불량 (PC-파워모듈)", "통신이 끊어 졌습니다.", "전원확인 및 통신라인을 점검하고, ID를 점검 하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01002200, "ERR_HW_COMM_PARAL", "Parallel Communication Alarm", "모듈간 통신불량 (파워모듈 -파워모듈)", "모듈 통신이 끊어졌습니다", "모듈의 후면 패널에서 통신 케이블 연결및 ID설정을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01003000, "ERR_HW_OT_IGBT1", "Heatsink Over Temperature Alarm 1", "방열판 과열 1", "모듈의 방열판 과열", "FAN상태를 확인하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01003100, "ERR_HW_OT_IGBT2", "Heatsink Over Temperature Alarm 2", "방열판 과열 2", "모듈의 방열판 과열", "FAN상태를 확인하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x05003000, "ERR_HW_OT_LOAD1", "Load Heatsink Over Temperature Alarm 1", "부하 저항 과열 1", "모듈의 방열판 과열", "FAN상태를 확인하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01004000, "ERR_HW_FAN1_IGBT1", "IGBT 1 Fan Alarm 1", "모듈 1 FAN 고장 1", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01004100, "ERR_HW_FAN2_IGBT1", "IGBT 1 Fan Alarm 2", "모듈 1 FAN 고장 2", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01004200, "ERR_HW_FAN3_IGBT1", "IGBT 1 Fan Alarm 3", "모듈 1 FAN 고장 3", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01004300, "ERR_HW_FAN4_IGBT1", "IGBT 1 Fan Alarm 4", "모듈 1 FAN 고장 4", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01004400, "ERR_HW_FAN1_IGBT2", "IGBT 2 Fan Alarm 1", "모듈 2 FAN 고장 1", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x05004000, "ERR_HW_FAN1_LOAD1", "Load Fan Alarm 1", "부하 FAN 고장", "FAN고장입니다.", "전원을 확인하십시오. 문제가있는 FAN을 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005000, "ERR_HW_IGBT", "IGTB Driver Alarm", "스위칭 소자 고장", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005100, "ERR_HW_IGBT1", "IGTB Driver Alarm 1", "스위칭 소자 고장 1", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005200, "ERR_HW_IGBT2", "IGTB Driver Alarm 2", "스위칭 소자 고장 2", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005300, "ERR_HW_IGBT3", "IGTB Driver Alarm 3", "스위칭 소자 고장 3", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005400, "ERR_HW_IGBT4", "IGTB Driver Alarm 4", "스위칭 소자 고장 4", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01005500, "ERR_HW_IGBT5", "IGTB Driver Alarm 5", "스위칭 소자 고장 5", "모듈의 IGBT Driver Error가 발생하였습니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x05005000, "ERR_HW_LOAD1", "Load Value Alarm", "부하 저항값 이상 2", "부하저항 모듈 고장입니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01006000, "ERR_HW_RLY1", "Relay operation Alarm 1", "릴레이 동작 고장 1", "릴레이 고장입니다.", "전원을 확인하십시오. 문제가 있는 릴레이를 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01006100, "ERR_HW_RLY2", "Relay operation Alarm 2", "릴레이 동작 고장 2", "릴레이 고장입니다.", "전원을 확인하십시오. 문제가 있는 릴레이를 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01006200, "ERR_HW_RLY3", "Relay operation Alarm 3", "릴레이 동작 고장 3", "릴레이 고장입니다.", "전원을 확인하십시오. 문제가 있는 릴레이를 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01006300, "ERR_HW_RLY4", "Relay operation Alarm 4", "릴레이 동작 고장 4", "릴레이 고장입니다.", "전원을 확인하십시오. 문제가 있는 릴레이를 교체하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007000, "ERR_HW_EMG", "EMG Switch ON Alarm", "접접류 고장 EMG", "비상 스위치가 켜져 있습니다.", "EMG 버튼을 해제하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007100, "ERR_HW_FUSE1", "Fuse Alarm 1", "접접류 고장 Fuse 1", "Fuse 고장입니다.", "문제가 있는 Fuse를 교체하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007200, "ERR_HW_FUSE2", "Fuse Alarm 2", "접접류 고장 Fuse 2", "Fuse 고장입니다.", "문제가 있는 Fuse를 교체하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007A00, "ERR_HW_SPD1", "SPD Alarm 1", "접접류 고장 SPD 1", "SPD 고장입니다.", "문제가 있는 SPD를 교체하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007B00, "ERR_HW_SPD2", "SPD Alarm 2", "접접류 고장 SPD 2", "SPD 고장입니다.", "문제가 있는 SPD를 교체하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007C00, "ERR_HW_ACPWR", "Input AC Power Alarm", "접접류 AC 전원 이상", "한전 전원 이상", "한전 전원을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01007D00, "ERR_HW_SWRUN", "RUN Switch Operation Alarm", "접접류 RUN 스위치 이상", "주전원 입력 시 또는 고장 초기화시 RUN 스위치 조작 이상입니다.", "RUN 스위치 OFF후 주전원 입력 또는 고장 초기화를 하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01008000, "ERR_HW_SMPS_5V", "SMPS Power 5V Alarm", "SMPS 5V 저전압", "5V 전원 장치 고장입니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x05008000, "ERR_HW_SMPS_12V", "SMPS Power 12V Alarm", "SMPS 12V 저전압", "12V 전원 장치 고장입니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01009000, "ERR_HW_SLAVE", "추후 정리", "DCDC Module Slave 이상", "", "");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100, "ERR_HW_", "추후 정리", "Spare", "", "");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100F100, "ERR_HW_OV_INPUT", "Over Voltage Sensing Alarm", "ACDC 측 과전압 (Latch)", "센싱 전압이  설정치 보다 높습니다", "전원 상태 및 연결 케이블을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100F200, "ERR_HW_UV_INPUT", "Under Voltage Sensing Alarm", "ACDC측 저전압 (Latch)", "센싱 전압이  설정치 보다 낮습니다", "전원 상태 및 연결 케이블을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100F300, "ERR_HW_OC_CHGBATT", "Charge Battery Over Current Alarm", "배터리 충전 OCP (Latch)", "배터리 전류가 제한을 초과합니다.", "전류 및 전력 제한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0X0100F400, "ERR_HW_OC_DISCBATT", "Discharge Battery Over Current Alarm", "배터리 방전 OCP (Latch)", "배터리 전류가 제한을 초과합니다.", "전류 및 전력 제한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100F500, "ERR_HW_OC_IGBT1", "IGBT Over Current  Sensing Alarm 1", "IGBT 과전류 1", "모듈의 IGBT에 동작전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0X0100F600, "ERR_HW_OC_IGBT2", "IGBT Over Current  Sensing Alarm 2", "IGBT 과전류 2", "모듈의 IGBT에 동작전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000010, "ERR_SW_OV_BATT", "Battery Over Voltage Alarm", "BATTERY 과전압", "배터리 전압이 상한을 초과합니다.", "전압 상한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000011, "ERR_SW_OV_INPUT1", "Over Voltage Sensing Alarm 1", "입력 과전압 1", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000012, "ERR_SW_OV_OUTPUT1", "Output voltage upper limit Alarm 1", "출력 과전압 1", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000013, "ERR_SW_OV_INPUT2", "Over Voltage Sensing Alarm 2", "입력 과전압 2", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000014, "ERR_SW_OV_OUTPUT2", "Output voltage upper limit Alarm 2", "출력 과전압 2", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000015, "ERR_SW_OV_INPUT3", "Over Voltage Sensing Alarm 3", "입력 과전압 3", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000016, "ERR_SW_OV_OUTPUT3", "Output voltage upper limit Alarm 3", "출력 과전압 3", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000017, "ERR_SW_OV_INPUT4", "Over Voltage Sensing Alarm 4", "입력 과전압 4", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000018, "ERR_SW_OV_OUTPUT4", "Output voltage upper limit Alarm 4", "출력 과전압 4 ", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000019, "ERR_SW_OV_INPUT5", "Over Voltage Sensing Alarm 5", "입력 과전압 5", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100001A, "ERR_SW_OV_OUTPUT5", "Output voltage upper limit Alarm 5", "출력 과전압 5", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100001B, "ERR_SW_OV_INPUT6", "Over Voltage Sensing Alarm 6", "입력 과전압 6", "센싱 전압이  설정치 보다 높습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x0100001C, "ERR_SW_OV_OUTPUT6", "Output voltage upper limit Alarm 6", "출력 과전압 6", "출력전압이 기준치이상으로 초과합니다.", "배터리 센싱전압 LINE을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000020, "ERR_SW_UV_BATT", "Battery Under Voltage Alarm", "BATTERY 저전압", "배터리 전압이 하한값 미만입니다.", "전압 하한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000021, "ERR_SW_UV_INPUT1", "Under Voltage Sensing Alarm 1", "입력1 저전압", "센싱 전압이  설정치 보다 낮습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000022, "ERR_SW_UV_INPUT2", "Under Voltage Sensing Alarm 2", "입력2 저전압", "센싱 전압이  설정치 보다 낮습니다", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000030, "ERR_SW_OC_CHGBATT", "Charge Battery Over Current Alarm", "BATTERY 충전 과전류", "배터리 전류가 제한을 초과합니다.", "전류 및 전력 제한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000031, "ERR_SW_OC_DISCBATT", "Discharge Battery Over Current Alarm", "BATTERY 방전 과전류", "배터리 전류가 제한을 초과합니다.", "전류 및 전력 제한을 적절한 값으로 설정하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000032, "ERR_SW_OC_SYNC", "SYNC mode current distribution Alarm", "SYNC 모드 과전류", "SYNC 운전 전류가 균등분배되지 않습니다.", "ACDC로부터 출력공통 단자까지 LINE 및 PBA정상동작을  점검하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000033, "ERR_SW_OC_INPUT1", "Over Current  Sensing Alarm 1", "입력 과전류 1", "입력전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000034, "ERR_SW_OC_OUTPUT1", "Over Current  Sensing Alarm 1", "출력 과전류 1", "출력전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000035, "ERR_SW_OC_INPUT2", "Over Current  Sensing Alarm 2", "입력 과전류 2", "입력전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000036, "ERR_SW_OC_OUTPUT2", "Over Current  Sensing Alarm 2", "출력 과전류 2", "출력전류가 기준치이상으로 초과합니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000037, "", "Operation commend Alarm", "배터리 충방전 지령 에러", "충방전 지령이 잘못되었습니다.", "운전 지령값을 다시 확인하십시오");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x01000038, "", "parallel setting commend Alarm", "병렬지령 설정 에러", "병렬 설정이 잘못되었습니다.", "설정을 다시 확인하십시오");
             InsertData(oneRow);
         }
 
