@@ -159,8 +159,6 @@
     <Compile Include="MVVM\Models\ModelModelRegister_Edit.cs" />
     <Compile Include="MVVM\Models\ModelModelRegister_Info.cs" />
     <Compile Include="MVVM\Models\ModelModelRegister_Add.cs" />
-    <Compile Include="MVVM\Models\ModelDeviceRegister_Edit.cs" />
-    <Compile Include="MVVM\Models\ModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
     <Compile Include="MVVM\Models\ModelPopup_ModelRegister.cs" />
@@ -169,7 +167,6 @@
     <Compile Include="MVVM\Models\ModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Warning.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Add.cs" />
-    <Compile Include="MVVM\Models\ModelDeviceRegister_Info.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Info.cs" />
     <Compile Include="MVVM\Models\ModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\Models\ModelTempModule.cs" />

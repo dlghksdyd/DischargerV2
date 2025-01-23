@@ -16,7 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
-using static DischargerV2.MVVM.Models.ModelDeviceRegister_Add;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -184,11 +183,15 @@ namespace DischargerV2.MVVM.ViewModels
                 MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
                 return -1;
             }
-            if (Model.ModuleChannel != null)
+            if (Model.ModuleChannel == null)
+            {
+                Model.ModuleChannel = "-1";
+            }
+            else
             {
                 if (Model.ModuleChannel == "")
                 {
-                    Model.ModuleChannel = null;
+                    Model.ModuleChannel = "-1";
                 }
                 else if (!Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
                 {
@@ -196,11 +199,15 @@ namespace DischargerV2.MVVM.ViewModels
                     return -1;
                 }
             }
-            if (Model.TempChannel != null)
+            if (Model.TempChannel == null)
+            {
+                Model.TempChannel = "-1";
+            }
+            else
             {
                 if (Model.TempChannel == "")
                 {
-                    Model.TempChannel = null;
+                    Model.TempChannel = "-1";
                 }
                 else if (!Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
                 {

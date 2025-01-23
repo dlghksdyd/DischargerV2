@@ -16,7 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
-using static DischargerV2.MVVM.Models.ModelDeviceRegister_Add;
 
 namespace DischargerV2.MVVM.ViewModels
 {

@@ -409,8 +409,8 @@ namespace Sqlite.Common
                 query += "'" + oneRowData.SpecCurrent + "', ";
                 query += "'" + oneRowData.IpAddress + "', ";
                 query += "'" + oneRowData.TempModuleComPort + "', ";
-                query += "'" + oneRowData.TempModuleChannel + "', ";
-                query += "'" + oneRowData.TempChannel + "'";
+                query += (!(oneRowData.TempModuleChannel < 0)) ? "'" + oneRowData.TempModuleChannel + "', " : "'', ";
+                query += (!(oneRowData.TempChannel < 0)) ? "'" + oneRowData.TempChannel + "'" : "''";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
