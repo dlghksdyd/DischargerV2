@@ -49,7 +49,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void InitializeModel()
         {
             OffPopup();
-            OffPopup2();
+            OffNestedPopup();
         }
 
         public void OpenPopup(EPopup setPopup)
@@ -65,20 +65,24 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.ViewModelPopup_UserSetting = new ViewModelPopup_UserSetting();
             }
-            else if (setPopup.Equals(EPopup.DeviceRegiseter))
+            else if (setPopup.Equals(EPopup.DeviceRegister))
             {
                 Model.ViewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister();
+            }
+            else if (setPopup.Equals(EPopup.Error))
+            {
+                
             }
 
             Model.PopupVisibility = popupVisibility;
             Model.IsPopupOpen = true;
         }
 
-        public void OpenPopup2(EPopup2 setPopup)
+        public void OpenNestedPopup(ENestedPopup setPopup)
         {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
+            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
 
-            foreach (EPopup2 popup in Enum.GetValues(typeof(EPopup2)))
+            foreach (ENestedPopup popup in Enum.GetValues(typeof(ENestedPopup)))
             {
                 popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? Visibility.Visible : Visibility.Collapsed;
             }
@@ -100,11 +104,11 @@ namespace DischargerV2.MVVM.ViewModels
             Model.IsPopupOpen = false;
         }
 
-        public void OffPopup2()
+        public void OffNestedPopup()
         {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
+            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
 
-            foreach (EPopup popup in Enum.GetValues(typeof(EPopup2)))
+            foreach (EPopup popup in Enum.GetValues(typeof(ENestedPopup)))
             {
                 popupVisibility[(int)popup] = Visibility.Collapsed;
             }

@@ -78,7 +78,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_EditUser(viewModelPopup_EditUser);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.EditUser);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.EditUser);
         }
 
         private void xDeleteImage_MouseLeftButtonUp()
@@ -93,7 +93,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.Warning);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
         }
 
         public void DeleteUser()

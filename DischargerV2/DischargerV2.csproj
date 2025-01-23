@@ -145,6 +145,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Communication\CommSqlite\SqliteDischargerErrorCode.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientUtility.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />
@@ -185,6 +186,9 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_UserSetting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTempModule.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
+    <Compile Include="MVVM\Views\ViewPopup_Error.xaml.cs">
+      <DependentUpon>ViewPopup_Error.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ViewDeviceRegister_Edit.xaml.cs">
       <DependentUpon>ViewDeviceRegister_Edit.xaml</DependentUpon>
     </Compile>
@@ -352,6 +356,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MVVM\Views\ViewPopup_Error.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MVVM\Views\ViewDeviceRegister_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

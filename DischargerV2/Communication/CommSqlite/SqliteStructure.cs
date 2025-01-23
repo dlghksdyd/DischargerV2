@@ -53,4 +53,29 @@ namespace Sqlite.Common
         public double SafetyTempMax;
         public double SafetyTempMin;
     }
+
+    public class TableDischargerErrorCode
+    {
+        public uint Code;
+        public string Name;
+        public string Title;
+        public string Description;
+        public string Cause;
+        public string Action;
+
+        public TableDischargerErrorCode()
+        {
+
+        }
+
+        public TableDischargerErrorCode(uint code, string name, string title, string description, string cause, string action)
+        {
+            this.Code = code;
+            this.Name = name;
+            this.Title = title;
+            this.Description = description;
+            this.Cause = cause;
+            this.Action = action;
+        }
+    }
 }

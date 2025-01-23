@@ -15,14 +15,14 @@ namespace DischargerV2.MVVM.Models
     {
         public enum EPopup 
         { 
-            UserSetting, DeviceRegiseter, ModelRegiseter, 
-            Info
+            UserSetting, DeviceRegister, ModelRegiseter, 
+            Info, Error,
         }
 
-        public enum EPopup2
+        public enum ENestedPopup
         {
             CreateNewUser, EditUser, 
-            Warning
+            Warning,
         }
 
         private WindowState _windowState = WindowState.Maximized;
@@ -77,7 +77,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Visibility[] _popupVisibility2 = new Visibility[Enum.GetValues(typeof(EPopup2)).Length];
+        private Visibility[] _popupVisibility2 = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
         public Visibility[] PopupVisibility2
         {
             get

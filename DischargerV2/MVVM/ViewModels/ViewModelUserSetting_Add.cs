@@ -34,7 +34,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void xAddButton_Click()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup2(ModelMain.EPopup2.CreateNewUser);
+            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.CreateNewUser);
         }
     }
 }

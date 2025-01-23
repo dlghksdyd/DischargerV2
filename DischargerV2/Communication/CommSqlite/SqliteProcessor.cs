@@ -29,6 +29,8 @@ namespace Sqlite.Common
             SqliteUserInfo.CreateTable();
             SqliteDischargerModel.CreateTable();
             SqliteDischargerInfo.CreateTable();
+            SqliteDischargerErrorCode.CreateTable();
+            SqliteDischargerErrorCode.InitializeData();
 
             /// 어드민 계정이 없으면 생성
             List<TableUserInfo> userAdmin = SqliteUserInfo.GetData().FindAll(x => x.UserId == "admin");
@@ -433,6 +435,152 @@ namespace Sqlite.Common
 
                 string query = "";
                 query += @"DELETE FROM " + ClassName + " WHERE \"Name\"=='" + name + "'";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+
+    public static class SqliteDischargerErrorCode
+    {
+        private static readonly string ClassName = nameof(SqliteDischargerErrorCode);
+
+        private static readonly string ConnectionString = @"Data Source=|DataDirectory|\Database\" + ClassName + ".db";
+
+        public static void CreateTable()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                var instance = new TableDischargerErrorCode();
+
+                string query = @"CREATE TABLE IF NOT EXISTS " + ClassName + "(";
+                query += "'" + nameof(instance.Code) + "' INTEGER PRIMARY KEY NOT NULL, ";
+                query += "'" + nameof(instance.Name) + "' TEXT, ";
+                query += "'" + nameof(instance.Title) + "' TEXT, ";
+                query += "'" + nameof(instance.Description) + "' TEXT, ";
+                query += "'" + nameof(instance.Cause) + "' TEXT, ";
+                query += "'" + nameof(instance.Action) + "' TEXT";
+                query += ")";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void InitializeData()
+        {
+            /// 모든 데이터 삭제
+            DeleteData();
+
+            TableDischargerErrorCode oneRow;
+
+            oneRow = new TableDischargerErrorCode(
+                0x01001000, "ERR_HW_INPUT_REV", 
+                "Cable reverse connection Alarm", "Cable 역결선", 
+                "전류케이블 극성이 반대입니다.", "전류케이블 극성을 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(
+                0x01001100, "ERR_HW_INPUT_CABLE",
+                "Cable connection Alarm", "Cable 결선 오류",
+                "결선을 확인하십시오.", "전류CABLE 또는, 배터리 센싱선 결선을 확인하십시오.");
+            InsertData(oneRow);
+        }
+
+        public static void InsertData(TableDischargerErrorCode oneRowData)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = "";
+                query += @"INSERT INTO " + ClassName + " (";
+                query += "'" + nameof(oneRowData.Code) + "',";
+                query += "'" + nameof(oneRowData.Name) + "',";
+                query += "'" + nameof(oneRowData.Title) + "',";
+                query += "'" + nameof(oneRowData.Description) + "',";
+                query += "'" + nameof(oneRowData.Cause) + "',";
+                query += "'" + nameof(oneRowData.Action) + "'";
+                query += ") ";
+                query += "values (";
+                query += "'" + oneRowData.Code + "', ";
+                query += "'" + oneRowData.Name + "', ";
+                query += "'" + oneRowData.Title + "', ";
+                query += "'" + oneRowData.Description + "', ";
+                query += "'" + oneRowData.Cause + "', ";
+                query += "'" + oneRowData.Action + "'";
+                query += ")";
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<TableDischargerErrorCode> GetData()
+        {
+            TableDischargerErrorCode instance = new TableDischargerErrorCode();
+            List<TableDischargerErrorCode> table = new List<TableDischargerErrorCode>();
+
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT * FROM " + ClassName;
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    SQLiteDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        TableDischargerErrorCode oneRow = new TableDischargerErrorCode
+                        {
+                            Code = uint.Parse(reader[nameof(instance.Code)].ToString()),
+                            Name = reader[nameof(instance.Name)].ToString(),
+                            Title = reader[nameof(instance.Title)].ToString(),
+                            Description = reader[nameof(instance.Description)].ToString(),
+                            Cause = reader[nameof(instance.Cause)].ToString(),
+                            Action = reader[nameof(instance.Action)].ToString()
+                        };
+                        table.Add(oneRow);
+                    }
+                }
+            }
+
+            return table;
+        }
+
+        public static void DeleteData()
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = @"DELETE FROM " + ClassName;
+
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteData(uint code)
+        {
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = @"DELETE FROM " + ClassName + " WHERE \"Code\"==" + code + "";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
                 {

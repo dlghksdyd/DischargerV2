@@ -148,13 +148,13 @@ namespace DischargerV2.MVVM.ViewModels
             SqliteDischargerInfo.UpdateData(tableDischargerInfo);
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
         }
 
         private void xCancelButton_Click()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
         }
 
         private void LoadModelInfoList()
