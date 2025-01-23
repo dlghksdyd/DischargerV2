@@ -22,8 +22,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelDeviceRegister_Info : BindableBase
     {
         #region Command
-        public DelegateCommand xEditButton_ClickCommand { get; set; }
-        public DelegateCommand xDeleteButton_ClickCommand { get; set; }
+        public DelegateCommand OpenEditDataCommand { get; set; }
+        public DelegateCommand OpenPopupDeleteCommand { get; set; }
         #endregion
 
         #region Model
@@ -92,11 +92,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDeviceRegister_Info()
         {
-            xEditButton_ClickCommand = new DelegateCommand(xEditButton_Click);
-            xDeleteButton_ClickCommand = new DelegateCommand(xDeleteButton_Click);
+            OpenEditDataCommand = new DelegateCommand(OpenEditData);
+            OpenPopupDeleteCommand = new DelegateCommand(OpenPopupDelete);
         }
 
-        private void xEditButton_Click()
+        private void OpenEditData()
         {
             ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister()
             {
@@ -107,14 +107,14 @@ namespace DischargerV2.MVVM.ViewModels
             viewModelMain.SetViewModelPopup_DeviceRegister(viewModelPopup_DeviceRegister);
         }
 
-        private void xDeleteButton_Click()
+        private void OpenPopupDelete()
         {
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
                 Title = string.Format("Delete Device '{0}'?", Name),
                 Comment = "Are you sure you want to delete this data?\r\n" +
                           "Once you confirm, this data will be permanetly deleted.",
-                CallBackDelegate = DeleteDevice,
+                CallBackDelegate = DeleteDischargerInfo,
             };
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
@@ -122,7 +122,7 @@ namespace DischargerV2.MVVM.ViewModels
             viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
         }
 
-        public void DeleteDevice()
+        public void DeleteDischargerInfo()
         {
             SqliteDischargerInfo.DeleteData(Name);
 

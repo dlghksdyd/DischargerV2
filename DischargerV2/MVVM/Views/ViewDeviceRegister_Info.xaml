@@ -78,7 +78,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xEditButton_ClickCommand}"
+                                <b:InvokeCommandAction Command="{Binding OpenEditDataCommand}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
@@ -93,7 +93,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xDeleteButton_ClickCommand}"
+                                <b:InvokeCommandAction Command="{Binding OpenPopupDeleteCommand}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
                         </b:Interaction.Triggers>

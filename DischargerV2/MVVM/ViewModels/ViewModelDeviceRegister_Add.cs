@@ -22,9 +22,9 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelDeviceRegister_Add : BindableBase
     {
         #region Command
-        public DelegateCommand xComboBox_MouseLeaveCommand { get; set; }
-        public DelegateCommand xAddButton_ClickCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
+        public DelegateCommand LoadModelInfoListCommand { get; set; }
+        public DelegateCommand InsertNewDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -47,19 +47,14 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDeviceRegister_Add()
         {
-            xComboBox_MouseLeaveCommand = new DelegateCommand(xComboBox_MouseLeave);
-            xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
+            LoadModelInfoListCommand = new DelegateCommand(LoadModelInfoList);
+            InsertNewDataCommand = new DelegateCommand(InsertNewData);
+            CloseCommand = new DelegateCommand(Close);
 
             LoadModelInfoList();
         }
 
-        private void xComboBox_MouseLeave()
-        {
-            LoadModelInfoList();
-        }
-
-        private void xAddButton_Click()
+        private void InsertNewData()
         {
             if (!(CheckData() < 0))
             {
@@ -68,9 +63,10 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void xCancelButton_Click()
+        private void Close()
         {
-            Close();
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
 
         private void LoadModelInfoList()
@@ -229,12 +225,6 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerInfo.TempChannel = Model.TempChannel;
 
             SqliteDischargerInfo.InsertData(tableDischargerInfo);
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
     }
 }

@@ -22,9 +22,9 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelDeviceRegister_Edit : BindableBase
     {
         #region Command
-        public DelegateCommand xComboBox_MouseLeaveCommand { get; set; }
-        public DelegateCommand xEditButton_ClickCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
+        public DelegateCommand LoadModelInfoListCommand { get; set; }
+        public DelegateCommand UpdateEditDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -107,19 +107,14 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDeviceRegister_Edit()
         {
-            xComboBox_MouseLeaveCommand = new DelegateCommand(xComboBox_MouseLeave);
-            xEditButton_ClickCommand = new DelegateCommand(xEditButton_Click);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
+            LoadModelInfoListCommand = new DelegateCommand(LoadModelInfoList);
+            UpdateEditDataCommand = new DelegateCommand(UpdateEditData);
+            CloseCommand = new DelegateCommand(Close);
 
             LoadModelInfoList();
         }
 
-        private void xComboBox_MouseLeave()
-        {
-            LoadModelInfoList();
-        }
-
-        private void xEditButton_Click()
+        private void UpdateEditData()
         {
             if (!(CheckData() < 0))
             {
@@ -128,9 +123,10 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void xCancelButton_Click()
+        private void Close()
         {
-            Close();
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
 
         private void LoadModelInfoList()
@@ -159,9 +155,9 @@ namespace DischargerV2.MVVM.ViewModels
 
             // ChannelList
             string channel = Model.Channel;
-        
+
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
-            
+
             List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
             channelList = channelList.Distinct().ToList();
 
@@ -172,7 +168,7 @@ namespace DischargerV2.MVVM.ViewModels
             string voltSpec = Model.VoltSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
-            
+
             List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
             voltSpecList = voltSpecList.Distinct().ToList();
 
@@ -183,7 +179,7 @@ namespace DischargerV2.MVVM.ViewModels
             string currSpec = Model.CurrSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
-           
+
             List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
             currSpecList = currSpecList.Distinct().ToList();
 
@@ -289,12 +285,6 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerInfo.TempChannel = Model.TempChannel;
 
             SqliteDischargerInfo.UpdateData(tableDischargerInfo);
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
         }
     }
 }
