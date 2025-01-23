@@ -65,13 +65,17 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.ViewModelPopup_UserSetting = new ViewModelPopup_UserSetting();
             }
-            else if (setPopup.Equals(EPopup.DeviceRegiseter))
+            else if (setPopup.Equals(EPopup.DeviceRegister))
             {
                 Model.ViewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister();
             }
             else if (setPopup.Equals(EPopup.ModelRegiseter))
             {
                 Model.ViewModelPopup_ModelRegister = new ViewModelPopup_ModelRegister();
+            }
+            else if (setPopup.Equals(EPopup.Error))
+            {
+
             }
 
             Model.PopupVisibility = popupVisibility;

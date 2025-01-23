@@ -66,7 +66,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
         }
 
         private void LoadModelInfoList()

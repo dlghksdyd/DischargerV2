@@ -28,7 +28,7 @@ namespace DischargerV2.MVVM.ViewModels
         #region Model
         public ModelPopup_CreateNewUser Model { get; set; } = new ModelPopup_CreateNewUser();
         #endregion
-        
+
         public ViewModelPopup_CreateNewUser()
         {
             InsertNewDataCommand = new DelegateCommand(InsertNewData);

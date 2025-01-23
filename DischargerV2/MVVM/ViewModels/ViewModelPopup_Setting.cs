@@ -51,7 +51,7 @@ namespace DischargerV2.MVVM.ViewModels
                     else if (name == "xDeviceRegisterLabel")
                     {
                         ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegiseter);
+                        viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
                     }
                     else if (name == "xModelRegisterLabel")
                     {

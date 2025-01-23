@@ -15,14 +15,14 @@ namespace DischargerV2.MVVM.Models
     {
         public enum EPopup 
         { 
-            UserSetting, DeviceRegiseter, ModelRegiseter, 
-            Info
+            UserSetting, DeviceRegister, ModelRegiseter, 
+            Info, Error,
         }
 
         public enum ENestedPopup
         {
             CreateNewUser, EditUser, 
-            Warning
+            Warning,
         }
 
         private WindowState _windowState = WindowState.Maximized;

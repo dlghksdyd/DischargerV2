@@ -198,6 +198,9 @@
     <Compile Include="MVVM\Views\ViewModelRegister_Add.xaml.cs">
       <DependentUpon>ViewModelRegister_Add.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_Error.xaml.cs">
+      <DependentUpon>ViewPopup_Error.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ViewDeviceRegister_Edit.xaml.cs">
       <DependentUpon>ViewDeviceRegister_Edit.xaml</DependentUpon>
     </Compile>
@@ -377,6 +380,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewModelRegister_Add.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_Error.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
