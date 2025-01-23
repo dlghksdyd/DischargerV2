@@ -156,9 +156,7 @@
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister.cs" />
-    <Compile Include="MVVM\Models\ModelModelRegister_Edit.cs" />
-    <Compile Include="MVVM\Models\ModelModelRegister_Info.cs" />
-    <Compile Include="MVVM\Models\ModelModelRegister_Add.cs" />
+    <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
     <Compile Include="MVVM\Models\ModelPopup_ModelRegister.cs" />

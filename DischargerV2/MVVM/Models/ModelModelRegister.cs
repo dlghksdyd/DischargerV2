@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
-    public class ModelModelRegister_Add : BindableBase
+    public class ModelModelRegister : BindableBase
     {
         private int _id;
         public int Id

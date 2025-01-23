@@ -27,7 +27,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelModelRegister_Add Model { get; set; } = new ModelModelRegister_Add();
+        public ModelModelRegister Model { get; set; } = new ModelModelRegister();
         #endregion
 
         private static ViewModelModelRegister_Add _instance = null;

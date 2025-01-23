@@ -27,7 +27,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelModelRegister_Info Model { get; set; } = new ModelModelRegister_Info();
+        public ModelModelRegister Model { get; set; } = new ModelModelRegister();
 
         public int Id
         {
