@@ -15,8 +15,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelTopmenu : BindableBase
     {
         #region Command
-        public DelegateCommand xSettingButton_ClickCommand { get; set; }
-        public DelegateCommand xSettingPopup_MouseLeftButtonUpCommand { get; set; }
+        public DelegateCommand OpenPopupCommand { get; set; }
+        public DelegateCommand ClosePopupCommand { get; set; }
         #endregion
 
         #region Model
@@ -27,13 +27,23 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Model = new ModelTopmenu();
 
-            xSettingButton_ClickCommand = new DelegateCommand(xSettingButton_Click);
-            xSettingPopup_MouseLeftButtonUpCommand = new DelegateCommand(xSettingPopup_MouseLeftButtonUp);
+            OpenPopupCommand = new DelegateCommand(OpenPopup);
+            ClosePopupCommand = new DelegateCommand(ClosePopup);
 
             DispatcherTimer DateTimeTimer = new DispatcherTimer();
             DateTimeTimer.Interval = TimeSpan.FromMilliseconds(100);
             DateTimeTimer.Tick += new EventHandler(DateTimeTimer_Tick);
             DateTimeTimer.Start();
+        }
+
+        private void OpenPopup()
+        {
+            Model.IsPopupOpen = true;
+        }
+
+        private void ClosePopup()
+        {
+            Model.IsPopupOpen = false;
         }
 
         private void DateTimeTimer_Tick(object sender, EventArgs e)
@@ -43,16 +53,6 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.DateTime = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss");
             }
             catch { }
-        }
-
-        private void xSettingButton_Click()
-        {
-            Model.IsPopupOpen = true;
-        }
-
-        private void xSettingPopup_MouseLeftButtonUp()
-        {
-            Model.IsPopupOpen = false;
         }
     }
 }

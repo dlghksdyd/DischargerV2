@@ -37,45 +37,46 @@
         </Mex:MexTextBlock>
         <Grid Grid.Column="3" Cursor="Hand"
               Background="{Binding Model.Background_Minimize}">
-            <Image Width="24" Height="24"
+            <Image x:Name="xMinimizeImage" 
+                   Width="24" Height="24"
                    Source="{Binding Source={StaticResource Mex/ResImage/remove},
                                     Converter={StaticResource ImageColorConverter}, 
                                     ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseLeftButtonUp">
-                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseLeftButtonUpCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseLeftButtonUpCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="MouseEnter">
-                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseEnterCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseEnterCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="MouseLeave">
-                        <b:InvokeCommandAction Command="{Binding xMinimizeImage_MouseLeaveCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseLeaveCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Image>
         </Grid>
         <Grid Grid.Column="4" Cursor="Hand"
               Background="{Binding Model.Background_Close}">
-            <Image Grid.Column="4" 
+            <Image x:Name="xCloseImage" Grid.Column="4" 
                    Width="24" Height="24" 
                    Source="{Binding Source={StaticResource Mex/ResImage/close},
                                     Converter={StaticResource ImageColorConverter}, 
                                     ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseLeftButtonUp">
-                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseLeftButtonUpCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseLeftButtonUpCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="MouseEnter">
-                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseEnterCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseEnterCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                     <b:EventTrigger EventName="MouseLeave">
-                        <b:InvokeCommandAction Command="{Binding xCloseImage_MouseLeaveCommand}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction Command="{Binding xImage_MouseLeaveCommand}"
+                                               PassEventArgsToCommand="True"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Image>

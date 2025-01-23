@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -18,12 +20,9 @@ namespace DischargerV2.MVVM.ViewModels
     {
         #region Command
         public DelegateCommand xTopbar_MouseLeftButtonDownCommand { get; set; }
-        public DelegateCommand xMinimizeImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xMinimizeImage_MouseEnterCommand { get; set; }
-        public DelegateCommand xMinimizeImage_MouseLeaveCommand { get; set; }
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xCloseImage_MouseEnterCommand { get; set; }
-        public DelegateCommand xCloseImage_MouseLeaveCommand { get; set; }
+        public ICommand xImage_MouseLeftButtonUpCommand { get; set; }
+        public ICommand xImage_MouseEnterCommand { get; set; }
+        public ICommand xImage_MouseLeaveCommand { get; set; }
         #endregion
 
         #region Model
@@ -36,13 +35,9 @@ namespace DischargerV2.MVVM.ViewModels
 
             xTopbar_MouseLeftButtonDownCommand = new DelegateCommand(xTopbar_MouseLeftButtonDown);
 
-            xMinimizeImage_MouseLeftButtonUpCommand = new DelegateCommand(xMinimizeImage_MouseLeftButtonUp);
-            xMinimizeImage_MouseEnterCommand = new DelegateCommand(xMinimizeImage_MouseEnter);
-            xMinimizeImage_MouseLeaveCommand = new DelegateCommand(xMinimizeImage_MouseLeave);
-
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xCloseImage_MouseEnterCommand = new DelegateCommand(xCloseImage_MouseEnter);
-            xCloseImage_MouseLeaveCommand = new DelegateCommand(xCloseImage_MouseLeave);
+            xImage_MouseLeftButtonUpCommand = new RelayCommand<object>(xImage_MouseLeftButtonUp);
+            xImage_MouseEnterCommand = new RelayCommand<object>(xImage_MouseEnter);
+            xImage_MouseLeaveCommand = new RelayCommand<object>(xImage_MouseLeave);
         }
 
         private void xTopbar_MouseLeftButtonDown()
@@ -51,35 +46,65 @@ namespace DischargerV2.MVVM.ViewModels
             viewMain.DragMove();
         }
 
-        private void xMinimizeImage_MouseLeftButtonUp()
+        private void xImage_MouseLeftButtonUp(object obj)
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.WindowState = WindowState.Minimized;
+            if (obj is MouseEventArgs e)
+            {
+                if (e.Source is Image xImage)
+                {
+                    var name = xImage.Name;
+
+                    if (name == "xMinimizeImage")
+                    {
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.Model.WindowState = WindowState.Minimized;
+                    }
+                    else if (name == "xCloseImage")
+                    {
+                        System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    }
+                }
+            }
         }
 
-        private void xMinimizeImage_MouseEnter()
+        private void xImage_MouseEnter(object obj)
         {
-            Model.Background_Minimize = ResColor.surface_secondary_hover;
+            if (obj is MouseEventArgs e)
+            {
+                if (e.Source is Image xImage)
+                {
+                    var name = xImage.Name;
+
+                    if (name == "xMinimizeImage")
+                    {
+                        Model.Background_Minimize = ResColor.surface_secondary_hover;
+                    }
+                    else if (name == "xCloseImage")
+                    {
+                        Model.Background_Close = ResColor.surface_error2;
+                    }
+                }
+            }
         }
 
-        private void xMinimizeImage_MouseLeave()
+        private void xImage_MouseLeave(object obj)
         {
-            Model.Background_Minimize = ResColor.surface_page;
-        }
+            if (obj is MouseEventArgs e)
+            {
+                if (e.Source is Image xImage)
+                {
+                    var name = xImage.Name;
 
-        private void xCloseImage_MouseLeftButtonUp()
-        {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
-        }
-
-        private void xCloseImage_MouseEnter()
-        {
-            Model.Background_Close = ResColor.surface_error2;
-        }
-
-        private void xCloseImage_MouseLeave()
-        {
-            Model.Background_Close = ResColor.surface_page;
+                    if (name == "xMinimizeImage")
+                    {
+                        Model.Background_Minimize = ResColor.surface_page;
+                    }
+                    else if (name == "xCloseImage")
+                    {
+                        Model.Background_Close = ResColor.surface_page;
+                    }
+                }
+            }
         }
     }
 }

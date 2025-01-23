@@ -42,7 +42,7 @@
                        ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="Click">
-                    <b:InvokeCommandAction Command="{Binding xAddButton_ClickCommand}"
+                    <b:InvokeCommandAction Command="{Binding OpenPopupNewUserCommand}"
                                            PassEventArgsToCommand="False"/>
                 </b:EventTrigger>
             </b:Interaction.Triggers>

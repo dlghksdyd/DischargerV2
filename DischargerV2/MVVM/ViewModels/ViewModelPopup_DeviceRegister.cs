@@ -22,8 +22,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_DeviceRegister : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xAddButton_ClickCommand { get; set; }
+        public DelegateCommand OpenNewDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -38,20 +38,21 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelPopup_DeviceRegister()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
+            OpenNewDataCommand = new DelegateCommand(OpenNewData);
+            CloseCommand = new DelegateCommand(Close);
 
             LoadDischargerInfoList();
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
-        {
-            Close();
-        }
-
-        private void xAddButton_Click()
+        private void OpenNewData()
         {
             Model.NewDeviceVisibility = Visibility.Visible;
+        }
+
+        private void Close()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OffPopup();
         }
 
         private void LoadDischargerInfoList()
@@ -66,12 +67,6 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             Model.Content = content;
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup();
         }
     }
 }

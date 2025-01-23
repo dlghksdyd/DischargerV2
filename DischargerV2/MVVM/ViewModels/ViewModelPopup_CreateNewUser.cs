@@ -21,10 +21,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_CreateNewUser : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
-        public DelegateCommand xCreateButton_ClickCommand { get; set; }
-        
+        public DelegateCommand InsertNewDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -33,54 +31,61 @@ namespace DischargerV2.MVVM.ViewModels
         
         public ViewModelPopup_CreateNewUser()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
-            xCreateButton_ClickCommand = new DelegateCommand(xCreateButton_Click);
+            InsertNewDataCommand = new DelegateCommand(InsertNewData);
+            CloseCommand = new DelegateCommand(Close);
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
+        private void InsertNewData()
         {
-            Close();
+            if (!(CheckData() < 0))
+            {
+                InsertUserInfo();
+                Close();
+            }
         }
 
-        private void xCancelButton_Click()
+        private void Close()
         {
-            Close();
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OffNestedPopup();
+            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
 
-        private void xCreateButton_Click()
+        private int CheckData()
         {
             List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
             if (Model.Id == null || Model.Id == "")
             {
                 MessageBox.Show("ID: 필수 정보입니다.");
+                return -1;
             }
-            else if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
+            if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
             {
                 MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
+                return -1;
             }
-            else if (Model.Password == null || Model.Password == "")
+            if (Model.Password == null || Model.Password == "")
             {
                 MessageBox.Show("Password: 필수 정보입니다.");
+                return -1;
             }
-            else if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
+            if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
             {
                 MessageBox.Show("Confirm Password: 필수 정보입니다.");
+                return -1;
             }
-            else if (Model.Name == null || Model.Name == "")
+            if (Model.Name == null || Model.Name == "")
             {
                 MessageBox.Show("User Name: 필수 정보입니다.");
+                return -1;
             }
-            else if (Model.Password != Model.ConfirmPassword)
+            if (Model.Password != Model.ConfirmPassword)
             {
                 MessageBox.Show("Password가 일치하지 않습니다.");
+                return -1;
             }
-            else
-            {
-                InsertUserInfo();
-                Return();
-            }
+            return 0;
         }
 
         private void InsertUserInfo()
@@ -92,19 +97,6 @@ namespace DischargerV2.MVVM.ViewModels
             tableUserInfo.IsAdmin = Model.IsAdmin;
 
             SqliteUserInfo.InsertData(tableUserInfo);
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
-        }
-
-        private void Return()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
     }
 }

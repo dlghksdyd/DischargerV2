@@ -23,9 +23,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_EditUser : BindableBase
     {
         #region Command
-        public DelegateCommand xCloseImage_MouseLeftButtonUpCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
-        public DelegateCommand xEditButton_ClickCommand { get; set; }
+        public DelegateCommand UpdateEditDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -82,66 +81,65 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelPopup_EditUser()
         {
-            xCloseImage_MouseLeftButtonUpCommand = new DelegateCommand(xCloseImage_MouseLeftButtonUp);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
-            xEditButton_ClickCommand = new DelegateCommand(xEditButton_Click);
+            CloseCommand = new DelegateCommand(Close);
+            UpdateEditDataCommand = new DelegateCommand(UpdateEditData);
         }
 
-        private void xCloseImage_MouseLeftButtonUp()
-        {
-            Close();
-        }
-
-        private void xCancelButton_Click()
-        {
-            Close();
-        }
-
-        private void xEditButton_Click()
-        {
-            if (Model.CurrentPassword == null || Model.CurrentPassword == "")
-            {
-                MessageBox.Show("Current Password: 필수 정보입니다.");
-            }
-            else if (Model.NewPassword == null || Model.NewPassword == "")
-            {
-                MessageBox.Show("New Password: 필수 정보입니다.");
-            }
-            else if (Model.ConfirmNewPassword == null || Model.ConfirmNewPassword == "")
-            {
-                MessageBox.Show("Confirm New Password: 필수 정보입니다.");
-            }
-            else if (Model.CurrentPassword != Model.ConfirmCurrentPassword)
-            {
-                MessageBox.Show("Current Password가 일치하지 않습니다.");
-            }
-            else if (Model.NewPassword != Model.ConfirmNewPassword)
-            {
-                MessageBox.Show("New Password가 일치하지 않습니다.");
-            }
-            else
-            {
-                TableUserInfo tableUserInfo = new TableUserInfo();
-                tableUserInfo.UserId = Model.Id;
-                tableUserInfo.Password = Model.NewPassword;
-                tableUserInfo.UserName = Model.Name;
-
-                SqliteUserInfo.UpdateData(tableUserInfo);
-                Return();
-            }
-        }
 
         private void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OffNestedPopup();
+            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
         }
 
-        private void Return()
+        private void UpdateEditData()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+            if (!(CheckData() < 0))
+            {
+                UpdateUserInfo();
+                Close();
+            }
+        }
+
+        private int CheckData()
+        {
+            if (Model.CurrentPassword == null || Model.CurrentPassword == "")
+            {
+                MessageBox.Show("Current Password: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.NewPassword == null || Model.NewPassword == "")
+            {
+                MessageBox.Show("New Password: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.ConfirmNewPassword == null || Model.ConfirmNewPassword == "")
+            {
+                MessageBox.Show("Confirm New Password: 필수 정보입니다.");
+                return -1;
+            }
+            if (Model.CurrentPassword != Model.ConfirmCurrentPassword)
+            {
+                MessageBox.Show("Current Password가 일치하지 않습니다.");
+                return -1;
+            }
+            if (Model.NewPassword != Model.ConfirmNewPassword)
+            {
+                MessageBox.Show("New Password가 일치하지 않습니다.");
+                return -1;
+            }
+            return 0;
+        }
+
+        private void UpdateUserInfo()
+        {
+            TableUserInfo tableUserInfo = new TableUserInfo();
+            tableUserInfo.UserId = Model.Id;
+            tableUserInfo.Password = Model.NewPassword;
+            tableUserInfo.UserName = Model.Name;
+
+            SqliteUserInfo.UpdateData(tableUserInfo);
         }
     }
 }
