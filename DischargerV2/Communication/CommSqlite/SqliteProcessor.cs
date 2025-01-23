@@ -344,8 +344,8 @@ namespace Sqlite.Common
                 query += "'SpecCurrent' REAL, ";
                 query += "'IpAddress' TEXT, ";
                 query += "'TempModuleComPort' TEXT, ";
-                query += "'TempModuleChannel' INTEGER, ";
-                query += "'TempChannel' INTEGER";
+                query += "'TempModuleChannel' TEXT, ";
+                query += "'TempChannel' TEXT";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -409,8 +409,8 @@ namespace Sqlite.Common
                 query += "'" + oneRowData.SpecCurrent + "', ";
                 query += "'" + oneRowData.IpAddress + "', ";
                 query += "'" + oneRowData.TempModuleComPort + "', ";
-                query += (!(oneRowData.TempModuleChannel < 0)) ? "'" + oneRowData.TempModuleChannel + "', " : "'', ";
-                query += (!(oneRowData.TempChannel < 0)) ? "'" + oneRowData.TempChannel + "'" : "''";
+                query += "'" + oneRowData.TempModuleChannel + "', ";
+                query += "'" + oneRowData.TempChannel + "'";
                 query += ")";
 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
@@ -445,8 +445,8 @@ namespace Sqlite.Common
                         oneRow.SpecCurrent = double.Parse(reader["SpecCurrent"].ToString());
                         oneRow.IpAddress = reader["IpAddress"].ToString();
                         oneRow.TempModuleComPort = reader["TempModuleComPort"].ToString();
-                        oneRow.TempModuleChannel = int.Parse(reader["TempModuleChannel"].ToString());
-                        oneRow.TempChannel = int.Parse(reader["TempChannel"].ToString());
+                        oneRow.TempModuleChannel = reader["TempModuleChannel"].ToString();
+                        oneRow.TempChannel = reader["TempChannel"].ToString();
                         table.Add(oneRow);
                     }
                 }

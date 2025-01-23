@@ -183,37 +183,17 @@ namespace DischargerV2.MVVM.ViewModels
                 MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
                 return -1;
             }
-            if (Model.ModuleChannel == null)
+            if (Model.ModuleChannel != null && Model.ModuleChannel != ""
+                && !Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
             {
-                Model.ModuleChannel = "-1";
+                MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
+                return -1;
             }
-            else
+            if (Model.TempChannel != null && Model.TempChannel != ""
+                && !Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
             {
-                if (Model.ModuleChannel == "")
-                {
-                    Model.ModuleChannel = "-1";
-                }
-                else if (!Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
-                {
-                    MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
-                    return -1;
-                }
-            }
-            if (Model.TempChannel == null)
-            {
-                Model.TempChannel = "-1";
-            }
-            else
-            {
-                if (Model.TempChannel == "")
-                {
-                    Model.TempChannel = "-1";
-                }
-                else if (!Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
-                {
-                    MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
-                    return -1;
-                }
+                MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
+                return -1;
             }
             return 0;
         }
@@ -245,8 +225,8 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
             tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
             tableDischargerInfo.TempModuleComPort = Model.Comport;
-            tableDischargerInfo.TempModuleChannel = Convert.ToInt32(Model.ModuleChannel);
-            tableDischargerInfo.TempChannel = Convert.ToInt32(Model.TempChannel);
+            tableDischargerInfo.TempModuleChannel = Model.ModuleChannel;
+            tableDischargerInfo.TempChannel = Model.TempChannel;
 
             SqliteDischargerInfo.InsertData(tableDischargerInfo);
         }
