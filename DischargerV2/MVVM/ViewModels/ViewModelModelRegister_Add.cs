@@ -22,8 +22,8 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelModelRegister_Add : BindableBase
     {
         #region Command
-        public DelegateCommand xAddButton_ClickCommand { get; set; }
-        public DelegateCommand xCancelButton_ClickCommand { get; set; }
+        public DelegateCommand InsertNewDataCommand { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
         #endregion
 
         #region Model
@@ -48,13 +48,13 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
-            xAddButton_ClickCommand = new DelegateCommand(xAddButton_Click);
-            xCancelButton_ClickCommand = new DelegateCommand(xCancelButton_Click);
+            InsertNewDataCommand = new DelegateCommand(InsertNewData);
+            CloseCommand = new DelegateCommand(Close);
 
             LoadDischargerModelList();
         }
 
-        private void xAddButton_Click()
+        private void InsertNewData()
         {
             if (!(CheckData() < 0))
             {
@@ -63,9 +63,10 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void xCancelButton_Click()
+        private void Close()
         {
-            Close();
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
         }
 
         private void LoadDischargerModelList()
@@ -225,12 +226,6 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerModel.SafetyTempMin = Convert.ToDouble(Model.TempMin);
 
             SqliteDischargerModel.InsertData(tableDischargerModel);
-        }
-
-        private void Close()
-        {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
         }
     }
 }

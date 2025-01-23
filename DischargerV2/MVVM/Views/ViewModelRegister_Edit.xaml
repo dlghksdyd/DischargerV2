@@ -70,7 +70,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xEditButton_ClickCommand, 
+                                <b:InvokeCommandAction Command="{Binding UpdateEditDataCommand, 
                                                                          Source={x:Static vm:ViewModelModelRegister_Edit.Instance}}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
@@ -86,7 +86,7 @@
                                    ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:InvokeCommandAction Command="{Binding xCancelButton_ClickCommand, 
+                                <b:InvokeCommandAction Command="{Binding CloseCommand, 
                                                                          Source={x:Static vm:ViewModelModelRegister_Edit.Instance}}"
                                                        PassEventArgsToCommand="False"/>
                             </b:EventTrigger>
