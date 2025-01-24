@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:Util="clr-namespace:Utility.Common"
         xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+        xmlns:Example="clr-namespace:MExpress.Example;assembly=MExpress" 
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
         xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
@@ -80,6 +81,10 @@
                                                                     Source={x:Static vm:ViewModelMain.Instance}}"
                                                DataContext="{Binding Model.ViewModelPopup_ModelRegister,
                                                                      Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_Error Visibility="{Binding Model.PopupVisibility[4], 
+                                                           Source={x:Static vm:ViewModelMain.Instance}}"
+                                       DataContext="{Binding Model.ViewModelPopup_Error,
+                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
             </Grid>
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

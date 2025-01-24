@@ -59,6 +59,7 @@ namespace DischargerV2.MVVM.ViewModels
         public DelegateCommand<string> StopDischargerCommand { get; set; }
         public DelegateCommand<string> PauseDischargerCommand { get; set; }
 
+        public DelegateCommand<string> OpenPopupErrorCommand { get; set; }
         public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
 
         #endregion
@@ -96,7 +97,46 @@ namespace DischargerV2.MVVM.ViewModels
             StopDischargerCommand = new DelegateCommand<string>(StopDischarger);
             PauseDischargerCommand = new DelegateCommand<string>(PauseDischarger);
 
+            OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
             ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
+        }
+
+        private void OpenPopupError(string dischargerName)
+        {
+            int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
+            uint errorCode = Model.DischargerDatas[index].ErrorCode;
+            errorCode = 0x01001000;
+            List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
+            TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
+
+            string title = tableDischargerErrorCode.Title;
+            string comment = string.Format(
+                "{0} (Channel: {1})\n\n" +
+                "{2} 오류입니다.\n" +
+                "(Error Code: 0x{3})\n\n" +
+                "원인: \n{4}\n\n" +
+                "해결 방법: \n{5}",
+                dischargerName, Model.DischargerInfos[index].Channel,
+                tableDischargerErrorCode.Description,
+                tableDischargerErrorCode.Code.ToString("X"),
+                tableDischargerErrorCode.Cause, 
+                tableDischargerErrorCode.Action);
+
+            ViewModelPopup_Error viewModelPopup_Error = new ViewModelPopup_Error()
+            {
+                Title = title,
+                Comment = comment,
+                CallBackDelegate = ResetError,
+            };
+
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.SetViewModelPopup_Error(viewModelPopup_Error);
+            viewModelMain.OpenPopup(ModelMain.EPopup.Error);
+        }
+
+        private void ResetError(string dischargerName)
+        {
+            _clients[dischargerName].SendCommand_ClearAlarm();
         }
 
         private void ReconnectDischarger(string dischargerName)

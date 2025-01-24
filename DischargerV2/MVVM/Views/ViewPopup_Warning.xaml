@@ -54,21 +54,18 @@
             </Image>
         </Grid>
         <Mex:MexTextBlock Grid.Row="2"
-                          x:Name="xContentTextBlock"
                           Text="{Binding Model.Comment, FallbackValue=Comment}"
                           Foreground="{StaticResource Mex/ResColor/text_body}"
                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
         <StackPanel Grid.Row="4"
-                Orientation="Horizontal" FlowDirection="RightToLeft">
-            <Mex:MexButton x:Name="xConfirmButton"
-                           Padding="24,10,24,10"
+                    Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Confirm"
                            Foreground="{StaticResource Mex/ResColor/text_on_action}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
-                           HorizontalContentAlignment="Center"
-                           VerticalContentAlignment="Center">
+                           Cursor="Hand">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding ConfirmCommand}"
@@ -77,14 +74,12 @@
                 </b:Interaction.Triggers>
             </Mex:MexButton>
             <Grid Width="12"/>
-            <Mex:MexButton x:Name="xCancelButton"
-                           Padding="24,10,24,10"
+            <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           HorizontalContentAlignment="Center"
-                           VerticalContentAlignment="Center">
+                           Cursor="Hand">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding CloseCommand}"

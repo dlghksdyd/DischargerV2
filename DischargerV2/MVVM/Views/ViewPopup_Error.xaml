@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"  
+             xmlns:Util="clr-namespace:Utility.Common"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:ViewModelPopup_Error}"
              d:DesignHeight="248" d:DesignWidth="600"
+             MinHeight="248" MinWidth="600"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>
@@ -17,13 +24,13 @@
     <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="32"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="32"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Mex:MexLabel Text="Pan 1 Status Invalid"
+            <Mex:MexLabel Text="{Binding Model.Title, FallbackValue=Title}"
                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                           TextPadding="12,0,0,0"
@@ -37,10 +44,18 @@
                    Source="{Binding Source={StaticResource Mex/ResImage/close},
                                     Converter={StaticResource ImageColorConverter}, 
                                     ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
-                   HorizontalAlignment="Right"/>
+                   HorizontalAlignment="Right"
+                   Cursor="Hand">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseLeftButtonUp">
+                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Image>
         </Grid>
-        <Mex:MexTextBlock x:Name="xContentTextBlock" Grid.Row="2"
-                          Text="MBDC-500R (Channel: 1)&#10;(Error Code: 0x100200)"
+        <Mex:MexTextBlock Grid.Row="2"
+                          Text="{Binding Model.Comment, FallbackValue=Comment}"
                           Foreground="{StaticResource Mex/ResColor/text_body}"
                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
         <StackPanel Grid.Row="4"
@@ -50,14 +65,29 @@
                            CornerRadius="8"
                            Text="Reset"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"/>    
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"
+                           Cursor="Hand">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding ResetCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
             <Grid Width="12"/>
-            <Mex:MexButton x:Name="xCancelButton"
-                           Padding="24,10,24,10"
+            <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"/>
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
+                           Cursor="Hand">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
         </StackPanel>
     </Grid>
 </UserControl>

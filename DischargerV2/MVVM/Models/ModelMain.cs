@@ -129,6 +129,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private ViewModelPopup_Error _viewModelPopup_Error = new ViewModelPopup_Error();
+        public ViewModelPopup_Error ViewModelPopup_Error
+        {
+            get
+            {
+                return _viewModelPopup_Error;
+            }
+            set
+            {
+                SetProperty(ref _viewModelPopup_Error, value);
+            }
+        }
+
         private ViewModelPopup_CreateNewUser _viewModelPopup_CreateNewUser = new ViewModelPopup_CreateNewUser();
         public ViewModelPopup_CreateNewUser ViewModelPopup_CreateNewUser
         {

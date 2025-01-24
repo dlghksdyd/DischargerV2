@@ -168,7 +168,21 @@ namespace DischargerV2.MVVM.Views
                 spError.Margin = new Thickness(16, 0, 16, 0);
                 BindingOperations.SetBinding(spError, StackPanel.VisibilityProperty,
                     new Binding("Model.ErrorVisibility[" + i + "]"));
+
+                var errorTriggerCollection = Interaction.GetTriggers(spError);
+                var errorEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
+                errorEventTrigger.EventName = "MouseLeftButtonUp";
+                var errorAction = new InvokeCommandAction();
+                errorAction.PassEventArgsToCommand = false;
+                errorAction.CommandParameter = dischargerName;
+                BindingOperations.SetBinding(errorAction,
+                    InvokeCommandAction.CommandProperty,
+                    new Binding("OpenPopupErrorCommand"));
+                errorEventTrigger.Actions.Add(errorAction);
+                errorTriggerCollection.Add(errorEventTrigger);
+
                 gridInfo.Children.Add(spError);
+
                 Image imageError = new Image();
                 imageError.Width = 24;
                 imageError.Height = 24;
@@ -176,6 +190,7 @@ namespace DischargerV2.MVVM.Views
                 ImageColorConverter imageErrorConverter = new ImageColorConverter();
                 imageError.Source = (ImageSource)imageErrorConverter.Convert(ResImage.error_outline, null, ResColor.icon_error, null);
                 spError.Children.Add(imageError);
+
                 MexTextBlock tbError = new MexTextBlock();
                 tbError.Text = "Error";
                 tbError.Foreground = ResColor.text_error;
@@ -190,6 +205,7 @@ namespace DischargerV2.MVVM.Views
                 spReconnect.Margin = new Thickness(16, 0, 16, 0);
                 BindingOperations.SetBinding(spReconnect, StackPanel.VisibilityProperty,
                     new Binding("Model.ReconnectVisibility[" + i + "]"));
+
                 var reconnectTriggerCollection = Interaction.GetTriggers(spReconnect);
                 var reconnectEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
                 reconnectEventTrigger.EventName = "MouseLeftButtonUp";
@@ -203,6 +219,7 @@ namespace DischargerV2.MVVM.Views
                 reconnectTriggerCollection.Add(reconnectEventTrigger);
 
                 gridInfo.Children.Add(spReconnect);
+
                 Image imageReconnect = new Image();
                 imageReconnect.Width = 24;
                 imageReconnect.Height = 24;
@@ -210,6 +227,7 @@ namespace DischargerV2.MVVM.Views
                 ImageColorConverter imageReconnectConverter = new ImageColorConverter();
                 imageReconnect.Source = (ImageSource)imageReconnectConverter.Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
                 spReconnect.Children.Add(imageReconnect);
+
                 MexTextBlock tbReconnect = new MexTextBlock();
                 tbReconnect.Text = "Reconnect";
                 tbReconnect.Foreground = ResColor.text_infomation;

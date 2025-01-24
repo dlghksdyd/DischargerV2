@@ -73,10 +73,6 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.ViewModelPopup_ModelRegister = new ViewModelPopup_ModelRegister();
             }
-            else if (setPopup.Equals(EPopup.Error))
-            {
-
-            }
 
             Model.PopupVisibility = popupVisibility;
             Model.IsPopupOpen = true;
@@ -133,6 +129,11 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetViewModelPopup_ModelRegister(ViewModelPopup_ModelRegister viewModelPopup_ModelRegister)
         {
             Model.ViewModelPopup_ModelRegister = viewModelPopup_ModelRegister;
+        }
+
+        public void SetViewModelPopup_Error(ViewModelPopup_Error viewModelPopup_Error)
+        {
+            Model.ViewModelPopup_Error = viewModelPopup_Error;
         }
 
         public void SetViewModelPopup_EditUser(ViewModelPopup_EditUser viewModelPopup_EditUser)
