@@ -654,6 +654,7 @@ namespace Ethernet.Client.Discharger
                         (-channelInfo.BatteryCurrent) > _dischargerData.SafetyCurrentMax)
                     {
                         ChangeDischargerState(EDischargerState.SafetyOutOfRange);
+                        _dischargerData.ErrorCode = 0xF0000001;
                     }
                     else if (channelInfo.ErrorCode != 0) /// 에러코드 검사
                     {
@@ -662,10 +663,12 @@ namespace Ethernet.Client.Discharger
                     else if (channelInfo.ReturnCode != EReturnCode.Success) /// 리턴 코드 검사
                     {
                         ChangeDischargerState(EDischargerState.ReturnCodeError);
+                        _dischargerData.ErrorCode = 0xF0000002;
                     }
                     else if (channelInfo.ChannelStatus == EChannelStatus.Error) /// 채널 상태 검사
                     {
                         ChangeDischargerState(EDischargerState.ChStatusError);
+                        _dischargerData.ErrorCode = 0xF0000003;
                     }
                     else if (channelInfo.ChannelStatus == EChannelStatus.Standby0 || channelInfo.ChannelStatus == EChannelStatus.Standby5)
                     {

@@ -714,6 +714,15 @@ namespace Sqlite.Common
 
             oneRow = new TableDischargerErrorCode(0x01000038, "", "parallel setting commend Alarm", "병렬지령 설정 에러", "병렬 설정이 잘못되었습니다.", "설정을 다시 확인하십시오");
             InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0xF0000001, "ERR_SW_SafetyOutOfRange", "SafetyOutOfRange", "안전 범위 벗어남", "전압/전류/온도 중 하나 이상이 안전 범위를 벗어났습니다.", "안전 범위를 벗어난 항목에 대한 조치가 필요합니다.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0xF0000002, "ERR_SW_ReturnCodeError", "ReturnCodeError", "패킷 리턴 코드", "방전기로부터 수신 받은 패킷에 오류가 발생하였습니다.", "케이블 연결상태를 확인하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0xF0000003, "ERR_SW_ChStatusError", "ChStatusError", "방전기 동작 모드", "방전기의 동작 모드가 비정상입니다.", "기기를 끄고 3분 이상 기다렸다가 다시 켜십시오.");
+            InsertData(oneRow);
         }
 
         public static void InsertData(TableDischargerErrorCode oneRowData)
