@@ -105,9 +105,11 @@ namespace DischargerV2.MVVM.ViewModels
         {
             int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
             uint errorCode = Model.DischargerDatas[index].ErrorCode;
-            errorCode = 0x01001000;
+            
             List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
             TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
+
+            if (tableDischargerErrorCode == null) return;
 
             string title = tableDischargerErrorCode.Title;
             string comment = string.Format(

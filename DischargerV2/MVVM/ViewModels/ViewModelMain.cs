@@ -131,6 +131,11 @@ namespace DischargerV2.MVVM.ViewModels
             Model.ViewModelPopup_ModelRegister = viewModelPopup_ModelRegister;
         }
 
+        public void SetViewModelPopup_Info(ViewModelPopup_Info viewModelPopup_Info)
+        {
+            Model.ViewModelPopup_Info = viewModelPopup_Info;
+        }
+
         public void SetViewModelPopup_Error(ViewModelPopup_Error viewModelPopup_Error)
         {
             Model.ViewModelPopup_Error = viewModelPopup_Error;

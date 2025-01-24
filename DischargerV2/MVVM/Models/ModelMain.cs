@@ -129,6 +129,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private ViewModelPopup_Info _viewModelPopup_Info = new ViewModelPopup_Info();
+        public ViewModelPopup_Info ViewModelPopup_Info
+        {
+            get
+            {
+                return _viewModelPopup_Info;
+            }
+            set
+            {
+                SetProperty(ref _viewModelPopup_Info, value);
+            }
+        }
+
         private ViewModelPopup_Error _viewModelPopup_Error = new ViewModelPopup_Error();
         public ViewModelPopup_Error ViewModelPopup_Error
         {

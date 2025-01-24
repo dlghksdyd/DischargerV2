@@ -61,7 +61,7 @@
             </Grid>
         </Grid>
         <!--Login-->
-        <!--<view:ViewLogin Grid.Row="1"/>-->
+        <view:ViewLogin Grid.Row="1"/>
         <!--Popup 활성화-->
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 
@@ -81,6 +81,10 @@
                                                                     Source={x:Static vm:ViewModelMain.Instance}}"
                                                DataContext="{Binding Model.ViewModelPopup_ModelRegister,
                                                                      Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_Info Visibility="{Binding Model.PopupVisibility[3], 
+                                                         Source={x:Static vm:ViewModelMain.Instance}}"
+                                     DataContext="{Binding Model.ViewModelPopup_Info,
+                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
                 <view:ViewPopup_Error Visibility="{Binding Model.PopupVisibility[4], 
                                                            Source={x:Static vm:ViewModelMain.Instance}}"
                                        DataContext="{Binding Model.ViewModelPopup_Error,

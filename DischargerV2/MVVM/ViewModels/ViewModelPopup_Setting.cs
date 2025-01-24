@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -60,13 +61,16 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else if (name == "xLogoutLabel")
                     {
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.OffPopup();
+                        ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
+                        {
+                            Title = "Confirm Exit",
+                            Comment = "Do you want to exit?",
+                            CallBackDelegate = Logout,
+                        };
 
-                        ViewModelLogin viewModelLogin = ViewModelLogin.Instance;
-                        viewModelLogin.Model.UserId = string.Empty;
-                        viewModelLogin.Model.Password = string.Empty;
-                        viewModelLogin.Model.Visibility = Visibility.Visible;
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
+                        viewModelMain.OpenPopup(ModelMain.EPopup.Info);
                     }
                 }
             }
@@ -128,6 +132,17 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                 }
             }
+        }
+
+        private void Logout()
+        {
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.OffPopup();
+
+            ViewModelLogin viewModelLogin = ViewModelLogin.Instance;
+            viewModelLogin.Model.UserId = string.Empty;
+            viewModelLogin.Model.Password = string.Empty;
+            viewModelLogin.Model.Visibility = Visibility.Visible;
         }
     }
 }
