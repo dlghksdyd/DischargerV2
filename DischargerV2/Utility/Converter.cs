@@ -94,13 +94,27 @@ namespace Utility.Common
         {
             if (value is bool boolValue)
             {
-                if (boolValue)
+                if (parameter != null && parameter.ToString().ToUpper() == "INVERT")
                 {
-                    return TrueValue;
+                    if (boolValue)
+                    {
+                        return FalseValue;
+                    }
+                    else
+                    {
+                        return TrueValue;
+                    }
                 }
                 else
                 {
-                    return FalseValue;
+                    if (boolValue)
+                    {
+                        return TrueValue;
+                    }
+                    else
+                    {
+                        return FalseValue;
+                    }
                 }
             }
             return Binding.DoNothing;

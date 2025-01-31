@@ -38,6 +38,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private bool _isSetMode = true;
+        public bool IsSetMode
+        {
+            get
+            {
+                return _isSetMode;
+            }
+            set
+            {
+                SetProperty(ref _isSetMode, value);
+            }
+        }
+
         private bool _isPopupOpen = false;
         public bool IsPopupOpen
         {

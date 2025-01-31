@@ -58,7 +58,8 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (EPopup popup in Enum.GetValues(typeof(EPopup)))
             {
-                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? Visibility.Visible : Visibility.Collapsed;
+                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? 
+                    Visibility.Visible : Visibility.Collapsed;
             }
 
             if (setPopup.Equals(EPopup.UserSetting))
@@ -84,7 +85,8 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (ENestedPopup popup in Enum.GetValues(typeof(ENestedPopup)))
             {
-                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? Visibility.Visible : Visibility.Collapsed;
+                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? 
+                    Visibility.Visible : Visibility.Collapsed;
             }
 
             Model.NestedPopupVisibility = popupVisibility;
