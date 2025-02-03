@@ -51,76 +51,37 @@ namespace DischargerV2.MVVM.Views
 
         private void UpdateUI()
         {
-            // StepData 입력한 값 백업
-            List<StepInfo> stepInfoList = new List<StepInfo>();
-
-            foreach (var viewSetMode_StepData in xContentPanel.Children.OfType<ViewSetMode_StepData>())
-            {
-                var viewModelSetMode_StepData = viewSetMode_StepData.DataContext as ViewModelSetMode_StepData;
-
-                if (!double.TryParse(viewModelSetMode_StepData.Voltage, out double voltage))
-                {
-                    if (viewModelSetMode_StepData.Voltage == null || viewModelSetMode_StepData.Voltage == "")
-                    {
-                        voltage = double.MaxValue;
-                    }
-                }
-
-                if (!double.TryParse(viewModelSetMode_StepData.Current, out double current))
-                {
-                    if (viewModelSetMode_StepData.Current == null || viewModelSetMode_StepData.Current == "")
-                    {
-                        current = double.MaxValue;
-                    }
-                }
-
-                if (!double.TryParse(viewModelSetMode_StepData.CRate, out double cRate))
-                {
-                    if (viewModelSetMode_StepData.CRate == null || viewModelSetMode_StepData.CRate == "")
-                    {
-                        cRate = double.MaxValue;
-                    }
-                }
-
-                stepInfoList.Add(new StepInfo()
-                {
-                    IsFixedCurrentUse = viewModelSetMode_StepData.IsFixedCurrent,
-                    VoltPerModule = voltage,
-                    FixedCurrent = current,
-                    CratePerModule = cRate
-                });
-            }
-
-            // xContentPanel에 ViewSetMode_StepData 추가
             xContentPanel.Children.Clear();
+
+            ObservableCollection<ModelSetMode_StepData> content = new ObservableCollection<ModelSetMode_StepData>();
 
             for (int index = 0; index < _viewModel.Model.Content.Count; index++)
             {
-                StepInfo content = ((index + 1) <= stepInfoList.Count) ?
-                    stepInfoList[index] : new StepInfo() {
-                        IsFixedCurrentUse = false,
-                        VoltPerModule = double.MaxValue,
-                        FixedCurrent = double.MaxValue,
-                        CratePerModule = double.MaxValue
-                    };
+                ModelSetMode_StepData model = _viewModel.Model.Content[index];
 
-                xContentPanel.Children.Add(new ViewSetMode_StepData()
+                ViewModelSetMode_StepData viewModel = new ViewModelSetMode_StepData()
                 {
-                    DataContext = new ViewModelSetMode_StepData()
-                    {
-                        No = (index + 1).ToString(),
-                        IsFixedCurrent = content.IsFixedCurrentUse,
-                        Voltage = (content.VoltPerModule != double.MaxValue) ? content.VoltPerModule.ToString() : "",
-                        Current = (content.FixedCurrent != double.MaxValue) ? content.FixedCurrent.ToString() : "",
-                        CRate = (content.CratePerModule != double.MaxValue) ? content.CratePerModule.ToString() : "",
-                    }
-                });
+                    No = (index + 1).ToString(),
+                    IsFixedCurrent = model.IsFixedCurrent,
+                    Voltage = model.Voltage,
+                    Current = model.Current,
+                    CRate = model.CRate,
+                };
+
+                ViewSetMode_StepData view = new ViewSetMode_StepData();
+                view.DataContext = viewModel;
+
+                xContentPanel.Children.Add(view);
+
+                content.Add(viewModel.Model);
 
                 if (index < _viewModel.Model.Content.Count - 1)
                 {
                     xContentPanel.Children.Add(new Grid() { Height = 12 });
                 }
             }
+            _viewModel.Model.Content = content;
+            _viewModel.Model.Content.CollectionChanged += Content_CollectionChanged;
         }
     }
 }
