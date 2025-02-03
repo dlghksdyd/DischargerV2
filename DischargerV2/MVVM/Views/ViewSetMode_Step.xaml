@@ -10,9 +10,9 @@
              xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance vm:ViewModelPopup_Info}"
-             d:DesignHeight="440" d:DesignWidth="990"
-             MinHeight="440" MinWidth="990"
+             d:DataContext="{d:DesignInstance vm:ViewModelSetMode_Step}"
+             d:DesignHeight="448" d:DesignWidth="990"
+             MinHeight="448" MinWidth="990"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <Border Margin="32,20,32,20">
@@ -67,20 +67,10 @@
                     BorderThickness="1"
                     CornerRadius="8"
                     Background="{StaticResource Mex/ResColor/surface_primary}">
-                <Mex:MexScrollViewer BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                                     BorderThickness="0,0,1,0">
-                    <StackPanel Orientation="Vertical" 
+                <Mex:MexScrollViewer>
+                    <StackPanel x:Name="xContentPanel" 
+                                Orientation="Vertical" 
                                 Margin="12">
-                        <view:ViewSetMode_StepData/>
-                        <Grid Height="12"/>
-                        <view:ViewSetMode_StepData/>
-                        <Grid Height="12"/>
-                        <view:ViewSetMode_StepData/>
-                        <Grid Height="12"/>
-                        <view:ViewSetMode_StepData/>
-                        <Grid Height="12"/>
-                        <view:ViewSetMode_StepData/>
-                        <Grid Height="12"/>
                         <view:ViewSetMode_StepData/>
                     </StackPanel>
                 </Mex:MexScrollViewer>
@@ -95,7 +85,14 @@
                            FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                            TextPadding="12,0,0,0"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
-                           HorizontalAlignment="Right"/>
+                           HorizontalAlignment="Right">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding AddStepInfoCommand}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
         </Grid>
     </Border>
 </UserControl>

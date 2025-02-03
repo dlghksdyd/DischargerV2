@@ -22,13 +22,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode : UserControl
     {
-        private ViewModelSetMode ViewModel = new ViewModelSetMode();
+        private ViewModelSetMode _viewModel = new ViewModelSetMode();
 
         public ViewSetMode()
         {
             InitializeComponent();
 
-            this.DataContext = ViewModel;
+            this.DataContext = _viewModel;
         }
     }
 }

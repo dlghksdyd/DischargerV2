@@ -36,14 +36,19 @@ namespace DischargerV2.MVVM.Views
             this.DataContextChanged += ViewPopup_DeviceRegister_DataContextChanged;
         }
 
+        private void Content_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void ViewPopup_DeviceRegister_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             _viewModel = e.NewValue as ViewModelPopup_DeviceRegister;
 
-            InitializeUI(_viewModel.Model.SelectedItem);
+            UpdateUI(_viewModel.Model.SelectedItem);
         }
 
-        private void InitializeUI(string selectedItem = "")
+        private void UpdateUI(string selectedItem = "")
         {
             if (_viewModel.Model.Content.Count > 0)
             {
@@ -76,7 +81,6 @@ namespace DischargerV2.MVVM.Views
                     if (tableDischargerInfo.DischargerName == selectedItem)
                     {
                         ViewDeviceRegister_Edit view_Edit = new ViewDeviceRegister_Edit();
-
                         ViewModelDeviceRegister_Edit viewModel_Edit = ViewModelDeviceRegister_Edit.Instance;
 
                         viewModel_Edit.Name = tableDischargerInfo.DischargerName;

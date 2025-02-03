@@ -55,8 +55,8 @@
                 <view:ViewDischargerInfoTable Grid.Row="2"/>
                 <Grid Grid.Row="4">
                     <view:ViewSetMode Visibility="{Binding Model.IsSetMode,
-                                                       Source={x:Static vm:ViewModelMain.Instance},
-                                                       Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                           Source={x:Static vm:ViewModelMain.Instance},
+                                                           Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <uc:UcMonitor Visibility="{Binding Model.IsSetMode,
                                                        Source={x:Static vm:ViewModelMain.Instance},
                                                        Converter={StaticResource BoolToVisibilityConverter},

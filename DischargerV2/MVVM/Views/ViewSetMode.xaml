@@ -7,11 +7,21 @@
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelSetMode}"
              d:DesignHeight="448" d:DesignWidth="1760" 
              MaxHeight="448" MaxWidth="1760">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EModeToForegroundConverter x:Key="EModeToForegroundConverter"/>
+            <Util:EModeToBorderBrushConverter x:Key="EModeToBorderBrushConverter"/>
+            <Util:EModeToBackgroundConverter x:Key="EModeToBackgroundConverter"/>
+            <Util:EModeToVisibilityConverter x:Key="EModeToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,11 +44,20 @@
                     <StackPanel x:Name="xModeSelectStackPanel" 
                                 Orientation="Vertical" Margin="1,20,0,20">
                         <Mex:MexTextBlock Text="Pre-set Mode"
-                                          Foreground="{StaticResource Mex/ResColor/text_action}"
+                                          Foreground="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                          BorderBrush="{StaticResource Mex/ResColor/border_action_hover}"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Preset}}"
                                           BorderThickness="1,0,0,0"
-                                          Background="{StaticResource Mex/ResColor/surface_action_hover2}"
+                                          Background="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -53,11 +72,20 @@
                         </Mex:MexTextBlock>
                         <Mex:MexTextBlock x:Name="xStepTextBlock"
                                           Text="Step Mode"
-                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          Foreground="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Step}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                          BorderBrush="Transparent"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Step}}"
                                           BorderThickness="1,0,0,0"
-                                          Background="{StaticResource Mex/ResColor/surface_primary}"
+                                          Background="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Step}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -72,11 +100,20 @@
                         </Mex:MexTextBlock>
                         <Mex:MexTextBlock x:Name="xSimpleTextBlock"
                                           Text="Simple Mode"
-                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          Foreground="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                                          BorderBrush="Transparent"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Simple}}"
                                           BorderThickness="1,0,0,0"
-                                          Background="{StaticResource Mex/ResColor/surface_primary}"
+                                          Background="{Binding Model.Mode,
+                                                               Source={x:Static vm:ViewModelSetMode.Instance},
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -92,12 +129,18 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <view:ViewSetMode_Preset Visibility="{Binding Model.ModeVisibility[0],
-                                                                  Source={x:Static vm:ViewModelSetMode.Instance}}"/>
-                    <view:ViewSetMode_Step Visibility="{Binding Model.ModeVisibility[1], 
-                                                                Source={x:Static vm:ViewModelSetMode.Instance}}"/>
-                    <view:ViewSetMode_Simple Visibility="{Binding Model.ModeVisibility[2], 
-                                                                  Source={x:Static vm:ViewModelSetMode.Instance}}"/>
+                    <view:ViewSetMode_Preset Visibility="{Binding Model.Mode,
+                                                                  Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                  Converter={StaticResource EModeToVisibilityConverter},
+                                                                  ConverterParameter={x:Static enum:EMode.Preset}}"/>
+                    <view:ViewSetMode_Step Visibility="{Binding Model.Mode,
+                                                                Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                Converter={StaticResource EModeToVisibilityConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Step}}"/>
+                    <view:ViewSetMode_Simple Visibility="{Binding Model.Mode,
+                                                                  Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                  Converter={StaticResource EModeToVisibilityConverter},
+                                                                  ConverterParameter={x:Static enum:EMode.Simple}}"/>
                     <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                             BorderThickness="1,0,0,0"/>
                 </Grid>

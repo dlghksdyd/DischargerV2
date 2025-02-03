@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Enums;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -53,15 +54,13 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void SelectMode(string mode)
         {
-            Visibility[] modeVisibility = new Visibility[Enum.GetValues(typeof(EMode)).Length];
-
             foreach (EMode eMode in Enum.GetValues(typeof(EMode)))
             {
-                modeVisibility[(int)eMode] = (mode.ToString() == eMode.ToString()) ?
-                    Visibility.Visible : Visibility.Collapsed;
+                if (mode.ToString() == eMode.ToString())
+                {
+                    Model.Mode = eMode;
+                }
             }
-
-            Model.ModeVisibility = modeVisibility;
         }
     }
 }

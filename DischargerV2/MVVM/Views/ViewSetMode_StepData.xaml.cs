@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_StepData : UserControl
     {
+        private ViewModelSetMode_StepData ViewModel = new ViewModelSetMode_StepData();
+
         public ViewSetMode_StepData()
         {
             InitializeComponent();
+
+            this.DataContext = ViewModel;
         }
     }
 }

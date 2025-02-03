@@ -1,6 +1,8 @@
-﻿using DischargerV2.MVVM.Views;
+﻿using DischargerV2.MVVM.ViewModels;
+using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Mvvm;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,8 +16,27 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Models
 {
+    public class StepInfo
+    {
+        public bool IsFixedCurrentUse;
+        public double VoltPerModule;
+        public double CratePerModule;
+        public double FixedCurrent;
+    }
+
     public class ModelSetMode_Step : BindableBase
     {
-
+        private ObservableCollection<ModelSetMode_StepData> _content = new ObservableCollection<ModelSetMode_StepData>();
+        public ObservableCollection<ModelSetMode_StepData> Content
+        {
+            get
+            {
+                return _content;
+            }
+            set
+            {
+                SetProperty(ref _content, value);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_Preset : UserControl
     {
+        private ViewModelSetMode_Preset _viewModel = new ViewModelSetMode_Preset();
+
         public ViewSetMode_Preset()
         {
             InitializeComponent();
+
+            this.DataContext = _viewModel;
         }
     }
 }

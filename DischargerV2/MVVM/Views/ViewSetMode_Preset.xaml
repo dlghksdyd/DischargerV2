@@ -11,8 +11,8 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelSetMode_Preset}"
-             d:DesignHeight="440" d:DesignWidth="990"
-             MinHeight="440" MinWidth="990"
+             d:DesignHeight="448" d:DesignWidth="990"
+             MinHeight="448" MinWidth="990"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <Border Margin="32,24,32,24">

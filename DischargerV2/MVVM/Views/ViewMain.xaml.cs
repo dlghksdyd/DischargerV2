@@ -25,7 +25,7 @@ namespace DischargerV2.MVVM.Views
     {
         public static ViewMain Instance;
 
-        private ViewModelMain ViewModel = new ViewModelMain();
+        private ViewModelMain _viewModel = new ViewModelMain();
 
         public ViewMain()
         {
@@ -35,7 +35,7 @@ namespace DischargerV2.MVVM.Views
 
             Instance = this;
 
-            this.DataContext = ViewModel;
+            this.DataContext = _viewModel;
         }
     }
 }

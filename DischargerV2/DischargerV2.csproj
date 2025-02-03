@@ -188,6 +188,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_StepData.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Step.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Preset.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode.cs" />
