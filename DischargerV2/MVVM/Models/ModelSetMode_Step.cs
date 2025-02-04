@@ -24,6 +24,12 @@ namespace DischargerV2.MVVM.Models
         public double FixedCurrent;
     }
 
+    public class StepConfigure
+    {
+        public bool IsCompleteDischarge = true;
+        public List<StepInfo> StepInfos = new List<StepInfo>();
+    }
+
     public class ModelSetMode_Step : BindableBase
     {
         private ObservableCollection<ModelSetMode_StepData> _content = new ObservableCollection<ModelSetMode_StepData>();

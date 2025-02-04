@@ -1,12 +1,16 @@
 ﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +18,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utility.Common;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -56,12 +61,93 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadStepInfoList()
         {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                InitialDirectory = Directory.GetCurrentDirectory() + "\\StepConfigure",
+                IsFolderPicker = false
+            };
 
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+            {
+                return;
+            }
+
+            try
+            {
+                FileStream fileStream = new FileStream(dialog.FileName, FileMode.Open, FileAccess.Read, FileShare.None, 4096);
+                byte[] readBuffer = new byte[fileStream.Length];
+                fileStream.Read(readBuffer, 0, readBuffer.Length);
+                fileStream.Dispose();
+
+                StepConfigure stepConfigure = JsonConvert.DeserializeObject<StepConfigure>(readBuffer.FromByteArrayToString(Encoding.UTF8));
+                List<StepInfo> stepInfoList = stepConfigure.StepInfos;
+                ObservableCollection<ModelSetMode_StepData> content = new ObservableCollection<ModelSetMode_StepData>();
+
+                foreach(var data in content.ToList())
+                {
+                    content.Remove(data);
+                }
+
+                foreach (var stepInfo in stepInfoList)
+                {
+                    content.Add(new ModelSetMode_StepData()
+                    {
+                        IsFixedCurrent = stepInfo.IsFixedCurrentUse,
+                        Voltage = stepInfo.VoltPerModule.ToString(),
+                        Current = stepInfo.FixedCurrent.ToString(),
+                        CRate = stepInfo.CratePerModule.ToString()
+                    });
+                }
+
+                Model.Content.Clear();
+
+                foreach (var data in content)
+                {
+                    Model.Content.Add(data);
+                }
+
+                Model.Content.RemoveAt(0);
+            }
+            catch
+            {
+                MessageBox.Show("환경 설정 파일 구조가 잘못 되었습니다.");
+            }
         }
 
         private void SaveStepInfoList()
         {
+            if (Directory.Exists("./StepConfigure") == false)
+            {
+                Directory.CreateDirectory("./StepConfigure");
+            }
 
+            StepConfigure stepConfigure = CreateStepConfigure();
+
+            if (stepConfigure == null)
+            {
+                MessageBox.Show("각 스텝 값의 누락이 없어야 하고, 각 값은 숫자여야 합니다.");
+                return;
+            }
+
+            SaveFileDialog saveFiledialog = new SaveFileDialog
+            {
+                Filter = "환경 설정 파일 (*.json)|*.json",
+                Title = "Save Configuration File"
+            };
+
+            if (saveFiledialog.ShowDialog() == true)
+            {
+                string jsonStr = "";
+
+                /// JSON byte array 생성
+                jsonStr += JsonConvert.SerializeObject(stepConfigure, Formatting.Indented);
+                byte[] jsonByteArray = jsonStr.FromStringToByteArray(Encoding.UTF8);
+
+                /// 파일에 저장
+                FileStream fileStream = new FileStream(saveFiledialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None, 4096);
+                fileStream.Write(jsonByteArray, 0, jsonByteArray.Length);
+                fileStream.Dispose();
+            }
         }
 
         private void AddStepInfo()
@@ -75,6 +161,46 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.Content.Remove(modelSetMode_StepData);
             }
+        }
+
+        private StepConfigure CreateStepConfigure()
+        {
+            StepConfigure stepConfigure = new StepConfigure();
+
+            foreach (var modelSetMode_StepData in Model.Content)
+            {
+                if (!double.TryParse(modelSetMode_StepData.Voltage, out double voltage))
+                {
+                    return null;
+                }
+                if (!double.TryParse(modelSetMode_StepData.Current, out double current))
+                {
+                    return null;
+                }
+                if (!double.TryParse(modelSetMode_StepData.CRate, out double cRate))
+                {
+                    return null;
+                }
+
+                StepInfo stepInfo = new StepInfo()
+                {
+                    IsFixedCurrentUse = (current != 0) ? true : false,
+                    VoltPerModule = voltage,
+                    FixedCurrent = current,
+                    CratePerModule = cRate
+                };
+
+                // STEP Mode에서 완전 방전 진행할 것인지 확인 필요
+                stepConfigure.IsCompleteDischarge = false;
+                stepConfigure.StepInfos.Add(stepInfo);
+            }
+
+            if (stepConfigure.StepInfos.Count == 0)
+            {
+                return null;
+            }
+
+            return stepConfigure;
         }
     }
 }

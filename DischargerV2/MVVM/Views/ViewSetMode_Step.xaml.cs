@@ -82,6 +82,11 @@ namespace DischargerV2.MVVM.Views
             }
             _viewModel.Model.Content = content;
             _viewModel.Model.Content.CollectionChanged += Content_CollectionChanged;
+
+            if (!(_viewModel.Model.Content.Count > 0))
+            {
+                _viewModel.Model.Content.Add(new ModelSetMode_StepData());
+            }
         }
     }
 }
