@@ -29,9 +29,15 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelSetMode Model { get; set; } = new ModelSetMode();
+
+        public string SelectedDischargerName
+        {
+            get => Model.SelectedDischargerName;
+            set => Model.SelectedDischargerName = value;
+        }
         #endregion
 
-        private static ViewModelSetMode _instance = null;
+        private static ViewModelSetMode _instance = new ViewModelSetMode();
 
         public static ViewModelSetMode Instance
         {
@@ -42,6 +48,10 @@ namespace DischargerV2.MVVM.ViewModels
                     _instance = new ViewModelSetMode();
                 }
                 return _instance;
+            }
+            set
+            {
+                _instance = value;
             }
         }
 

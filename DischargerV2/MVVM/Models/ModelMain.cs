@@ -38,6 +38,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private string _selectedDischargerName;
+        public string SelectedDischargerName
+        {
+            get
+            { 
+                return _selectedDischargerName; 
+            }
+            set
+            {
+                SetProperty(ref _selectedDischargerName, value);
+            }
+        }
+
         private bool _isSetMode = true;
         public bool IsSetMode
         {
@@ -204,6 +217,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _viewModelPopup_Warning, value);
+            }
+        }
+
+        private Dictionary<string, ViewModelSetMode> _viewModelSetModeDictionary = new Dictionary<string, ViewModelSetMode>();
+        public Dictionary<string, ViewModelSetMode> ViewModelSetModeDictionary
+        {
+            get
+            {
+                return _viewModelSetModeDictionary;
+            }
+            set
+            {
+                SetProperty(ref _viewModelSetModeDictionary, value);
             }
         }
     }

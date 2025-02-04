@@ -26,6 +26,19 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelSetMode : BindableBase
     {
+        private string _selectedDischargerName;
+        public string SelectedDischargerName
+        {
+            get
+            {
+                return _selectedDischargerName;
+            }
+            set
+            {
+                SetProperty(ref _selectedDischargerName, value);
+            }
+        }
+
         private EMode mode = EMode.Preset;
         public EMode Mode
         {
@@ -36,22 +49,6 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref mode, value);
-            }
-        }
-
-        private Visibility[] _modeVisibility = new Visibility[3]
-        {
-            Visibility.Visible, Visibility.Collapsed, Visibility.Collapsed
-        };
-        public Visibility[] ModeVisibility
-        {
-            get
-            {
-                return _modeVisibility;
-            }
-            set
-            {
-                SetProperty(ref _modeVisibility, value);
             }
         }
     }

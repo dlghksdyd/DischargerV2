@@ -179,6 +179,27 @@ namespace Utility.Common
         }
     }
 
+
+    public class IntToStringConverter : IValueConverter
+    {
+        public Visibility TrueValue { get; set; } = Visibility.Visible;
+        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int intValue)
+            {
+                return intValue.ToString();
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class EModeToVisibilityConverter : IValueConverter
     {
         public Visibility SelectedValue { get; set; } = Visibility.Visible;

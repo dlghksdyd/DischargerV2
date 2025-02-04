@@ -1,4 +1,5 @@
 ﻿using DischargerV2.MVVM.Models;
+using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -17,7 +18,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 using static System.Windows.Forms.AxHost;
@@ -51,7 +54,6 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelDischarger : BindableBase
     {
         #region Command
-
         public DelegateCommand InitializeDischargerCommand { get; set; }
         public DelegateCommand FinalizeDischargerCommand { get; set; }
 
@@ -62,6 +64,7 @@ namespace DischargerV2.MVVM.ViewModels
         public DelegateCommand<string> OpenPopupErrorCommand { get; set; }
         public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
 
+        public DelegateCommand<string> SelectDischargerCommand { get; set; }
         #endregion
 
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
@@ -99,6 +102,25 @@ namespace DischargerV2.MVVM.ViewModels
 
             OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
             ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
+
+            SelectDischargerCommand = new DelegateCommand<string>(SelectDischarger);
+        }
+
+        private void SelectDischarger(string strSelectedIndex)
+        {
+            try
+            {
+                if (Int32.TryParse(strSelectedIndex, out int selectedIndex))
+                {
+                    string selectedDischargerName = Model.DischargerNameList[selectedIndex];
+
+                    Model.SelectedDischargerName = selectedDischargerName;
+
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
+                    viewModelMain.SelectedDischargerName = selectedDischargerName;
+                }
+            }
+            catch { }
         }
 
         private void OpenPopupError(string dischargerName)
@@ -176,6 +198,9 @@ namespace DischargerV2.MVVM.ViewModels
 
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
+            ViewModelMain viewModelMain = ViewModelMain.Instance;
+            viewModelMain.Model.ViewModelSetModeDictionary.Clear();
+
             foreach (var info in infos)
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
@@ -189,6 +214,9 @@ namespace DischargerV2.MVVM.ViewModels
                 InitializeDischargerClients(dischargerInfo);
 
                 Model.DischargerNameList.Add(info.DischargerName);
+
+                viewModelMain.Model.ViewModelSetModeDictionary.Add(
+                    info.DischargerName, new ViewModelSetMode() { SelectedDischargerName = info.DischargerName });
             }
 
             OneSecondTimer?.Stop();

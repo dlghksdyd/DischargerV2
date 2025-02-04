@@ -23,6 +23,16 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelMain Model { get; set; } = new ModelMain();
+
+        public string SelectedDischargerName
+        {
+            get => Model.SelectedDischargerName;
+            set
+            {
+                Model.SelectedDischargerName = value;
+                SetViewModelSetMode(value);
+            }
+        }
         #endregion
 
         private static ViewModelMain _instance = null;
@@ -151,6 +161,11 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetViewModelPopup_Warning(ViewModelPopup_Warning viewModelPopup_Warning)
         {
             Model.ViewModelPopup_Warning = viewModelPopup_Warning;
+        }
+
+        private void SetViewModelSetMode(string dischargerName)
+        {
+            ViewModelSetMode.Instance = Model.ViewModelSetModeDictionary[dischargerName];
         }
     }
 }
