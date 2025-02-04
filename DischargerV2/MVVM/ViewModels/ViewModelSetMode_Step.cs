@@ -99,6 +99,7 @@ namespace DischargerV2.MVVM.ViewModels
                     });
                 }
 
+                // Step 설정 값
                 Model.Content.Clear();
 
                 foreach (var data in content)
@@ -107,6 +108,9 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 Model.Content.RemoveAt(0);
+
+                // 완전 방전 진행 여부 설정 값
+                Model.IsCompleteDischarge = stepConfigure.IsCompleteDischarge;
             }
             catch
             {
@@ -190,8 +194,7 @@ namespace DischargerV2.MVVM.ViewModels
                     CratePerModule = cRate
                 };
 
-                // STEP Mode에서 완전 방전 진행할 것인지 확인 필요
-                stepConfigure.IsCompleteDischarge = false;
+                stepConfigure.IsCompleteDischarge = Model.IsCompleteDischarge;
                 stepConfigure.StepInfos.Add(stepInfo);
             }
 

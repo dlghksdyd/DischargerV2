@@ -89,6 +89,12 @@
                     </StackPanel>
                 </Mex:MexScrollViewer>
             </Border>
+            <Mex:MexCheckBox x:Name="xIsCompleteDischargeCheckBox" Grid.Row="4"
+                             IsChecked="{Binding Model.IsCompleteDischarge, Mode=TwoWay}"
+                             Text="Full Discharge"
+                             Foreground="{StaticResource Mex/ResColor/text_body}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                             ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"/>
             <Mex:MexButton x:Name="xAddStepButton" Grid.Row="4"
                            Padding="24,9,24,9"
                            BorderThickness="1"

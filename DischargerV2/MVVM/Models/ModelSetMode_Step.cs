@@ -32,6 +32,19 @@ namespace DischargerV2.MVVM.Models
 
     public class ModelSetMode_Step : BindableBase
     {
+        private bool _isCompleteDischarge;
+        public bool IsCompleteDischarge
+        {
+            get
+            {
+                return _isCompleteDischarge;
+            }
+            set
+            {
+                SetProperty(ref _isCompleteDischarge, value);
+            }
+        }
+
         private ObservableCollection<ModelSetMode_StepData> _content = new ObservableCollection<ModelSetMode_StepData>();
         public ObservableCollection<ModelSetMode_StepData> Content
         {
