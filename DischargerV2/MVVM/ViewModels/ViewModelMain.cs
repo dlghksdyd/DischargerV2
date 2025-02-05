@@ -165,7 +165,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void SetViewModelSetMode(string dischargerName)
         {
-            ViewModelSetMode.Instance = Model.ViewModelSetModeDictionary[dischargerName];
+            Model.ViewModelSetMode = new ViewModelSetMode(Model.ModelSetModeDictionary[dischargerName]);
         }
     }
 }

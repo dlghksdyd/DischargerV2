@@ -8,6 +8,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -16,8 +17,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using static DischargerV2.MVVM.Models.ModelMain;
-using static DischargerV2.MVVM.Models.ModelSetMode;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -28,7 +27,21 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelSetMode Model { get; set; } = new ModelSetMode();
+        private ModelSetMode _model = new ModelSetMode();
+        public ModelSetMode Model 
+        {
+            get => _model;
+            set
+            {
+                SetProperty(ref _model, value);
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get => Model.SelectedIndex;
+            set => Model.SelectedIndex = value;
+        }
 
         public string SelectedDischargerName
         {
@@ -49,15 +62,18 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 return _instance;
             }
-            set
-            {
-                _instance = value;
-            }
         }
 
         public ViewModelSetMode()
         {
             _instance = this;
+
+            SelectModeCommand = new DelegateCommand<string>(SelectMode);
+        }
+
+        public ViewModelSetMode(ModelSetMode modelSetMode)
+        {
+            _instance.Model = Model = modelSetMode; 
 
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
         }

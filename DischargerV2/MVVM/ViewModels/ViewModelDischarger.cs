@@ -199,9 +199,9 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.ViewModelSetModeDictionary.Clear();
-
-            foreach (var info in infos)
+            viewModelMain.Model.ModelSetModeDictionary.Clear();
+            
+            for (int index = 0; index < infos.Count; index++) 
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
                 Model.DischargerStates.Add(EDischargerState.None);
@@ -210,13 +210,14 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.ReconnectVisibility.Add(Visibility.Collapsed);
                 Model.ErrorVisibility.Add(Visibility.Collapsed);
 
-                var dischargerInfo = InitializeDischargerInfos(info.DischargerName);
+                var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
                 InitializeDischargerClients(dischargerInfo);
 
-                Model.DischargerNameList.Add(info.DischargerName);
+                Model.DischargerNameList.Add(infos[index].DischargerName);
 
-                viewModelMain.Model.ViewModelSetModeDictionary.Add(
-                    info.DischargerName, new ViewModelSetMode() { SelectedDischargerName = info.DischargerName });
+                viewModelMain.Model.ModelSetModeDictionary.Add(
+                    infos[index].DischargerName, 
+                    new ModelSetMode() { SelectedIndex = index, SelectedDischargerName = infos[index].DischargerName });
             }
 
             OneSecondTimer?.Stop();

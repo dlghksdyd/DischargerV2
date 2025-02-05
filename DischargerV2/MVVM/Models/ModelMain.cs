@@ -220,16 +220,29 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Dictionary<string, ViewModelSetMode> _viewModelSetModeDictionary = new Dictionary<string, ViewModelSetMode>();
-        public Dictionary<string, ViewModelSetMode> ViewModelSetModeDictionary
+        private ViewModelSetMode _viewModelSetMode = new ViewModelSetMode();
+        public ViewModelSetMode ViewModelSetMode
         {
             get
             {
-                return _viewModelSetModeDictionary;
+                return _viewModelSetMode;
             }
             set
             {
-                SetProperty(ref _viewModelSetModeDictionary, value);
+                SetProperty(ref _viewModelSetMode, value);
+            }
+        }
+
+        private Dictionary<string, ModelSetMode> _modelSetModeDictionary = new Dictionary<string, ModelSetMode>();
+        public Dictionary<string, ModelSetMode> ModelSetModeDictionary
+        {
+            get
+            {
+                return _modelSetModeDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelSetModeDictionary, value);
             }
         }
     }
