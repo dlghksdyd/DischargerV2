@@ -28,7 +28,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         private ModelSetMode _model = new ModelSetMode();
-        public ModelSetMode Model 
+        public ModelSetMode Model
         {
             get => _model;
             set
@@ -36,7 +36,9 @@ namespace DischargerV2.MVVM.ViewModels
                 SetProperty(ref _model, value);
             }
         }
+        #endregion
 
+        #region Property
         public int SelectedIndex
         {
             get => Model.SelectedIndex;
@@ -48,10 +50,21 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.SelectedDischargerName;
             set => Model.SelectedDischargerName = value;
         }
-        #endregion
+
+        private Dictionary<string, ModelSetMode> _modelSetModeDictionary = new Dictionary<string, ModelSetMode>();
+        public Dictionary<string, ModelSetMode> ModelSetModeDictionary
+        {
+            get
+            {
+                return _modelSetModeDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelSetModeDictionary, value);
+            }
+        }
 
         private static ViewModelSetMode _instance = new ViewModelSetMode();
-
         public static ViewModelSetMode Instance
         {
             get
@@ -63,6 +76,7 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+        #endregion
 
         public ViewModelSetMode()
         {
@@ -71,11 +85,9 @@ namespace DischargerV2.MVVM.ViewModels
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
         }
 
-        public ViewModelSetMode(ModelSetMode modelSetMode)
+        public void SetSelectedDischargerName(string dischargerName)
         {
-            _instance.Model = Model = modelSetMode; 
-
-            SelectModeCommand = new DelegateCommand<string>(SelectMode);
+            _instance.Model = Model = ModelSetModeDictionary[dischargerName];
         }
 
         private void SelectMode(string mode)

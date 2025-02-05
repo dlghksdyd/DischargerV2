@@ -116,8 +116,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                     Model.SelectedDischargerName = selectedDischargerName;
 
-                    ViewModelMain viewModelMain = ViewModelMain.Instance;
-                    viewModelMain.SelectedDischargerName = selectedDischargerName;
+                    ViewModelSetMode viewModelSetMode = ViewModelSetMode.Instance;
+                    viewModelSetMode.SetSelectedDischargerName(selectedDischargerName);
                 }
             }
             catch { }
@@ -198,9 +198,9 @@ namespace DischargerV2.MVVM.ViewModels
 
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.Model.ModelSetModeDictionary.Clear();
-            
+            ViewModelSetMode viewModelSetMode = ViewModelSetMode.Instance;
+            viewModelSetMode.ModelSetModeDictionary.Clear();
+
             for (int index = 0; index < infos.Count; index++) 
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
@@ -215,8 +215,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Model.DischargerNameList.Add(infos[index].DischargerName);
 
-                viewModelMain.Model.ModelSetModeDictionary.Add(
-                    infos[index].DischargerName, 
+                viewModelSetMode.ModelSetModeDictionary.Add(
+                    infos[index].DischargerName,
                     new ModelSetMode() { SelectedIndex = index, SelectedDischargerName = infos[index].DischargerName });
             }
 

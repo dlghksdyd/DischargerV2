@@ -219,31 +219,5 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _viewModelPopup_Warning, value);
             }
         }
-
-        private ViewModelSetMode _viewModelSetMode = new ViewModelSetMode();
-        public ViewModelSetMode ViewModelSetMode
-        {
-            get
-            {
-                return _viewModelSetMode;
-            }
-            set
-            {
-                SetProperty(ref _viewModelSetMode, value);
-            }
-        }
-
-        private Dictionary<string, ModelSetMode> _modelSetModeDictionary = new Dictionary<string, ModelSetMode>();
-        public Dictionary<string, ModelSetMode> ModelSetModeDictionary
-        {
-            get
-            {
-                return _modelSetModeDictionary;
-            }
-            set
-            {
-                SetProperty(ref _modelSetModeDictionary, value);
-            }
-        }
     }
 }
