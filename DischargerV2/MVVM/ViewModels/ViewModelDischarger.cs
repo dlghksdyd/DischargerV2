@@ -198,7 +198,6 @@ namespace DischargerV2.MVVM.ViewModels
 
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
-            // DischargerInfoTable 관련
             for (int index = 0; index < infos.Count; index++) 
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
@@ -213,28 +212,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Model.DischargerNameList.Add(infos[index].DischargerName);
             }
-
-            // SetMode 관련
-            ViewModelSetMode.Instance.ModelDictionary.Clear();
-            ViewModelSetMode_Preset.Instance.ModelDictionary.Clear();
-            ViewModelSetMode_Step.Instance.ModelDictionary.Clear();
-
-            for (int index = 0; index < infos.Count; index++)
-            {
-                ModelSetMode modelSetMode = new ModelSetMode();
-                modelSetMode.DischargerName = infos[index].DischargerName;
-                ViewModelSetMode.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode);
-
-                ModelSetMode_Preset modelSetMode_Preset = new ModelSetMode_Preset();
-                modelSetMode_Preset.DischargerName = infos[index].DischargerName;
-                ViewModelSetMode_Preset.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Preset);
-
-                ModelSetMode_Step modelSetMode_Step = new ModelSetMode_Step();
-                modelSetMode_Step.DischargerName = infos[index].DischargerName;
-                modelSetMode_Step.Content.Add(new ModelSetMode_StepData());
-                ViewModelSetMode_Step.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Step);
-            }
-            ViewModelSetMode_Preset.Instance.SetBatteryType();
 
             OneSecondTimer?.Stop();
             OneSecondTimer = new System.Timers.Timer();

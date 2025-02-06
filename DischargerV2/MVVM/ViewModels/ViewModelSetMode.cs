@@ -71,14 +71,35 @@ namespace DischargerV2.MVVM.ViewModels
             _instance = this;
 
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
+
+            InitializeModelDictionary();
         }
 
-        public void SetDischargerName(string dischargerName)
+        private void InitializeModelDictionary()
         {
-            Model = ModelDictionary[dischargerName];
+            List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
-            ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
-            ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode.Instance.ModelDictionary.Clear();
+            ViewModelSetMode_Preset.Instance.ModelDictionary.Clear();
+            ViewModelSetMode_Step.Instance.ModelDictionary.Clear();
+
+            for (int index = 0; index < infos.Count; index++)
+            {
+                ModelSetMode modelSetMode = new ModelSetMode();
+                modelSetMode.DischargerName = infos[index].DischargerName;
+                ViewModelSetMode.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode);
+
+                ModelSetMode_Preset modelSetMode_Preset = new ModelSetMode_Preset();
+                modelSetMode_Preset.DischargerName = infos[index].DischargerName;
+                ViewModelSetMode_Preset.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Preset);
+
+                ModelSetMode_Step modelSetMode_Step = new ModelSetMode_Step();
+                modelSetMode_Step.DischargerName = infos[index].DischargerName;
+                modelSetMode_Step.Content.Add(new ModelSetMode_StepData());
+                ViewModelSetMode_Step.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Step);
+            }
+
+            ViewModelSetMode_Preset.Instance.SetBatteryType();
         }
 
         private void SelectMode(string mode)
@@ -90,6 +111,14 @@ namespace DischargerV2.MVVM.ViewModels
                     Model.Mode = eMode;
                 }
             }
+        }
+
+        public void SetDischargerName(string dischargerName)
+        {
+            Model = ModelDictionary[dischargerName];
+
+            ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
         }
     }
 }
