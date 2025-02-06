@@ -47,19 +47,6 @@ namespace DischargerV2.MVVM.ViewModels
         #region Property
         public string SelectedDischargerName;
 
-        private Dictionary<string, ModelSetMode_Step> _modelDictionary = new Dictionary<string, ModelSetMode_Step>();
-        public Dictionary<string, ModelSetMode_Step> ModelDictionary
-        {
-            get
-            {
-                return _modelDictionary;
-            }
-            set
-            {
-                SetProperty(ref _modelDictionary, value);
-            }
-        }
-
         private static ViewModelSetMode_Step _instance = null;
         public static ViewModelSetMode_Step Instance
         {
@@ -70,6 +57,19 @@ namespace DischargerV2.MVVM.ViewModels
                     _instance = new ViewModelSetMode_Step();
                 }
                 return _instance;
+            }
+        }
+
+        private Dictionary<string, ModelSetMode_Step> _modelDictionary = new Dictionary<string, ModelSetMode_Step>();
+        public Dictionary<string, ModelSetMode_Step> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
             }
         }
         #endregion
@@ -86,12 +86,17 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetDischargerName(string dischargerName)
         {
-            // 현재 값을 Dictionary Model에 넣기 위해 CollectionChanged 이벤트 발생
-            Model.Content.Add(null);
+            // 현재 값을 ModelDictionary에 넣기 : CollectionChanged 이벤트에서 처리
+            if (SelectedDischargerName != null && SelectedDischargerName != "")
+            {
+                Model.Content.Add(null);
+            }
 
             SelectedDischargerName = dischargerName;
 
-            // Dictionary Model 값을 가져오는 부분
+            // ModelDictionary 값 가져오기
+            Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
+            Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;
             SetModelContent(Model, ModelDictionary[dischargerName]);
         }
 

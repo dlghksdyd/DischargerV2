@@ -62,6 +62,8 @@ namespace DischargerV2.MVVM.Views
                     }
 
                     model.DischargerName = dischargerName;
+                    model.StandardCapacity = _viewModel.Model.StandardCapacity;
+                    model.IsCompleteDischarge = _viewModel.Model.IsCompleteDischarge;
                     model.Content = content;
 
                     _viewModel.ModelDictionary[dischargerName] = model;

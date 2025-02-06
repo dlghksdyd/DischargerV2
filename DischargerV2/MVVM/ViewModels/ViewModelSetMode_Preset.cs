@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utility.Common;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -23,12 +24,85 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelSetMode_Preset Model { get; set; } = new ModelSetMode_Preset();
+        private ModelSetMode_Preset _model = new ModelSetMode_Preset();
+        public ModelSetMode_Preset Model
+        {
+            get => _model;
+            set
+            {
+                SetProperty(ref _model, value);
+            }
+        }
+        #endregion
+
+        #region Property
+        public string SelectedDischargerName;
+
+        private static ViewModelSetMode_Preset _instance = null;
+        public static ViewModelSetMode_Preset Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelSetMode_Preset();
+                }
+                return _instance;
+            }
+        }
+
+        private Dictionary<string, ModelSetMode_Preset> _modelDictionary = new Dictionary<string, ModelSetMode_Preset>();
+        public Dictionary<string, ModelSetMode_Preset> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelSetMode_Preset()
         {
+            _instance = this;
+        }
 
+        public void SetDischargerName(string dischargerName)
+        {
+            if (SelectedDischargerName != null && SelectedDischargerName != "")
+            {
+                // 현재 값을 ModelDictionary에 넣기 
+                ModelDictionary[SelectedDischargerName] = Model;
+            }
+
+            SelectedDischargerName = dischargerName;
+
+            // ModelDictionary 값 가져오기
+            Model = ModelDictionary[dischargerName];
+        }
+
+        public void SetBatteryType()
+        {
+            List<string> batteryTypeList = new List<string>();
+
+            OCV_Table.initOcvTable();
+
+            foreach (var data in OCV_Table.ocvList)
+            {
+                batteryTypeList.Add(data.battTypeName);
+            }
+
+            foreach (var model in ModelDictionary)
+            {
+                if (!(model.Value.BatteryTypeList.Count > 0))
+                {
+                    model.Value.BatteryTypeList = batteryTypeList;
+                    model.Value.SelectedBatteryType = batteryTypeList[0];
+                }
+            }
         }
     }
 }

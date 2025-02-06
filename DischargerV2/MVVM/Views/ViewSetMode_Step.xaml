@@ -41,6 +41,7 @@
                 <Mex:MexTextBox x:Name="xStandardCapacityTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Width="260"
                                 WaterMark="Enter Standart Capacity"
+                                Text="{Binding Model.StandardCapacity, Mode=TwoWay}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 HorizontalAlignment="Left"/>
                 <Mex:MexButton x:Name="xLoadButton" Grid.Column="4"

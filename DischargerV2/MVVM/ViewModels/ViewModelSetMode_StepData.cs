@@ -24,7 +24,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelSetMode_StepData Model { get; set; } = new ModelSetMode_StepData();
+        #endregion
 
+        #region Property
         public string No
         {
             get => Model.No;

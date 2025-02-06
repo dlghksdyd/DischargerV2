@@ -389,6 +389,7 @@
     <Compile Include="UserControls\UcUserRegister_Info.xaml.cs">
       <DependentUpon>UcUserRegister_Info.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\OcvTable.cs" />
     <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />

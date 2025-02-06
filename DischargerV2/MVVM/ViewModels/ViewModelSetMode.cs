@@ -39,19 +39,6 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
-        private Dictionary<string, ModelSetMode> _modelDictionary = new Dictionary<string, ModelSetMode>();
-        public Dictionary<string, ModelSetMode> ModelDictionary
-        {
-            get
-            {
-                return _modelDictionary;
-            }
-            set
-            {
-                SetProperty(ref _modelDictionary, value);
-            }
-        }
-
         private static ViewModelSetMode _instance = new ViewModelSetMode();
         public static ViewModelSetMode Instance
         {
@@ -62,6 +49,19 @@ namespace DischargerV2.MVVM.ViewModels
                     _instance = new ViewModelSetMode();
                 }
                 return _instance;
+            }
+        }
+
+        private Dictionary<string, ModelSetMode> _modelDictionary = new Dictionary<string, ModelSetMode>();
+        public Dictionary<string, ModelSetMode> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
             }
         }
         #endregion
@@ -77,8 +77,8 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Model = ModelDictionary[dischargerName];
 
-            ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
-            viewModelSetMode_Step.SetDischargerName(dischargerName);
+            ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
         }
 
         private void SelectMode(string mode)

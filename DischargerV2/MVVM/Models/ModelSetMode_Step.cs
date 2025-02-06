@@ -45,6 +45,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private string _standardCapacity;
+        public string StandardCapacity
+        {
+            get
+            {
+                return _standardCapacity;
+            }
+            set
+            {
+                SetProperty(ref _standardCapacity, value);
+            }
+        }
+
         private bool _isCompleteDischarge;
         public bool IsCompleteDischarge
         {

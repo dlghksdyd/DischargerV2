@@ -21,7 +21,7 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_Preset : UserControl
     {
-        private ViewModelSetMode_Preset _viewModel = new ViewModelSetMode_Preset();
+        private ViewModelSetMode_Preset _viewModel = ViewModelSetMode_Preset.Instance;
 
         public ViewSetMode_Preset()
         {

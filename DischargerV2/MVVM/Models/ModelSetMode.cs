@@ -26,19 +26,6 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelSetMode : BindableBase
     {
-        private int _index;
-        public int Index
-        {
-            get
-            {
-                return _index;
-            }
-            set
-            {
-                SetProperty(ref _index, value);
-            }
-        }
-
         private string _dischargerName;
         public string DischargerName
         {

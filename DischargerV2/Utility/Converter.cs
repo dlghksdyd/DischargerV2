@@ -179,12 +179,8 @@ namespace Utility.Common
         }
     }
 
-
     public class IntToStringConverter : IValueConverter
     {
-        public Visibility TrueValue { get; set; } = Visibility.Visible;
-        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int intValue)
@@ -321,6 +317,42 @@ namespace Utility.Common
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+    }
+
+
+    public class EDischargeTypeToBoolConverter : IValueConverter
+    {
+        public bool SelectedValue { get; set; } = true;
+        public bool UnselectedValue { get; set; } = false;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EDischargeType mode)
+            {
+                if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+            {
+                return Enum.Parse(targetType, parameter.ToString());
+            }
+            return Binding.DoNothing;
         }
     }
 }
