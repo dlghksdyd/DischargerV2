@@ -32,6 +32,19 @@ namespace DischargerV2.MVVM.Models
 
     public class ModelSetMode_Step : BindableBase
     {
+        private string _dischargerName;
+        public string DischargerName
+        {
+            get
+            {
+                return _dischargerName;
+            }
+            set
+            {
+                SetProperty(ref _dischargerName, value);
+            }
+        }
+
         private bool _isCompleteDischarge;
         public bool IsCompleteDischarge
         {

@@ -39,28 +39,16 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
-        public int SelectedIndex
-        {
-            get => Model.SelectedIndex;
-            set => Model.SelectedIndex = value;
-        }
-
-        public string SelectedDischargerName
-        {
-            get => Model.SelectedDischargerName;
-            set => Model.SelectedDischargerName = value;
-        }
-
-        private Dictionary<string, ModelSetMode> _modelSetModeDictionary = new Dictionary<string, ModelSetMode>();
-        public Dictionary<string, ModelSetMode> ModelSetModeDictionary
+        private Dictionary<string, ModelSetMode> _modelDictionary = new Dictionary<string, ModelSetMode>();
+        public Dictionary<string, ModelSetMode> ModelDictionary
         {
             get
             {
-                return _modelSetModeDictionary;
+                return _modelDictionary;
             }
             set
             {
-                SetProperty(ref _modelSetModeDictionary, value);
+                SetProperty(ref _modelDictionary, value);
             }
         }
 
@@ -85,9 +73,12 @@ namespace DischargerV2.MVVM.ViewModels
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
         }
 
-        public void SetSelectedDischargerName(string dischargerName)
+        public void SetDischargerName(string dischargerName)
         {
-            _instance.Model = Model = ModelSetModeDictionary[dischargerName];
+            Model = ModelDictionary[dischargerName];
+
+            ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
+            viewModelSetMode_Step.SetDischargerName(dischargerName);
         }
 
         private void SelectMode(string mode)

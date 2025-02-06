@@ -117,7 +117,7 @@ namespace DischargerV2.MVVM.ViewModels
                     Model.SelectedDischargerName = selectedDischargerName;
 
                     ViewModelSetMode viewModelSetMode = ViewModelSetMode.Instance;
-                    viewModelSetMode.SetSelectedDischargerName(selectedDischargerName);
+                    viewModelSetMode.SetDischargerName(selectedDischargerName);
                 }
             }
             catch { }
@@ -199,7 +199,10 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
             ViewModelSetMode viewModelSetMode = ViewModelSetMode.Instance;
-            viewModelSetMode.ModelSetModeDictionary.Clear();
+            viewModelSetMode.ModelDictionary.Clear();
+
+            ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
+            viewModelSetMode_Step.ModelDictionary.Clear();
 
             for (int index = 0; index < infos.Count; index++) 
             {
@@ -215,9 +218,15 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Model.DischargerNameList.Add(infos[index].DischargerName);
 
-                viewModelSetMode.ModelSetModeDictionary.Add(
-                    infos[index].DischargerName,
-                    new ModelSetMode() { SelectedIndex = index, SelectedDischargerName = infos[index].DischargerName });
+                ModelSetMode modelSetMode = new ModelSetMode();
+                modelSetMode.Index = index;
+                modelSetMode.DischargerName = infos[index].DischargerName;
+                viewModelSetMode.ModelDictionary.Add(infos[index].DischargerName, modelSetMode);
+
+                ModelSetMode_Step modelSetMode_Step = new ModelSetMode_Step();
+                modelSetMode_Step.DischargerName = infos[index].DischargerName;
+                modelSetMode_Step.Content.Add(new ModelSetMode_StepData());
+                viewModelSetMode_Step.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Step);
             }
 
             OneSecondTimer?.Stop();

@@ -10,6 +10,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,11 +33,34 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelSetMode_Step Model { get; set; } = new ModelSetMode_Step();
+        private ModelSetMode_Step _model = new ModelSetMode_Step();
+        public ModelSetMode_Step Model
+        {
+            get => _model;
+            set
+            {
+                SetProperty(ref _model, value);
+            }
+        }
         #endregion
 
-        private static ViewModelSetMode_Step _instance = null;
+        #region Property
+        public string SelectedDischargerName;
 
+        private Dictionary<string, ModelSetMode_Step> _modelDictionary = new Dictionary<string, ModelSetMode_Step>();
+        public Dictionary<string, ModelSetMode_Step> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
+            }
+        }
+
+        private static ViewModelSetMode_Step _instance = null;
         public static ViewModelSetMode_Step Instance
         {
             get
@@ -48,6 +72,7 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+        #endregion
 
         public ViewModelSetMode_Step()
         {
@@ -57,6 +82,17 @@ namespace DischargerV2.MVVM.ViewModels
             SaveStepInfoListCommand = new DelegateCommand(SaveStepInfoList);
             AddStepInfoCommand = new DelegateCommand(AddStepInfo);
             DeleteStepInfoCommand = new DelegateCommand<object>(DeleteStepInfo);
+        }
+
+        public void SetDischargerName(string dischargerName)
+        {
+            // 현재 값을 Dictionary Model에 넣기 위해 CollectionChanged 이벤트 발생
+            Model.Content.Add(null);
+
+            SelectedDischargerName = dischargerName;
+
+            // Dictionary Model 값을 가져오는 부분
+            SetModelContent(Model, ModelDictionary[dischargerName]);
         }
 
         private void LoadStepInfoList()
@@ -82,11 +118,6 @@ namespace DischargerV2.MVVM.ViewModels
                 StepConfigure stepConfigure = JsonConvert.DeserializeObject<StepConfigure>(readBuffer.FromByteArrayToString(Encoding.UTF8));
                 List<StepInfo> stepInfoList = stepConfigure.StepInfos;
                 ObservableCollection<ModelSetMode_StepData> content = new ObservableCollection<ModelSetMode_StepData>();
-
-                foreach(var data in content.ToList())
-                {
-                    content.Remove(data);
-                }
 
                 foreach (var stepInfo in stepInfoList)
                 {
@@ -165,6 +196,25 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.Content.Remove(modelSetMode_StepData);
             }
+        }
+
+        private void SetModelContent(ModelSetMode_Step targetModel, ModelSetMode_Step model)
+        {
+            ObservableCollection<ModelSetMode_StepData> content = new ObservableCollection<ModelSetMode_StepData>();
+
+            foreach (var stepData in model.Content)
+            {
+                content.Add(stepData);
+            }
+
+            targetModel.Content.Clear();
+
+            foreach (var data in content)
+            {
+                targetModel.Content.Add(data);
+            }
+
+            targetModel.Content.RemoveAt(0);
         }
 
         private StepConfigure CreateStepConfigure()

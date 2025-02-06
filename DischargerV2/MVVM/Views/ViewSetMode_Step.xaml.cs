@@ -26,7 +26,7 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_Step : UserControl
     {
-        private ViewModelSetMode_Step _viewModel = new ViewModelSetMode_Step();
+        private ViewModelSetMode_Step _viewModel = ViewModelSetMode_Step.Instance;
 
         public ViewSetMode_Step()
         {
@@ -39,8 +39,42 @@ namespace DischargerV2.MVVM.Views
             InitializeUI();
         }
 
-        private void Content_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        public void Content_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            string dischargerName = _viewModel.SelectedDischargerName;
+
+            if (dischargerName == null || dischargerName == "")
+                return;
+
+            // 현재 값을 Dictionary Model에 넣기 위해 CollectionChanged 이벤트 발생되었을 때
+            for (int index = 0; index < _viewModel.Model.Content.Count; index++)
+            {
+                if (_viewModel.Model.Content[index] == null || _viewModel.Model.Content[index].No == "")
+                {
+                    // 현재 값을 Dictionary Model에 넣음
+                    ModelSetMode_Step model = new ModelSetMode_Step();
+
+                    ObservableCollection<ModelSetMode_StepData> content = new ObservableCollection<ModelSetMode_StepData>();
+
+                    foreach (var stepData in _viewModel.Model.Content)
+                    {
+                        content.Add(stepData);
+                    }
+
+                    model.DischargerName = dischargerName;
+                    model.Content = content;
+
+                    _viewModel.ModelDictionary[dischargerName] = model;
+                    _viewModel.ModelDictionary[dischargerName].Content.RemoveAt(index);
+                    _viewModel.ModelDictionary[dischargerName].Content.CollectionChanged += Content_CollectionChanged;
+
+                    return;
+                }
+            }
+
+            // ModelDictionary Model 다른 클래스에서 선언함에 따라 CollectionChanged Event 추가
+            _viewModel.ModelDictionary[dischargerName].Content.CollectionChanged += Content_CollectionChanged;
+
             UpdateUI();
         }
 
@@ -57,27 +91,30 @@ namespace DischargerV2.MVVM.Views
 
             for (int index = 0; index < _viewModel.Model.Content.Count; index++)
             {
-                ModelSetMode_StepData model = _viewModel.Model.Content[index];
-
-                ViewModelSetMode_StepData viewModel = new ViewModelSetMode_StepData()
+                if (_viewModel.Model.Content[index] != null)
                 {
-                    No = (index + 1).ToString(),
-                    IsFixedCurrent = model.IsFixedCurrent,
-                    Voltage = model.Voltage,
-                    Current = model.Current,
-                    CRate = model.CRate,
-                };
+                    ModelSetMode_StepData model = _viewModel.Model.Content[index];
 
-                ViewSetMode_StepData view = new ViewSetMode_StepData();
-                view.DataContext = viewModel;
+                    ViewModelSetMode_StepData viewModel = new ViewModelSetMode_StepData()
+                    {
+                        No = (index + 1).ToString(),
+                        IsFixedCurrent = model.IsFixedCurrent,
+                        Voltage = model.Voltage,
+                        Current = model.Current,
+                        CRate = model.CRate,
+                    };
 
-                xContentPanel.Children.Add(view);
+                    ViewSetMode_StepData view = new ViewSetMode_StepData();
+                    view.DataContext = viewModel;
 
-                content.Add(viewModel.Model);
+                    xContentPanel.Children.Add(view);
 
-                if (index < _viewModel.Model.Content.Count - 1)
-                {
-                    xContentPanel.Children.Add(new Grid() { Height = 12 });
+                    content.Add(viewModel.Model);
+
+                    if (index < _viewModel.Model.Content.Count - 1)
+                    {
+                        xContentPanel.Children.Add(new Grid() { Height = 12 });
+                    }
                 }
             }
             _viewModel.Model.Content = content;
