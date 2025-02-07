@@ -51,44 +51,5 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref mode, value);
             }
         }
-
-        private ModelSetMode_Preset _modelSetMode_Preset = new ModelSetMode_Preset();
-        public ModelSetMode_Preset ModelSetMode_Preset
-        {
-            get
-            {
-                return _modelSetMode_Preset;
-            }
-            set
-            {
-                SetProperty(ref _modelSetMode_Preset, value);
-            }
-        }
-
-        private ModelSetMode_Step _modelSetMode_Step = new ModelSetMode_Step();
-        public ModelSetMode_Step ModelSetMode_Step
-        {
-            get
-            {
-                return _modelSetMode_Step;
-            }
-            set
-            {
-                SetProperty(ref _modelSetMode_Step, value);
-            }
-        }
-
-        private ModelSetMode_Simple _modelSetMode_Simple = new ModelSetMode_Simple();
-        public ModelSetMode_Simple ModelSetMode_Simple
-        {
-            get
-            {
-                return _modelSetMode_Simple;
-            }
-            set
-            {
-                SetProperty(ref _modelSetMode_Simple, value);
-            }
-        }
     }
 }
