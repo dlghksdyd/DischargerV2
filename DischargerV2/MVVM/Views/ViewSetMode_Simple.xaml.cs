@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,7 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_Simple : UserControl
     {
-        private ViewModelSetMode_Simple _viewModel = new ViewModelSetMode_Simple();
+        private ViewModelSetMode_Simple _viewModel = ViewModelSetMode_Simple.Instance;
 
         public ViewSetMode_Simple()
         {

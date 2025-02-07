@@ -1,6 +1,7 @@
 ﻿using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
+using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -77,26 +78,48 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void InitializeModelDictionary()
         {
-            List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
-
+            // 기존 값 초기화
             ViewModelSetMode.Instance.ModelDictionary.Clear();
             ViewModelSetMode_Preset.Instance.ModelDictionary.Clear();
             ViewModelSetMode_Step.Instance.ModelDictionary.Clear();
+            ViewModelSetMode_Simple.Instance.ModelDictionary.Clear();
+            ViewModelSetMode_SafetyCondition.Instance.ModelDictionary.Clear();
 
-            for (int index = 0; index < infos.Count; index++)
+            // Discharger에서 관련 값 받아와 사용
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
+            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.DischargerInfos.ToList();
+
+            for (int index = 0; index < dischargerNameList.Count; index++)
             {
+                string dischargerName = dischargerNameList[index];
+                DischargerInfo dischargerInfo = dischargerInfoList[index];
+
                 ModelSetMode modelSetMode = new ModelSetMode();
-                modelSetMode.DischargerName = infos[index].DischargerName;
-                ViewModelSetMode.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode);
+                modelSetMode.DischargerName = dischargerName;
+                ViewModelSetMode.Instance.ModelDictionary.Add(dischargerName, modelSetMode);
 
                 ModelSetMode_Preset modelSetMode_Preset = new ModelSetMode_Preset();
-                modelSetMode_Preset.DischargerName = infos[index].DischargerName;
-                ViewModelSetMode_Preset.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Preset);
+                modelSetMode_Preset.DischargerName = dischargerName;
+                ViewModelSetMode_Preset.Instance.ModelDictionary.Add(dischargerName, modelSetMode_Preset);
 
                 ModelSetMode_Step modelSetMode_Step = new ModelSetMode_Step();
-                modelSetMode_Step.DischargerName = infos[index].DischargerName;
+                modelSetMode_Step.DischargerName = dischargerName;
                 modelSetMode_Step.Content.Add(new ModelSetMode_StepData());
-                ViewModelSetMode_Step.Instance.ModelDictionary.Add(infos[index].DischargerName, modelSetMode_Step);
+                ViewModelSetMode_Step.Instance.ModelDictionary.Add(dischargerName, modelSetMode_Step);
+
+                ModelSetMode_Simple modelSetMode_Simple = new ModelSetMode_Simple();
+                modelSetMode_Simple.DischargerName = dischargerName;
+                ViewModelSetMode_Simple.Instance.ModelDictionary.Add(dischargerName, modelSetMode_Simple);
+
+                ModelSetMode_SafetyCondition modelSetMode_SafetyCondition = new ModelSetMode_SafetyCondition();
+                modelSetMode_SafetyCondition.DischargerName = dischargerName;
+                modelSetMode_SafetyCondition.VoltageMin = dischargerInfo.SafetyVoltageMin.ToString();
+                modelSetMode_SafetyCondition.VoltageMax = dischargerInfo.SafetyVoltageMax.ToString();
+                modelSetMode_SafetyCondition.CurrentMin = dischargerInfo.SafetyCurrentMin.ToString();
+                modelSetMode_SafetyCondition.CurrentMax = dischargerInfo.SafetyCurrentMax.ToString();
+                modelSetMode_SafetyCondition.TempMin = dischargerInfo.SafetyTempMin.ToString();
+                modelSetMode_SafetyCondition.TempMax = dischargerInfo.SafetyTempMax.ToString();
+                ViewModelSetMode_SafetyCondition.Instance.ModelDictionary.Add(dischargerName, modelSetMode_SafetyCondition);
             }
 
             ViewModelSetMode_Preset.Instance.SetBatteryType();
@@ -119,6 +142,8 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
         }
     }
 }

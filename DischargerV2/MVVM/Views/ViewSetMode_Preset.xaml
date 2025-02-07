@@ -7,6 +7,7 @@
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
              xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
@@ -18,6 +19,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Util:EDischargeTypeToBoolConverter x:Key="EDischargeTypeToBoolConverter"/>
+            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -136,7 +138,9 @@
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"
                                         Padding="12,8,12,8" Width="130"
                                         WaterMark="Enter Voltage"
-                                        Text="{Binding Model.TargetVoltage, Mode=TwoWay}"
+                                        Text="{Binding Model.TargetVoltage, 
+                                                       Mode=TwoWay, 
+                                                       Converter={StaticResource IsDoubleConverter}}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Grid.Column="6">
@@ -155,7 +159,9 @@
                         <Mex:MexTextBox x:Name="xTargetSoCTextBox"
                                         Padding="12,8,12,8" Width="120"
                                         WaterMark="Enter SoC"
-                                        Text="{Binding Model.TargetSoC, Mode=TwoWay}"
+                                        Text="{Binding Model.TargetSoC, 
+                                                       Mode=TwoWay, 
+                                                       Converter={StaticResource IsDoubleConverter}}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
                 </Grid>

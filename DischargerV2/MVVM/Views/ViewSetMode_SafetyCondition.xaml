@@ -14,6 +14,12 @@
              d:DesignHeight="280" d:DesignWidth="502"
              MinHeight="280" MinWidth="502">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border CornerRadius="8"
             BorderBrush="{StaticResource Mex/ResColor/border_primary}"
             BorderThickness="1"
@@ -37,6 +43,9 @@
                     <Mex:MexTextBox x:Name="xVoltMinTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.VoltageMin,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -48,6 +57,9 @@
                     <Mex:MexTextBox x:Name="xVoltMaxTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.VoltageMax,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -68,6 +80,9 @@
                     <Mex:MexTextBox x:Name="xCurrMinTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.CurrentMin,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -79,6 +94,9 @@
                     <Mex:MexTextBox x:Name="xCurrMaxTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.CurrentMax,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -99,6 +117,9 @@
                     <Mex:MexTextBox x:Name="xTempMinTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.TempMin,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -110,6 +131,9 @@
                     <Mex:MexTextBox x:Name="xTempMaxTextBox"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
+                                    Text="{Binding Model.TempMax,
+                                                   Mode=TwoWay,
+                                                   Converter={StaticResource IsDoubleConverter}}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>

@@ -8,12 +8,20 @@
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
+             xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelSetMode_Simple}"
              d:DesignHeight="448" d:DesignWidth="990"
              MinHeight="448" MinWidth="990"
              Background="{StaticResource Mex/ResColor/surface_page}">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EDischargeTypeToBoolConverter x:Key="EDischargeTypeToBoolConverter"/>
+            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <Border Margin="32,24,32,24">
         <Grid>
@@ -42,6 +50,9 @@
                         <Mex:MexTextBox x:Name="xStandardVoltTextBox"
                                         Padding="12,8,12,8"
                                         WaterMark="Enter Standard Voltage"
+                                        Text="{Binding Model.StandardVoltage, 
+                                                       Mode=TwoWay, 
+                                                       Converter={StaticResource IsDoubleConverter}}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -54,6 +65,9 @@
                         <Mex:MexTextBox x:Name="xStandardCapacityTextBox"
                                         Padding="12,8,12,8"
                                         WaterMark="Enter Standard Capacity"
+                                        Text="{Binding Model.StandardCapacity, 
+                                                       Mode=TwoWay, 
+                                                       Converter={StaticResource IsDoubleConverter}}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -62,12 +76,12 @@
             <StackPanel Grid.Row="2" Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
                     <Mex:MexTextBlock Text="Step 2"
-                      Foreground="{StaticResource Mex/ResColor/text_infomation}"
-                      FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                                      Foreground="{StaticResource Mex/ResColor/text_infomation}"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Grid Height="8"/>
                     <Mex:MexTextBlock Text="Select Discharge Type"
-                      Foreground="{StaticResource Mex/ResColor/text_headings}"
-                      FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                      FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 </StackPanel>
                 <Grid Height="20"/>
                 <StackPanel Orientation="Vertical">
@@ -78,7 +92,10 @@
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                         VerticalContentAlignment="Center"
-                                        IsChecked="True"/>
+                                        IsChecked="{Binding Model.EDischargeType, 
+                                                            Mode=TwoWay,
+                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            ConverterParameter={x:Static enum:EDischargeType.Full}}"/>
                     <Grid Height="28"/>
                     <Mex:MexRadioButton x:Name="xCompleteDischargeRadioButton" GroupName="DischargeType"
                                         Text="0V Discharge"
@@ -87,7 +104,10 @@
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                         VerticalContentAlignment="Center"
-                                        IsChecked="True"/>
+                                        IsChecked="{Binding Model.EDischargeType, 
+                                                            Mode=TwoWay,
+                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            ConverterParameter={x:Static enum:EDischargeType.Zero}}"/>
                     <Grid Height="20"/>
                     <StackPanel Orientation="Horizontal">
                         <Mex:MexRadioButton x:Name="xTargetVoltDischargeRadioButton" GroupName="DischargeType"
@@ -97,11 +117,17 @@
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                             ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                             VerticalContentAlignment="Center"
-                                            IsChecked="False"/>
+                                        IsChecked="{Binding Model.EDischargeType, 
+                                                            Mode=TwoWay,
+                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            ConverterParameter={x:Static enum:EDischargeType.Voltage}}"/>
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"
                                         Padding="12,8,12,8" Width="280"
                                         WaterMark="Enter Target Voltage"
+                                        Text="{Binding Model.TargetVoltage, 
+                                                       Mode=TwoWay, 
+                                                       Converter={StaticResource IsDoubleConverter}}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
                 </StackPanel>

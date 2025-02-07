@@ -320,7 +320,6 @@ namespace Utility.Common
         }
     }
 
-
     public class EDischargeTypeToBoolConverter : IValueConverter
     {
         public bool SelectedValue { get; set; } = true;
@@ -351,6 +350,63 @@ namespace Utility.Common
             if (parameter != null && parameter.GetType() == typeof(EDischargeType))
             {
                 return Enum.Parse(targetType, parameter.ToString());
+            }
+            return Binding.DoNothing;
+        }
+    }
+
+    public class IsDoubleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (double.TryParse(stringValue, out double doubleValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (double.TryParse(stringValue, out double doubleValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
             }
             return Binding.DoNothing;
         }

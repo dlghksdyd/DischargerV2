@@ -23,12 +23,64 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelSetMode_SafetyCondition Model { get; set; } = new ModelSetMode_SafetyCondition();
+        private ModelSetMode_SafetyCondition _model = new ModelSetMode_SafetyCondition();
+        public ModelSetMode_SafetyCondition Model
+        {
+            get => _model;
+            set
+            {
+                SetProperty(ref _model, value);
+            }
+        }
+        #endregion
+
+        #region Property
+        public string SelectedDischargerName;
+
+        private static ViewModelSetMode_SafetyCondition _instance = null;
+        public static ViewModelSetMode_SafetyCondition Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelSetMode_SafetyCondition();
+                }
+                return _instance;
+            }
+        }
+
+        private Dictionary<string, ModelSetMode_SafetyCondition> _modelDictionary = new Dictionary<string, ModelSetMode_SafetyCondition>();
+        public Dictionary<string, ModelSetMode_SafetyCondition> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelSetMode_SafetyCondition()
         {
+            _instance = this;
+        }
 
+        public void SetDischargerName(string dischargerName)
+        {
+            if (SelectedDischargerName != null && SelectedDischargerName != "")
+            {
+                // 현재 값을 ModelDictionary에 넣기 
+                ModelDictionary[SelectedDischargerName] = Model;
+            }
+
+            SelectedDischargerName = dischargerName;
+
+            // ModelDictionary 값 가져오기
+            Model = ModelDictionary[dischargerName];
         }
     }
 }

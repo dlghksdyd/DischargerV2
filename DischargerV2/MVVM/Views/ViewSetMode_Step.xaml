@@ -15,6 +15,12 @@
              MinHeight="448" MinWidth="990"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border Margin="32,20,32,20">
         <Grid>
             <Grid.RowDefinitions>
@@ -41,7 +47,9 @@
                 <Mex:MexTextBox x:Name="xStandardCapacityTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Width="260"
                                 WaterMark="Enter Standart Capacity"
-                                Text="{Binding Model.StandardCapacity, Mode=TwoWay}"
+                                Text="{Binding Model.StandardCapacity, 
+                                               Mode=TwoWay, 
+                                               Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 HorizontalAlignment="Left"/>
                 <Mex:MexButton x:Name="xLoadButton" Grid.Column="4"

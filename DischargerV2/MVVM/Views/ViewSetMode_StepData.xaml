@@ -14,6 +14,12 @@
              d:DesignHeight="84" d:DesignWidth="887"
              MinHeight="84" MinWidth="887">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
             BorderThickness="1"
             CornerRadius="8"
@@ -45,7 +51,9 @@
                 <Mex:MexTextBox x:Name="xVoltTextBox" TabIndex="0"
                                 Padding="12,8,12,8"
                                 WaterMark="Enter Voltage"
-                                Text="{Binding Model.Voltage, Mode=TwoWay}"
+                                Text="{Binding Model.Voltage, 
+                                               Mode=TwoWay, 
+                                               Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
@@ -59,7 +67,9 @@
                 <Mex:MexTextBox x:Name="xCurrTextBox" TabIndex="1"
                                 Padding="12,8,12,8"
                                 WaterMark="Enter Current"
-                                Text="{Binding Model.Current, Mode=TwoWay}"
+                                Text="{Binding Model.Current, 
+                                               Mode=TwoWay, 
+                                               Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>
@@ -73,7 +83,9 @@
                 <Mex:MexTextBox x:Name="xCRateTextBox" TabIndex="2"
                                 Padding="12,8,12,8"
                                 WaterMark="Enter C-Rate"
-                                Text="{Binding Model.CRate, Mode=TwoWay}"
+                                Text="{Binding Model.CRate, 
+                                               Mode=TwoWay, 
+                                               Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
             </StackPanel>

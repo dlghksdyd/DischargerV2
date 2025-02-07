@@ -23,12 +23,64 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        public ModelSetMode_Simple Model { get; set; } = new ModelSetMode_Simple();
+        private ModelSetMode_Simple _model = new ModelSetMode_Simple();
+        public ModelSetMode_Simple Model
+        {
+            get => _model;
+            set
+            {
+                SetProperty(ref _model, value);
+            }
+        }
+        #endregion
+
+        #region Property
+        public string SelectedDischargerName;
+
+        private static ViewModelSetMode_Simple _instance = null;
+        public static ViewModelSetMode_Simple Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ViewModelSetMode_Simple();
+                }
+                return _instance;
+            }
+        }
+
+        private Dictionary<string, ModelSetMode_Simple> _modelDictionary = new Dictionary<string, ModelSetMode_Simple>();
+        public Dictionary<string, ModelSetMode_Simple> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelSetMode_Simple()
         {
+            _instance = this;
+        }
 
+        public void SetDischargerName(string dischargerName)
+        {
+            if (SelectedDischargerName != null && SelectedDischargerName != "")
+            {
+                // 현재 값을 ModelDictionary에 넣기 
+                ModelDictionary[SelectedDischargerName] = Model;
+            }
+
+            SelectedDischargerName = dischargerName;
+
+            // ModelDictionary 값 가져오기
+            Model = ModelDictionary[dischargerName];
         }
     }
 }

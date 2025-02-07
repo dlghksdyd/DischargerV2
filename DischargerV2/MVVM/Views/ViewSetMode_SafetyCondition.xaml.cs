@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_SafetyCondition : UserControl
     {
+        private ViewModelSetMode_SafetyCondition _viewModel = ViewModelSetMode_SafetyCondition.Instance;
+
         public ViewSetMode_SafetyCondition()
         {
             InitializeComponent();
+
+            this.DataContext = _viewModel;
         }
     }
 }
