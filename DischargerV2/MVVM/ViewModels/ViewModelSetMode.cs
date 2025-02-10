@@ -95,6 +95,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerInfo dischargerInfo = dischargerInfoList[index];
 
                 ModelSetMode modelSetMode = new ModelSetMode();
+                modelSetMode.DischargerIndex = index;
                 modelSetMode.DischargerName = dischargerName;
                 ViewModelSetMode.Instance.ModelDictionary.Add(dischargerName, modelSetMode);
 

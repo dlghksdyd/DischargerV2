@@ -156,9 +156,9 @@
                         <Mex:MexComboBox x:Name="xModelComboBox" 
                                          Width="150" Padding="12,8,12,8"
                                          WaterMark="Select"
-                                         Text="{Binding Model.DischargerModel, 
-                                                        Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.DischargerModel, 
+                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
@@ -167,9 +167,10 @@
                                                               Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseLeave">
+                                <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                             Mode=TwoWay}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
@@ -189,9 +190,9 @@
                         <Mex:MexComboBox x:Name="xTypeComboBox" 
                                          Width="150" Padding="12,8,12,8"
                                          WaterMark="Select"
-                                         Text="{Binding Model.Type, 
-                                                        Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                        Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.Type, 
+                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                Mode=TwoWay}"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
@@ -200,9 +201,10 @@
                                                               Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseLeave">
+                                <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                             Mode=TwoWay}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
@@ -222,9 +224,9 @@
                         <Mex:MexComboBox x:Name="xChannelComboBox" 
                                          Width="150" Padding="12,8,12,8"
                                          WaterMark="Select"
-                                         Text="{Binding Model.Channel, 
-                                                        Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.Channel, 
+                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
@@ -233,9 +235,10 @@
                                                               Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseLeave">
+                                <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                             Mode=TwoWay}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
@@ -255,9 +258,9 @@
                         <Mex:MexComboBox x:Name="xVoltSpecComboBox" 
                                          Width="150" Padding="12,8,12,8"
                                          WaterMark="Select"
-                                         Text="{Binding Model.VoltSpec, 
-                                                        Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.VoltSpec, 
+                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
@@ -266,9 +269,10 @@
                                                               Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseLeave">
+                                <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                             Mode=TwoWay}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
@@ -288,9 +292,9 @@
                         <Mex:MexComboBox x:Name="xCurrSpecComboBox" 
                                          Width="150" Padding="12,8,12,8"
                                          WaterMark="Select"
-                                         Text="{Binding Model.CurrSpec, 
-                                                        Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.CurrSpec, 
+                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
                                          Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
@@ -299,9 +303,10 @@
                                                               Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
                                                               Mode=TwoWay}">
                             <b:Interaction.Triggers>
-                                <b:EventTrigger EventName="MouseLeave">
+                                <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                                                                             Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                             Mode=TwoWay}"
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>

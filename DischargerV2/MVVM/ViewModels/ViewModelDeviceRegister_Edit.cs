@@ -29,68 +29,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelDeviceRegister Model { get; set; } = new ModelDeviceRegister();
-
-        public string Name
-        {
-            get => Model.Name;
-            set => Model.Name = value;
-        }
-
-        public string Ip
-        {
-            get => Model.Ip;
-            set => Model.Ip = value;
-        }
-
-        public string DischargerModel
-        {
-            get => Model.DischargerModel;
-            set => Model.DischargerModel = value;
-        }
-
-        public string Type
-        {
-            get => Model.Type;
-            set => Model.Type = value;
-        }
-
-        public string Channel
-        {
-            get => Model.Channel;
-            set => Model.Channel = value;
-        }
-
-        public string VoltSpec
-        {
-            get => Model.VoltSpec;
-            set => Model.VoltSpec = value;
-        }
-
-        public string CurrSpec
-        {
-            get => Model.CurrSpec;
-            set => Model.CurrSpec = value;
-        }
-
-        public string Comport
-        {
-            get => Model.Comport;
-            set => Model.Comport = value;
-        }
-
-        public string ModuleChannel
-        {
-            get => Model.ModuleChannel;
-            set => Model.ModuleChannel = value;
-        }
-
-        public string TempChannel
-        {
-            get => Model.TempChannel;
-            set => Model.TempChannel = value;
-        }
         #endregion
-
+        
+        #region Property
         private static ViewModelDeviceRegister_Edit _instance = null;
 
         public static ViewModelDeviceRegister_Edit Instance
@@ -104,6 +45,7 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+        #endregion
 
         public ViewModelDeviceRegister_Edit()
         {
@@ -112,6 +54,20 @@ namespace DischargerV2.MVVM.ViewModels
             CloseCommand = new DelegateCommand(Close);
 
             LoadModelInfoList();
+        }
+
+        public void SetModel(ModelDeviceRegister model)
+        {
+            Model.Name = model.Name;
+            Model.Ip = model.Ip;
+            Model.DischargerModel = model.DischargerModel;
+            Model.Type = model.Type;
+            Model.Channel = model.Channel;
+            Model.VoltSpec = model.VoltSpec;
+            Model.CurrSpec = model.CurrSpec;
+            Model.Comport = model.Comport;
+            Model.ModuleChannel = model.ModuleChannel;
+            Model.TempChannel = model.TempChannel;
         }
 
         private void UpdateEditData()
@@ -125,6 +81,18 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()        
         {
+            // 기입한 값 초기화
+            Model.Name = "";
+            Model.Ip = "";
+            Model.DischargerModel = "";
+            Model.Type = "";
+            Model.Channel = "";
+            Model.VoltSpec = "";
+            Model.CurrSpec = "";
+            Model.Comport = "";
+            Model.ModuleChannel = "";
+            Model.TempChannel = "";
+
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
         }
@@ -134,13 +102,13 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
 
             // DischargerModelList
-            string model = Model.DischargerModel;
+            string dischargerModel = Model.DischargerModel;
 
             List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
             modelList = modelList.Distinct().ToList();
 
             Model.DischargerModelList = modelList;
-            Model.DischargerModel = modelList.Contains(model) ? model : "";
+            Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
 
             // TypeList
             string type = Model.Type;

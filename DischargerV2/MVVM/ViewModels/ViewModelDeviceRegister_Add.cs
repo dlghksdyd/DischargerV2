@@ -65,6 +65,18 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
+            // 기입한 값 초기화
+            Model.Name = "";
+            Model.Ip = "";
+            Model.DischargerModel = "";
+            Model.Type = "";
+            Model.Channel = "";
+            Model.VoltSpec = "";
+            Model.CurrSpec = "";
+            Model.Comport = "";
+            Model.ModuleChannel = "";
+            Model.TempChannel = "";
+
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
         }

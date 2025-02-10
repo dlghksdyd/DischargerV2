@@ -1,4 +1,5 @@
 ﻿using DischargerV2.MVVM.Enums;
+using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using System;
 using System.Collections.Generic;
@@ -409,6 +410,20 @@ namespace Utility.Common
                 }
             }
             return Binding.DoNothing;
+        }
+    }
+
+    public class EDischargerStateToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
