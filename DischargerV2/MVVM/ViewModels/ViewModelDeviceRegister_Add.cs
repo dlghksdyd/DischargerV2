@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void InsertNewData()
         {
-            if (!(CheckData() < 0))
+            if (CheckData())
             {
                 InsertDischargerInfo();
                 Close();
@@ -139,71 +139,71 @@ namespace DischargerV2.MVVM.ViewModels
             Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
         }
 
-        private int CheckData()
+        private bool CheckData()
         {
             if (Model.Name == null || Model.Name == "")
             {
                 MessageBox.Show("Name: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (Model.Ip == null || Model.Ip == "")
             {
                 MessageBox.Show("Ip: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (Model.DischargerModel == null || Model.DischargerModel == "")
             {
                 MessageBox.Show("Model: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (Model.Type == null || Model.Type == "")
             {
                 MessageBox.Show("Type: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (Model.Channel == null || Model.Channel == "")
             {
                 MessageBox.Show("Channel: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (!Int16.TryParse(Model.Channel, out Int16 channel))
             {
                 MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
-                return -1;
+                return false;
             }
             if (Model.VoltSpec == null || Model.VoltSpec == "")
             {
                 MessageBox.Show("VoltSpec: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (!double.TryParse(Model.VoltSpec, out double voltSpec))
             {
                 MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
-                return -1;
+                return  false;
             }
             if (Model.CurrSpec == null || Model.CurrSpec == "")
             {
                 MessageBox.Show("CurrSpec: 필수 정보입니다.");
-                return -1;
+                return false;
             }
             if (!double.TryParse(Model.CurrSpec, out double surrSpec))
             {
                 MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
-                return -1;
+                return false;
             }
             if (Model.ModuleChannel != null && Model.ModuleChannel != ""
                 && !Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
             {
                 MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
-                return -1;
+                return false;
             }
             if (Model.TempChannel != null && Model.TempChannel != ""
                 && !Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
             {
                 MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
-                return -1;
+                return false;
             }
-            return 0;
+            return true;
         }
 
         private void InsertDischargerInfo()

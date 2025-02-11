@@ -194,6 +194,12 @@ namespace DischargerV2.MVVM.ViewModels
             _clients[dischargerName].SendCommand_PauseDischarge();
         }
 
+        public void SetSafetyCondition(string dischargerName, 
+            double voltageMax, double voltageMin, double currentMax, double currentMin)
+        {
+            _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin);
+        }
+
         private void InitializeDischarger()
         {
             FinalizeDischarger();

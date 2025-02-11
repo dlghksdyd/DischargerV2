@@ -21,6 +21,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelSetMode_Preset : BindableBase
     {
         #region Command
+        public DelegateCommand SelectBatteryTypeCommand { get; set; }
         #endregion
 
         #region Model
@@ -68,6 +69,8 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelSetMode_Preset()
         {
             _instance = this;
+
+            SelectBatteryTypeCommand = new DelegateCommand(SelectBatteryType);
         }
 
         public void SetDischargerName(string dischargerName)
@@ -103,6 +106,17 @@ namespace DischargerV2.MVVM.ViewModels
                     model.Value.SelectedBatteryType = batteryTypeList[0];
                 }
             }
+        }
+
+        private void SelectBatteryType()
+        {
+            ModelDischarger modelDischarger = ViewModelDischarger.Instance.Model;
+
+            double receiveBatteryVoltage = modelDischarger.DischargerDatas[Model.SelectedIndex].ReceiveBatteryVoltage;
+            string batteryType = Model.SelectedBatteryType;
+            string currentSoC = OCV_Table.getSOC(batteryType, receiveBatteryVoltage).ToString();
+
+            Model.CurrentSoC = currentSoC;
         }
     }
 }

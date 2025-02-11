@@ -150,13 +150,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void StartDischarge()
         {
-            // 방전 모드 확인
-
-            // 방전 목표 확인
-
-            // 방전 안전 조건 확인 및 설정
-
-            // 방전 모드 및 목표 설정
+            if (!CheckModeNTarget()) return;
+            if (!CheckNSetSafetyCondition()) return;
+            if (!SetModeNTarget()) return;
 
             // 화면 전환
             ObservableCollection<bool> isStartedArray = new ObservableCollection<bool>();
@@ -169,6 +165,173 @@ namespace DischargerV2.MVVM.ViewModels
             isStartedArray[Model.DischargerIndex] = true;
 
             ViewModelMain.Instance.Model.IsStartedArray = isStartedArray;
+        }
+
+        /// <summary>
+        /// 방전 모드 및 목표 설정 값 확인
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckModeNTarget()
+        {
+            // Pre-set Mode
+            if (Model.Mode == EMode.Preset)
+            {
+                ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
+
+                if (modelPreset.SelectedBatteryType == null || modelPreset.SelectedBatteryType == "")
+                {
+                    MessageBox.Show("Battery Type: 필수 정보입니다.");
+                    return false;
+                }
+
+                if (modelPreset.EDischargeType == Enums.EDischargeType.Voltage)
+                {
+                    if (modelPreset.TargetVoltage == null || modelPreset.TargetVoltage == "")
+                    {
+                        MessageBox.Show("Target Voltage (V): 필수 정보입니다.");
+                        return false;
+                    }
+                }
+                else if (modelPreset.EDischargeType == Enums.EDischargeType.SoC)
+                {
+                    if (modelPreset.TargetSoC == null || modelPreset.TargetSoC == "")
+                    {
+                        MessageBox.Show("Target SoC (%): 필수 정보입니다.");
+                        return false;
+                    }
+                }
+            }
+            // Step Mode
+            else if (Model.Mode == EMode.Step)
+            {
+                StepConfigure stepConfigure = ViewModelSetMode_Step.Instance.CreateStepConfigure();
+
+                if (stepConfigure == null)
+                {
+                    MessageBox.Show("각 스텝 값의 누락이 없어야 하고, 각 값은 숫자여야 합니다.");
+                    return false;
+                }
+            }
+            // Simple Mode
+            else if (Model.Mode == EMode.Simple)
+            {
+                ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
+
+                if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                {
+                    MessageBox.Show("Standard Capacity (A): 필수 정보입니다.");
+                    return false;
+                }
+
+                if (modelSimple.EDischargeType == Enums.EDischargeType.Voltage)
+                {
+                    if (modelSimple.TargetVoltage == null || modelSimple.TargetVoltage == "")
+                    {
+                        MessageBox.Show("Target Voltage (V): 필수 정보입니다.");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 방전 모드 및 목표 설정 값 적용
+        /// </summary>
+        /// <returns></returns>
+        private bool SetModeNTarget()
+        {
+
+
+            return true;
+        }
+
+        /// <summary>
+        /// 방전 안전 조건 설정 값 확인 및 적용
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckNSetSafetyCondition()
+        {
+            // 설정 값 확인
+            DischargerInfo dischargerInfo = ViewModelDischarger.Instance.Model.DischargerInfos[Model.DischargerIndex];
+            ModelSetMode_SafetyCondition modelSafetyCondition = ViewModelSetMode_SafetyCondition.Instance.Model;
+
+            if (modelSafetyCondition.VoltageMin == null || modelSafetyCondition.VoltageMin == "")
+            {
+                MessageBox.Show("Voltage Min (V): 필수 정보입니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.VoltageMin) < dischargerInfo.SafetyVoltageMin)
+            {
+                MessageBox.Show("Voltage Min (V): 설정 값이 스펙 범위를 벗어났습니다.");
+                return false;
+            }
+            else if (modelSafetyCondition.VoltageMax == null || modelSafetyCondition.VoltageMax == "")
+            {
+                MessageBox.Show("Voltage Max (V): 필수 정보입니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.VoltageMax) > dischargerInfo.SafetyVoltageMax)
+            {
+                MessageBox.Show("Voltage Max (V): 설정 값이 스펙 범위를 벗어났습니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.VoltageMin) >= Convert.ToDouble(modelSafetyCondition.VoltageMax))
+            {
+                MessageBox.Show("Voltage Min ~ Max (V): 범위 설정 값이 잘못되었습니다.");
+                return false;
+            }
+            else if (modelSafetyCondition.CurrentMin == null || modelSafetyCondition.CurrentMin == "")
+            {
+                MessageBox.Show("Current Min (A): 필수 정보입니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.CurrentMin) < dischargerInfo.SafetyCurrentMin)
+            {
+                MessageBox.Show("Current Min (A): 설정 값이 스펙 범위를 벗어났습니다.");
+                return false;
+            }
+            else if (modelSafetyCondition.CurrentMax == null || modelSafetyCondition.CurrentMax == "")
+            {
+                MessageBox.Show("Current Max (A): 필수 정보입니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.CurrentMax) > dischargerInfo.SafetyCurrentMax)
+            {
+                MessageBox.Show("Current Max (A): 설정 값이 스펙 범위를 벗어났습니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.CurrentMin) >= Convert.ToDouble(modelSafetyCondition.CurrentMax))
+            {
+                MessageBox.Show("Current Min ~ Max (A): 범위 설정 값이 잘못되었습니다.");
+                return false;
+            }
+            else if (modelSafetyCondition.TempMin == null || modelSafetyCondition.TempMin == "")
+            {
+                MessageBox.Show("Temp Min (℃): 필수 정보입니다.");
+                return false;
+            }
+            else if (modelSafetyCondition.TempMax == null || modelSafetyCondition.TempMax == "")
+            {
+                MessageBox.Show("Temp Max (℃): 필수 정보입니다.");
+                return false;
+            }
+            else if (Convert.ToDouble(modelSafetyCondition.TempMin) >= Convert.ToDouble(modelSafetyCondition.TempMax))
+            {
+                MessageBox.Show("Temp (℃): 범위 설정 값이 잘못되었습니다.");
+                return false;
+            }
+
+            // 설정 값 적용
+            double voltageMin = Convert.ToDouble(modelSafetyCondition.VoltageMin);
+            double voltageMax = Convert.ToDouble(modelSafetyCondition.VoltageMax);
+            double currentMin = Convert.ToDouble(modelSafetyCondition.CurrentMin);
+            double currentMax = Convert.ToDouble(modelSafetyCondition.CurrentMax);
+
+            ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
+                voltageMax, voltageMin, currentMax, currentMin);
+
+            return true;
         }
     }
 }

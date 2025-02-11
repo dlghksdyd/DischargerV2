@@ -222,7 +222,7 @@ namespace DischargerV2.MVVM.ViewModels
             targetModel.Content.RemoveAt(0);
         }
 
-        private StepConfigure CreateStepConfigure()
+        public StepConfigure CreateStepConfigure()
         {
             StepConfigure stepConfigure = new StepConfigure();
 
