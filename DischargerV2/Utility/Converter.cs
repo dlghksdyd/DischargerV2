@@ -3,6 +3,7 @@ using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -413,15 +415,34 @@ namespace Utility.Common
         }
     }
 
-    public class EDischargerStateToBoolConverter : IValueConverter
+    public class EDischargerStateToBoolConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public bool ReadyValue { get; set; } = true;
+        public bool NotReadyValue { get; set; } = false;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    if (eDischargerState == EDischargerState.Ready)
+                    {
+                        return ReadyValue;
+                    }
+                    else
+                    {
+                        return NotReadyValue;
+                    }
+                }
+            }
+
             return Binding.DoNothing;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

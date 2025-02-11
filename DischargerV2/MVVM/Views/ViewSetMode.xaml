@@ -21,7 +21,6 @@
             <Util:EModeToBackgroundConverter x:Key="EModeToBackgroundConverter"/>
             <Util:EModeToVisibilityConverter x:Key="EModeToVisibilityConverter"/>
             <Util:EDischargerStateToBoolConverter x:Key="EDischargerStateToBoolConverter"/>
-            <Util:IntToStringConverter x:Key="IntToStringConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -169,11 +168,15 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
-                           HorizontalAlignment="Stretch"
-                           IsEnabled="{Binding Model.DischargerStates, 
-                                               Source={x:Static vm:ViewModelDischarger.Instance},
-                                               Converter={StaticResource EDischargerStateToBoolConverter},
-                                               FallbackValue=true}">
+                           HorizontalAlignment="Stretch">
+                <Mex:MexButton.IsEnabled>
+                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}" Mode="TwoWay">
+                        <MultiBinding.Bindings>
+                            <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                            <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </Mex:MexButton.IsEnabled>
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
