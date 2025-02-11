@@ -23,20 +23,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelMain Model { get; set; } = new ModelMain();
-
-        //public string SelectedDischargerName
-        //{
-        //    get => Model.SelectedDischargerName;
-        //    set
-        //    {
-        //        Model.SelectedDischargerName = value;
-        //        SetViewModelSetMode(value);
-        //    }
-        //}
         #endregion
 
         private static ViewModelMain _instance = null;
-
         public static ViewModelMain Instance
         {
             get
@@ -54,12 +43,21 @@ namespace DischargerV2.MVVM.ViewModels
             _instance = this;
 
             InitializeModel();
+            InitializePopup();
         }
 
-        private void InitializeModel()
+        public void InitializeModel()
         {
-            OffPopup();
-            OffNestedPopup();
+            // 기존 값 초기화
+            Model.IsStartedArray.Clear();
+
+            // Discharger에서 관련 값 받아와 사용
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
+
+            for (int index = 0; index < dischargerNameList.Count; index++)
+            {
+                Model.IsStartedArray.Add(false);
+            }
         }
 
         public void OpenPopup(EPopup setPopup)
@@ -101,6 +99,12 @@ namespace DischargerV2.MVVM.ViewModels
 
             Model.NestedPopupVisibility = popupVisibility;
             Model.IsNestedPopupOpen = true;
+        }
+
+        private void InitializePopup()
+        {
+            OffPopup();
+            OffNestedPopup();
         }
 
         public void OffPopup()

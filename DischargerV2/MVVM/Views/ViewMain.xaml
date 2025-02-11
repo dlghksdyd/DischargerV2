@@ -21,6 +21,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <Util:IsStartedToVisibilityConverter x:Key="IsStartedToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -54,13 +55,29 @@
                 <uc:UcMonitor_ChannelState Grid.Row="0"/>
                 <view:ViewDischargerInfoTable Grid.Row="2"/>
                 <Grid Grid.Row="4">
-                    <view:ViewSetMode Visibility="{Binding Model.IsSetMode,
-                                                           Source={x:Static vm:ViewModelMain.Instance},
-                                                           Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    <uc:UcMonitor Visibility="{Binding Model.IsSetMode,
-                                                       Source={x:Static vm:ViewModelMain.Instance},
-                                                       Converter={StaticResource BoolToVisibilityConverter},
-                                                       ConverterParameter=Invert}"/>
+                    <view:ViewSetMode>
+                        <view:ViewSetMode.Visibility>
+                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
+                                          ConverterParameter="Invert" 
+                                          FallbackValue="Visibility">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </view:ViewSetMode.Visibility>
+                    </view:ViewSetMode>
+                    <uc:UcMonitor>
+                        <uc:UcMonitor.Visibility>
+                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
+                                          FallbackValue="Collapsed">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </uc:UcMonitor.Visibility>
+                    </uc:UcMonitor>
                 </Grid>
             </Grid>
         </Grid>

@@ -25,6 +25,7 @@ namespace DischargerV2.MVVM.ViewModels
     {
         #region Command
         public DelegateCommand<string> SelectModeCommand { get; set; }
+        public DelegateCommand StartDischargeCommand { get; set; }
         #endregion
 
         #region Model
@@ -72,11 +73,22 @@ namespace DischargerV2.MVVM.ViewModels
             _instance = this;
 
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
+            StartDischargeCommand = new DelegateCommand(StartDischarge);
 
             InitializeModelDictionary();
         }
 
-        private void InitializeModelDictionary()
+        public void SetDischargerName(string dischargerName)
+        {
+            Model = ModelDictionary[dischargerName];
+
+            ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
+            ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
+        }
+
+        public void InitializeModelDictionary()
         {
             // 기존 값 초기화
             ViewModelSetMode.Instance.ModelDictionary.Clear();
@@ -122,7 +134,6 @@ namespace DischargerV2.MVVM.ViewModels
                 modelSetMode_SafetyCondition.TempMax = dischargerInfo.SafetyTempMax.ToString();
                 ViewModelSetMode_SafetyCondition.Instance.ModelDictionary.Add(dischargerName, modelSetMode_SafetyCondition);
             }
-
             ViewModelSetMode_Preset.Instance.SetBatteryType();
         }
 
@@ -137,14 +148,27 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void SetDischargerName(string dischargerName)
+        private void StartDischarge()
         {
-            Model = ModelDictionary[dischargerName];
+            // 방전 모드 확인
 
-            ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
-            ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
-            ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
-            ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
+            // 방전 목표 확인
+
+            // 방전 안전 조건 확인 및 설정
+
+            // 방전 모드 및 목표 설정
+
+            // 화면 전환
+            ObservableCollection<bool> isStartedArray = new ObservableCollection<bool>();
+
+            foreach (var isStarted in ViewModelMain.Instance.Model.IsStartedArray)
+            {
+                isStartedArray.Add(isStarted);
+            }
+
+            isStartedArray[Model.DischargerIndex] = true;
+
+            ViewModelMain.Instance.Model.IsStartedArray = isStartedArray;
         }
     }
 }

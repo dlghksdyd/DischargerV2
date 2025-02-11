@@ -447,5 +447,49 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
+
+    public class IsStartedToVisibilityConverter : IMultiValueConverter
+    {
+        public Visibility TrueValue { get; set; } = Visibility.Visible;
+        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<bool> isStartedArray)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    if (parameter != null && parameter.ToString().ToUpper() == "INVERT")
+                    {
+                        if (isStartedArray[selectedIndex])
+                        {
+                            return FalseValue;
+                        }
+                        else
+                        {
+                            return TrueValue;
+                        }
+                    }
+                    else
+                    {
+                        if (isStartedArray[selectedIndex])
+                        {
+                            return TrueValue;
+                        }
+                        else
+                        {
+                            return FalseValue;
+                        }
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 

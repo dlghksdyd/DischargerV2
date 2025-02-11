@@ -170,7 +170,7 @@
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
                            HorizontalAlignment="Stretch">
                 <Mex:MexButton.IsEnabled>
-                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}" Mode="TwoWay">
+                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}">
                         <MultiBinding.Bindings>
                             <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                             <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
@@ -179,8 +179,8 @@
                 </Mex:MexButton.IsEnabled>
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
-                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}}"
+                        <b:InvokeCommandAction Command="{Binding StartDischargeCommand, 
+                                                                 Source={x:Static vm:ViewModelSetMode.Instance}}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>

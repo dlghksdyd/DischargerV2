@@ -52,16 +52,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EMode mode = EMode.Preset;
+        private EMode _mode = EMode.Preset;
         public EMode Mode
         {
             get
             {
-                return mode;
+                return _mode;
             }
             set
             {
-                SetProperty(ref mode, value);
+                SetProperty(ref _mode, value);
             }
         }
     }
