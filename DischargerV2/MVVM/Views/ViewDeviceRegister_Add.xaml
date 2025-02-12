@@ -13,6 +13,15 @@
              d:DataContext="{d:DesignInstance vm:ViewModelDeviceRegister_Add}"
              d:DesignHeight="208" d:DesignWidth="1520"
              MinHeight="208" MinWidth="1520">
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
+                                                     Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}, 
+                                                     Mode=TwoWay}"
+                                   PassEventArgsToCommand="False"/>
+        </b:EventTrigger>
+
+    </b:Interaction.Triggers>
 
     <Border Width="1520" Height="208"
             BorderBrush="{StaticResource Mex/ResColor/border_action}"

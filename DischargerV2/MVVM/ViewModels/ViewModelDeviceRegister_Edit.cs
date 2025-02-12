@@ -52,8 +52,6 @@ namespace DischargerV2.MVVM.ViewModels
             LoadModelInfoListCommand = new DelegateCommand(LoadModelInfoList);
             UpdateEditDataCommand = new DelegateCommand(UpdateEditData);
             CloseCommand = new DelegateCommand(Close);
-
-            LoadModelInfoList();
         }
 
         public void SetModel(ModelDeviceRegister model)

@@ -50,8 +50,6 @@ namespace DischargerV2.MVVM.ViewModels
             LoadModelInfoListCommand = new DelegateCommand(LoadModelInfoList);
             InsertNewDataCommand = new DelegateCommand(InsertNewData);
             CloseCommand = new DelegateCommand(Close);
-
-            LoadModelInfoList();
         }
 
         private void InsertNewData()
