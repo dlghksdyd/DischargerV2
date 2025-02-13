@@ -40,7 +40,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _dischargerModelList;
+        private List<string> _dischargerModelList = new List<string>();
         public List<string> DischargerModelList
         {
             get
@@ -66,7 +66,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _typeList;
+        private List<string> _typeList = new List<string>();
         public List<string> TypeList
         {
             get
