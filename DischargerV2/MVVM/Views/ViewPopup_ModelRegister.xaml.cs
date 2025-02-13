@@ -17,6 +17,7 @@ using DischargerV2.MVVM.ViewModels;
 using Sqlite.Common;
 using MExpress.Example;
 using System.Runtime.Remoting.Channels;
+using DischargerV2.MVVM.Models;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -75,26 +76,24 @@ namespace DischargerV2.MVVM.Views
                     // Edit
                     if (tableDischargerModel.Id == selectedId)
                     {
-                        ViewModelRegister_Edit view_Edit = new ViewModelRegister_Edit();
+                        ModelModelRegister modelModelRegister = new ModelModelRegister()
+                        {
+                            Id = tableDischargerModel.Id,
+                            DischargerModel = tableDischargerModel.Model.ToString(),
+                            Type = tableDischargerModel.Type.ToString(),
+                            Channel = tableDischargerModel.Channel.ToString(),
+                            VoltSpec = tableDischargerModel.SpecVoltage.ToString(),
+                            CurrSpec = tableDischargerModel.SpecCurrent.ToString(),
+                            VoltMax = tableDischargerModel.SafetyVoltMax.ToString("F1"),
+                            VoltMin = tableDischargerModel.SafetyVoltMin.ToString("F1"),
+                            CurrMax = tableDischargerModel.SafetyCurrentMax.ToString("F1"),
+                            CurrMin = tableDischargerModel.SafetyCurrentMin.ToString("F1"),
+                            TempMax = tableDischargerModel.SafetyTempMax.ToString("F1"),
+                            TempMin = tableDischargerModel.SafetyTempMin.ToString("F1")
+                        };
+                        ViewModelModelRegister_Edit.Instance.SetModelData(modelModelRegister);
 
-                        ViewModelModelRegister_Edit viewModel_Edit = ViewModelModelRegister_Edit.Instance;
-
-                        viewModel_Edit.Id = tableDischargerModel.Id;
-                        viewModel_Edit.DischargerModel = tableDischargerModel.Model.ToString();
-                        viewModel_Edit.Type = tableDischargerModel.Type.ToString();
-                        viewModel_Edit.Channel = tableDischargerModel.Channel.ToString();
-                        viewModel_Edit.VoltSpec = tableDischargerModel.SpecVoltage.ToString();
-                        viewModel_Edit.CurrSpec = tableDischargerModel.SpecCurrent.ToString();
-                        viewModel_Edit.VoltMax = tableDischargerModel.SafetyVoltMax.ToString("F1");
-                        viewModel_Edit.VoltMin = tableDischargerModel.SafetyVoltMin.ToString("F1");
-                        viewModel_Edit.CurrMax = tableDischargerModel.SafetyCurrentMax.ToString("F1");
-                        viewModel_Edit.CurrMin = tableDischargerModel.SafetyCurrentMin.ToString("F1");
-                        viewModel_Edit.TempMax = tableDischargerModel.SafetyTempMax.ToString("F1");
-                        viewModel_Edit.TempMin = tableDischargerModel.SafetyTempMin.ToString("F1");
-
-                        view_Edit.DataContext = viewModel_Edit;
-
-                        xContentPanel.Children.Add(view_Edit);
+                        xContentPanel.Children.Add(new ViewModelRegister_Edit());
                     }
                     // Info
                     else

@@ -90,7 +90,7 @@ namespace DischargerV2.MVVM.Views
                             ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString(),
                             TempChannel = tableDischargerInfo.TempChannel.ToString()
                         };
-                        ViewModelDeviceRegister_Edit.Instance.SetModel(modelDeviceRegister);
+                        ViewModelDeviceRegister_Edit.Instance.SetModelData(modelDeviceRegister);
 
                         xContentPanel.Children.Add(new ViewDeviceRegister_Edit());
                     }

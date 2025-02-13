@@ -13,7 +13,15 @@
              d:DataContext="{d:DesignInstance vm:ViewModelModelRegister_Edit}"
              d:DesignHeight="184" d:DesignWidth="1520"
              MinHeight="184" MinWidth="1520">
-
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadDischargerModelListCommand, 
+                                                     Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
+                                                     Mode=TwoWay}"
+                                   PassEventArgsToCommand="False"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    
     <Border Width="1520" Height="184"
             BorderBrush="{StaticResource Mex/ResColor/border_action}"
             BorderThickness="2"
@@ -45,20 +53,19 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xModelComboBox" 
-                                         Width="220" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         Text="{Binding Model.DischargerModel, 
-                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.DischargerModelList, 
-                                                              Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
-                                                              Mode=TwoWay}"
-                                         HorizontalAlignment="Left"/>
+                        <Mex:MexComboBoxNew x:Name="xModelComboBox" 
+                                            Width="220" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            ItemSource="{Binding Model.DischargerModelList, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
+                                            SelectedItem="{Binding Model.DischargerModel, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
+                                                                Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            HorizontalAlignment="Left"/>
                     </StackPanel>
                     <!--Edit-->
                     <Mex:MexButton x:Name="xEditButton" Grid.Column="2"
@@ -118,19 +125,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xTypeComboBox" 
-                                         Width="112" Padding="12,8,12,8" 
-                                         WaterMark="Select"
-                                         Text="{Binding Model.Type, 
-                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
-                                                        Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.TypeList, 
-                                                              Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
-                                                              Mode=TwoWay}"/>
+                        <Mex:MexComboBoxNew x:Name="xTypeComboBox" 
+                                            Width="112" Padding="12,8,12,8" 
+                                            WaterMark="Select"
+                                            ItemSource="{Binding Model.TypeList, 
+                                                                 Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
+                                                                 Mode=TwoWay}"
+                                            SelectedItem="{Binding Model.Type, 
+                                                                   Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"/>
                     </StackPanel>
                 </Border>
                 <!--Channel-->

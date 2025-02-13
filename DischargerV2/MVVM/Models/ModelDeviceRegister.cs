@@ -53,7 +53,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _dischargerModelList;
+        private List<string> _dischargerModelList = new List<string>();
         public List<string> DischargerModelList
         {
             get
@@ -79,7 +79,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _typeList;
+        private List<string> _typeList = new List<string>();
         public List<string> TypeList
         {
             get
@@ -105,7 +105,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _channelList;
+        private List<string> _channelList = new List<string>();
         public List<string> ChannelList
         {
             get
@@ -131,7 +131,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _voltSpecList;
+        private List<string> _voltSpecList = new List<string>();
         public List<string> VoltSpecList
         {
             get
@@ -157,7 +157,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<string> _currSpecList;
+        private List<string> _currSpecList = new List<string>();
         public List<string> CurrSpecList
         {
             get

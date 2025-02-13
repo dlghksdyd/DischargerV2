@@ -22,6 +22,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelModelRegister_Edit : BindableBase
     {
         #region Command
+        public DelegateCommand LoadDischargerModelListCommand { get; set; }
         public DelegateCommand UpdateEditDataCommand { get; set; }
         public DelegateCommand CloseCommand { get; set; }
         #endregion
@@ -118,8 +119,25 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelModelRegister_Edit()
         {
+            LoadDischargerModelListCommand = new DelegateCommand(LoadDischargerModelList);
             UpdateEditDataCommand = new DelegateCommand(UpdateEditData);
             CloseCommand = new DelegateCommand(Close);
+        }
+
+        public void SetModelData(ModelModelRegister setModel)
+        {
+            Model.Id = setModel.Id;
+            Model.DischargerModel = setModel.DischargerModel;
+            Model.Type = setModel.Type;
+            Model.Channel = setModel.Channel;
+            Model.VoltSpec = setModel.VoltSpec;
+            Model.CurrSpec = setModel.CurrSpec;
+            Model.VoltMax = setModel.VoltMax;
+            Model.VoltMin = setModel.VoltMin;
+            Model.CurrMax = setModel.CurrMax;
+            Model.CurrMin = setModel.CurrMin;
+            Model.TempMax = setModel.TempMax;
+            Model.TempMin = setModel.TempMin;
 
             LoadDischargerModelList();
         }
