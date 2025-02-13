@@ -172,6 +172,7 @@
     <Compile Include="MVVM\Models\ModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Error.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Warning.cs" />
+    <Compile Include="MVVM\Models\ModelStartDischarge.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Add.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Info.cs" />
     <Compile Include="MVVM\Models\ModelPopup_UserSetting.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Error.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Warning.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelStartDischarge.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Info.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Info.cs" />

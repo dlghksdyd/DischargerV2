@@ -29,8 +29,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         #region Model
         public ModelDeviceRegister Model { get; set; } = new ModelDeviceRegister();
+        public ModelDeviceRegister SetModel { get; set; } = new ModelDeviceRegister();
         #endregion
-        
+
         #region Property
         private static ViewModelDeviceRegister_Edit _instance = null;
 
@@ -54,18 +55,20 @@ namespace DischargerV2.MVVM.ViewModels
             CloseCommand = new DelegateCommand(Close);
         }
 
-        public void SetModel(ModelDeviceRegister model)
+        public void SetModelData(ModelDeviceRegister model)
         {
             Model.Name = model.Name;
             Model.Ip = model.Ip;
-            Model.DischargerModel = model.DischargerModel;
-            Model.Type = model.Type;
-            Model.Channel = model.Channel;
-            Model.VoltSpec = model.VoltSpec;
-            Model.CurrSpec = model.CurrSpec;
+            SetModel.DischargerModel = model.DischargerModel;
+            SetModel.Type = model.Type;
+            SetModel.Channel = model.Channel;
+            SetModel.VoltSpec = model.VoltSpec;
+            SetModel.CurrSpec = model.CurrSpec;
             Model.Comport = model.Comport;
             Model.ModuleChannel = model.ModuleChannel;
             Model.TempChannel = model.TempChannel;
+
+            LoadModelInfoList();
         }
 
         private void UpdateEditData()
@@ -79,14 +82,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()        
         {
-            // 기입한 값 초기화
+            // 기입한 값 초기화 (바인딩되는 값 제외)
             Model.Name = "";
             Model.Ip = "";
-            Model.DischargerModel = "";
-            Model.Type = "";
-            Model.Channel = "";
-            Model.VoltSpec = "";
-            Model.CurrSpec = "";
             Model.Comport = "";
             Model.ModuleChannel = "";
             Model.TempChannel = "";
@@ -100,7 +98,7 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
 
             // DischargerModelList
-            string dischargerModel = Model.DischargerModel;
+            string dischargerModel = SetModel.DischargerModel;
 
             List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
             modelList = modelList.Distinct().ToList();
@@ -109,7 +107,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
 
             // TypeList
-            string type = Model.Type;
+            string type = SetModel.Type;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
 
@@ -120,7 +118,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.Type = typeList.Contains(type) ? type : "";
 
             // ChannelList
-            string channel = Model.Channel;
+            string channel = SetModel.Channel;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
 
@@ -131,7 +129,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.Channel = channelList.Contains(channel) ? channel : "";
 
             // VoltSpecList
-            string voltSpec = Model.VoltSpec;
+            string voltSpec = SetModel.VoltSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
 
@@ -142,7 +140,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
 
             // CurrSpecList
-            string currSpec = Model.CurrSpec;
+            string currSpec = SetModel.CurrSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
 

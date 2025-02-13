@@ -160,19 +160,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xModelComboBox" 
-                                         Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         SelectedItem="{Binding Model.DischargerModel, 
-                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                                Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.DischargerModelList, 
-                                                              Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                              Mode=TwoWay}">
+                        <Mex:MexComboBoxNew x:Name="xModelComboBox" 
+                                            Width="150" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            SelectedItem="{Binding Model.DischargerModel, 
+                                                                   Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            ItemSource="{Binding Model.DischargerModelList, 
+                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                 Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
@@ -181,7 +180,7 @@
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </Mex:MexComboBox>
+                        </Mex:MexComboBoxNew>
                     </StackPanel>
                 </Border>
                 <!--Type-->
@@ -194,19 +193,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xTypeComboBox" 
-                                         Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         SelectedItem="{Binding Model.Type, 
-                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                                Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.TypeList, 
-                                                              Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                              Mode=TwoWay}">
+                        <Mex:MexComboBoxNew x:Name="xTypeComboBox" 
+                                            Width="150" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            SelectedItem="{Binding Model.Type, 
+                                                                   Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            ItemSource="{Binding Model.TypeList, 
+                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                 Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
@@ -215,7 +213,7 @@
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </Mex:MexComboBox>
+                        </Mex:MexComboBoxNew>
                     </StackPanel>
                 </Border>
                 <!--Channel-->
@@ -228,19 +226,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xChannelComboBox" 
-                                         Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         SelectedItem="{Binding Model.Channel, 
-                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                                Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.ChannelList, 
-                                                              Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                              Mode=TwoWay}">
+                        <Mex:MexComboBoxNew x:Name="xChannelComboBox" 
+                                            Width="150" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            SelectedItem="{Binding Model.Channel, 
+                                                                   Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            ItemSource="{Binding Model.ChannelList, 
+                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                 Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
@@ -249,7 +246,7 @@
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </Mex:MexComboBox>
+                        </Mex:MexComboBoxNew>
                     </StackPanel>
                 </Border>
                 <!--VoltSpec-->
@@ -262,19 +259,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xVoltSpecComboBox" 
-                                         Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         SelectedItem="{Binding Model.VoltSpec, 
-                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                                Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.VoltSpecList, 
-                                                              Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                              Mode=TwoWay}">
+                        <Mex:MexComboBoxNew x:Name="xVoltSpecComboBox" 
+                                            Width="150" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            SelectedItem="{Binding Model.VoltSpec, 
+                                                                   Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            ItemSource="{Binding Model.VoltSpecList, 
+                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                 Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
@@ -283,7 +279,7 @@
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </Mex:MexComboBox>
+                        </Mex:MexComboBoxNew>
                     </StackPanel>
                 </Border>
                 <!--CurrSpec-->
@@ -296,19 +292,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBox x:Name="xCurrSpecComboBox" 
-                                         Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
-                                         SelectedItem="{Binding Model.CurrSpec, 
-                                                                Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
-                                                                Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
-                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                         ItemSource="{Binding Model.CurrSpecList, 
-                                                              Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
-                                                              Mode=TwoWay}">
+                        <Mex:MexComboBoxNew x:Name="xCurrSpecComboBox" 
+                                            Width="150" Padding="12,8,12,8"
+                                            WaterMark="Select"
+                                            SelectedItem="{Binding Model.CurrSpec, 
+                                                                   Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance}, 
+                                                                   Mode=TwoWay}"
+                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
+                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                            ItemSource="{Binding Model.CurrSpecList, 
+                                                                 Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                                 Mode=TwoWay}">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="SelectedItemChanged">
                                     <b:InvokeCommandAction Command="{Binding LoadModelInfoListCommand, 
@@ -317,7 +312,7 @@
                                                            PassEventArgsToCommand="False"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </Mex:MexComboBox>
+                        </Mex:MexComboBoxNew>
                     </StackPanel>
                 </Border>
                 <!--Comport-->
