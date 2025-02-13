@@ -1,6 +1,4 @@
 ﻿using DischargerV2.MVVM.ViewModels;
-using MExpress.Example;
-using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +17,15 @@ using System.Windows.Shapes;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewMain.xaml에 대한 상호 작용 논리
+    /// ViewSetMode_SafetyCondition.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewMain : Window
+    public partial class ViewSetMode_SafetyCondition : UserControl
     {
-        public static ViewMain Instance;
+        private ViewModelSetMode_SafetyCondition _viewModel = ViewModelSetMode_SafetyCondition.Instance;
 
-        private ViewModelMain _viewModel = new ViewModelMain();
-
-        public ViewMain()
+        public ViewSetMode_SafetyCondition()
         {
             InitializeComponent();
-
-            SqliteUtility.InitializeDatabases();
-
-            Instance = this;
 
             this.DataContext = _viewModel;
         }

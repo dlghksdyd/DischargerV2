@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:Util="clr-namespace:Utility.Common"
         xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
-        xmlns:Example="clr-namespace:MExpress.Example;assembly=MExpress" 
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
         xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
@@ -22,13 +21,14 @@
     <Window.Resources>
         <ResourceDictionary>
             <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <Util:IsStartedToVisibilityConverter x:Key="IsStartedToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid x:Name="xTopGrid" Cursor="">
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <view:ViewTopbar Grid.Row="0"/>
         <!--Main 화면-->
@@ -55,8 +55,29 @@
                 <uc:UcMonitor_ChannelState Grid.Row="0"/>
                 <view:ViewDischargerInfoTable Grid.Row="2"/>
                 <Grid Grid.Row="4">
-                    <uc:UcSetMode/>
-                    <!--<uc:UcMonitor/>-->
+                    <view:ViewSetMode>
+                        <view:ViewSetMode.Visibility>
+                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
+                                          ConverterParameter="Invert" 
+                                          FallbackValue="Visibility">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </view:ViewSetMode.Visibility>
+                    </view:ViewSetMode>
+                    <uc:UcMonitor>
+                        <uc:UcMonitor.Visibility>
+                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
+                                          FallbackValue="Collapsed">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </uc:UcMonitor.Visibility>
+                    </uc:UcMonitor>
                 </Grid>
             </Grid>
         </Grid>
@@ -78,17 +99,17 @@
                                                DataContext="{Binding Model.ViewModelPopup_DeviceRegister,
                                                                      Source={x:Static vm:ViewModelMain.Instance}}"/>
                 <view:ViewPopup_ModelRegister Visibility="{Binding Model.PopupVisibility[2], 
-                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
-                                               DataContext="{Binding Model.ViewModelPopup_ModelRegister,
-                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
+                                                                   Source={x:Static vm:ViewModelMain.Instance}}"
+                                              DataContext="{Binding Model.ViewModelPopup_ModelRegister,
+                                                                    Source={x:Static vm:ViewModelMain.Instance}}"/>
                 <view:ViewPopup_Info Visibility="{Binding Model.PopupVisibility[3], 
-                                                         Source={x:Static vm:ViewModelMain.Instance}}"
+                                                          Source={x:Static vm:ViewModelMain.Instance}}"
                                      DataContext="{Binding Model.ViewModelPopup_Info,
-                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
+                                                           Source={x:Static vm:ViewModelMain.Instance}}"/>
                 <view:ViewPopup_Error Visibility="{Binding Model.PopupVisibility[4], 
                                                            Source={x:Static vm:ViewModelMain.Instance}}"
-                                       DataContext="{Binding Model.ViewModelPopup_Error,
-                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
+                                      DataContext="{Binding Model.ViewModelPopup_Error,
+                                                            Source={x:Static vm:ViewModelMain.Instance}}"/>
             </Grid>
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

@@ -58,7 +58,6 @@ namespace DischargerV2.MVVM.ViewModels
         private void LoadDischargerInfoList()
         {
             List<TableDischargerInfo> tableDischargerInfo = SqliteDischargerInfo.GetData();
-
             ObservableCollection<TableDischargerInfo> content = new ObservableCollection<TableDischargerInfo>();
 
             for (int index = 0; index < tableDischargerInfo.Count; index++)

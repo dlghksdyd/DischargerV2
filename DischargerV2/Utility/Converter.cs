@@ -1,5 +1,9 @@
-﻿using System;
+﻿using DischargerV2.MVVM.Enums;
+using Ethernet.Client.Discharger;
+using MExpress.Mex;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -8,6 +12,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -85,6 +90,30 @@ namespace Utility.Common
         }
     }
 
+    public class InvertBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool boolValue)
+            {
+                return !boolValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+                return false;
+
+            if (value is bool boolValue)
+            {
+                return !boolValue;
+            }
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
     public class BoolToVisibilityConverter : IValueConverter
     {
         public Visibility TrueValue { get; set; } = Visibility.Visible;
@@ -94,13 +123,27 @@ namespace Utility.Common
         {
             if (value is bool boolValue)
             {
-                if (boolValue)
+                if (parameter != null && parameter.ToString().ToUpper() == "INVERT")
                 {
-                    return TrueValue;
+                    if (boolValue)
+                    {
+                        return FalseValue;
+                    }
+                    else
+                    {
+                        return TrueValue;
+                    }
                 }
                 else
                 {
-                    return FalseValue;
+                    if (boolValue)
+                    {
+                        return TrueValue;
+                    }
+                    else
+                    {
+                        return FalseValue;
+                    }
                 }
             }
             return Binding.DoNothing;
@@ -139,27 +182,313 @@ namespace Utility.Common
         }
     }
 
-    public class InvertBoolConverter : IValueConverter
+    public class IntToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool boolValue)
+            if (value is int intValue)
             {
-                return !boolValue;
+                return intValue.ToString();
             }
             return Binding.DoNothing;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return false;
+            throw new NotImplementedException();
+        }
+    }
 
-            if (value is bool boolValue)
+    public class EModeToVisibilityConverter : IValueConverter
+    {
+        public Visibility SelectedValue { get; set; } = Visibility.Visible;
+        public Visibility UnselectedValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EMode mode)
             {
-                return !boolValue;
+                if (parameter != null && parameter.GetType() == typeof(EMode))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
             }
-            return DependencyProperty.UnsetValue;
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EModeToForegroundConverter : IValueConverter
+    {
+        public SolidColorBrush SelectedValue { get; set; } = ResColor.text_action;
+        public SolidColorBrush UnselectedValue { get; set; } = ResColor.text_body;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EMode mode)
+            {
+                if (parameter != null && parameter.GetType() == typeof(EMode))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EModeToBorderBrushConverter : IValueConverter
+    {
+        public SolidColorBrush SelectedValue { get; set; } = ResColor.border_action_hover;
+        public SolidColorBrush UnselectedValue { get; set; } = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EMode mode)
+            {
+                if (parameter != null && parameter.GetType() == typeof(EMode))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EModeToBackgroundConverter : IValueConverter
+    {
+        public SolidColorBrush SelectedValue { get; set; } = ResColor.surface_action_hover2;
+        public SolidColorBrush UnselectedValue { get; set; } = ResColor.surface_primary;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EMode mode)
+            {
+                if (parameter != null && parameter.GetType() == typeof(EMode))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EDischargeTypeToBoolConverter : IValueConverter
+    {
+        public bool SelectedValue { get; set; } = true;
+        public bool UnselectedValue { get; set; } = false;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EDischargeType mode)
+            {
+                if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+                {
+                    if (parameter.ToString() == mode.ToString())
+                    {
+                        return SelectedValue;
+                    }
+                    else
+                    {
+                        return UnselectedValue;
+                    }
+                }
+                return UnselectedValue;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+            {
+                return Enum.Parse(targetType, parameter.ToString());
+            }
+            return Binding.DoNothing;
+        }
+    }
+
+    public class IsDoubleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (double.TryParse(stringValue, out double doubleValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (double.TryParse(stringValue, out double doubleValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+    }
+
+    public class EDischargerStateToBoolConverter : IMultiValueConverter
+    {
+        public bool ReadyValue { get; set; } = true;
+        public bool NotReadyValue { get; set; } = false;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    if (eDischargerState == EDischargerState.Ready)
+                    {
+                        return ReadyValue;
+                    }
+                    else
+                    {
+                        return NotReadyValue;
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class IsStartedToVisibilityConverter : IMultiValueConverter
+    {
+        public Visibility TrueValue { get; set; } = Visibility.Visible;
+        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<bool> isStartedArray)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    if (parameter != null && parameter.ToString().ToUpper() == "INVERT")
+                    {
+                        if (isStartedArray[selectedIndex])
+                        {
+                            return FalseValue;
+                        }
+                        else
+                        {
+                            return TrueValue;
+                        }
+                    }
+                    else
+                    {
+                        if (isStartedArray[selectedIndex])
+                        {
+                            return TrueValue;
+                        }
+                        else
+                        {
+                            return FalseValue;
+                        }
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

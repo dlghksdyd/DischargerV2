@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,58 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _windowState, value);
+            }
+        }
+
+        private int _dischargerIndex;
+        public int DischargerIndex
+        {
+            get
+            {
+                return _dischargerIndex;
+            }
+            set
+            {
+                SetProperty(ref _dischargerIndex, value);
+            }
+        }
+
+        private string _selectedDischargerName;
+        public string SelectedDischargerName
+        {
+            get
+            { 
+                return _selectedDischargerName; 
+            }
+            set
+            {
+                SetProperty(ref _selectedDischargerName, value);
+            }
+        }
+
+        private bool _isSetMode = true;
+        public bool IsSetMode
+        {
+            get
+            {
+                return _isSetMode;
+            }
+            set
+            {
+                SetProperty(ref _isSetMode, value);
+            }
+        }
+
+        private ObservableCollection<bool> _isStartedArray = new ObservableCollection<bool>();
+        public ObservableCollection<bool> IsStartedArray
+        {
+            get
+            {
+                return _isStartedArray;
+            }
+            set
+            {
+                SetProperty(ref _isStartedArray, value);
             }
         }
 

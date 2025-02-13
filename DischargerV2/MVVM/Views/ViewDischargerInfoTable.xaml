@@ -13,6 +13,12 @@
              d:DesignHeight="315" d:DesignWidth="1760"
              MinHeight="315" MinWidth="1760">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:IntToStringConverter x:Key="IntToStringConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Border CornerRadius="8" 
             Background="{StaticResource Mex/ResColor/surface_page}">
         <Mex:MexTable x:Name="xTable"
@@ -560,6 +566,16 @@
                     </Mex:MexTableRowColumn>
                 </Mex:MexTableRow>
             </Mex:MexTable.Rows>
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseLeftButtonUp">
+                    <b:InvokeCommandAction Command="{Binding SelectDischargerCommand, 
+                                                             Source={StaticResource ViewModelDischarger}}"
+                                           CommandParameter="{Binding ElementName=xTable, 
+                                                                      Path=SelectedIndex, 
+                                                                      Converter={StaticResource IntToStringConverter}}"
+                                           PassEventArgsToCommand="False"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
         </Mex:MexTable>
     </Border>
 </UserControl>

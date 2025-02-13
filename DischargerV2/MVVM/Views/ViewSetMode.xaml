@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewSetMode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Util="clr-namespace:Utility.Common"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:ViewModelSetMode}"
+             d:DesignHeight="448" d:DesignWidth="1760" 
+             MaxHeight="448" MaxWidth="1760">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EModeToForegroundConverter x:Key="EModeToForegroundConverter"/>
+            <Util:EModeToBorderBrushConverter x:Key="EModeToBorderBrushConverter"/>
+            <Util:EModeToBackgroundConverter x:Key="EModeToBackgroundConverter"/>
+            <Util:EModeToVisibilityConverter x:Key="EModeToVisibilityConverter"/>
+            <Util:EDischargerStateToBoolConverter x:Key="EDischargerStateToBoolConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="xClipBorder" Grid.Column="0">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="8.5" RadiusY="8.5"
+                                   Rect="0,0,1238,448"/>
+            </Border.Clip>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="248"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" 
+                      Background="{StaticResource Mex/ResColor/surface_primary}">
+                    <StackPanel x:Name="xModeSelectStackPanel" 
+                                Orientation="Vertical" Margin="1,20,0,20">
+                        <Mex:MexTextBlock Text="Pre-set Mode"
+                                          Foreground="{Binding Model.Mode,
+                                                               Mode=TwoWay,
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Mode=TwoWay,
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Preset}}"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{Binding Model.Mode,
+                                                               Mode=TwoWay,
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseLeftButtonUp">
+                                    <b:InvokeCommandAction Command="{Binding SelectModeCommand}"
+                                                           CommandParameter="Preset"
+                                                           PassEventArgsToCommand="False"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Mex:MexTextBlock>
+                        <Mex:MexTextBlock x:Name="xStepTextBlock"
+                                          Text="Step Mode"
+                                          Foreground="{Binding Model.Mode,
+                                                               Mode=TwoWay,
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Step}}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Mode=TwoWay,
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Step}}"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{Binding Model.Mode,
+                                                               Mode=TwoWay,
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Step}}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseLeftButtonUp">
+                                    <b:InvokeCommandAction Command="{Binding SelectModeCommand}"
+                                                           CommandParameter="Step"
+                                                           PassEventArgsToCommand="False"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Mex:MexTextBlock>
+                        <Mex:MexTextBlock x:Name="xSimpleTextBlock"
+                                          Text="Simple Mode"
+                                          Foreground="{Binding Model.Mode, 
+                                                               Mode=TwoWay, 
+                                                               Converter={StaticResource EModeToForegroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
+                                          FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                                          BorderBrush="{Binding Model.Mode,
+                                                                Mode=TwoWay,
+                                                                Converter={StaticResource EModeToBorderBrushConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Simple}}"
+                                          BorderThickness="1,0,0,0"
+                                          Background="{Binding Model.Mode,
+                                                               Mode=TwoWay, 
+                                                               Converter={StaticResource EModeToBackgroundConverter},
+                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
+                                          Padding="16,12,12,16"
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                                          Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseLeftButtonUp">
+                                    <b:InvokeCommandAction Command="{Binding SelectModeCommand}"
+                                                           CommandParameter="Simple"
+                                                           PassEventArgsToCommand="False"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Mex:MexTextBlock>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <view:ViewSetMode_Preset Visibility="{Binding Model.Mode, 
+                                                                  Mode=TwoWay, 
+                                                                  Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                  Converter={StaticResource EModeToVisibilityConverter},
+                                                                  ConverterParameter={x:Static enum:EMode.Preset}}"/>
+                    <view:ViewSetMode_Step Visibility="{Binding Model.Mode, 
+                                                                Mode=TwoWay,
+                                                                Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                Converter={StaticResource EModeToVisibilityConverter},
+                                                                ConverterParameter={x:Static enum:EMode.Step}}"/>
+                    <view:ViewSetMode_Simple Visibility="{Binding Model.Mode, 
+                                                                  Mode=TwoWay, 
+                                                                  Source={x:Static vm:ViewModelSetMode.Instance},
+                                                                  Converter={StaticResource EModeToVisibilityConverter},
+                                                                  ConverterParameter={x:Static enum:EMode.Simple}}"/>
+                    <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                            BorderThickness="1,0,0,0"/>
+                </Grid>
+                <Border x:Name="xBorder" Grid.ColumnSpan="100" Grid.RowSpan="100" 
+                        BorderBrush="{StaticResource Mex/ResColor/border_primary}" 
+                        BorderThickness="1" CornerRadius="8"></Border>
+            </Grid>
+        </Border>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <view:ViewSetMode_SafetyCondition Grid.Row="0"/>
+            <Mex:MexButton x:Name="xStartButton" Grid.Row="2"
+                           Padding="24,16,24,16"
+                           Text="Start Discharge"
+                           TextPadding="12,0,0,0"
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
+                           ImageWidth="28" ImageHeight="28"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
+                           HorizontalAlignment="Stretch">
+                <Mex:MexButton.IsEnabled>
+                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}">
+                        <MultiBinding.Bindings>
+                            <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                            <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </Mex:MexButton.IsEnabled>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding StartDischargeCommand, 
+                                                                 Source={x:Static vm:ViewModelSetMode.Instance}}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
+        </Grid>
+    </Grid>
+</UserControl>

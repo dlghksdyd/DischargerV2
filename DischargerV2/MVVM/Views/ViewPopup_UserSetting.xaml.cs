@@ -40,10 +40,10 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel = e.NewValue as ViewModelPopup_UserSetting;
 
-            InitializeUI();
+            UpdateUI();
         }
 
-        private void InitializeUI()
+        private void UpdateUI()
         {
             xContentPanel.Children.Clear();
 

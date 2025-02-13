@@ -234,10 +234,24 @@ namespace DischargerV2.MVVM.Views
                 tbReconnect.FontSet = ResFontSet.body_md_medium;
                 tbReconnect.TextDecorations = TextDecorations.Underline;
                 spReconnect.Children.Add(tbReconnect);
-
+                 
                 row.Columns.Add(colInfo);
 
                 xTable.Rows.Add(row);
+            }
+
+            // 첫 번째 방전기 선택
+            xTable.SelectRow(xTable.Rows[0]);
+
+            if (_viewModelDischarger.Model.DischargerNameList.Count > 0)
+            {
+                string dischargerName = _viewModelDischarger.Model.DischargerNameList[0];
+
+                _viewModelDischarger.Model.SelectedDischargerName = dischargerName;
+
+                ViewModelMain.Instance.Model.DischargerIndex = 0;
+                ViewModelMain.Instance.Model.SelectedDischargerName = dischargerName;
+                ViewModelSetMode.Instance.SetDischargerName(dischargerName);
             }
         }
     }

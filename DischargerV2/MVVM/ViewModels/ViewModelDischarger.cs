@@ -1,4 +1,5 @@
 ﻿using DischargerV2.MVVM.Models;
+using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Microsoft.WindowsAPICodePack.Shell;
@@ -8,6 +9,7 @@ using Serial.Client.TempModule;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +19,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 using static System.Windows.Forms.AxHost;
@@ -51,7 +55,6 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelDischarger : BindableBase
     {
         #region Command
-
         public DelegateCommand InitializeDischargerCommand { get; set; }
         public DelegateCommand FinalizeDischargerCommand { get; set; }
 
@@ -62,6 +65,7 @@ namespace DischargerV2.MVVM.ViewModels
         public DelegateCommand<string> OpenPopupErrorCommand { get; set; }
         public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
 
+        public DelegateCommand<string> SelectDischargerCommand { get; set; }
         #endregion
 
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
@@ -99,6 +103,26 @@ namespace DischargerV2.MVVM.ViewModels
 
             OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
             ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
+
+            SelectDischargerCommand = new DelegateCommand<string>(SelectDischarger);
+        }
+
+        private void SelectDischarger(string strSelectedIndex)
+        {
+            try
+            {
+                if (Int32.TryParse(strSelectedIndex, out int selectedIndex))
+                {
+                    string selectedDischargerName = Model.DischargerNameList[selectedIndex];
+
+                    Model.SelectedDischargerName = selectedDischargerName;
+
+                    ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
+                    ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
+                    ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
+                }
+            }
+            catch { }
         }
 
         private void OpenPopupError(string dischargerName)
@@ -170,13 +194,19 @@ namespace DischargerV2.MVVM.ViewModels
             _clients[dischargerName].SendCommand_PauseDischarge();
         }
 
+        public void SetSafetyCondition(string dischargerName, 
+            double voltageMax, double voltageMin, double currentMax, double currentMin)
+        {
+            _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin);
+        }
+
         private void InitializeDischarger()
         {
             FinalizeDischarger();
 
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
-            foreach (var info in infos)
+            for (int index = 0; index < infos.Count; index++) 
             {
                 Model.DischargerDatas.Add(new DischargerDatas());
                 Model.DischargerStates.Add(EDischargerState.None);
@@ -185,10 +215,10 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.ReconnectVisibility.Add(Visibility.Collapsed);
                 Model.ErrorVisibility.Add(Visibility.Collapsed);
 
-                var dischargerInfo = InitializeDischargerInfos(info.DischargerName);
+                var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
                 InitializeDischargerClients(dischargerInfo);
 
-                Model.DischargerNameList.Add(info.DischargerName);
+                Model.DischargerNameList.Add(infos[index].DischargerName);
             }
 
             OneSecondTimer?.Stop();
@@ -276,69 +306,92 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
+            // CollectionChanged Event 발생 목적 변경
+            ObservableCollection<DischargerDatas> dischargerDatas = new ObservableCollection<DischargerDatas>();
+            ObservableCollection<EDischargerState> dischargerStates = new ObservableCollection<EDischargerState>();
+
             for (int i = 0; i < Model.DischargerNameList.Count; i++)
             {
-                Model.DischargerDatas[i] = _clients[Model.DischargerNameList[i]].GetDatas();
-                Model.DischargerStates[i] = _clients[Model.DischargerNameList[i]].GetState();
-                SetStateColor(Model.DischargerStates[i], i);
-                SetProgressTime(Model.DischargerStates[i], Model.DischargerDatas[i].DischargingStartTime, i);
-                SetVisibility(Model.DischargerStates[i], i);
+                dischargerDatas.Add(_clients[Model.DischargerNameList[i]].GetDatas());
+                dischargerStates.Add(_clients[Model.DischargerNameList[i]].GetState());
+            }
+
+            Model.DischargerDatas = dischargerDatas;
+            Model.DischargerStates = dischargerStates;
+
+            SetStateColor(Model.DischargerStates);
+            SetProgressTime(Model.DischargerStates, Model.DischargerDatas);
+            SetVisibility(Model.DischargerStates);
+        }
+
+        private void SetStateColor(ObservableCollection<EDischargerState> dischargerStates)
+        {
+            for (int index = 0; index < dischargerStates.Count; index++) 
+            {
+                var state = dischargerStates[index];
+
+                if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
+                {
+                    Model.StateColor[index] = ResColor.icon_disabled;
+                }
+                else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
+                {
+                    Model.StateColor[index] = ResColor.icon_success;
+                }
+                else if (state == EDischargerState.Pause)
+                {
+                    Model.StateColor[index] = ResColor.icon_primary;
+                }
+                else
+                {
+                    Model.StateColor[index] = ResColor.icon_error;
+                }
             }
         }
 
-        private void SetVisibility(EDischargerState state, int index)
+        private void SetProgressTime(ObservableCollection<EDischargerState> dischargerStates, ObservableCollection<DischargerDatas> dischargerDatas)
         {
-            if (state == EDischargerState.Disconnected)
+            for (int index = 0; index < dischargerStates.Count; index++)
             {
-                Model.ReconnectVisibility[index] = Visibility.Visible;
-                Model.ErrorVisibility[index] = Visibility.Collapsed;
-            }
-            else if (state == EDischargerState.SafetyOutOfRange ||
-                state == EDischargerState.ReturnCodeError ||
-                state == EDischargerState.ChStatusError ||
-                state == EDischargerState.DeviceError)
-            {
-                Model.ReconnectVisibility[index] = Visibility.Collapsed;
-                Model.ErrorVisibility[index] = Visibility.Visible;
-            }
-            else
-            {
-                Model.ReconnectVisibility[index] = Visibility.Collapsed;
-                Model.ErrorVisibility[index] = Visibility.Collapsed;
+                var state = dischargerStates[index];
+                var dischargingStartTime = dischargerDatas[index].DischargingStartTime;
+
+                if (state == EDischargerState.Discharging && state == EDischargerState.Pause)
+                {
+                    TimeSpan diff = (DateTime.Now - dischargingStartTime);
+                    string diffString =
+                        diff.Hours.ToString("D2") + ":" +
+                        diff.Minutes.ToString("D2") + ":" +
+                        diff.Seconds.ToString("D2");
+                    Model.ProgressTime[index] = diffString;
+                }
             }
         }
 
-        private void SetProgressTime(EDischargerState state, DateTime dischargingStartTime, int index)
+        private void SetVisibility(ObservableCollection<EDischargerState> dischargerStates)
         {
-            if (state == EDischargerState.Discharging &&
-                state == EDischargerState.Pause)
+            for (int index = 0; index < dischargerStates.Count; index++)
             {
-                TimeSpan diff = (DateTime.Now - dischargingStartTime);
-                string diffString =
-                    diff.Hours.ToString("D2") + ":" +
-                    diff.Minutes.ToString("D2") + ":" +
-                    diff.Seconds.ToString("D2");
-                Model.ProgressTime[index] = diffString;
-            }
-        }
+                var state = dischargerStates[index];
 
-        private void SetStateColor(EDischargerState state, int index)
-        {
-            if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
-            {
-                Model.StateColor[index] = ResColor.icon_disabled;
-            }
-            else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
-            {
-                Model.StateColor[index] = ResColor.icon_success;
-            }
-            else if (state == EDischargerState.Pause)
-            {
-                Model.StateColor[index] = ResColor.icon_primary;
-            }
-            else
-            {
-                Model.StateColor[index] = ResColor.icon_error;
+                if (state == EDischargerState.Disconnected)
+                {
+                    Model.ReconnectVisibility[index] = Visibility.Visible;
+                    Model.ErrorVisibility[index] = Visibility.Collapsed;
+                }
+                else if (state == EDischargerState.SafetyOutOfRange ||
+                    state == EDischargerState.ReturnCodeError ||
+                    state == EDischargerState.ChStatusError ||
+                    state == EDischargerState.DeviceError)
+                {
+                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
+                    Model.ErrorVisibility[index] = Visibility.Visible;
+                }
+                else
+                {
+                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
+                    Model.ErrorVisibility[index] = Visibility.Collapsed;
+                }
             }
         }
     }

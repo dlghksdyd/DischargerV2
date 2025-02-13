@@ -19,7 +19,7 @@
         <Border x:Name="xClipBorder" Grid.Column="0">
             <Border.Clip>
                 <RectangleGeometry RadiusX="8.5" RadiusY="8.5"
-                           Rect="0,0,1238,448"/>
+                                   Rect="0,0,1238,448"/>
             </Border.Clip>
             <Grid>
                 <Grid.ColumnDefinitions>

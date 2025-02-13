@@ -1,10 +1,9 @@
 ﻿using DischargerV2.MVVM.ViewModels;
-using MExpress.Example;
-using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,21 +18,15 @@ using System.Windows.Shapes;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewMain.xaml에 대한 상호 작용 논리
+    /// ViewSetMode_Simple.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewMain : Window
+    public partial class ViewSetMode_Simple : UserControl
     {
-        public static ViewMain Instance;
+        private ViewModelSetMode_Simple _viewModel = ViewModelSetMode_Simple.Instance;
 
-        private ViewModelMain _viewModel = new ViewModelMain();
-
-        public ViewMain()
+        public ViewSetMode_Simple()
         {
             InitializeComponent();
-
-            SqliteUtility.InitializeDatabases();
-
-            Instance = this;
 
             this.DataContext = _viewModel;
         }

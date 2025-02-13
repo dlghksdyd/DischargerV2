@@ -159,6 +159,12 @@
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode_SafetyCondition.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode_Simple.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode_StepData.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode_Step.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode_Preset.cs" />
+    <Compile Include="MVVM\Models\ModelSetMode.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Info.cs" />
     <Compile Include="MVVM\Models\ModelPopup_ModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelPopup_DeviceRegister.cs" />
@@ -180,6 +186,12 @@
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_StepData.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_Step.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode_Preset.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelSetMode.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Info.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_ModelRegister.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_DeviceRegister.cs" />
@@ -195,6 +207,24 @@
     <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
     <Compile Include="MVVM\Views\ViewModelRegister_Edit.xaml.cs">
       <DependentUpon>ViewModelRegister_Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode_SafetyCondition.xaml.cs">
+      <DependentUpon>ViewSetMode_SafetyCondition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode_Simple.xaml.cs">
+      <DependentUpon>ViewSetMode_Simple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode_StepData.xaml.cs">
+      <DependentUpon>ViewSetMode_StepData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode_Step.xaml.cs">
+      <DependentUpon>ViewSetMode_Step.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode_Preset.xaml.cs">
+      <DependentUpon>ViewSetMode_Preset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewSetMode.xaml.cs">
+      <DependentUpon>ViewSetMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewModelRegister_Info.xaml.cs">
       <DependentUpon>ViewModelRegister_Info.xaml</DependentUpon>
@@ -359,6 +389,7 @@
     <Compile Include="UserControls\UcUserRegister_Info.xaml.cs">
       <DependentUpon>UcUserRegister_Info.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\OcvTable.cs" />
     <Compile Include="Utility\Converter.cs" />
     <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />
@@ -379,6 +410,30 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MVVM\Views\ViewModelRegister_Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode_SafetyCondition.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode_Simple.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode_StepData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode_Step.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode_Preset.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewSetMode.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

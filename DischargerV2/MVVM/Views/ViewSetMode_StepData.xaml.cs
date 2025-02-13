@@ -1,6 +1,4 @@
 ﻿using DischargerV2.MVVM.ViewModels;
-using MExpress.Example;
-using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +17,17 @@ using System.Windows.Shapes;
 namespace DischargerV2.MVVM.Views
 {
     /// <summary>
-    /// ViewMain.xaml에 대한 상호 작용 논리
+    /// ViewSetMode_StepData.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ViewMain : Window
+    public partial class ViewSetMode_StepData : UserControl
     {
-        public static ViewMain Instance;
+        private ViewModelSetMode_StepData ViewModel = new ViewModelSetMode_StepData();
 
-        private ViewModelMain _viewModel = new ViewModelMain();
-
-        public ViewMain()
+        public ViewSetMode_StepData()
         {
             InitializeComponent();
 
-            SqliteUtility.InitializeDatabases();
-
-            Instance = this;
-
-            this.DataContext = _viewModel;
+            this.DataContext = ViewModel;
         }
     }
 }

@@ -23,11 +23,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewDeviceRegister_Edit : UserControl
     {
+        ViewModelDeviceRegister_Edit _viewModel = ViewModelDeviceRegister_Edit.Instance;
+
         public ViewDeviceRegister_Edit()
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelDeviceRegister_Edit();
+            this.DataContext = _viewModel;
         }
     }
 }

@@ -17,6 +17,8 @@ using DischargerV2.MVVM.ViewModels;
 using Sqlite.Common;
 using MExpress.Example;
 using System.Runtime.Remoting.Channels;
+using static System.Net.Mime.MediaTypeNames;
+using DischargerV2.MVVM.Models;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -40,10 +42,10 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel = e.NewValue as ViewModelPopup_DeviceRegister;
 
-            InitializeUI(_viewModel.Model.SelectedItem);
+            UpdateUI(_viewModel.Model.SelectedItem);
         }
 
-        private void InitializeUI(string selectedItem = "")
+        private void UpdateUI(string selectedItem = "")
         {
             if (_viewModel.Model.Content.Count > 0)
             {
@@ -75,24 +77,22 @@ namespace DischargerV2.MVVM.Views
                     // Edit
                     if (tableDischargerInfo.DischargerName == selectedItem)
                     {
-                        ViewDeviceRegister_Edit view_Edit = new ViewDeviceRegister_Edit();
+                        ModelDeviceRegister modelDeviceRegister = new ModelDeviceRegister()
+                        {
+                            Name = tableDischargerInfo.DischargerName,
+                            Ip = tableDischargerInfo.IpAddress,
+                            DischargerModel = tableDischargerInfo.Model.ToString(),
+                            Type = tableDischargerInfo.Type.ToString(),
+                            Channel = tableDischargerInfo.DischargerChannel.ToString(),
+                            VoltSpec = tableDischargerInfo.SpecVoltage.ToString(),
+                            CurrSpec = tableDischargerInfo.SpecCurrent.ToString(),
+                            Comport = tableDischargerInfo.TempModuleComPort,
+                            ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString(),
+                            TempChannel = tableDischargerInfo.TempChannel.ToString()
+                        };
+                        ViewModelDeviceRegister_Edit.Instance.SetModel(modelDeviceRegister);
 
-                        ViewModelDeviceRegister_Edit viewModel_Edit = ViewModelDeviceRegister_Edit.Instance;
-
-                        viewModel_Edit.Name = tableDischargerInfo.DischargerName;
-                        viewModel_Edit.Ip = tableDischargerInfo.IpAddress;
-                        viewModel_Edit.DischargerModel = tableDischargerInfo.Model.ToString();
-                        viewModel_Edit.Type = tableDischargerInfo.Type.ToString();
-                        viewModel_Edit.Channel = tableDischargerInfo.DischargerChannel.ToString();
-                        viewModel_Edit.VoltSpec = tableDischargerInfo.SpecVoltage.ToString();
-                        viewModel_Edit.CurrSpec = tableDischargerInfo.SpecCurrent.ToString();
-                        viewModel_Edit.Comport = tableDischargerInfo.TempModuleComPort;
-                        viewModel_Edit.ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString();
-                        viewModel_Edit.TempChannel = tableDischargerInfo.TempChannel.ToString();
-
-                        view_Edit.DataContext = viewModel_Edit;
-
-                        xContentPanel.Children.Add(view_Edit);
+                        xContentPanel.Children.Add(new ViewDeviceRegister_Edit());
                     }
                     // Info
                     else

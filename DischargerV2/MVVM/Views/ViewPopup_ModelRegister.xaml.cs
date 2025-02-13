@@ -40,10 +40,10 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel = e.NewValue as ViewModelPopup_ModelRegister;
 
-            InitializeUI(_viewModel.Model.SelectedId);
+            UpdateUI(_viewModel.Model.SelectedId);
         }
 
-        private void InitializeUI(int selectedId = -1)
+        private void UpdateUI(int selectedId = -1)
         {
             if(_viewModel.Model.Content.Count > 0)
             {
