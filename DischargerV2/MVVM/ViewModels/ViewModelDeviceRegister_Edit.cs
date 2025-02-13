@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.MVVM.Enums;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -55,20 +56,20 @@ namespace DischargerV2.MVVM.ViewModels
             CloseCommand = new DelegateCommand(Close);
         }
 
-        public void SetModelData(ModelDeviceRegister model)
+        public void SetModelData(ModelDeviceRegister setModel)
         {
-            Model.Name = model.Name;
-            Model.Ip = model.Ip;
-            SetModel.DischargerModel = model.DischargerModel;
-            SetModel.Type = model.Type;
-            SetModel.Channel = model.Channel;
-            SetModel.VoltSpec = model.VoltSpec;
-            SetModel.CurrSpec = model.CurrSpec;
-            Model.Comport = model.Comport;
-            Model.ModuleChannel = model.ModuleChannel;
-            Model.TempChannel = model.TempChannel;
+            Model.Name = setModel.Name;
+            Model.Ip = setModel.Ip;
+            SetModel.DischargerModel = setModel.DischargerModel;
+            SetModel.Type = setModel.Type;
+            SetModel.Channel = setModel.Channel;
+            SetModel.VoltSpec = setModel.VoltSpec;
+            SetModel.CurrSpec = setModel.CurrSpec;
+            Model.Comport = setModel.Comport;
+            Model.ModuleChannel = setModel.ModuleChannel;
+            Model.TempChannel = setModel.TempChannel;
 
-            LoadModelInfoList();
+            LoadModelInfoList(setModel);
         }
 
         private void UpdateEditData()
@@ -98,7 +99,7 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
 
             // DischargerModelList
-            string dischargerModel = SetModel.DischargerModel;
+            string dischargerModel = Model.DischargerModel;
 
             List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
             modelList = modelList.Distinct().ToList();
@@ -107,7 +108,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
 
             // TypeList
-            string type = SetModel.Type;
+            string type = Model.Type;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
 
@@ -118,7 +119,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.Type = typeList.Contains(type) ? type : "";
 
             // ChannelList
-            string channel = SetModel.Channel;
+            string channel = Model.Channel;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
 
@@ -129,7 +130,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.Channel = channelList.Contains(channel) ? channel : "";
 
             // VoltSpecList
-            string voltSpec = SetModel.VoltSpec;
+            string voltSpec = Model.VoltSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
 
@@ -140,9 +141,67 @@ namespace DischargerV2.MVVM.ViewModels
             Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
 
             // CurrSpecList
-            string currSpec = SetModel.CurrSpec;
+            string currSpec = Model.CurrSpec;
 
             tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
+
+            List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
+            currSpecList = currSpecList.Distinct().ToList();
+
+            Model.CurrSpecList = currSpecList;
+            Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+        }
+
+        private void LoadModelInfoList(ModelDeviceRegister setModel)
+        {
+            List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
+
+            // DischargerModelList
+            string dischargerModel = setModel.DischargerModel;
+
+            List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
+            modelList = modelList.Distinct().ToList();
+
+            Model.DischargerModelList = modelList;
+            Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
+
+            // TypeList
+            string type = setModel.Type;
+
+            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == setModel.DischargerModel);
+
+            List<string> typeList = tableDischargerModelList.Select(x => x.Type.ToString()).ToList();
+            typeList = typeList.Distinct().ToList();
+
+            Model.TypeList = typeList;
+            Model.Type = typeList.Contains(type) ? type : "";
+
+            // ChannelList
+            string channel = setModel.Channel;
+
+            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == setModel.Type);
+
+            List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
+            channelList = channelList.Distinct().ToList();
+
+            Model.ChannelList = channelList;
+            Model.Channel = channelList.Contains(channel) ? channel : "";
+
+            // VoltSpecList
+            string voltSpec = setModel.VoltSpec;
+
+            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == setModel.Channel);
+
+            List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
+            voltSpecList = voltSpecList.Distinct().ToList();
+
+            Model.VoltSpecList = voltSpecList;
+            Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
+
+            // CurrSpecList
+            string currSpec = setModel.CurrSpec;
+
+            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == setModel.VoltSpec);
 
             List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
             currSpecList = currSpecList.Distinct().ToList();
@@ -233,7 +292,7 @@ namespace DischargerV2.MVVM.ViewModels
                 }
             }
 
-            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+            foreach (Sqlite.Common.EDischargeType eDischargerType in Enum.GetValues(typeof(Sqlite.Common.EDischargeType)))
             {
                 if (Model.Type == eDischargerType.ToString())
                 {
