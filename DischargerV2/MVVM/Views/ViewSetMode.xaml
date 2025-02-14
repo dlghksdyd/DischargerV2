@@ -48,17 +48,17 @@
                                           Foreground="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToForegroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Preset}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                                           BorderBrush="{Binding Model.Mode,
                                                                 Mode=TwoWay,
                                                                 Converter={StaticResource EModeToBorderBrushConverter},
-                                                                ConverterParameter={x:Static enum:EMode.Preset}}"
+                                                                ConverterParameter={x:Static enum:EDischargeMode.Preset}}"
                                           BorderThickness="1,0,0,0"
                                           Background="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToBackgroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Preset}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Preset}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -76,17 +76,17 @@
                                           Foreground="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToForegroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Step}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Step}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                                           BorderBrush="{Binding Model.Mode,
                                                                 Mode=TwoWay,
                                                                 Converter={StaticResource EModeToBorderBrushConverter},
-                                                                ConverterParameter={x:Static enum:EMode.Step}}"
+                                                                ConverterParameter={x:Static enum:EDischargeMode.Step}}"
                                           BorderThickness="1,0,0,0"
                                           Background="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToBackgroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Step}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Step}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -104,17 +104,17 @@
                                           Foreground="{Binding Model.Mode, 
                                                                Mode=TwoWay, 
                                                                Converter={StaticResource EModeToForegroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Simple}}"
                                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                                           BorderBrush="{Binding Model.Mode,
                                                                 Mode=TwoWay,
                                                                 Converter={StaticResource EModeToBorderBrushConverter},
-                                                                ConverterParameter={x:Static enum:EMode.Simple}}"
+                                                                ConverterParameter={x:Static enum:EDischargeMode.Simple}}"
                                           BorderThickness="1,0,0,0"
                                           Background="{Binding Model.Mode,
                                                                Mode=TwoWay, 
                                                                Converter={StaticResource EModeToBackgroundConverter},
-                                                               ConverterParameter={x:Static enum:EMode.Simple}}"
+                                                               ConverterParameter={x:Static enum:EDischargeMode.Simple}}"
                                           Padding="16,12,12,16"
                                           HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                           HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
@@ -134,17 +134,17 @@
                                                                   Mode=TwoWay, 
                                                                   Source={x:Static vm:ViewModelSetMode.Instance},
                                                                   Converter={StaticResource EModeToVisibilityConverter},
-                                                                  ConverterParameter={x:Static enum:EMode.Preset}}"/>
+                                                                  ConverterParameter={x:Static enum:EDischargeMode.Preset}}"/>
                     <view:ViewSetMode_Step Visibility="{Binding Model.Mode, 
                                                                 Mode=TwoWay,
                                                                 Source={x:Static vm:ViewModelSetMode.Instance},
                                                                 Converter={StaticResource EModeToVisibilityConverter},
-                                                                ConverterParameter={x:Static enum:EMode.Step}}"/>
+                                                                ConverterParameter={x:Static enum:EDischargeMode.Step}}"/>
                     <view:ViewSetMode_Simple Visibility="{Binding Model.Mode, 
                                                                   Mode=TwoWay, 
                                                                   Source={x:Static vm:ViewModelSetMode.Instance},
                                                                   Converter={StaticResource EModeToVisibilityConverter},
-                                                                  ConverterParameter={x:Static enum:EMode.Simple}}"/>
+                                                                  ConverterParameter={x:Static enum:EDischargeMode.Simple}}"/>
                     <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                             BorderThickness="1,0,0,0"/>
                 </Grid>

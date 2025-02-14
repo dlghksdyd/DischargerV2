@@ -45,19 +45,18 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBoxNew x:Name="xModelComboBox"
-                                            Width="220" Padding="12,8,12,8"
-                                            WaterMark="Select"
-                                            ItemSource="{Binding Model.DischargerModelList, 
-                                                                 Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
-                                                                 Mode=TwoWay}"
-                                            SelectedItem="{Binding Model.DischargerModel, 
-                                                                   Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
-                                                                   Mode=TwoWay}"
-                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
-                                            HorizontalAlignment="Left"/>
+                        <Mex:MexComboBox x:Name="xModelComboBox"
+                                         Width="220" Padding="12,8,12,8"
+                                         WaterMark="Select"
+                                         ItemSource="{Binding Model.DischargerModelList, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
+                                                                Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.DischargerModel, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
+                                                                Mode=TwoWay}"
+                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                                         HorizontalAlignment="Left"/>
                     </StackPanel>
                     <!--Add-->
                     <Mex:MexButton x:Name="xAddButton" Grid.Column="2"
@@ -117,18 +116,17 @@
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
-                        <Mex:MexComboBoxNew x:Name="xTypeComboBox"
-                                            Width="112" Padding="12,8,12,8"
-                                            WaterMark="Select"
-                                            ItemSource="{Binding Model.TypeList, 
-                                                                 Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
-                                                                 Mode=TwoWay}"
-                                            SelectedItem="{Binding Model.Type, 
-                                                                   Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
-                                                                   Mode=TwoWay}"
-                                            Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                            ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"/>
+                        <Mex:MexComboBox x:Name="xTypeComboBox"
+                                         Width="112" Padding="12,8,12,8"
+                                         WaterMark="Select"
+                                         ItemSource="{Binding Model.TypeList, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
+                                                                Mode=TwoWay}"
+                                         SelectedItem="{Binding Model.Type, 
+                                                                Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
+                                                                Mode=TwoWay}"
+                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"/>
                     </StackPanel>
                 </Border>
                 <!--Channel-->
@@ -148,7 +146,6 @@
                                         Text="{Binding Model.Channel, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -169,7 +166,6 @@
                                         Text="{Binding Model.VoltSpec, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -190,7 +186,6 @@
                                         Text="{Binding Model.CurrSpec, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -211,7 +206,6 @@
                                         Text="{Binding Model.VoltMax, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -232,7 +226,6 @@
                                                 Text="{Binding Model.VoltMin, 
                                                                Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                                Mode=TwoWay}"
-                                                Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -253,7 +246,6 @@
                                          Text="{Binding Model.CurrMax, 
                                                         Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                         Mode=TwoWay}"
-                                         Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                          ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -274,7 +266,6 @@
                                         Text="{Binding Model.CurrMin, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
@@ -295,8 +286,8 @@
                                         Text="{Binding Model.TempMax, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
                     </StackPanel>
                 </Border>
                 <!--TempMin-->
@@ -315,8 +306,8 @@
                                         Text="{Binding Model.TempMin, 
                                                        Source={x:Static vm:ViewModelModelRegister_Add.Instance}, 
                                                        Mode=TwoWay}"
-                                        Foreground="{StaticResource Mex/ResColor/text_placeholder}"
-                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}">
+                                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
                         </Mex:MexTextBox>
                     </StackPanel>
                 </Border>

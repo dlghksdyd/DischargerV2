@@ -316,9 +316,6 @@
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="UserControls\UcModelRegister.xaml.cs">
-      <DependentUpon>UcModelRegister.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UcMonitor_Graph.xaml.cs">
       <DependentUpon>UcMonitor_Graph.xaml</DependentUpon>
     </Compile>
@@ -327,21 +324,6 @@
     </Compile>
     <Compile Include="UserControls\UcMonitor_Table.xaml.cs">
       <DependentUpon>UcMonitor_Table.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode_Simple.xaml.cs">
-      <DependentUpon>UcSetMode_Simple.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode_StepData.xaml.cs">
-      <DependentUpon>UcSetMode_StepData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode_Step.xaml.cs">
-      <DependentUpon>UcSetMode_Step.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode_Preset.xaml.cs">
-      <DependentUpon>UcSetMode_Preset.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode.xaml.cs">
-      <DependentUpon>UcSetMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UcMonitor.xaml.cs">
       <DependentUpon>UcMonitor.xaml</DependentUpon>
@@ -360,57 +342,6 @@
     </Compile>
     <Compile Include="UserControls\UcMonitor_ChannelState.xaml.cs">
       <DependentUpon>UcMonitor_ChannelState.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcUserRegister.xaml.cs">
-      <DependentUpon>UcUserRegister.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcDeviceRegister.xaml.cs">
-      <DependentUpon>UcDeviceRegister.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcDeviceRegister_Info.xaml.cs">
-      <DependentUpon>UcDeviceRegister_Info.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcDeviceRegister_Edit.xaml.cs">
-      <DependentUpon>UcDeviceRegister_Edit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcModelRegister_Info.xaml.cs">
-      <DependentUpon>UcModelRegister_Info.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcModelRegister_Edit.xaml.cs">
-      <DependentUpon>UcModelRegister_Edit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcUserRegister_Edit.xaml.cs">
-      <DependentUpon>UcUserRegister_Edit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcUserRegister_Create.xaml.cs">
-      <DependentUpon>UcUserRegister_Create.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcLogin.xaml.cs">
-      <DependentUpon>UcLogin.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcPopup_Warning.xaml.cs">
-      <DependentUpon>UcPopup_Warning.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcPopup_Info.xaml.cs">
-      <DependentUpon>UcPopup_Info.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcPopup_Error.xaml.cs">
-      <DependentUpon>UcPopup_Error.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcPopup_Setting.xaml.cs">
-      <DependentUpon>UcPopup_Setting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcSetMode_SafetyCondition.xaml.cs">
-      <DependentUpon>UcSetMode_SafetyCondition.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcTopbar.xaml.cs">
-      <DependentUpon>UcTopbar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcTopmenu.xaml.cs">
-      <DependentUpon>UcTopmenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcUserRegister_Info.xaml.cs">
-      <DependentUpon>UcUserRegister_Info.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\OcvTable.cs" />
     <Compile Include="Utility\Converter.cs" />
@@ -560,10 +491,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\UcModelRegister.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControls\UcMonitor_Graph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -573,26 +500,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\UcMonitor_Table.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcSetMode_Simple.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcSetMode_StepData.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcSetMode_Step.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcSetMode_Preset.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcSetMode.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -619,74 +526,6 @@
     <Page Include="UserControls\UcMonitor_ChannelState.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcUserRegister.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcDeviceRegister.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcDeviceRegister_Info.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcDeviceRegister_Edit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcModelRegister_Info.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcModelRegister_Edit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcUserRegister_Edit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcUserRegister_Create.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcLogin.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcPopup_Warning.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcPopup_Info.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcPopup_Error.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcPopup_Setting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcSetMode_SafetyCondition.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcTopbar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcTopmenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcUserRegister_Info.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MVVM\Views\ViewLogin.xaml">
       <Generator>MSBuild:Compile</Generator>

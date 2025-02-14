@@ -95,7 +95,7 @@
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
                                                             Converter={StaticResource EDischargeTypeToBoolConverter},
-                                                            ConverterParameter={x:Static enum:EDischargeType.Full}}"/>
+                                                            ConverterParameter={x:Static enum:EDischargeTarget.Full}}"/>
                     <Grid Height="28"/>
                     <Mex:MexRadioButton x:Name="xCompleteDischargeRadioButton" GroupName="DischargeType"
                                         Text="0V Discharge"
@@ -107,7 +107,7 @@
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
                                                             Converter={StaticResource EDischargeTypeToBoolConverter},
-                                                            ConverterParameter={x:Static enum:EDischargeType.Zero}}"/>
+                                                            ConverterParameter={x:Static enum:EDischargeTarget.Zero}}"/>
                     <Grid Height="20"/>
                     <StackPanel Orientation="Horizontal">
                         <Mex:MexRadioButton x:Name="xTargetVoltDischargeRadioButton" GroupName="DischargeType"
@@ -120,7 +120,7 @@
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
                                                             Converter={StaticResource EDischargeTypeToBoolConverter},
-                                                            ConverterParameter={x:Static enum:EDischargeType.Voltage}}"/>
+                                                            ConverterParameter={x:Static enum:EDischargeTarget.Voltage}}"/>
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"
                                         Padding="12,8,12,8" Width="280"
