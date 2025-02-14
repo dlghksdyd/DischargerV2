@@ -159,6 +159,7 @@
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelMonitor.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_Simple.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_StepData.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="MVVM\Models\ModelPopup_Error.cs" />
     <Compile Include="MVVM\Models\ModelPopup_Warning.cs" />
     <Compile Include="MVVM\Models\ModelStartDischarge.cs" />
+    <Compile Include="MVVM\Models\ModelStartDischargeConfig.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Add.cs" />
     <Compile Include="MVVM\Models\ModelUserSetting_Info.cs" />
     <Compile Include="MVVM\Models\ModelPopup_UserSetting.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelMonitor.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_StepData.cs" />
@@ -200,6 +203,9 @@
     <Compile Include="MVVM\ViewModels\ViewModelPopup_CreateNewUser.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Error.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Warning.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelStartDischarge_Simple.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelStartDischarge_Step.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelStartDischarge_Preset.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelStartDischarge.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelUserSetting_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Info.cs" />
@@ -209,6 +215,21 @@
     <Compile Include="MVVM\ViewModels\ViewModelTopbar.cs" />
     <Compile Include="MVVM\Views\ViewModelRegister_Edit.xaml.cs">
       <DependentUpon>ViewModelRegister_Edit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_State.xaml.cs">
+      <DependentUpon>ViewMonitor_State.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_SafetyCondition.xaml.cs">
+      <DependentUpon>ViewMonitor_SafetyCondition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_Preset.xaml.cs">
+      <DependentUpon>ViewMonitor_Preset.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_Graph.xaml.cs">
+      <DependentUpon>ViewMonitor_Graph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor.xaml.cs">
+      <DependentUpon>ViewMonitor.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewSetMode_SafetyCondition.xaml.cs">
       <DependentUpon>ViewSetMode_SafetyCondition.xaml</DependentUpon>
@@ -412,6 +433,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MVVM\Views\ViewModelRegister_Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_State.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_SafetyCondition.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_Preset.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_Graph.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

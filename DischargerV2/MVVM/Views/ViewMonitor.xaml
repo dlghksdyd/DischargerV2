@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewMonitor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Util="clr-namespace:Utility.Common"
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+             xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:ViewModelMonitor}"
+             d:DesignHeight="448" d:DesignWidth="1760" 
+             MaxHeight="448" MaxWidth="1760">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <view:ViewMonitor_Graph Grid.Column="0"/>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <view:ViewMonitor_Preset Grid.Row="0"/>
+            <view:ViewMonitor_SafetyCondition Grid.Row="2"/>
+        </Grid>
+        <view:ViewMonitor_State Grid.Column="4"/>
+    </Grid>
+</UserControl>
