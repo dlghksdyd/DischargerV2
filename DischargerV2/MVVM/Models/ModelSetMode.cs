@@ -16,9 +16,14 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.Enums
 {
-    public enum EMode
+    public enum EDischargeMode
     {
         Preset, Step, Simple
+    }
+
+    public enum EDischargeTarget
+    {
+        Full, Zero, Voltage, SoC
     }
 }
 
@@ -52,8 +57,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EMode _mode = EMode.Preset;
-        public EMode Mode
+        private EDischargeMode _mode = EDischargeMode.Preset;
+        public EDischargeMode Mode
         {
             get
             {

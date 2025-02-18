@@ -93,7 +93,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         Model.Background_DeviceRegister = setColor;
                     }
-                    else if (name == "xDbConfigurationLabel")
+                    else if (name == "xModelRegisterLabel")
                     {
                         Model.Background_DbConfiguration = setColor;
                     }
@@ -122,7 +122,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         Model.Background_DeviceRegister = setColor;
                     }
-                    else if (name == "xDbConfigurationLabel")
+                    else if (name == "xModelRegisterLabel")
                     {
                         Model.Background_DbConfiguration = setColor;
                     }

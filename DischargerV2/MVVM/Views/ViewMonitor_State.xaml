@@ -10,7 +10,7 @@
              xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance vm:ViewModelMonitor}"
+             d:DataContext="{d:DesignInstance vm:ViewModelMonitor_State}"
              d:DesignHeight="448" d:DesignWidth="442"
              MinHeight="448" MinWidth="442">
 
@@ -95,6 +95,14 @@
                        ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                        ImageWidth="28" ImageHeight="28"
                        ImageSetLeft="{StaticResource Mex/ResImageSet_Component/FinishButtonTertiary}"
-                       HorizontalAlignment="Stretch"/>
+                       HorizontalAlignment="Stretch">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="Click">
+                    <b:InvokeCommandAction Command="{Binding ReturnSetModeCommand, 
+                                                             Source={x:Static vm:ViewModelMonitor_State.Instance}}"
+                                           PassEventArgsToCommand="False"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </Mex:MexButton>
     </Grid>
 </UserControl>

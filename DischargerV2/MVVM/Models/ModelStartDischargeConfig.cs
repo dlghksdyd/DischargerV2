@@ -37,6 +37,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private EDischargeTarget _target;
+        public EDischargeTarget Target
+        {
+            get
+            {
+                return _target;
+            }
+            set
+            {
+                SetProperty(ref _target, value);
+            }
+        }
+
         private List<PhaseData> _phaseDataList = new List<PhaseData>();
         public List<PhaseData> PhaseDataList
         {
@@ -47,6 +60,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _phaseDataList, value);
+            }
+        }
+
+        private double _dvdq = 0;
+        public double Dvdq
+        {
+            get
+            {
+                return _dvdq;
+            }
+            set
+            {
+                SetProperty(ref _dvdq, value);
             }
         }
     }

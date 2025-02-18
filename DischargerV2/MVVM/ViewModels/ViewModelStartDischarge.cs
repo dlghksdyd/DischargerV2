@@ -27,15 +27,6 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
-        private ModelStartDischarge _model = new ModelStartDischarge();
-        public ModelStartDischarge Model
-        {
-            get => _model;
-            set
-            {
-                SetProperty(ref _model, value);
-            }
-        }
         #endregion
 
         #region Property
@@ -51,11 +42,42 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+
+        private Dictionary<string, object> _viewModelDictionary = new Dictionary<string, object>();
+        public Dictionary<string, object> ViewModelDictionary
+        {
+            get
+            {
+                return _viewModelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _viewModelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelStartDischarge()
         {
             _instance = this;
+        }
+
+        public void StartDischarge(string dischargerName)
+        {
+            ViewModelDictionary.TryGetValue(dischargerName, out var viewModelStartDischarge);
+
+            if (viewModelStartDischarge is ViewModelStartDischarge_Preset viewModelStartDischarge_Preset)
+            {
+                viewModelStartDischarge_Preset.StartDischarge();
+            }
+            else if (viewModelStartDischarge is ViewModelStartDischarge_Step viewModelStartDischarge_Step)
+            {
+                viewModelStartDischarge_Step.StartDischarge();
+            }
+            else if (viewModelStartDischarge is ViewModelStartDischarge_Simple viewModelStartDischarge_Simple)
+            {
+                viewModelStartDischarge_Simple.StartDischarge();
+            }
         }
     }
 }

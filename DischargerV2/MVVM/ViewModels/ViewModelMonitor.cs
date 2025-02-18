@@ -19,7 +19,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utility.Common;
-using static DischargerV2.MVVM.Models.ModelStartDischargeConfig;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -53,11 +52,57 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+
+        private Dictionary<string, ModelMonitor> _modelDictionary = new Dictionary<string, ModelMonitor>();
+        public Dictionary<string, ModelMonitor> ModelDictionary
+        {
+            get
+            {
+                return _modelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _modelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelMonitor()
         {
             _instance = this;
+
+            InitializeModelDictionary();
+        }
+
+        public void SetDischargerName()
+        {
+            string dischargerName = ViewModelSetMode.Instance.SelectedDischargerName;
+
+            if (dischargerName != null && dischargerName != "")
+            {
+                // 현재 값을 ModelDictionary에 넣기 
+                ModelDictionary[dischargerName] = Model;
+            }
+
+            // ModelDictionary 값 가져오기
+            Model = ModelDictionary[dischargerName];
+        }
+
+        private void InitializeModelDictionary()
+        {
+            // 기존 값 초기화
+            ViewModelMonitor.Instance.ModelDictionary.Clear();
+
+            // Discharger에서 관련 값 받아와 사용
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
+
+            for (int index = 0; index < dischargerNameList.Count; index++)
+            {
+                string dischargerName = dischargerNameList[index];
+
+                ModelMonitor modelMonitor = new ModelMonitor();
+                ViewModelMonitor.Instance.ModelDictionary.Add(dischargerName, modelMonitor);
+            }
         }
     }
 }

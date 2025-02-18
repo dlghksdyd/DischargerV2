@@ -13,14 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace DischargerV2.MVVM.Enums
-{
-    public enum EDischargeType
-    {
-        Full, Zero, Voltage, SoC
-    }
-}
-
 namespace DischargerV2.MVVM.Models
 {
     public class ModelSetMode_Preset : BindableBase
@@ -90,8 +82,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EDischargeType _eDischargeType = EDischargeType.Full;
-        public EDischargeType EDischargeType
+        private EDischargeTarget _eDischargeType = EDischargeTarget.Full;
+        public EDischargeTarget EDischargeType
         {
             get
             {
@@ -103,7 +95,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _targetVoltage;
+        private string _targetVoltage = string.Empty;
         public string TargetVoltage
         {
             get
@@ -116,7 +108,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _targetSoC;
+        private string _targetSoC = string.Empty;
         public string TargetSoC
         {
             get

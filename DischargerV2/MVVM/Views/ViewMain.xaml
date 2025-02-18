@@ -67,8 +67,8 @@
                             </MultiBinding>
                         </view:ViewSetMode.Visibility>
                     </view:ViewSetMode>
-                    <uc:UcMonitor>
-                        <uc:UcMonitor.Visibility>
+                    <view:ViewMonitor>
+                        <view:ViewMonitor.Visibility>
                             <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
                                           FallbackValue="Collapsed">
                                 <MultiBinding.Bindings>
@@ -76,8 +76,8 @@
                                     <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
                                 </MultiBinding.Bindings>
                             </MultiBinding>
-                        </uc:UcMonitor.Visibility>
-                    </uc:UcMonitor>
+                        </view:ViewMonitor.Visibility>
+                    </view:ViewMonitor>
                 </Grid>
             </Grid>
         </Grid>

@@ -189,6 +189,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelDeviceRegister_Add.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelMonitor_State.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />

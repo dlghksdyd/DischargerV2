@@ -18,17 +18,6 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelStartDischarge : BindableBase
     {
-        private Dictionary<string, object> _viewModelDictionary = new Dictionary<string, object>();
-        public Dictionary<string, object> ViewModelDictionary
-        {
-            get
-            {
-                return _viewModelDictionary;
-            }
-            set
-            {
-                SetProperty(ref _viewModelDictionary, value);
-            }
-        }
+        
     }
 }

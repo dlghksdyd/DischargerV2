@@ -22,7 +22,7 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewMonitor_State : UserControl
     {
-        private ViewModelMonitor _viewModel = ViewModelMonitor.Instance;
+        private ViewModelMonitor_State _viewModel = ViewModelMonitor_State.Instance;
 
         public ViewMonitor_State()
         {

@@ -206,9 +206,9 @@ namespace Utility.Common
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EMode mode)
+            if (value is EDischargeMode mode)
             {
-                if (parameter != null && parameter.GetType() == typeof(EMode))
+                if (parameter != null && parameter.GetType() == typeof(EDischargeMode))
                 {
                     if (parameter.ToString() == mode.ToString())
                     {
@@ -237,9 +237,9 @@ namespace Utility.Common
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EMode mode)
+            if (value is EDischargeMode mode)
             {
-                if (parameter != null && parameter.GetType() == typeof(EMode))
+                if (parameter != null && parameter.GetType() == typeof(EDischargeMode))
                 {
                     if (parameter.ToString() == mode.ToString())
                     {
@@ -268,9 +268,9 @@ namespace Utility.Common
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EMode mode)
+            if (value is EDischargeMode mode)
             {
-                if (parameter != null && parameter.GetType() == typeof(EMode))
+                if (parameter != null && parameter.GetType() == typeof(EDischargeMode))
                 {
                     if (parameter.ToString() == mode.ToString())
                     {
@@ -299,9 +299,9 @@ namespace Utility.Common
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EMode mode)
+            if (value is EDischargeMode mode)
             {
-                if (parameter != null && parameter.GetType() == typeof(EMode))
+                if (parameter != null && parameter.GetType() == typeof(EDischargeMode))
                 {
                     if (parameter.ToString() == mode.ToString())
                     {
@@ -330,9 +330,9 @@ namespace Utility.Common
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is EDischargeType mode)
+            if (value is EDischargeTarget mode)
             {
-                if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+                if (parameter != null && parameter.GetType() == typeof(EDischargeTarget))
                 {
                     if (parameter.ToString() == mode.ToString())
                     {
@@ -350,7 +350,7 @@ namespace Utility.Common
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter != null && parameter.GetType() == typeof(EDischargeType))
+            if (parameter != null && parameter.GetType() == typeof(EDischargeTarget))
             {
                 return Enum.Parse(targetType, parameter.ToString());
             }
@@ -392,6 +392,63 @@ namespace Utility.Common
             if (value is string stringValue)
             {
                 if (double.TryParse(stringValue, out double doubleValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+    }
+
+    public class IsInt32Converter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (Int32.TryParse(stringValue, out int inteValue))
+                {
+                    return stringValue;
+                }
+                else if (stringValue == "-")
+                {
+                    return stringValue;
+                }
+                else
+                {
+                    if (stringValue.Length > 0)
+                    {
+                        return stringValue.Substring(0, stringValue.Length - 1);
+                    }
+                    else
+                    {
+                        return stringValue;
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (Int32.TryParse(stringValue, out int inteValue))
                 {
                     return stringValue;
                 }

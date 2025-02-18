@@ -18,6 +18,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Utility.Common;
+using static DischargerV2.MVVM.Models.ModelStartDischargeConfig;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -41,6 +43,9 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
+        public int DischargerIndex;
+        public string SelectedDischargerName;
+
         private static ViewModelSetMode _instance = new ViewModelSetMode();
         public static ViewModelSetMode Instance
         {
@@ -78,14 +83,18 @@ namespace DischargerV2.MVVM.ViewModels
             InitializeModelDictionary();
         }
 
-        public void SetDischargerName(string dischargerName)
+        public void SetDischargerName(string dischargerName, int dischargerIndex)
         {
+            DischargerIndex = dischargerIndex;
+            SelectedDischargerName = dischargerName;
+
             Model = ModelDictionary[dischargerName];
 
             ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
+            ViewModelMonitor.Instance.SetDischargerName();
         }
 
         public void InitializeModelDictionary()
@@ -112,7 +121,6 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelSetMode.Instance.ModelDictionary.Add(dischargerName, modelSetMode);
 
                 ModelSetMode_Preset modelSetMode_Preset = new ModelSetMode_Preset();
-                modelSetMode_Preset.DischargerName = dischargerName;
                 ViewModelSetMode_Preset.Instance.ModelDictionary.Add(dischargerName, modelSetMode_Preset);
 
                 ModelSetMode_Step modelSetMode_Step = new ModelSetMode_Step();
@@ -139,7 +147,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void SelectMode(string mode)
         {
-            foreach (EMode eMode in Enum.GetValues(typeof(EMode)))
+            foreach (EDischargeMode eMode in Enum.GetValues(typeof(EDischargeMode)))
             {
                 if (mode.ToString() == eMode.ToString())
                 {
@@ -152,19 +160,10 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (!CheckModeNTarget()) return;
             if (!CheckNSetSafetyCondition()) return;
-            if (!SetModeNTarget()) return;
+            if (!CalculateTarget(out ModelStartDischargeConfig model)) return;
+            if (!SetModeNTarget(model)) return;
 
-            // 화면 전환
-            ObservableCollection<bool> isStartedArray = new ObservableCollection<bool>();
-
-            foreach (var isStarted in ViewModelMain.Instance.Model.IsStartedArray)
-            {
-                isStartedArray.Add(isStarted);
-            }
-
-            isStartedArray[Model.DischargerIndex] = true;
-
-            ViewModelMain.Instance.Model.IsStartedArray = isStartedArray;
+            ViewModelMain.Instance.SetIsStartedArray(true);
         }
 
         /// <summary>
@@ -174,7 +173,7 @@ namespace DischargerV2.MVVM.ViewModels
         private bool CheckModeNTarget()
         {
             // Pre-set Mode
-            if (Model.Mode == EMode.Preset)
+            if (Model.Mode == EDischargeMode.Preset)
             {
                 ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
 
@@ -184,7 +183,7 @@ namespace DischargerV2.MVVM.ViewModels
                     return false;
                 }
 
-                if (modelPreset.EDischargeType == Enums.EDischargeType.Voltage)
+                if (modelPreset.EDischargeType == Enums.EDischargeTarget.Voltage)
                 {
                     if (modelPreset.TargetVoltage == null || modelPreset.TargetVoltage == "")
                     {
@@ -192,7 +191,7 @@ namespace DischargerV2.MVVM.ViewModels
                         return false;
                     }
                 }
-                else if (modelPreset.EDischargeType == Enums.EDischargeType.SoC)
+                else if (modelPreset.EDischargeType == Enums.EDischargeTarget.SoC)
                 {
                     if (modelPreset.TargetSoC == null || modelPreset.TargetSoC == "")
                     {
@@ -202,7 +201,7 @@ namespace DischargerV2.MVVM.ViewModels
                 }
             }
             // Step Mode
-            else if (Model.Mode == EMode.Step)
+            else if (Model.Mode == EDischargeMode.Step)
             {
                 StepConfigure stepConfigure = ViewModelSetMode_Step.Instance.CreateStepConfigure();
 
@@ -213,7 +212,7 @@ namespace DischargerV2.MVVM.ViewModels
                 }
             }
             // Simple Mode
-            else if (Model.Mode == EMode.Simple)
+            else if (Model.Mode == EDischargeMode.Simple)
             {
                 ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
 
@@ -223,7 +222,7 @@ namespace DischargerV2.MVVM.ViewModels
                     return false;
                 }
 
-                if (modelSimple.EDischargeType == Enums.EDischargeType.Voltage)
+                if (modelSimple.EDischargeType == Enums.EDischargeTarget.Voltage)
                 {
                     if (modelSimple.TargetVoltage == null || modelSimple.TargetVoltage == "")
                     {
@@ -232,17 +231,6 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                 }
             }
-            return true;
-        }
-
-        /// <summary>
-        /// 방전 모드 및 목표 설정 값 적용
-        /// </summary>
-        /// <returns></returns>
-        private bool SetModeNTarget()
-        {
-
-
             return true;
         }
 
@@ -330,6 +318,477 @@ namespace DischargerV2.MVVM.ViewModels
 
             ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
                 voltageMax, voltageMin, currentMax, currentMin);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 방전 목표 설정 값 계산
+        /// </summary>
+        /// <returns></returns>
+        private bool CalculateTarget(out ModelStartDischargeConfig model)
+        {
+            model = new ModelStartDischargeConfig()
+            {
+                Mode = Model.Mode
+            };
+
+            // Pre-set Mode
+            if (Model.Mode == EDischargeMode.Preset)
+            {
+                ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
+                string batteryType = modelPreset.SelectedBatteryType;
+
+                model.Target = modelPreset.EDischargeType;
+
+                // Full Discharge, 0V Discharge
+                if (modelPreset.EDischargeType == EDischargeTarget.Full ||
+                    modelPreset.EDischargeType == EDischargeTarget.Zero)
+                {
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = OCV_Table.getPhase2Volt(batteryType),
+                        Current = OCV_Table.getCapcity(batteryType)
+                    });
+
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = 0,
+                        Current = OCV_Table.getCapcity(batteryType) / 3
+                    });
+                }
+                // Target Voltage
+                else if (modelPreset.EDischargeType == EDischargeTarget.Voltage)
+                {
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = OCV_Table.getPhase2Volt(batteryType),
+                        Current = OCV_Table.getCapcity(batteryType) / 3
+                    });
+
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = OCV_Table.getTargetVolt(batteryType, 50) * 2.5 / 3.7,
+                        Current = OCV_Table.getCapcity(batteryType) / 3
+                    });
+                }
+                // Target SoC
+                else if (modelPreset.EDischargeType == EDischargeTarget.SoC)
+                {
+                    int targetSoC = Convert.ToInt32(modelPreset.TargetSoC);
+
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = OCV_Table.getTargetVolt(batteryType, targetSoC),
+                        Current = OCV_Table.getCapcity(batteryType) / 3
+                    });
+                }
+            }
+            // Step Mode
+            else if (Model.Mode == EDischargeMode.Step)
+            {
+                ModelSetMode_Step modelStep = ViewModelSetMode_Step.Instance.Model;
+
+                if (modelStep.IsCompleteDischarge)
+                {
+                    model.Target = EDischargeTarget.Zero;
+                }
+                else
+                {
+                    model.Target = EDischargeTarget.Voltage;
+                }
+
+                foreach (var stepData in modelStep.Content)
+                {
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = Convert.ToDouble(stepData.Voltage),
+                        Current = Convert.ToDouble(stepData.Current)
+                    });
+                }
+            }
+            // Simple Mode
+            else if (Model.Mode == EDischargeMode.Simple)
+            {
+                ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
+
+                model.Target = modelSimple.EDischargeType;
+
+                if (modelSimple.EDischargeType == EDischargeTarget.Full)
+                {
+                    // 공칭 전압 X
+                    if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null ||  modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = 33.4
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            double currentVoltage = dischargerData.ReceiveBatteryVoltage;
+
+                            model.Dvdq = 3 * currentVoltage / standardCapacity;
+                        }
+                    }
+                    // 공칭 전압 O
+                    else
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardVoltage = Convert.ToDouble(modelSimple.StandardVoltage);
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = 100
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = standardCapacity
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            model.Dvdq = 3 * standardVoltage / standardCapacity;
+                        }
+                    }
+                }
+                else if (modelSimple.EDischargeType == EDischargeTarget.Zero)
+                {
+                    // 공칭 전압 X
+                    if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = 100
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            double currentVoltage = dischargerData.ReceiveBatteryVoltage;
+
+                            model.Dvdq = 3 * currentVoltage / standardCapacity;
+                        }
+                    }
+                    // 공칭 전압 O
+                    else
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = 0,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardVoltage = Convert.ToDouble(modelSimple.StandardVoltage);
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = 100
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = 33.4
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = standardCapacity
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            model.Dvdq = 3 * standardVoltage / standardCapacity;
+                        }
+                    }
+                }
+                else if (modelSimple.EDischargeType == EDischargeTarget.Voltage)
+                {
+                    double targetVoltage = Convert.ToDouble(modelSimple.TargetVoltage);
+
+                    // 공칭 전압 X
+                    if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = targetVoltage,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
+                                    Current = 33.4
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            double currentVoltage = dischargerData.ReceiveBatteryVoltage;
+
+                            model.Dvdq = 3 * currentVoltage / standardCapacity;
+                        }
+                    }
+                    // 공칭 전압 O
+                    else
+                    {
+                        // 용량 X
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
+                        {
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = targetVoltage,
+                                Current = 33.4
+                            });
+
+                            model.Dvdq = 4;
+                        }
+                        // 용량 O
+                        else
+                        {
+                            double standardVoltage = Convert.ToDouble(modelSimple.StandardVoltage);
+                            double standardCapacity = Convert.ToDouble(modelSimple.StandardCapacity);
+
+                            if (standardCapacity > 100)
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
+                                    Current = 33.4
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = 33.4
+                                });
+                            }
+                            else
+                            {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
+                                    Current = standardCapacity / 3
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = standardVoltage,
+                                    Current = standardCapacity / 3
+                                });
+                            }
+
+                            model.Dvdq = 3 * standardVoltage / standardCapacity;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 방전 모드 및 목표 설정 값 적용
+        /// </summary>
+        /// <returns></returns>
+        private bool SetModeNTarget(ModelStartDischargeConfig model)
+        {
+            object obj;
+
+            // Pre-set Mode
+            if (Model.Mode == EDischargeMode.Preset)
+            {
+                obj = new ViewModelStartDischarge_Preset()
+                {
+                    Model = model
+                };
+            }
+            // Step Mode
+            else if (Model.Mode == EDischargeMode.Step)
+            {
+                obj = new ViewModelStartDischarge_Step()
+                {
+                    Model = model
+                };
+            }
+            // Simple Mode
+            else 
+            {
+                obj = new ViewModelStartDischarge_Simple()
+                {
+                    Model = model
+                };
+            }
+
+            if (ViewModelStartDischarge.Instance.ViewModelDictionary.ContainsKey(Model.DischargerName))
+            {
+                ViewModelStartDischarge.Instance.ViewModelDictionary[Model.DischargerName] = obj;
+            }
+            else
+            {
+                ViewModelStartDischarge.Instance.ViewModelDictionary.Add(Model.DischargerName, obj);
+            }
+            ViewModelStartDischarge.Instance.StartDischarge(Model.DischargerName);
 
             return true;
         }

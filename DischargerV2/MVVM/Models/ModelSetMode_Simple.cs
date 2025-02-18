@@ -30,7 +30,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _standardVoltage;
+        private string _standardVoltage = string.Empty;
         public string StandardVoltage
         {
             get
@@ -43,7 +43,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _standardCapacity;
+        private string _standardCapacity = string.Empty;
         public string StandardCapacity
         {
             get
@@ -56,8 +56,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EDischargeType _eDischargeType = EDischargeType.Full;
-        public EDischargeType EDischargeType
+        private EDischargeTarget _eDischargeType = EDischargeTarget.Full;
+        public EDischargeTarget EDischargeType
         {
             get
             {
@@ -69,7 +69,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _targetVoltage;
+        private string _targetVoltage = string.Empty;
         public string TargetVoltage
         {
             get

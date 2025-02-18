@@ -251,7 +251,7 @@ namespace DischargerV2.MVVM.Views
 
                 ViewModelMain.Instance.Model.DischargerIndex = 0;
                 ViewModelMain.Instance.Model.SelectedDischargerName = dischargerName;
-                ViewModelSetMode.Instance.SetDischargerName(dischargerName);
+                ViewModelSetMode.Instance.SetDischargerName(dischargerName, 0);
             }
         }
     }

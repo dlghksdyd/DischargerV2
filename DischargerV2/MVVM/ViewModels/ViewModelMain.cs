@@ -6,6 +6,7 @@ using Prism.Mvvm;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,6 +136,25 @@ namespace DischargerV2.MVVM.ViewModels
             
             Model.NestedPopupVisibility = popupVisibility;
             Model.IsNestedPopupOpen = false;
+        }
+
+        /// <summary>
+        /// SetMode ↔ Monitor 화면 전환
+        /// </summary>
+        /// <param name="dischargerIndex"></param>
+        /// <param name="setIsStarted"></param>
+        public void SetIsStartedArray(bool setIsStarted = false)
+        {
+            ObservableCollection<bool> isStartedArray = new ObservableCollection<bool>();
+
+            foreach (var isStarted in Model.IsStartedArray)
+            {
+                isStartedArray.Add(isStarted);
+            }
+
+            isStartedArray[Model.DischargerIndex] = setIsStarted;
+
+            Model.IsStartedArray = isStartedArray;
         }
 
         public void SetViewModelPopup_DeviceRegister(ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister)
