@@ -94,7 +94,6 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
-            ViewModelMonitor.Instance.SetDischargerName();
         }
 
         public void InitializeModelDictionary()
@@ -330,7 +329,9 @@ namespace DischargerV2.MVVM.ViewModels
         {
             model = new ModelStartDischargeConfig()
             {
-                Mode = Model.Mode
+                DischargerName = Model.DischargerName,
+                DischargerIndex = Model.DischargerIndex,
+                Mode = Model.Mode,
             };
 
             // Pre-set Mode
@@ -788,6 +789,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 ViewModelStartDischarge.Instance.ViewModelDictionary.Add(Model.DischargerName, obj);
             }
+
             ViewModelStartDischarge.Instance.StartDischarge(Model.DischargerName);
 
             return true;

@@ -120,6 +120,7 @@ namespace DischargerV2.MVVM.ViewModels
                     ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
                     ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
                     ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName, selectedIndex);
+                    ViewModelMonitor.Instance.SetDischargerName(selectedDischargerName, selectedIndex);
                 }
             }
             catch { }
@@ -152,6 +153,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Title = title,
                 Comment = comment,
+                Parameter = dischargerName,
                 CallBackDelegate = ResetError,
             };
 
@@ -163,6 +165,8 @@ namespace DischargerV2.MVVM.ViewModels
         private void ResetError(string dischargerName)
         {
             _clients[dischargerName].SendCommand_ClearAlarm();
+
+            ReconnectDischarger(dischargerName);
         }
 
         private void ReconnectDischarger(string dischargerName)
@@ -178,18 +182,18 @@ namespace DischargerV2.MVVM.ViewModels
             thread.Start();
         }
 
-        private void StartDischarger(StartDischargerCommandParam param)
+        public void StartDischarger(StartDischargerCommandParam param)
         {
             _clients[param.DischargerName].SendCommand_StartDischarge(
                 EWorkMode.CcCvMode, param.Voltage, param.Current);
         }
 
-        private void StopDischarger(string dischargerName)
+        public void StopDischarger(string dischargerName)
         {
             _clients[dischargerName].SendCommand_StopDischarge();
         }
 
-        private void PauseDischarger(string dischargerName)
+        public void PauseDischarger(string dischargerName)
         {
             _clients[dischargerName].SendCommand_PauseDischarge();
         }

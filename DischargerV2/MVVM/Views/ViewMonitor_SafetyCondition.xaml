@@ -11,9 +11,14 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelMonitor}"
-             d:DesignHeight="280" d:DesignWidth="530"
-             MinHeight="280" MinWidth="530">
+             MinHeight="220" MinWidth="530">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EModeToVisibilityConverter x:Key="EModeToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Border CornerRadius="8"
             BorderBrush="{StaticResource Mex/ResColor/border_primary}"
             BorderThickness="1"
@@ -89,7 +94,18 @@
                                 IsReadOnly="True"/>
             </Grid>
             <!--Monitor Value : SOC-->
-            <Grid Grid.Column="0" Grid.Row="8">
+            <Grid Grid.Row="7" 
+                  Visibility="{Binding Model.Mode, 
+                                       Mode=TwoWay, 
+                                       Source={x:Static vm:ViewModelSetMode.Instance},
+                                       Converter={StaticResource EModeToVisibilityConverter},
+                                       ConverterParameter={x:Static enum:EDischargeMode.Preset}}"/>
+            <Grid Grid.Column="0" Grid.Row="8" 
+                  Visibility="{Binding Model.Mode, 
+                                       Mode=TwoWay, 
+                                       Source={x:Static vm:ViewModelSetMode.Instance},
+                                       Converter={StaticResource EModeToVisibilityConverter},
+                                       ConverterParameter={x:Static enum:EDischargeMode.Preset}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
@@ -121,7 +137,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -132,7 +149,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
             </Grid>
             <!--Safety Condition : Voltage-->
             <Grid Grid.Column="2" Grid.Row="4">
@@ -146,7 +164,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -157,7 +176,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
             </Grid>
             <!--Safety Condition : Temp-->
             <Grid Grid.Column="2" Grid.Row="6">
@@ -171,7 +191,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -182,7 +203,8 @@
                                 Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsReadOnly="True"/>
             </Grid>
         </Grid>
     </Border>

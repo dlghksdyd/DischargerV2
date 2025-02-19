@@ -100,7 +100,6 @@ namespace DischargerV2.MVVM.Views
                     ViewModelSetMode_StepData viewModel = new ViewModelSetMode_StepData()
                     {
                         No = (index + 1).ToString(),
-                        IsFixedCurrent = model.IsFixedCurrent,
                         Voltage = model.Voltage,
                         Current = model.Current,
                         CRate = model.CRate,

@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 
 namespace Utility.Common
 {
+    #region IValueConverter
     public class BitmapToImageSourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -323,7 +324,7 @@ namespace Utility.Common
         }
     }
 
-    public class EDischargeTypeToBoolConverter : IValueConverter
+    public class EDischargeTargetToBoolConverter : IValueConverter
     {
         public bool SelectedValue { get; set; } = true;
         public bool UnselectedValue { get; set; } = false;
@@ -471,7 +472,9 @@ namespace Utility.Common
             return Binding.DoNothing;
         }
     }
+    #endregion
 
+    #region IMultiValueConverter
     public class EDischargerStateToBoolConverter : IMultiValueConverter
     {
         public bool ReadyValue { get; set; } = true;
@@ -548,5 +551,54 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
+
+
+    public class EDischargeTargetToStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is EDischargeTarget mode)
+            {
+                if (mode == EDischargeTarget.Full)
+                {
+                    return "Full Discharge";
+                }
+                else if (mode == EDischargeTarget.Zero)
+                {
+                    return "0V Discharge";
+                }
+                else if (mode == EDischargeTarget.Voltage)
+                {
+                    if (value[1] is string target)
+                    {
+                        return string.Format("Target Voltage ({0}V)", target);
+                    }
+                    else
+                    {
+                        return "Target Voltage (V)";
+                    }
+                }
+                else if (mode == EDischargeTarget.SoC)
+                {
+                    if (value[1] is string target)
+                    {
+                        return string.Format("Target SoC ({0}%)", target);
+                    }
+                    else
+                    {
+                        return "Target SoC (%)";
+                    }
+                }
+                return string.Empty;
+            }
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }
 

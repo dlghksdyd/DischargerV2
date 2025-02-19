@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,32 @@ namespace DischargerV2.MVVM.Models
         {
             public double Voltage { get; set; }
             public double Current { get; set; }
+        }
+
+        private string _dischargerName;
+        public string DischargerName
+        {
+            get
+            {
+                return _dischargerName;
+            }
+            set
+            {
+                SetProperty(ref _dischargerName, value);
+            }
+        }
+
+        private int _dischargerIndex;
+        public int DischargerIndex
+        {
+            get
+            {
+                return _dischargerIndex;
+            }
+            set
+            {
+                SetProperty(ref _dischargerIndex, value);
+            }
         }
 
         private EDischargeMode _mode = EDischargeMode.Preset;
@@ -50,6 +77,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private double _dvdq = 0;
+        public double Dvdq
+        {
+            get
+            {
+                return _dvdq;
+            }
+            set
+            {
+                SetProperty(ref _dvdq, value);
+            }
+        }
+
         private List<PhaseData> _phaseDataList = new List<PhaseData>();
         public List<PhaseData> PhaseDataList
         {
@@ -63,16 +103,29 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private double _dvdq = 0;
-        public double Dvdq
+        private bool _isEnterLastPhase = false;
+        public bool IsEnterLastPhase
         {
             get
             {
-                return _dvdq;
+                return _isEnterLastPhase;
             }
             set
             {
-                SetProperty(ref _dvdq, value);
+                SetProperty(ref _isEnterLastPhase, value);
+            }
+        }
+
+        private int _phaseNo = 0;
+        public int PhaseNo
+        {
+            get
+            {
+                return _phaseNo;
+            }
+            set
+            {
+                SetProperty(ref _phaseNo, value);
             }
         }
     }

@@ -112,7 +112,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             ModelDischarger modelDischarger = ViewModelDischarger.Instance.Model;
 
-            double receiveBatteryVoltage = modelDischarger.DischargerDatas[Model.SelectedIndex].ReceiveBatteryVoltage;
+            double receiveBatteryVoltage = modelDischarger.DischargerDatas[Model.DischargerIndex].ReceiveBatteryVoltage;
             string batteryType = Model.SelectedBatteryType;
             string currentSoC = OCV_Table.getSOC(batteryType, receiveBatteryVoltage).ToString();
 

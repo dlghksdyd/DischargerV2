@@ -30,19 +30,6 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private bool _isFixedCurrent;
-        public bool IsFixedCurrent
-        {
-            get
-            {
-                return _isFixedCurrent;
-            }
-            set
-            {
-                SetProperty(ref _isFixedCurrent, value);
-            }
-        }
-
         private string _voltage;
         public string Voltage
         {

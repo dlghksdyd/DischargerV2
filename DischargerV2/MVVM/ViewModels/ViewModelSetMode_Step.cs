@@ -26,6 +26,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelSetMode_Step : BindableBase
     {
         #region Command
+        public DelegateCommand EnterStandardCapacityCommand { get; set; }
         public DelegateCommand LoadStepInfoListCommand { get; set; }
         public DelegateCommand SaveStepInfoListCommand { get; set; }
         public DelegateCommand AddStepInfoCommand { get; set; }
@@ -78,6 +79,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
+            EnterStandardCapacityCommand = new DelegateCommand(EnterStandardCapacity);
             LoadStepInfoListCommand = new DelegateCommand(LoadStepInfoList);
             SaveStepInfoListCommand = new DelegateCommand(SaveStepInfoList);
             AddStepInfoCommand = new DelegateCommand(AddStepInfo);
@@ -98,6 +100,18 @@ namespace DischargerV2.MVVM.ViewModels
             Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
             Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;
             SetModelContent(Model, ModelDictionary[dischargerName]);
+        }
+
+        private void EnterStandardCapacity()
+        {
+            if (Model.StandardCapacity == null || Model.StandardCapacity == "")
+                return;
+
+            foreach (var stepData in Model.Content)
+            {
+                stepData.Current = "";
+                stepData.CRate = "";
+            }
         }
 
         private void LoadStepInfoList()
@@ -128,7 +142,6 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     content.Add(new ModelSetMode_StepData()
                     {
-                        IsFixedCurrent = stepInfo.IsFixedCurrentUse,
                         Voltage = stepInfo.VoltPerModule.ToString(),
                         Current = stepInfo.FixedCurrent.ToString(),
                         CRate = stepInfo.CratePerModule.ToString()
@@ -236,7 +249,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     return null;
                 }
-                if (!double.TryParse(modelSetMode_StepData.CRate, out double cRate))
+                if ((!double.TryParse(modelSetMode_StepData.CRate, out double cRate)) &&
+                    (Model.StandardCapacity != null && Model.StandardCapacity != ""))
                 {
                     return null;
                 }

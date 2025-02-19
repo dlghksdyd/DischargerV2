@@ -30,16 +30,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private int _selectedIndex;
-        public int SelectedIndex
+        private int _dischargerIndex;
+        public int DischargerIndex
         {
             get
             {
-                return _selectedIndex;
+                return _dischargerIndex;
             }
             set
             { 
-                SetProperty(ref _selectedIndex, value);
+                SetProperty(ref _dischargerIndex, value);
             }
         }
 
@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _selectedBatteryType;
+        private string _selectedBatteryType = string.Empty;
         public string SelectedBatteryType
         {
             get

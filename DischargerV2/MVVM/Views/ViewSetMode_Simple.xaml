@@ -18,7 +18,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Util:EDischargeTypeToBoolConverter x:Key="EDischargeTypeToBoolConverter"/>
+            <Util:EDischargeTargetToBoolConverter x:Key="EDischargeTargetToBoolConverter"/>
             <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -94,7 +94,7 @@
                                         VerticalContentAlignment="Center"
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
-                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Full}}"/>
                     <Grid Height="28"/>
                     <Mex:MexRadioButton x:Name="xCompleteDischargeRadioButton" GroupName="DischargeType"
@@ -106,7 +106,7 @@
                                         VerticalContentAlignment="Center"
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
-                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Zero}}"/>
                     <Grid Height="20"/>
                     <StackPanel Orientation="Horizontal">
@@ -119,7 +119,7 @@
                                             VerticalContentAlignment="Center"
                                         IsChecked="{Binding Model.EDischargeType, 
                                                             Mode=TwoWay,
-                                                            Converter={StaticResource EDischargeTypeToBoolConverter},
+                                                            Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Voltage}}"/>
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"

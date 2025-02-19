@@ -30,7 +30,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
-        private static ViewModelStartDischarge _instance = new ViewModelStartDischarge();
+        private static ViewModelStartDischarge _instance;
         public static ViewModelStartDischarge Instance
         {
             get

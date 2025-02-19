@@ -36,7 +36,7 @@
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     </Mex:MexTableHeaderColumn>
                     <Mex:MexTableHeaderColumn Width="227">
-                        <Mex:MexTextBlock Margin="16,0,6,0" 
+                        <Mex:MexTextBlock Margin="16,0,16,0" 
                                           Text="Discharger name"
                                           Foreground="{StaticResource Mex/ResColor/text_headings}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>

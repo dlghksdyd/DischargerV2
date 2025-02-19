@@ -217,6 +217,12 @@
     <Compile Include="MVVM\Views\ViewModelRegister_Edit.xaml.cs">
       <DependentUpon>ViewModelRegister_Edit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_Simple.xaml.cs">
+      <DependentUpon>ViewMonitor_Simple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_Step.xaml.cs">
+      <DependentUpon>ViewMonitor_Step.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MVVM\Views\ViewMonitor_State.xaml.cs">
       <DependentUpon>ViewMonitor_State.xaml</DependentUpon>
     </Compile>
@@ -365,6 +371,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MVVM\Views\ViewModelRegister_Edit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_Simple.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_Step.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

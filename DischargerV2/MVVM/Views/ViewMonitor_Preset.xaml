@@ -14,6 +14,12 @@
              d:DesignHeight="152" d:DesignWidth="534"
              MinHeight="152" MinWidth="534">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EDischargeTargetToStringConverter x:Key="EDischargeTargetToStringConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -31,9 +37,17 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="8"/>
                 <Mex:MexTextBlock x:Name="xDischargeTypeTextBlock"
-                                  Text="Complete Discharge"
                                   Foreground="{StaticResource Mex/ResColor/text_headings}"
-                                  FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
+                                  FontSet="{StaticResource Mex/ResFontSet/heading_h6}">
+                    <Mex:MexTextBlock.Text>
+                        <MultiBinding Converter="{StaticResource EDischargeTargetToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.EDischargeType" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
+                                <Binding Path="Model.TargetVoltage" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBlock.Text>
+                </Mex:MexTextBlock>
             </StackPanel>
         </Border>
         <Border Grid.Column="2"
@@ -47,7 +61,8 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="8"/>
                 <Mex:MexTextBlock x:Name="xBatteryTypeTextBlock"
-                                  Text="Ioniq 5 Pack"
+                                  Text="{Binding Model.SelectedBatteryType, 
+                                                 Source={x:Static vm:ViewModelSetMode_Preset.Instance}}"
                                   Foreground="{StaticResource Mex/ResColor/text_headings}"
                                   FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
             </StackPanel>

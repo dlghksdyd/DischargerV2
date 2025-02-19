@@ -18,6 +18,30 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelMonitor : BindableBase
     {
-        
+        private int _dischargerIndex;
+        public int DischargerIndex
+        {
+            get
+            {
+                return _dischargerIndex;
+            }
+            set
+            {
+                SetProperty(ref _dischargerIndex, value);
+            }
+        }
+
+        private string _dischargerName;
+        public string DischargerName
+        {
+            get
+            {
+                return _dischargerName;
+            }
+            set
+            {
+                SetProperty(ref _dischargerName, value);
+            }
+        }
     }
 }
