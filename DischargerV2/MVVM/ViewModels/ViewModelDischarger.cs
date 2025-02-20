@@ -120,7 +120,6 @@ namespace DischargerV2.MVVM.ViewModels
                     ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
                     ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
                     ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName, selectedIndex);
-                    ViewModelMonitor.Instance.SetDischargerName(selectedDischargerName, selectedIndex);
                 }
             }
             catch { }
@@ -228,7 +227,7 @@ namespace DischargerV2.MVVM.ViewModels
             OneSecondTimer?.Stop();
             OneSecondTimer = new System.Timers.Timer();
             OneSecondTimer.Elapsed += CopyDataFromDischargerClientToModel;
-            OneSecondTimer.Interval = 1000;
+            OneSecondTimer.Interval = 500;
             OneSecondTimer.Start();
         }
 

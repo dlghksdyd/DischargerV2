@@ -19,7 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Utility.Common;
-using static DischargerV2.MVVM.Models.ModelStartDischargeConfig;
+using static DischargerV2.MVVM.Models.ModelStartDischarge;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -43,8 +43,8 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
-        public int DischargerIndex;
-        public string SelectedDischargerName;
+        public static int DischargerIndex;
+        public static string SelectedDischargerName;
 
         private static ViewModelSetMode _instance = new ViewModelSetMode();
         public static ViewModelSetMode Instance
@@ -71,6 +71,19 @@ namespace DischargerV2.MVVM.ViewModels
                 SetProperty(ref _modelDictionary, value);
             }
         }
+
+        private Dictionary<string, ViewModelControlDischarge> _viewModelDictionary = new Dictionary<string, ViewModelControlDischarge>();
+        public Dictionary<string, ViewModelControlDischarge> ViewModelDictionary
+        {
+            get
+            {
+                return _viewModelDictionary;
+            }
+            set
+            {
+                SetProperty(ref _viewModelDictionary, value);
+            }
+        }
         #endregion
 
         public ViewModelSetMode()
@@ -81,6 +94,7 @@ namespace DischargerV2.MVVM.ViewModels
             StartDischargeCommand = new DelegateCommand(StartDischarge);
 
             InitializeModelDictionary();
+            InitializeViewModelDictionary();
         }
 
         public void SetDischargerName(string dischargerName, int dischargerIndex)
@@ -144,6 +158,29 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_Preset.Instance.SetBatteryType();
         }
 
+        private void InitializeViewModelDictionary()
+        {
+            // 기존 값 초기화
+            ViewModelDictionary.Clear();
+
+            // Discharger에서 관련 값 받아와 사용
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
+            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.DischargerInfos.ToList();
+
+            for (int index = 0; index < dischargerNameList.Count; index++)
+            {
+                string dischargerName = dischargerNameList[index];
+
+                ModelStartDischarge modelStartDischarge = new ModelStartDischarge();
+                modelStartDischarge.DischargerName = dischargerName;
+
+                ViewModelDictionary.Add(dischargerName, new ViewModelControlDischarge()
+                {
+                    Model = modelStartDischarge
+                });
+            }
+        }
+
         private void SelectMode(string mode)
         {
             foreach (EDischargeMode eMode in Enum.GetValues(typeof(EDischargeMode)))
@@ -159,10 +196,17 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (!CheckModeNTarget()) return;
             if (!CheckNSetSafetyCondition()) return;
-            if (!CalculateTarget(out ModelStartDischargeConfig model)) return;
-            if (!SetModeNTarget(model)) return;
+            if (!CalculateTarget(out ModelStartDischarge model)) return;
 
-            ViewModelMain.Instance.SetIsStartedArray(true);
+            // 방전 모드 및 목표 설정 후 방전 시작
+            if (ViewModelDictionary.ContainsKey(Model.DischargerName))
+            {
+                ViewModelDictionary[Model.DischargerName].Model = model;
+                ViewModelDictionary[Model.DischargerName].StartDischarge();
+
+                // SetMode -> Monitor 화면 전환
+                ViewModelMain.Instance.SetIsStartedArray(true);
+            }
         }
 
         /// <summary>
@@ -325,9 +369,9 @@ namespace DischargerV2.MVVM.ViewModels
         /// 방전 목표 설정 값 계산
         /// </summary>
         /// <returns></returns>
-        private bool CalculateTarget(out ModelStartDischargeConfig model)
+        private bool CalculateTarget(out ModelStartDischarge model)
         {
-            model = new ModelStartDischargeConfig()
+            model = new ModelStartDischarge()
             {
                 DischargerName = Model.DischargerName,
                 DischargerIndex = Model.DischargerIndex,
@@ -361,6 +405,8 @@ namespace DischargerV2.MVVM.ViewModels
                 // Target Voltage
                 else if (modelPreset.EDischargeType == EDischargeTarget.Voltage)
                 {
+                    int tagetVoltage = Convert.ToInt32(modelPreset.TargetVoltage);
+
                     model.PhaseDataList.Add(new PhaseData()
                     {
                         Voltage = OCV_Table.getPhase2Volt(batteryType),
@@ -369,7 +415,7 @@ namespace DischargerV2.MVVM.ViewModels
 
                     model.PhaseDataList.Add(new PhaseData()
                     {
-                        Voltage = OCV_Table.getTargetVolt(batteryType, 50) * 2.5 / 3.7,
+                        Voltage = tagetVoltage,
                         Current = OCV_Table.getCapcity(batteryType) / 3
                     });
                 }
@@ -745,53 +791,6 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                 }
             }
-            return true;
-        }
-
-        /// <summary>
-        /// 방전 모드 및 목표 설정 값 적용
-        /// </summary>
-        /// <returns></returns>
-        private bool SetModeNTarget(ModelStartDischargeConfig model)
-        {
-            object obj;
-
-            // Pre-set Mode
-            if (Model.Mode == EDischargeMode.Preset)
-            {
-                obj = new ViewModelStartDischarge_Preset()
-                {
-                    Model = model
-                };
-            }
-            // Step Mode
-            else if (Model.Mode == EDischargeMode.Step)
-            {
-                obj = new ViewModelStartDischarge_Step()
-                {
-                    Model = model
-                };
-            }
-            // Simple Mode
-            else 
-            {
-                obj = new ViewModelStartDischarge_Simple()
-                {
-                    Model = model
-                };
-            }
-
-            if (ViewModelStartDischarge.Instance.ViewModelDictionary.ContainsKey(Model.DischargerName))
-            {
-                ViewModelStartDischarge.Instance.ViewModelDictionary[Model.DischargerName] = obj;
-            }
-            else
-            {
-                ViewModelStartDischarge.Instance.ViewModelDictionary.Add(Model.DischargerName, obj);
-            }
-
-            ViewModelStartDischarge.Instance.StartDischarge(Model.DischargerName);
-
             return true;
         }
     }

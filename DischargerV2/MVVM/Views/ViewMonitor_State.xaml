@@ -14,6 +14,17 @@
              d:DesignHeight="448" d:DesignWidth="442"
              MinHeight="448" MinWidth="442">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Util:EDischargerStateToBoolConverter x:Key="EDischargerStateToBoolConverter"/>
+            <Util:EDischargerStateToBorderBrushConverter x:Key="EDischargerStateToBorderBrushConverter"/>
+            <Util:EDischargerStateToImageConverter x:Key="EDischargerStateToImageConverter"/>
+            <Util:EDischargerStateToForegroundConverter x:Key="EDischargerStateToForegroundConverter"/>
+            <Util:EDischargerStateToStringConverter x:Key="EDischargerStateToStringConverter"/>
+            <Util:EDischargerStateToVisibilityConverter x:Key="EDischargerStateToVisibilityConverter"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -22,10 +33,18 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                BorderThickness="1"
+        <Border BorderThickness="1"
                 CornerRadius="8"
                 Background="{StaticResource Mex/ResColor/surface_primary}">
+            <Border.BorderBrush>
+                <MultiBinding Converter="{StaticResource EDischargerStateToBorderBrushConverter}"
+                              ConverterParameter="ERROR">
+                    <MultiBinding.Bindings>
+                        <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                        <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                    </MultiBinding.Bindings>
+                </MultiBinding>
+            </Border.BorderBrush>
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -39,27 +58,69 @@
                 </Grid.RowDefinitions>
                 <Image x:Name="xStateImage" 
                        Grid.Column="0" Grid.Row="0"
-                       Width="32" Height="32"
-                       Source="{Binding Source={StaticResource Mex/ResImage/warning_amber},
-                                        Converter={StaticResource ImageColorConverter},
-                                        ConverterParameter={StaticResource Mex/ResColor/icon_error}}"/>
+                       Width="32" Height="32">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource EDischargerStateToImageConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
                 <Mex:MexTextBlock x:Name="xStateTextBlock"
                                   Grid.Column="2" Grid.Row="0"
-                                  Text="Error"
-                                  Foreground="{StaticResource Mex/ResColor/text_error}"
-                                  FontSet="{StaticResource Mex/ResFontSet/heading_h5}"/>
+                                  FontSet="{StaticResource Mex/ResFontSet/heading_h5}">
+                    <Mex:MexTextBlock.Foreground>
+                        <MultiBinding Converter="{StaticResource EDischargerStateToForegroundConverter}"
+                                      ConverterParameter="ERROR">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBlock.Foreground>
+                    <Mex:MexTextBlock.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerStateToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBlock.Text>
+                </Mex:MexTextBlock>
                 <Mex:MexTextBlock x:Name="xErrorCodeTextBlock"
                                   Grid.Column="2" Grid.Row="2"
                                   Text="Error Code: 0x100201"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Mex:MexTextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
+                                      ConverterParameter="ERROR">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBlock.Visibility>
+                </Mex:MexTextBlock>
                 <Mex:MexButton x:Name="xDetailButton"
                                Grid.Column="2" Grid.Row="2"
                                Padding="24,12,24,12"
                                Text="Detail"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"
-                               HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                               HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Mex:MexButton.Visibility>
+                        <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
+                                      ConverterParameter="ERROR">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexButton.Visibility>
+                </Mex:MexButton>
             </Grid>
         </Border>
         <Grid Grid.Row="2">
@@ -68,7 +129,8 @@
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Mex:MexButton x:Name="xPauseNResume" Grid.Column="0"
+            <!--Pause Button-->
+            <Mex:MexButton x:Name="xPauseButton" Grid.Column="0"
                            Padding="24,16,24,16"
                            Text="Pause"
                            TextPadding="12,0,0,0"
@@ -76,8 +138,44 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/PauseButtonOutline}"
-                           HorizontalAlignment="Stretch"/>
-            <Mex:MexButton x:Name="xStop" Grid.Column="2"
+                           HorizontalAlignment="Stretch">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding PauseDischargeCommand, 
+                                                                 Source={x:Static vm:ViewModelMonitor_State.Instance}}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
+            <!--Resume Button-->
+            <Mex:MexButton x:Name="xResumeButton" Grid.Column="0"
+                           Padding="24,16,24,16"
+                           Text="Resume"
+                           TextPadding="12,0,0,0"
+                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
+                           ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
+                           ImageWidth="28" ImageHeight="28"
+                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/ResumeButtonOutline}"
+                           HorizontalAlignment="Stretch">
+                <Mex:MexButton.Visibility>
+                    <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
+                                  ConverterParameter="PAUSE">
+                        <MultiBinding.Bindings>
+                            <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                            <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </Mex:MexButton.Visibility>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding ResumeDischargeCommand, 
+                                                                 Source={x:Static vm:ViewModelMonitor_State.Instance}}"
+                                        PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>   
+            </Mex:MexButton>
+            <!--Stop Button-->
+            <Mex:MexButton x:Name="xStopButton" Grid.Column="2"
                            Padding="24,16,24,16"
                            Text="Stop"
                            TextPadding="12,0,0,0"
@@ -85,9 +183,18 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StopButtonPrimary}"
-                           HorizontalAlignment="Stretch"/>
+                           HorizontalAlignment="Stretch">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:InvokeCommandAction Command="{Binding StopDischargeCommand, 
+                                                                 Source={x:Static vm:ViewModelMonitor_State.Instance}}"
+                                               PassEventArgsToCommand="False"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Mex:MexButton>
         </Grid>
-        <Mex:MexButton x:Name="xFinish" Grid.Row="4"
+        <!--Finish Button-->
+        <Mex:MexButton x:Name="xFinishButton" Grid.Row="4"
                        Padding="24,16,24,16"
                        Text="Finish"
                        TextPadding="12,0,0,0"

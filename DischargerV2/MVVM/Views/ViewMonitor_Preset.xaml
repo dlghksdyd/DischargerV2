@@ -10,7 +10,6 @@
              xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance vm:ViewModelMonitor}"
              d:DesignHeight="152" d:DesignWidth="534"
              MinHeight="152" MinWidth="534">
 

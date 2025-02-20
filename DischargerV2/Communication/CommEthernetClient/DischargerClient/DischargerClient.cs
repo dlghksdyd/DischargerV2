@@ -286,8 +286,8 @@ namespace Ethernet.Client.Discharger
             {
                 _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - 2;
                 _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + 2;
-                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - 2;
-                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + 2;
+                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - 15;
+                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + 15;
             }
 
             ReadInfoTimer?.Stop();
@@ -650,8 +650,8 @@ namespace Ethernet.Client.Discharger
 
                     if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
-                        (-channelInfo.BatteryCurrent) < _dischargerData.SafetyCurrentMin ||
-                        (-channelInfo.BatteryCurrent) > _dischargerData.SafetyCurrentMax)
+                        -channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
+                        -channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax)
                     {
                         ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                         _dischargerData.ErrorCode = 0xF0000001;

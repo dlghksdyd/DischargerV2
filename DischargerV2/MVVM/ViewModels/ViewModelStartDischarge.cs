@@ -21,62 +21,128 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class ViewModelStartDischarge : BindableBase
+    public class ViewModelControlDischarge : BindableBase
     {
         #region Command
         #endregion
 
         #region Model
+        public ModelStartDischarge Model { get; set; } = new ModelStartDischarge();
         #endregion
 
         #region Property
-        private static ViewModelStartDischarge _instance;
-        public static ViewModelStartDischarge Instance
+        private System.Timers.Timer DischargeTimer = null;
+
+        private static ViewModelControlDischarge _instance;
+        public static ViewModelControlDischarge Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new ViewModelStartDischarge();
+                    _instance = new ViewModelControlDischarge();
                 }
                 return _instance;
             }
         }
-
-        private Dictionary<string, object> _viewModelDictionary = new Dictionary<string, object>();
-        public Dictionary<string, object> ViewModelDictionary
-        {
-            get
-            {
-                return _viewModelDictionary;
-            }
-            set
-            {
-                SetProperty(ref _viewModelDictionary, value);
-            }
-        }
         #endregion
 
-        public ViewModelStartDischarge()
+        public ViewModelControlDischarge()
         {
             _instance = this;
         }
 
-        public void StartDischarge(string dischargerName)
+        public void StartDischarge()
         {
-            ViewModelDictionary.TryGetValue(dischargerName, out var viewModelStartDischarge);
+            // 초기화
+            Model.PhaseNo = 0;
+            Model.IsEnterLastPhase = false;
 
-            if (viewModelStartDischarge is ViewModelStartDischarge_Preset viewModelStartDischarge_Preset)
+            ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
             {
-                viewModelStartDischarge_Preset.StartDischarge();
+                DischargerName = Model.DischargerName,
+                Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
+                Current = Model.PhaseDataList[Model.PhaseNo].Current,
+            });
+
+            DischargeTimer?.Stop();
+            DischargeTimer = null;
+            DischargeTimer = new System.Timers.Timer();
+            DischargeTimer.Interval = 1000;
+            DischargeTimer.Elapsed += OneSecondTimer_Elapsed;
+            DischargeTimer.Start();
+        }
+
+        public void PauseDischarge()
+        {
+            ViewModelDischarger.Instance.PauseDischarger(Model.DischargerName);
+        }
+
+        public void ResumeDischarge()
+        {
+            ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
+            {
+                DischargerName = Model.DischargerName,
+                Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
+                Current = Model.PhaseDataList[Model.PhaseNo].Current,
+            });
+
+            DischargeTimer?.Stop();
+            DischargeTimer = null;
+            DischargeTimer = new System.Timers.Timer();
+            DischargeTimer.Interval = 1000;
+            DischargeTimer.Elapsed += OneSecondTimer_Elapsed;
+            DischargeTimer.Start();
+        }
+
+        public void StopDischarge()
+        {
+            ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
+        }
+
+        private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
+
+            EDischargerState receiveState = viewModelDischarger.Model.DischargerStates[Model.DischargerIndex];
+            double receiveVoltage = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveBatteryVoltage;
+            double receiveCurrent = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveDischargeCurrent;
+
+            if (Model.IsEnterLastPhase == false)
+            {
+                // 타겟 전압에 도달했을 경우 Phase 상승
+                if (receiveVoltage <= Model.PhaseDataList[Model.PhaseNo].Voltage)
+                {
+                    Model.PhaseNo++;
+
+                    // 모든 Phase 끝났을 때
+                    if (Model.PhaseNo == Model.PhaseDataList.Count)
+                    {
+                        viewModelDischarger.StopDischarger(Model.DischargerName);
+
+                        Model.IsEnterLastPhase = true;
+                    }
+                    else
+                    {
+                        viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                        {
+                            DischargerName = Model.DischargerName,
+                            Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
+                            Current = Model.PhaseDataList[Model.PhaseNo].Current,
+                        });
+                    }
+                }
             }
-            else if (viewModelStartDischarge is ViewModelStartDischarge_Step viewModelStartDischarge_Step)
+            else
             {
-                viewModelStartDischarge_Step.StartDischarge();
-            }
-            else if (viewModelStartDischarge is ViewModelStartDischarge_Simple viewModelStartDischarge_Simple)
-            {
-                viewModelStartDischarge_Simple.StartDischarge();
+                // 0.1A 미만이면 방전 자동 중지
+                if (receiveState == EDischargerState.Discharging)
+                {
+                    if (receiveCurrent <= 0.1)
+                    {
+                        viewModelDischarger.StopDischarger(Model.DischargerName);
+                    }
+                }
             }
         }
     }

@@ -25,6 +25,9 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelMonitor_State : BindableBase
     {
         #region Command
+        public DelegateCommand PauseDischargeCommand { get; set; }
+        public DelegateCommand ResumeDischargeCommand { get; set; }
+        public DelegateCommand StopDischargeCommand { get; set; }
         public DelegateCommand ReturnSetModeCommand { get; set; }
         #endregion
 
@@ -50,11 +53,30 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
+            PauseDischargeCommand = new DelegateCommand(PauseDischarge);
+            ResumeDischargeCommand = new DelegateCommand(ResumeDischarge);
+            StopDischargeCommand = new DelegateCommand(StopDischarge);
             ReturnSetModeCommand = new DelegateCommand(ReturnSetMode);
+        }
+
+        private void PauseDischarge()
+        {
+            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].PauseDischarge();
+        }
+
+        private void ResumeDischarge()
+        {
+            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].ResumeDischarge();
+        }
+
+        private void StopDischarge()
+        {
+            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].StopDischarge();
         }
 
         private void ReturnSetMode()
         {
+            // Monitor -> SetMode 화면 전환
             ViewModelMain.Instance.SetIsStartedArray(false);
         }
     }

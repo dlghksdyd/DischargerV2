@@ -170,7 +170,8 @@
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
                            HorizontalAlignment="Stretch">
                 <Mex:MexButton.IsEnabled>
-                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}">
+                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}"
+                                  ConverterParameter="Ready">
                         <MultiBinding.Bindings>
                             <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                             <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>

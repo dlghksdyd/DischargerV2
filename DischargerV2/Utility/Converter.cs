@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -475,10 +476,37 @@ namespace Utility.Common
     #endregion
 
     #region IMultiValueConverter
+    public class EDischargerStateToStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    return eDischargerState.ToString();
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// if (EDischarggerState == ConverterParameter) return true;
+    /// ConverterParameter "READY"
+    /// </summary>
     public class EDischargerStateToBoolConverter : IMultiValueConverter
     {
-        public bool ReadyValue { get; set; } = true;
-        public bool NotReadyValue { get; set; } = false;
+        public bool TrueValue { get; set; } = true;
+        public bool FalseValue { get; set; } = false;
 
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -488,13 +516,275 @@ namespace Utility.Common
                 {
                     EDischargerState eDischargerState = dischargerStates[selectedIndex];
 
-                    if (eDischargerState == EDischargerState.Ready)
+                    if (parameter != null)
                     {
-                        return ReadyValue;
+                        if (parameter.ToString().ToUpper() == "READY")
+                        {
+                            if (eDischargerState == EDischargerState.Ready)
+                            {
+                                return TrueValue;
+                            }
+                            else
+                            {
+                                return FalseValue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// ConverterParameter "ERROR"
+    /// </summary>
+    public class EDischargerStateToForegroundConverter : IMultiValueConverter
+    {
+        public SolidColorBrush ErrorValue { get; set; } = ResColor.text_error;
+        public SolidColorBrush NoneErrorValue { get; set; } = ResColor.text_body;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    if (parameter != null)
+                    {
+                        if (parameter.ToString().ToUpper() == "ERROR")
+                        {
+                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
+                            {
+                                return ErrorValue;
+                            }
+                            else
+                            {
+                                return NoneErrorValue;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// if (EDischarggerState == ConverterParameter) return Visibility.Visible;
+    /// ConverterParameter "ERROR", "PAUSE"
+    /// </summary>
+    public class EDischargerStateToVisibilityConverter : IMultiValueConverter
+    {
+        public Visibility ErrorValue { get; set; } = Visibility.Visible;
+        public Visibility NoneErrorValue { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    if (parameter != null)
+                    {
+                        if (parameter.ToString().ToUpper() == "ERROR")
+                        {
+                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
+                            {
+                                return ErrorValue;
+                            }
+                            else
+                            {
+                                return NoneErrorValue;
+                            }
+                        }
+                        else if (parameter.ToString().ToUpper() == "PAUSE")
+                        {
+                            if (eDischargerState == EDischargerState.Pause)
+                            {
+                                return ErrorValue;
+                            }
+                            else
+                            {
+                                return NoneErrorValue;
+                            }
+                        }
+                        return ErrorValue;
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EDischargerStateToImageConverter : IMultiValueConverter
+    {
+        public BitmapSource dischargingImage { get; set; } = ResImage.downloading;
+        public BitmapSource pauseImage { get; set; } = ResImage.pause;
+        public BitmapSource errorImage { get; set; } = ResImage.warning_amber;
+
+        public SolidColorBrush discharingImageColor { get; set; } = ResColor.icon_primary;
+        public SolidColorBrush pauseImageColor { get; set; } = ResColor.icon_primary;
+        public SolidColorBrush errorImageColor { get; set; } = ResColor.icon_error;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                    BitmapSource imagePrimary;
+                    SolidColorBrush targetColor;
+
+                    if (eDischargerState == EDischargerState.Discharging)
+                    {
+                        imagePrimary = dischargingImage;
+                        targetColor = ResColor.icon_primary;
+                    }
+                    else if (eDischargerState == EDischargerState.Pause)
+                    {
+                        imagePrimary = pauseImage;
+                        targetColor = ResColor.icon_primary;
+                    }
+                    else if (eDischargerState >= EDischargerState.SafetyOutOfRange)
+                    {
+                        imagePrimary = errorImage;
+                        targetColor = ResColor.icon_error;
                     }
                     else
                     {
-                        return NotReadyValue;
+                        return Binding.DoNothing;
+                    }
+
+                    // ImageColorConverter와 동일
+                    System.Windows.Media.Color oldColor = Colors.Black;
+                    System.Windows.Media.Color newColor = targetColor.Color;
+
+                    FormatConvertedBitmap formatConvertedBitmap = new FormatConvertedBitmap();
+                    formatConvertedBitmap.BeginInit();
+                    formatConvertedBitmap.Source = imagePrimary;
+                    formatConvertedBitmap.DestinationFormat = PixelFormats.Bgra32;
+                    formatConvertedBitmap.EndInit();
+
+                    Bitmap bitmap = new Bitmap(formatConvertedBitmap.PixelWidth, formatConvertedBitmap.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    formatConvertedBitmap.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+                    bitmap.UnlockBits(data);
+
+                    for (int i = 0; i < bitmap.Width; i++)
+                    {
+                        for (int j = 0; j < bitmap.Height; j++)
+                        {
+                            var getColor = bitmap.GetPixel(i, j);
+
+                            int a = getColor.A;
+                            int r = 0;
+                            int g = 0;
+                            int b = 0;
+
+                            int rDiff = newColor.R - oldColor.R;
+                            int gDiff = newColor.G - oldColor.G;
+                            int bDiff = newColor.B - oldColor.B;
+
+                            if (getColor.A != 0)
+                            {
+                                // R
+                                r = getColor.R + rDiff;
+                                r = (r < 0) ? 0 : r;
+                                r = (r > 255) ? 255 : r;
+                                //G
+                                g = getColor.G + gDiff;
+                                g = (g < 0) ? 0 : g;
+                                g = (g > 255) ? 255 : g;
+                                //B
+                                b = getColor.B + bDiff;
+                                b = (b < 0) ? 0 : b;
+                                b = (b > 255) ? 255 : b;
+                            }
+
+                            bitmap.SetPixel(i, j, System.Drawing.Color.FromArgb(a, r, g, b));
+                        }
+                    }
+
+                    BitmapImage convertImage;
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        bitmap.Save(memoryStream, ImageFormat.Png);
+                        memoryStream.Position = 0;
+
+                        convertImage = new BitmapImage();
+                        convertImage.BeginInit();
+                        convertImage.StreamSource = memoryStream;
+                        convertImage.CacheOption = BitmapCacheOption.OnLoad;
+                        convertImage.EndInit();
+                        convertImage.Freeze();
+                    }
+                    return convertImage;
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// ConverterParameter "ERROR" 
+    /// </summary>
+    public class EDischargerStateToBorderBrushConverter : IMultiValueConverter
+    {
+        public SolidColorBrush ErrorValue { get; set; } = ResColor.border_error;
+        public SolidColorBrush NoneErrorValue { get; set; } = ResColor.border_primary;
+
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+
+                    if (parameter != null)
+                    {
+                        if (parameter.ToString().ToUpper() == "ERROR")
+                        {
+                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
+                            {
+                                return ErrorValue;
+                            }
+                            else
+                            {
+                                return NoneErrorValue;
+                            }
+                        }
                     }
                 }
             }
@@ -551,7 +841,6 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
-
 
     public class EDischargeTargetToStringConverter : IMultiValueConverter
     {
