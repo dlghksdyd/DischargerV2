@@ -43,6 +43,7 @@
                             <MultiBinding.Bindings>
                                 <Binding Path="Model.EDischargeType" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
                                 <Binding Path="Model.TargetVoltage" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
+                                <Binding Path="Model.TargetSoC" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
                     </Mex:MexTextBlock.Text>

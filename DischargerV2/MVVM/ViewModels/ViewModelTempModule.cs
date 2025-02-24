@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -60,6 +62,26 @@ namespace DischargerV2.MVVM.ViewModels
         public int GetTempModuleDataIndex(string comPortStr)
         {
             return Model.TempModuleComportList.FindIndex(x => x == comPortStr);
+        }
+
+        public double GetTempData(string dischargerName)
+        {
+            TableDischargerInfo tableTischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
+            
+            int tempModuleIndex = GetTempModuleDataIndex(tableTischargerInfo.TempModuleComPort);
+            int tempModuleChannel = Convert.ToInt32(tableTischargerInfo.TempChannel);
+
+            return Model.TempDatas[tempModuleIndex][tempModuleChannel];
+        }
+
+        public void ReconnectTempModule(string tempModuleComPort)
+        {
+            Thread thread = new Thread(
+                delegate ()
+                {
+                    _clients[tempModuleComPort].Restart();
+                });
+            thread.Start();
         }
 
         private void InitializeTempModule()
@@ -126,6 +148,19 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void CopyDataFromTempModuleClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
+            // CollectionChanged Event 발생 목적 변경
+            ObservableCollection<ObservableCollection<double>> tempDatas = new ObservableCollection<ObservableCollection<double>>();
+
+            for (int i = 0; i < Model.TempModuleComportList.Count; i++)
+            {
+                tempDatas.Add(new ObservableCollection<double>());
+
+                for (int j = 0; j < _tempChannelCount; j++)
+                {
+                    tempDatas.Last().Add(0.0);
+                }
+            }
+
             foreach (var client in _clients)
             {
                 if (!client.Value.IsConnected())
@@ -138,9 +173,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 for (int i = 0; i < Model.TempDatas[index].Count; i++)
                 {
-                    Model.TempDatas[index][i] = _clients[comPortStr].GetDatas().TempDatas[i];
+                    tempDatas[index][i] = _clients[comPortStr].GetDatas().TempDatas[i];
                 }
             }
+
+            Model.TempDatas = tempDatas;
         }
     }
 }

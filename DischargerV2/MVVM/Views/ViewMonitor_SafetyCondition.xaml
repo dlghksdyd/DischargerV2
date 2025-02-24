@@ -14,6 +14,8 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <Util:EDischargerDataToStringConverter x:Key="EDischargerDataToStringConverter"/>
+            <Util:TempDataToStringConverter x:Key="TempDataToStringConverter"/>
             <Util:EModeToVisibilityConverter x:Key="EModeToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -54,11 +56,20 @@
                 <Mex:MexTextBlock Text="Voltage (V)" Grid.Column="0"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                <Mex:MexTextBox x:Name="xVoltTextBox" Grid.Column="2"
+                <Mex:MexTextBox x:Name="xVoltTextBox" Grid.Column="2" 
                                 Padding="12,0,12,0" Height="40"
-                                Text="256.4"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.Voltage}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : Current-->
             <Grid Grid.Column="0" Grid.Row="4">
@@ -72,9 +83,18 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xCurrentTextBox" Grid.Column="2"
                                 Padding="12,0,12,0" Height="40"
-                                Text="80.2"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.Current}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : Temp-->
             <Grid Grid.Column="0" Grid.Row="6">
@@ -88,9 +108,18 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xTempTextBox" Grid.Column="2"
                                 Padding="12,0,12,0" Height="40"
-                                Text="26.4"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource TempDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.TempDatas" Source="{x:Static vm:ViewModelTempModule.Instance}"/>
+                                <Binding Path="Model.TempModuleIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="Model.TempModuleChannel" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : SOC-->
             <Grid Grid.Row="7" 
@@ -115,9 +144,19 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xSocTextBox" Grid.Column="2"
                                 Padding="12,0,12,0" Height="40"
-                                Text="80.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SoC}"/>
+                                <Binding Path="ModelDictionary" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
+                                <Binding Path="Model.DischargerName" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text></Mex:MexTextBox>
             </Grid>
             <!--Safety Condition-->
             <Mex:MexTextBlock Grid.Column="2" Grid.Row="0" 
@@ -133,11 +172,20 @@
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBox x:Name="xVoltMinTextBox" Grid.Column="0"
                                 Padding="12,8,12,8" Height="40" 
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyVoltageMin}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -145,11 +193,20 @@
                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Mex:MexTextBox x:Name="xVoltMaxTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Height="40" 
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyVoltageMax}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
             </Grid>
             <!--Safety Condition : Voltage-->
             <Grid Grid.Column="2" Grid.Row="4">
@@ -160,11 +217,20 @@
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBox x:Name="xCurrentMinTextBox" Grid.Column="0"
                                 Padding="12,8,12,8" Height="40" 
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyCurrentMin}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -172,11 +238,20 @@
                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Mex:MexTextBox x:Name="xCurrentMaxTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Height="40"
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyCurrentMax}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
             </Grid>
             <!--Safety Condition : Temp-->
             <Grid Grid.Column="2" Grid.Row="6">
@@ -187,11 +262,20 @@
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBox x:Name="xTempMinTextBox" Grid.Column="0"
                                 Padding="12,8,12,8" Height="40" 
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyTempMin}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text>
+                </Mex:MexTextBox>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
@@ -199,11 +283,19 @@
                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Mex:MexTextBox x:Name="xTempMaxTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Height="40"
-                                Text="0.0"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                IsReadOnly="True"/>
+                                IsReadOnly="True">
+                    <Mex:MexTextBox.Text>
+                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Source="{x:Static enum:EDischargerData.SafetyTempMax}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBox.Text></Mex:MexTextBox>
             </Grid>
         </Grid>
     </Border>

@@ -34,13 +34,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Grid.Column="0" 
+                <Mex:MexTextBlock Grid.Column="0" IsTabStop="False" 
                                   Text="Voltage (V)"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Mex:MexTextBox x:Name="xVoltMinTextBox"
+                    <Mex:MexTextBox x:Name="xVoltMinTextBox" TabIndex="0"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.VoltageMin,
@@ -49,12 +49,12 @@
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" 
+                    <Mex:MexTextBlock Text="~" IsTabStop="False"
                                       Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Mex:MexTextBox x:Name="xVoltMaxTextBox"
+                    <Mex:MexTextBox x:Name="xVoltMaxTextBox" TabIndex="1"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.VoltageMax,
@@ -71,13 +71,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Grid.Column="0" 
+                <Mex:MexTextBlock Grid.Column="0" IsTabStop="False"
                                   Text="Current (A)"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Mex:MexTextBox x:Name="xCurrMinTextBox"
+                    <Mex:MexTextBox x:Name="xCurrMinTextBox" TabIndex="2"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.CurrentMin,
@@ -86,12 +86,12 @@
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" 
+                    <Mex:MexTextBlock Text="~" IsTabStop="False"
                                       Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Mex:MexTextBox x:Name="xCurrMaxTextBox"
+                    <Mex:MexTextBox x:Name="xCurrMaxTextBox" TabIndex="3"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.CurrentMax,
@@ -108,13 +108,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Grid.Column="0" 
+                <Mex:MexTextBlock Grid.Column="0" IsTabStop="False"
                                   Text="Temperature (℃)"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Mex:MexTextBox x:Name="xTempMinTextBox"
+                    <Mex:MexTextBox x:Name="xTempMinTextBox" TabIndex="4"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.TempMin,
@@ -123,12 +123,12 @@
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <Mex:MexTextBlock Text="~" 
+                    <Mex:MexTextBlock Text="~" IsTabStop="False"
                                       Margin="8"
                                       Foreground="{StaticResource Mex/ResColor/text_body}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Mex:MexTextBox x:Name="xTempMaxTextBox"
+                    <Mex:MexTextBox x:Name="xTempMaxTextBox" TabIndex="5"
                                     Padding="12,8,12,8" Width="100" 
                                     WaterMark="0.0"
                                     Text="{Binding Model.TempMax,

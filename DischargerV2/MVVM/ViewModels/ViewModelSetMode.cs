@@ -43,9 +43,6 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
-        public static int DischargerIndex;
-        public static string SelectedDischargerName;
-
         private static ViewModelSetMode _instance = new ViewModelSetMode();
         public static ViewModelSetMode Instance
         {
@@ -99,9 +96,6 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetDischargerName(string dischargerName, int dischargerIndex)
         {
-            DischargerIndex = dischargerIndex;
-            SelectedDischargerName = dischargerName;
-
             Model = ModelDictionary[dischargerName];
 
             ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
@@ -127,10 +121,13 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 string dischargerName = dischargerNameList[index];
                 DischargerInfo dischargerInfo = dischargerInfoList[index];
+                TableDischargerInfo tableTischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
 
                 ModelSetMode modelSetMode = new ModelSetMode();
                 modelSetMode.DischargerIndex = index;
                 modelSetMode.DischargerName = dischargerName;
+                modelSetMode.TempModuleIndex = ViewModelTempModule.Instance.GetTempModuleDataIndex(tableTischargerInfo.TempModuleComPort);
+                modelSetMode.TempModuleChannel = Convert.ToInt32(tableTischargerInfo.TempChannel);
                 ViewModelSetMode.Instance.ModelDictionary.Add(dischargerName, modelSetMode);
 
                 ModelSetMode_Preset modelSetMode_Preset = new ModelSetMode_Preset();
@@ -358,9 +355,11 @@ namespace DischargerV2.MVVM.ViewModels
             double voltageMax = Convert.ToDouble(modelSafetyCondition.VoltageMax);
             double currentMin = Convert.ToDouble(modelSafetyCondition.CurrentMin);
             double currentMax = Convert.ToDouble(modelSafetyCondition.CurrentMax);
+            double tempMin = Convert.ToDouble(modelSafetyCondition.TempMin);
+            double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
 
             ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
-                voltageMax, voltageMin, currentMax, currentMin);
+                voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
             return true;
         }

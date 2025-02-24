@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Ethernet.Client.Common;
+using Sqlite.Common;
 
 namespace Ethernet.Client.Discharger
 {
@@ -59,6 +60,8 @@ namespace Ethernet.Client.Discharger
         public double SafetyVoltageMin = double.MaxValue;
         public double SafetyCurrentMax = double.MaxValue;
         public double SafetyCurrentMin = double.MaxValue;
+        public double SafetyTempMax = double.MaxValue;
+        public double SafetyTempMin = double.MaxValue;
     }
 
     public class DischargerDatas
@@ -71,6 +74,7 @@ namespace Ethernet.Client.Discharger
         public EChannelStatus ChannelStatus { get; set; } = EChannelStatus.Standby0;
         public double ReceiveBatteryVoltage { get; set; } = 0;
         public double ReceiveDischargeCurrent { get; set; } = 0;
+        public double ReceiveDischargeTemp { get; set; } = 0;
 
         /// <summary>
         /// Safety 데이터
@@ -79,6 +83,8 @@ namespace Ethernet.Client.Discharger
         public double SafetyVoltageMin { get; set; } = 0.0;
         public double SafetyCurrentMax { get; set; } = 0.0;
         public double SafetyCurrentMin { get; set; } = 0.0;
+        public double SafetyTempMax { get; set; } = 0.0;
+        public double SafetyTempMin { get; set; } = 0.0;
 
         /// <summary>
         /// 방전시작시간
@@ -91,6 +97,7 @@ namespace Ethernet.Client.Discharger
         /// <summary>
         /// 방전기 정보
         /// </summary>
+        public EDischargerModel Model { get; set; }
         public string Name { get; set; } = string.Empty;
         public short Channel { get; set; } = short.MaxValue;
         public IPAddress IpAddress { get; set; }
@@ -149,6 +156,9 @@ namespace Ethernet.Client.Discharger
         private List<string> _traceLogs = new List<string>();
         private object _traceLogLock = new object();
 
+        public static double SafetyMarginVoltage = 15;
+        public static double SafetyMarginCurrent = 2;
+
         private void AddTraceLog(LogArgument logFormat)
         {
             string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
@@ -193,8 +203,21 @@ namespace Ethernet.Client.Discharger
             return _dischargerClient.IsConnected();
         }
 
-        private void ChangeDischargerState(EDischargerState dischargerState)
+        public void ChangeDischargerState(EDischargerState dischargerState)
         {
+            if (dischargerState == EDischargerState.SafetyOutOfRange)
+            {
+                _dischargerData.ErrorCode = 0xF0000001;
+            }
+            else if (dischargerState == EDischargerState.ReturnCodeError)
+            {
+                _dischargerData.ErrorCode = 0xF0000002;
+            }
+            else if (dischargerState == EDischargerState.ChStatusError)
+            {
+                _dischargerData.ErrorCode = 0xF0000003;
+            }
+
             if (_dischargerState != dischargerState)
             {
                 LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
@@ -281,13 +304,16 @@ namespace Ethernet.Client.Discharger
             /// Safety Condition 설정
             bool safetyConditionResult = SendCommand_SetSafetyCondition(
                 _parameters.SafetyVoltageMax, _parameters.SafetyCurrentMin,
-                _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin);
+                _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin,
+                _parameters.SafetyTempMax, _parameters.SafetyTempMin);
             if (safetyConditionResult == true)
             {
-                _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - 2;
-                _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + 2;
-                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - 15;
-                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + 15;
+                _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - SafetyMarginCurrent;
+                _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + SafetyMarginCurrent;
+                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - SafetyMarginVoltage;
+                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + SafetyMarginVoltage;
+                _dischargerData.SafetyTempMin = _parameters.SafetyTempMin;
+                _dischargerData.SafetyTempMax = _parameters.SafetyTempMax;
             }
 
             ReadInfoTimer?.Stop();
@@ -329,6 +355,8 @@ namespace Ethernet.Client.Discharger
             temp.SafetyCurrentMax = _dischargerData.SafetyCurrentMax;
             temp.SafetyVoltageMin = _dischargerData.SafetyVoltageMin;
             temp.SafetyVoltageMax = _dischargerData.SafetyVoltageMax;
+            temp.SafetyTempMin = _dischargerData.SafetyTempMin;
+            temp.SafetyTempMax = _dischargerData.SafetyTempMax;
 
             /// start time
             temp.DischargingStartTime = _dischargerData.DischargingStartTime;
@@ -432,7 +460,7 @@ namespace Ethernet.Client.Discharger
             }
         }
 
-        public bool SendCommand_SetSafetyCondition(double voltageMax, double voltageMin, double currentMax, double currentMin)
+        public bool SendCommand_SetSafetyCondition(double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
             lock (_packetLock)
             {
@@ -441,7 +469,10 @@ namespace Ethernet.Client.Discharger
                 logArgument.Parameters["VoltMin"] = voltageMin;
                 logArgument.Parameters["CurrentMax"] = currentMax;
                 logArgument.Parameters["CurrentMin"] = currentMin;
+                logArgument.Parameters["TempMax"] = tempMax;
+                logArgument.Parameters["TempMin"] = tempMin;
 
+                // temp 안전 조건 설정 추가 반영 필요
                 byte[] writeBuffer = CreateSetSafetyConditionCommand(
                     _parameters.DischargerChannel,
                     voltageMax, voltageMin, currentMax, currentMin);
@@ -453,6 +484,13 @@ namespace Ethernet.Client.Discharger
                     AddTraceLog(logArgument);
                     return false;
                 }
+
+                _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
+                _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
+                _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
+                _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
+                _dischargerData.SafetyTempMin = tempMin;
+                _dischargerData.SafetyTempMax = tempMax;
 
                 logArgument.Parameters["Result"] = "success";
                 AddTraceLog(logArgument);
@@ -614,6 +652,8 @@ namespace Ethernet.Client.Discharger
 
         private bool ParseData(byte[] readBuffer)
         {
+            // 신규 모델 온도 값 받아오는 부분 관련 수정 필요
+
             try
             {
                 if (readBuffer == null || readBuffer.Length == 0)
@@ -654,7 +694,6 @@ namespace Ethernet.Client.Discharger
                         -channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax)
                     {
                         ChangeDischargerState(EDischargerState.SafetyOutOfRange);
-                        _dischargerData.ErrorCode = 0xF0000001;
                     }
                     else if (channelInfo.ErrorCode != 0) /// 에러코드 검사
                     {
@@ -663,12 +702,10 @@ namespace Ethernet.Client.Discharger
                     else if (channelInfo.ReturnCode != EReturnCode.Success) /// 리턴 코드 검사
                     {
                         ChangeDischargerState(EDischargerState.ReturnCodeError);
-                        _dischargerData.ErrorCode = 0xF0000002;
                     }
                     else if (channelInfo.ChannelStatus == EChannelStatus.Error) /// 채널 상태 검사
                     {
                         ChangeDischargerState(EDischargerState.ChStatusError);
-                        _dischargerData.ErrorCode = 0xF0000003;
                     }
                     else if (channelInfo.ChannelStatus == EChannelStatus.Standby0 || channelInfo.ChannelStatus == EChannelStatus.Standby5)
                     {

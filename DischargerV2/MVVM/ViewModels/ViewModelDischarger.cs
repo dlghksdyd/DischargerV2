@@ -177,6 +177,13 @@ namespace DischargerV2.MVVM.ViewModels
                 delegate()
                 {
                     _clients[dischargerName].Restart();
+
+                    // 방전기 재 연결 시, Temp Module도 재 연결할 수 있도록 함
+                    if (Model.DischargerInfos[index].Model == EDischargerModel.MBDC)
+                    {
+                        TableDischargerInfo tableDischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
+                        ViewModelTempModule.Instance.ReconnectTempModule(tableDischargerInfo.TempModuleComPort);
+                    }
                 });
             thread.Start();
         }
@@ -198,9 +205,14 @@ namespace DischargerV2.MVVM.ViewModels
         }
 
         public void SetSafetyCondition(string dischargerName, 
-            double voltageMax, double voltageMin, double currentMax, double currentMin)
+            double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
-            _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin);
+            _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
+        }
+
+        public void SetDischargerState(string dischargerName, EDischargerState eDischargerState)
+        {
+            _clients[dischargerName].ChangeDischargerState(eDischargerState);
         }
 
         private void InitializeDischarger()
@@ -267,6 +279,7 @@ namespace DischargerV2.MVVM.ViewModels
             TableDischargerModel model = modelTable.First();
 
             DischargerInfo dischargerInfo = new DischargerInfo();
+            dischargerInfo.Model = model.Model;
             dischargerInfo.Name = name;
             dischargerInfo.Channel = info.DischargerChannel;
             dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
@@ -297,6 +310,8 @@ namespace DischargerV2.MVVM.ViewModels
             parameters.SafetyVoltageMin = info.SafetyVoltageMin;
             parameters.SafetyCurrentMax = info.SafetyCurrentMax;
             parameters.SafetyCurrentMin = info.SafetyCurrentMin;
+            parameters.SafetyTempMax = info.SafetyTempMax;
+            parameters.SafetyTempMin = info.SafetyTempMin;
             _clients[info.Name] = new EthernetClientDischarger();
 
             Thread thread = new Thread(

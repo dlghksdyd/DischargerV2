@@ -61,21 +61,31 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void PauseDischarge()
         {
-            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].PauseDischarge();
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].PauseDischarge();
         }
 
         private void ResumeDischarge()
         {
-            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].ResumeDischarge();
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].ResumeDischarge();
         }
 
         private void StopDischarge()
         {
-            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.SelectedDischargerName].StopDischarge();
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
         }
 
         private void ReturnSetMode()
         {
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+
             // Monitor -> SetMode 화면 전환
             ViewModelMain.Instance.SetIsStartedArray(false);
         }

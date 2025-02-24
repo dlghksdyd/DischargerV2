@@ -25,6 +25,14 @@ namespace DischargerV2.MVVM.Enums
     {
         Full, Zero, Voltage, SoC
     }
+
+    public enum EDischargerData
+    {
+        Voltage, Current, Temp, SoC, 
+        SafetyVoltageMin, SafetyVoltageMax, 
+        SafetyCurrentMin, SafetyCurrentMax,
+        SafetyTempMin, SafetyTempMax
+    }
 }
 
 namespace DischargerV2.MVVM.Models
@@ -54,6 +62,32 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _dischargerName, value);
+            }
+        }
+
+        private int _tempModuleIndex;
+        public int TempModuleIndex
+        {
+            get
+            {
+                return _tempModuleIndex;
+            }
+            set
+            {
+                SetProperty(ref _tempModuleIndex, value);
+            }
+        }
+
+        private int _tempModuleChannel;
+        public int TempModuleChannel
+        {
+            get
+            {
+                return _tempModuleChannel;
+            }
+            set
+            {
+                SetProperty(ref _tempModuleChannel, value);
             }
         }
 

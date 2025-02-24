@@ -104,12 +104,29 @@ namespace DischargerV2.MVVM.ViewModels
         {
             ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
 
+            EDischargerModel model = viewModelDischarger.Model.DischargerInfos[Model.DischargerIndex].Model;
             EDischargerState receiveState = viewModelDischarger.Model.DischargerStates[Model.DischargerIndex];
+            
             double receiveVoltage = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveBatteryVoltage;
             double receiveCurrent = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveDischargeCurrent;
 
+            double safetyTempMin = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMin;
+            double safetyTempMax = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMax;
+
             if (Model.IsEnterLastPhase == false)
             {
+                // 모델별 온도 안전 조건 확인하는 부분
+                if (model == EDischargerModel.MBDC)
+                {
+                    double receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
+
+                    if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
+                    {
+                        viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
+                        return;
+                    }
+                }
+
                 // 타겟 전압에 도달했을 경우 Phase 상승
                 if (receiveVoltage <= Model.PhaseDataList[Model.PhaseNo].Voltage)
                 {

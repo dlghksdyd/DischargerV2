@@ -156,6 +156,11 @@ namespace Serial.Client.TempModule
             return _tempModuleClient.IsConnected();
         }
 
+        public ETempModuleClientError Restart()
+        {
+            return Start(_parameters);
+        }
+
         public ETempModuleClientError Start(SerialClientTempModuleStart parameters)
         {
             if (!IsParameterValid(parameters))

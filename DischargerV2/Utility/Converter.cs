@@ -1,4 +1,5 @@
 ﻿using DischargerV2.MVVM.Enums;
+using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using System;
@@ -476,6 +477,105 @@ namespace Utility.Common
     #endregion
 
     #region IMultiValueConverter
+    public class EDischargerDataToStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<DischargerDatas> dischargerDatas)
+            {
+                if (value[1] is int selectedIndex)
+                {
+                    if (value[2] is EDischargerData eDischargerData)
+                    {
+                        DischargerDatas dischargerData = dischargerDatas[selectedIndex];
+
+                        if (eDischargerData == EDischargerData.Voltage)
+                        {
+                            return dischargerData.ReceiveBatteryVoltage.ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.Current)
+                        {
+                            return dischargerData.ReceiveDischargeCurrent.ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.Temp)
+                        {
+                            return dischargerData.ReceiveDischargeTemp.ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SoC)
+                        {
+                            if (value[3] is Dictionary<string, ModelSetMode_Preset> modelDictionary)
+                            {
+                                if (value[4] is string dischargerName)
+                                {
+                                    string batteryType = modelDictionary[dischargerName].SelectedBatteryType;
+
+                                    return OCV_Table.getSOC(batteryType, dischargerData.ReceiveBatteryVoltage).ToString("F1");
+                                }
+                            }
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyVoltageMin)
+                        {
+                            return (dischargerData.SafetyVoltageMin + EthernetClientDischarger.SafetyMarginVoltage).ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyVoltageMax)
+                        {
+                            return (dischargerData.SafetyVoltageMax - EthernetClientDischarger.SafetyMarginVoltage).ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyCurrentMin)
+                        {
+                            return (dischargerData.SafetyCurrentMin + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyCurrentMax)
+                        {
+                            return (dischargerData.SafetyCurrentMax - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyTempMin)
+                        {
+                            return dischargerData.SafetyTempMin.ToString("F1");
+                        }
+                        else if (eDischargerData == EDischargerData.SafetyTempMax)
+                        {
+                            return dischargerData.SafetyTempMax.ToString("F1");
+                        }
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TempDataToStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<ObservableCollection<double>> tempDatas)
+            {
+                if (!(tempDatas.Count > 0))
+                    return Binding.DoNothing;
+
+                if (value[1] is int tempModuleIndex)
+                {
+                    if (value[2] is int tempModuleChannel)
+                    {
+                        return tempDatas[tempModuleIndex][tempModuleChannel].ToString();
+                    }
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class EDischargerStateToStringConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
@@ -869,7 +969,7 @@ namespace Utility.Common
                 }
                 else if (mode == EDischargeTarget.SoC)
                 {
-                    if (value[1] is string target)
+                    if (value[2] is string target)
                     {
                         return string.Format("Target SoC ({0}%)", target);
                     }
