@@ -563,7 +563,7 @@ namespace Utility.Common
                 {
                     if (value[2] is int tempModuleChannel)
                     {
-                        return tempDatas[tempModuleIndex][tempModuleChannel].ToString();
+                        return tempDatas[tempModuleIndex][tempModuleChannel].ToString("F1");
                     }
                 }
             }

@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utility.Common;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -138,14 +139,52 @@ namespace DischargerV2.MVVM.Views
                 row.Columns.Add(colCurrent);
 
                 /// Temperature
-                MexTableRowColumn colTemperature = new MexTableRowColumn();
-                colTemperature.DataContext = _viewModelTempModule;
-                colTemperature.Margin = new Thickness(16, 0, 16, 0);
-                colTemperature.FontSet = ResFontSet.body_md_regular;
-                int index = _viewModelTempModule.GetTempModuleDataIndex(dischargerInfo.TempModuleComPort);
-                BindingOperations.SetBinding(colTemperature, MexTextBlock.ContentProperty,
-                    new Binding("Model.TempDatas[" + index + "][" + dischargerInfo.TempChannel + "]"));
-                row.Columns.Add(colTemperature);
+                MexTableRowColumn tempRowColumn = new MexTableRowColumn();
+                tempRowColumn.Name = "xTemp" + i;
+                this.RegisterName(tempRowColumn.Name, tempRowColumn);
+
+                StackPanel tempStackPanel = new StackPanel();
+                tempStackPanel.DataContext = _viewModelTempModule;
+                tempStackPanel.Orientation = Orientation.Horizontal;
+                tempStackPanel.Margin = new Thickness(16, 0, 16, 0);
+
+                MexTextBlock tempTextBlock = new MexTextBlock();
+                Binding foregroundBinding = new Binding("Foreground");
+                foregroundBinding.ElementName = "xTemp" + i;
+                tempTextBlock.SetBinding(MexTextBlock.ForegroundProperty, foregroundBinding);
+                tempTextBlock.FontSet = ResFontSet.body_md_regular;
+                int comportIndex = _viewModelTempModule.Model.TempModuleDictionary[dischargerName].ComportIndex;
+                BindingOperations.SetBinding(tempTextBlock, MexTextBlock.TextProperty,
+                   new Binding("Model.TempDatas[" + comportIndex + "][" + dischargerInfo.TempChannel + "]"));
+                
+                tempStackPanel.Children.Add(tempTextBlock);
+
+                Image reconnectTempImage = new Image();
+                reconnectTempImage.Width = 24;
+                reconnectTempImage.Height = 24;
+                reconnectTempImage.Margin = new Thickness(8, 0, 0, 0);
+                reconnectTempImage.Cursor = Cursors.Hand;
+                reconnectTempImage.Source = (ImageSource)new ImageColorConverter().Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
+
+                BindingOperations.SetBinding(reconnectTempImage, Image.VisibilityProperty,
+                    new Binding("Model.ReconnectVisibility[" + comportIndex + "]"));
+
+                var reconnectTempModuleTriggerCollection = Interaction.GetTriggers(reconnectTempImage);
+                var reconnectTempModuleEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
+                reconnectTempModuleEventTrigger.EventName = "MouseLeftButtonUp";
+                var reconnectTempModuleAction = new InvokeCommandAction();
+                reconnectTempModuleAction.PassEventArgsToCommand = false;
+                reconnectTempModuleAction.CommandParameter = dischargerName;
+                BindingOperations.SetBinding(reconnectTempModuleAction, InvokeCommandAction.CommandProperty, 
+                    new Binding("ReconnectTempModuleCommand"));
+                reconnectTempModuleEventTrigger.Actions.Add(reconnectTempModuleAction);
+                reconnectTempModuleTriggerCollection.Add(reconnectTempModuleEventTrigger);
+                
+                tempStackPanel.Children.Add(reconnectTempImage);
+
+                tempRowColumn.Content = tempStackPanel;
+
+                row.Columns.Add(tempRowColumn);
 
                 /// Progress Time
                 MexTableRowColumn colProgressTime = new MexTableRowColumn();
@@ -224,8 +263,7 @@ namespace DischargerV2.MVVM.Views
                 imageReconnect.Width = 24;
                 imageReconnect.Height = 24;
                 imageReconnect.Margin = new Thickness(0, 0, 8, 0);
-                ImageColorConverter imageReconnectConverter = new ImageColorConverter();
-                imageReconnect.Source = (ImageSource)imageReconnectConverter.Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
+                imageReconnect.Source = (ImageSource)new ImageColorConverter().Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
                 spReconnect.Children.Add(imageReconnect);
 
                 MexTextBlock tbReconnect = new MexTextBlock();

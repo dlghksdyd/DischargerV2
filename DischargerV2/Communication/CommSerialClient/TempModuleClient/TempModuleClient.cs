@@ -37,6 +37,13 @@ namespace Serial.Client.TempModule
         FAIL_PROCESS_PACKET,
     }
 
+    public class TempModule
+    {
+        public int ComportIndex = int.MaxValue;
+        public string Comport = string.Empty;
+        public string Channel = string.Empty;
+    }
+
     public class SerialClientTempModuleStart
     {
         public string DeviceName = string.Empty;
@@ -251,7 +258,6 @@ namespace Serial.Client.TempModule
             if (!_tempModuleClient.IsConnected())
             {
                 ChangeTempModuleState(ETempModuleState.Disconnect);
-
                 return;
             }
 

@@ -317,30 +317,6 @@
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="UserControls\UcMonitor_Graph.xaml.cs">
-      <DependentUpon>UcMonitor_Graph.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_State.xaml.cs">
-      <DependentUpon>UcMonitor_State.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_Table.xaml.cs">
-      <DependentUpon>UcMonitor_Table.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor.xaml.cs">
-      <DependentUpon>UcMonitor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_Step.xaml.cs">
-      <DependentUpon>UcMonitor_Step.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_Simple.xaml.cs">
-      <DependentUpon>UcMonitor_Simple.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_Preset.xaml.cs">
-      <DependentUpon>UcMonitor_Preset.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UcMonitor_SafetyCondition.xaml.cs">
-      <DependentUpon>UcMonitor_SafetyCondition.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UcMonitor_ChannelState.xaml.cs">
       <DependentUpon>UcMonitor_ChannelState.xaml</DependentUpon>
     </Compile>
@@ -497,38 +473,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewPopup_Setting.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_Graph.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\UcMonitor_State.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_Table.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_Step.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_Simple.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_Preset.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UserControls\UcMonitor_SafetyCondition.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

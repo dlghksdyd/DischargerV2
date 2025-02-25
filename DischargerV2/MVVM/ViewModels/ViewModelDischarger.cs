@@ -103,7 +103,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
             ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
-
+            
             SelectDischargerCommand = new DelegateCommand<string>(SelectDischarger);
         }
 
@@ -177,13 +177,6 @@ namespace DischargerV2.MVVM.ViewModels
                 delegate()
                 {
                     _clients[dischargerName].Restart();
-
-                    // 방전기 재 연결 시, Temp Module도 재 연결할 수 있도록 함
-                    if (Model.DischargerInfos[index].Model == EDischargerModel.MBDC)
-                    {
-                        TableDischargerInfo tableDischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
-                        ViewModelTempModule.Instance.ReconnectTempModule(tableDischargerInfo.TempModuleComPort);
-                    }
                 });
             thread.Start();
         }
@@ -235,6 +228,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Model.DischargerNameList.Add(infos[index].DischargerName);
             }
+
+            ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
 
             OneSecondTimer?.Stop();
             OneSecondTimer = new System.Timers.Timer();
@@ -301,6 +296,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void InitializeDischargerClients(DischargerInfo info)
         {
             EthernetClientDischargerStart parameters = new EthernetClientDischargerStart();
+            parameters.DischargerModel = info.Model;
             parameters.DischargerName = info.Name;
             parameters.DischargerChannel = info.Channel;
             parameters.IpAddress = info.IpAddress;

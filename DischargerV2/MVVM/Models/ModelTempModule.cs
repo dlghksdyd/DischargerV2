@@ -1,10 +1,12 @@
 ﻿using Prism.Mvvm;
+using Serial.Client.TempModule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DischargerV2.MVVM.Models
 {
@@ -29,5 +31,32 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _tempDatas, value);
             }
         }
+
+        private ObservableCollection<Visibility> _reconnectVisibility = new ObservableCollection<Visibility>();
+        public ObservableCollection<Visibility> ReconnectVisibility
+        {
+            get { return _reconnectVisibility; }
+            set
+            {
+                SetProperty(ref _reconnectVisibility, value);
+            }
+        }
+
+        /// <summary>
+        /// Key : DischargerName (e.g. TEST_DEVICE)
+        /// </summary>
+        private Dictionary<string, TempModule> _tempModuleDictionary = new Dictionary<string, TempModule>();
+        public Dictionary<string, TempModule> TempModuleDictionary
+        {
+            get
+            {
+                return _tempModuleDictionary;
+            }
+            set
+            {
+                SetProperty(ref _tempModuleDictionary, value);
+            }
+        }
+
     }
 }

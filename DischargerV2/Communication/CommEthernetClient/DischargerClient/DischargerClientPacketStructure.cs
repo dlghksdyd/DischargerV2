@@ -141,8 +141,16 @@ namespace Ethernet.Client.Discharger
             public EChannelStatus ChannelStatus;
             public double BatteryVoltage;
             public double BatteryCurrent;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
-            private double[] Reservation = new double[7];
+            public double DCIR;
+            public float AuxTemp1;
+            public float AuxTemp2;
+            public Int16 DOModuleInfo;
+            public Int16 DIModuleInfo;
+            public double DischargeCapacity;
+            public float AuxTemp3;
+            public float AuxTemp4;
+            public double ChargeEnergy;
+            public double DischargeEnergy;
         }
     }
 

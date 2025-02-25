@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +17,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelTempModule
     {
         #region Command
-
-
+        public DelegateCommand<string> ReconnectTempModuleCommand { get; set; }
         #endregion
 
         public ModelTempModule Model { get; set; } = new ModelTempModule();
@@ -47,16 +47,38 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelTempModule()
         {
             InitializeTempModule();
+
+            ReconnectTempModuleCommand = new DelegateCommand<string>(ReconnectTempModule);
         }
 
-        public bool IsConnected(string comPortStr)
+        public void InitializeTempModuleDictionary(List<TableDischargerInfo> infos) 
         {
-            if (!_clients.ContainsKey(comPortStr))
+            Model.TempModuleDictionary.Clear();
+
+            foreach (var info in infos)
+            {
+                if (info.Model == EDischargerModel.MBDC)
+                {
+                    Model.TempModuleDictionary.Add(info.DischargerName, new TempModule()
+                    {
+                        ComportIndex = GetTempModuleDataIndex(info.TempModuleComPort),
+                        Comport = info.TempModuleComPort,
+                        Channel = info.TempModuleChannel
+                    });
+                }
+            }
+        }
+
+        public bool IsConnected(string dischargerName)
+        {
+            string comport = Model.TempModuleDictionary[dischargerName].Comport;
+
+            if (!_clients.ContainsKey(comport))
             {
                 return false;
             }
 
-            return _clients[comPortStr].IsConnected();
+            return _clients[comport].IsConnected();
         }
 
         public int GetTempModuleDataIndex(string comPortStr)
@@ -66,21 +88,21 @@ namespace DischargerV2.MVVM.ViewModels
 
         public double GetTempData(string dischargerName)
         {
-            TableDischargerInfo tableTischargerInfo = SqliteDischargerInfo.GetData().Find(x => x.DischargerName == dischargerName);
-            
-            int tempModuleIndex = GetTempModuleDataIndex(tableTischargerInfo.TempModuleComPort);
-            int tempModuleChannel = Convert.ToInt32(tableTischargerInfo.TempChannel);
+            int tempModuleIndex = Model.TempModuleDictionary[dischargerName].ComportIndex;
+            int tempModuleChannel = Convert.ToInt32(Model.TempModuleDictionary[dischargerName].Channel);
 
             return Model.TempDatas[tempModuleIndex][tempModuleChannel];
         }
 
-        public void ReconnectTempModule(string tempModuleComPort)
+        public void ReconnectTempModule(string dischargerName)
         {
-            Thread thread = new Thread(
-                delegate ()
-                {
-                    _clients[tempModuleComPort].Restart();
-                });
+            string comport = Model.TempModuleDictionary[dischargerName].Comport;
+
+            Thread thread = new Thread(delegate()
+            {
+                _clients[comport].Restart();
+            });
+
             thread.Start();
         }
 
@@ -99,6 +121,7 @@ namespace DischargerV2.MVVM.ViewModels
                 
                 Model.TempModuleComportList.Add(info.TempModuleComPort);
                 Model.TempDatas.Add(new ObservableCollection<double>());
+                Model.ReconnectVisibility.Add(Visibility.Collapsed);
 
                 for (int i = 0; i < _tempChannelCount; i++)
                 {
@@ -144,6 +167,7 @@ namespace DischargerV2.MVVM.ViewModels
                 datas.Clear();
             }
             Model.TempDatas.Clear();
+            Model.ReconnectVisibility.Clear();
         }
 
         private void CopyDataFromTempModuleClientToModel(object sender, System.Timers.ElapsedEventArgs e)
@@ -163,13 +187,18 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (var client in _clients)
             {
-                if (!client.Value.IsConnected())
-                {
-                    continue;
-                }
-
                 string comPortStr = client.Key.ToString();
                 int index = Model.TempModuleComportList.FindIndex(x => x == comPortStr);
+
+                if (!client.Value.IsConnected())
+                {
+                    Model.ReconnectVisibility[index] = Visibility.Visible;
+                    continue;
+                }
+                else
+                {
+                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
+                }
 
                 for (int i = 0; i < Model.TempDatas[index].Count; i++)
                 {
