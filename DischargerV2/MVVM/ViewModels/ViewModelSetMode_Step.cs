@@ -25,6 +25,8 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelSetMode_Step : BindableBase
     {
+        public event EventHandler SelectedDischargerChanged;
+
         #region Command
         public DelegateCommand EnterStandardCapacityCommand { get; set; }
         public DelegateCommand LoadStepInfoListCommand { get; set; }
@@ -100,6 +102,11 @@ namespace DischargerV2.MVVM.ViewModels
             Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
             Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;
             SetModelContent(Model, ModelDictionary[dischargerName]);
+
+            if (SelectedDischargerChanged != null)
+            {
+                this.SelectedDischargerChanged(this, EventArgs.Empty);
+            }
         }
 
         private void EnterStandardCapacity()
@@ -233,6 +240,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             targetModel.Content.RemoveAt(0);
+            targetModel.DischargerName = model.DischargerName;
         }
 
         public StepConfigure CreateStepConfigure()

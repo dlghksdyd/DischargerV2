@@ -30,16 +30,24 @@ namespace DischargerV2.MVVM.Views
             InitializeComponent();
 
             this.DataContext = _viewModel;
-            this.IsVisibleChanged += ViewMonitor_Step_IsVisibleChanged;
+
+            _viewModel.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
         }
 
-        private void ViewMonitor_Step_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        /// UpdateUI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _viewModel_SelectedDischargerChanged(object sender, EventArgs e)
         {
+            if (this.Visibility != Visibility.Visible) return;
+
             // Table 초기화
             xTable.Rows.Clear();
 
             ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
-            
+
             for (int index = 0; index < viewModelSetMode_Step.Model.Content.Count; index++)
             {
                 ModelSetMode_StepData stepData = viewModelSetMode_Step.Model.Content[index];
