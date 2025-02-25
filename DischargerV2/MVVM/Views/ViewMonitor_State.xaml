@@ -138,7 +138,9 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/PauseButtonOutline}"
-                           HorizontalAlignment="Stretch">
+                           HorizontalAlignment="Stretch"
+                           IsEnabled="{Binding Model.PauseNResumeIsEnable,
+                                               Source={x:Static vm:ViewModelMonitor_State.Instance}}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding PauseDischargeCommand, 
@@ -170,7 +172,7 @@
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding ResumeDischargeCommand, 
                                                                  Source={x:Static vm:ViewModelMonitor_State.Instance}}"
-                                        PassEventArgsToCommand="False"/>
+                                               PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
                 </b:Interaction.Triggers>   
             </Mex:MexButton>
@@ -183,7 +185,9 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StopButtonPrimary}"
-                           HorizontalAlignment="Stretch">
+                           HorizontalAlignment="Stretch"
+                           IsEnabled="{Binding Model.StopIsEnable,
+                                               Source={x:Static vm:ViewModelMonitor_State.Instance}}">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding StopDischargeCommand, 
@@ -202,7 +206,9 @@
                        ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                        ImageWidth="28" ImageHeight="28"
                        ImageSetLeft="{StaticResource Mex/ResImageSet_Component/FinishButtonTertiary}"
-                       HorizontalAlignment="Stretch">
+                       HorizontalAlignment="Stretch"
+                       IsEnabled="{Binding Model.FinishIsEnable,
+                                           Source={x:Static vm:ViewModelMonitor_State.Instance}}">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="Click">
                     <b:InvokeCommandAction Command="{Binding ReturnSetModeCommand, 

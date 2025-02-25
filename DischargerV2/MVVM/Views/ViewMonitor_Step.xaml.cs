@@ -31,15 +31,21 @@ namespace DischargerV2.MVVM.Views
 
             this.DataContext = _viewModel;
 
+            this.Loaded += ViewMonitorStep_Loaded;
             _viewModel.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
         }
 
-        /// <summary>
-        /// UpdateUI
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        private void ViewMonitorStep_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateUI();
+        }
+
         private void _viewModel_SelectedDischargerChanged(object sender, EventArgs e)
+        {
+            UpdateUI();
+        }
+
+        private void UpdateUI()
         {
             if (this.Visibility != Visibility.Visible) return;
 

@@ -475,7 +475,6 @@ namespace Ethernet.Client.Discharger
                 logArgument.Parameters["TempMax"] = tempMax;
                 logArgument.Parameters["TempMin"] = tempMin;
 
-                // temp 안전 조건 설정 추가 반영 필요
                 byte[] writeBuffer = CreateSetSafetyConditionCommand(
                     _parameters.DischargerChannel,
                     voltageMax, voltageMin, currentMax, currentMin);

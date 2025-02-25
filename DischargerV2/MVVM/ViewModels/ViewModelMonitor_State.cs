@@ -32,6 +32,7 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Model
+        public ModelMonitor_State Model { get; set; } = new ModelMonitor_State();
         #endregion
 
         #region Property
@@ -78,16 +79,21 @@ namespace DischargerV2.MVVM.ViewModels
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
             ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+
+            Model.PauseNResumeIsEnable = false;
+            Model.StopIsEnable = false;
+            Model.FinishIsEnable = true;
         }
 
         private void ReturnSetMode()
         {
-            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
-
-            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
-
             // Monitor -> SetMode 화면 전환
             ViewModelMain.Instance.SetIsStartedArray(false);
+
+            // Button IsEnable Binding 값 초기화
+            Model.PauseNResumeIsEnable = true;
+            Model.StopIsEnable = true;
+            Model.FinishIsEnable = false;
         }
     }
 }
