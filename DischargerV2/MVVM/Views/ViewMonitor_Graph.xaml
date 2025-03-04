@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" 
                     Orientation="Horizontal">
-            <Border Width="70"
+            <Border x:Name="x" Width="70"
                     BorderBrush="{StaticResource Mex/ResColor/border_success}"
                     BorderThickness="0,0,1,0">
                 <StackPanel Orientation="Horizontal">

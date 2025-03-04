@@ -19,7 +19,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Util:EDischargeTargetToBoolConverter x:Key="EDischargeTargetToBoolConverter"/>
-            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+            <Mex:IsDoubleConverter x:Key="IsDoubleConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 

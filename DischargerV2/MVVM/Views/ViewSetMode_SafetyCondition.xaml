@@ -16,7 +16,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Util:IsDoubleConverter x:Key="IsDoubleConverter"/>
+            <Mex:IsDoubleConverter x:Key="IsDoubleConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
