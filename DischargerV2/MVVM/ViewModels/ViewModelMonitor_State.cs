@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -25,6 +26,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelMonitor_State : BindableBase
     {
         #region Command
+        public DelegateCommand<string> ChangedStateCommand { get; set; }
         public DelegateCommand PauseDischargeCommand { get; set; }
         public DelegateCommand ResumeDischargeCommand { get; set; }
         public DelegateCommand StopDischargeCommand { get; set; }
@@ -54,10 +56,26 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
+            ChangedStateCommand = new DelegateCommand<string>(ChangedState);
             PauseDischargeCommand = new DelegateCommand(PauseDischarge);
             ResumeDischargeCommand = new DelegateCommand(ResumeDischarge);
             StopDischargeCommand = new DelegateCommand(StopDischarge);
             ReturnSetModeCommand = new DelegateCommand(ReturnSetMode);
+        }
+
+        public void ChangedState(string state)
+        {
+            if (Model.State == EDischargerState.Discharging.ToString())
+            {
+                // 방전 완료되었을 때
+                if (state == EDischargerState.Ready.ToString())
+                {
+                    Model.PauseNResumeIsEnable = false;
+                    Model.StopIsEnable = false;
+                    Model.FinishIsEnable = true;
+                }
+            }
+            Model.State = state;
         }
 
         private void PauseDischarge()

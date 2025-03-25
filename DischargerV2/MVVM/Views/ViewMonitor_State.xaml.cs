@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
+using static System.Windows.Forms.AxHost;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -29,6 +30,13 @@ namespace DischargerV2.MVVM.Views
             InitializeComponent();
 
             this.DataContext = _viewModel;
+        }
+
+        private void xStateTextBlock_TextChanged(object sender, EventArgs e)
+        {
+            MexTextBlock mexTextBlock = sender as MexTextBlock;
+
+            _viewModel.ChangedState(mexTextBlock.Text);
         }
     }
 }

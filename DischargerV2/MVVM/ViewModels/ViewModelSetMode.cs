@@ -27,7 +27,6 @@ namespace DischargerV2.MVVM.ViewModels
     {
         #region Command
         public DelegateCommand<string> SelectModeCommand { get; set; }
-        public DelegateCommand StartDischargeCommand { get; set; }
         #endregion
 
         #region Model
@@ -88,13 +87,12 @@ namespace DischargerV2.MVVM.ViewModels
             _instance = this;
 
             SelectModeCommand = new DelegateCommand<string>(SelectMode);
-            StartDischargeCommand = new DelegateCommand(StartDischarge);
 
             InitializeModelDictionary();
             InitializeViewModelDictionary();
         }
 
-        public void SetDischargerName(string dischargerName, int dischargerIndex)
+        public void SetDischargerName(string dischargerName)
         {
             Model = ModelDictionary[dischargerName];
 
@@ -178,19 +176,11 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void SelectMode(string mode)
+        public void StartDischarge()
         {
-            foreach (EDischargeMode eMode in Enum.GetValues(typeof(EDischargeMode)))
-            {
-                if (mode.ToString() == eMode.ToString())
-                {
-                    Model.Mode = eMode;
-                }
-            }
-        }
+            // 설정 값 적용
+            SetDischargerName(Model.DischargerName);
 
-        private void StartDischarge()
-        {
             if (!CheckModeNTarget()) return;
             if (!CheckNSetSafetyCondition()) return;
             if (!CalculateTarget(out ModelStartDischarge model)) return;
@@ -203,6 +193,17 @@ namespace DischargerV2.MVVM.ViewModels
 
                 // SetMode -> Monitor 화면 전환
                 ViewModelMain.Instance.SetIsStartedArray(true);
+            }
+        }
+
+        private void SelectMode(string mode)
+        {
+            foreach (EDischargeMode eMode in Enum.GetValues(typeof(EDischargeMode)))
+            {
+                if (mode.ToString() == eMode.ToString())
+                {
+                    Model.Mode = eMode;
+                }
             }
         }
 
@@ -446,6 +447,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 foreach (var stepData in modelStep.Content)
                 {
+                    if (stepData == null) continue;
+
                     model.PhaseDataList.Add(new PhaseData()
                     {
                         Voltage = Convert.ToDouble(stepData.Voltage),

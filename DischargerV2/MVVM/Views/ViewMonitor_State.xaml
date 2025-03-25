@@ -70,7 +70,8 @@
                 </Image>
                 <Mex:MexTextBlock x:Name="xStateTextBlock"
                                   Grid.Column="2" Grid.Row="0"
-                                  FontSet="{StaticResource Mex/ResFontSet/heading_h5}">
+                                  FontSet="{StaticResource Mex/ResFontSet/heading_h5}"
+                                  TextChanged="xStateTextBlock_TextChanged">
                     <Mex:MexTextBlock.Foreground>
                         <MultiBinding Converter="{StaticResource EDischargerStateToForegroundConverter}"
                                       ConverterParameter="ERROR">

@@ -30,5 +30,10 @@ namespace DischargerV2.MVVM.Views
 
             this.DataContext = _viewModel;
         }
+
+        private void xStartButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.StartDischarge();
+        }
     }
 }

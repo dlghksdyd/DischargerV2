@@ -19,7 +19,6 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelTopbar : BindableBase
     {
         #region Command
-        public DelegateCommand xTopbar_MouseLeftButtonDownCommand { get; set; }
         public ICommand xImage_MouseLeftButtonUpCommand { get; set; }
         public ICommand xImage_MouseEnterCommand { get; set; }
         public ICommand xImage_MouseLeaveCommand { get; set; }
@@ -33,17 +32,9 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Model = new ModelTopbar();
 
-            xTopbar_MouseLeftButtonDownCommand = new DelegateCommand(xTopbar_MouseLeftButtonDown);
-
             xImage_MouseLeftButtonUpCommand = new RelayCommand<object>(xImage_MouseLeftButtonUp);
             xImage_MouseEnterCommand = new RelayCommand<object>(xImage_MouseEnter);
             xImage_MouseLeaveCommand = new RelayCommand<object>(xImage_MouseLeave);
-        }
-
-        private void xTopbar_MouseLeftButtonDown()
-        {
-            ViewMain viewMain = ViewMain.Instance;
-            viewMain.DragMove();
         }
 
         private void xImage_MouseLeftButtonUp(object obj)

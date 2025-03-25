@@ -312,21 +312,25 @@
                     HorizontalAlignment="Right">
             <Mex:MexCheckBox x:Name="xVoltCheckBox"
                              Text="Voltage"
+                             Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="True"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xCurrent"
                              Text="Current"
+                             Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="True"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xTempCheckBox"
                              Text="Temp."
+                             Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="True"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xSocCheckBox"
                              Text="SoC"
+                             Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="True"/>
         </StackPanel>

@@ -28,5 +28,10 @@ namespace DischargerV2.MVVM.Views
 
             this.DataContext = new ViewModelTopbar();
         }
+
+        private void MexTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ViewMain.Instance.DragMove();
+        }
     }
 }

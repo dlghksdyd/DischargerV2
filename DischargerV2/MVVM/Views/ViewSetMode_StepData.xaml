@@ -103,6 +103,7 @@
                     </b:Interaction.Triggers></Mex:MexTextBox>
             </StackPanel>
             <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6"
+                           Width="48" Height="48"
                            Padding="12"
                            BorderThickness="1"
                            CornerRadius="8"

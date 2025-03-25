@@ -168,7 +168,8 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
-                           HorizontalAlignment="Stretch">
+                           HorizontalAlignment="Stretch"
+                           Click="xStartButton_Click" >
                 <Mex:MexButton.IsEnabled>
                     <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}"
                                   ConverterParameter="Ready">
@@ -178,13 +179,6 @@
                         </MultiBinding.Bindings>
                     </MultiBinding>
                 </Mex:MexButton.IsEnabled>
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding StartDischargeCommand, 
-                                                                 Source={x:Static vm:ViewModelSetMode.Instance}}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
             </Mex:MexButton>
         </Grid>
     </Grid>

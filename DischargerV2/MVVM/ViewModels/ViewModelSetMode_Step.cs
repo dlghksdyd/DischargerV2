@@ -97,7 +97,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             SelectedDischargerName = dischargerName;
-
+            
             // ModelDictionary 값 가져오기
             Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
             Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;

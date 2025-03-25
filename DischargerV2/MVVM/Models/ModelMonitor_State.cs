@@ -18,6 +18,19 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelMonitor_State : BindableBase
     {
+        private string _state = string.Empty;
+        public string State
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                SetProperty(ref _state, value);
+            }
+        }
+
         private bool _pauseNResumeIsEnable = true;
         public bool PauseNResumeIsEnable
         {
