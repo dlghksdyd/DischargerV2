@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <Util:RectangleInGraphWidthConverter x:Key="RectangleInGraphWidthConverter"/>
             <Util:RectangleInGraphHeightConverter x:Key="RectangleInGraphHeightConverter"/>
+            <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -33,9 +34,12 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" 
                     Orientation="Horizontal">
-            <Border x:Name="x" Width="70"
+            <Border Width="70"
                     BorderBrush="{StaticResource Mex/ResColor/border_success}"
-                    BorderThickness="0,0,1,0">
+                    BorderThickness="0,0,1,0"
+                    Visibility="{Binding Model.IsCheckedVoltage, 
+                                         Source={x:Static vm:ViewModelMonitor_Graph.Instance},
+                                         Converter={StaticResource BoolToVisibilityConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Mex:MexTextBlock Text="Voltage (V)" 
                                       Height="28" Margin="-40,0,-40,40"
@@ -98,7 +102,10 @@
             </Border>
             <Border Width="70"
                     BorderBrush="{StaticResource Mex/ResColor/border_warning}"
-                    BorderThickness="0,0,1,0">
+                    BorderThickness="0,0,1,0"
+                    Visibility="{Binding Model.IsCheckedCurrent, 
+                                         Source={x:Static vm:ViewModelMonitor_Graph.Instance},
+                                         Converter={StaticResource BoolToVisibilityConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Mex:MexTextBlock Text="Current (A)" 
                                       Height="28" Margin="-40,0,-40,39.5"
@@ -161,7 +168,10 @@
             </Border>
             <Border Width="70"
                     BorderBrush="{StaticResource Mex/ResColor/border_infomation}"
-                    BorderThickness="0,0,1,0">
+                    BorderThickness="0,0,1,0"
+                    Visibility="{Binding Model.IsCheckedTemp, 
+                                         Source={x:Static vm:ViewModelMonitor_Graph.Instance},
+                                         Converter={StaticResource BoolToVisibilityConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Mex:MexTextBlock Text="Temperatrue (℃)" 
                                       Height="28" Margin="-67.5,0,-67.5,67"
@@ -224,7 +234,10 @@
             </Border>
             <Border Width="70"
                     BorderBrush="{StaticResource Mex/ResColor/border_error}"
-                    BorderThickness="0,0,1,0">
+                    BorderThickness="0,0,1,0"
+                    Visibility="{Binding Model.IsCheckedSoc, 
+                                         Source={x:Static vm:ViewModelMonitor_Graph.Instance},
+                                         Converter={StaticResource BoolToVisibilityConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Mex:MexTextBlock Text="SoC (%)" 
                                       Height="28" Margin="-24,0,-24,23.5"
@@ -298,10 +311,11 @@
                                  Viewport="0,0,0.2,0.2"
                                  ViewportUnits="RelativeToBoundingBox">
                         <VisualBrush.Visual>
-                            <Rectangle x:Name="xRectangle" 
-                                       Width="{Binding ElementName=xGraphCanvas, Converter={StaticResource RectangleInGraphWidthConverter}}" 
+                            <Rectangle Width="{Binding ElementName=xGraphCanvas, Converter={StaticResource RectangleInGraphWidthConverter}}" 
                                        Height="{Binding ElementName=xGraphCanvas, Converter={StaticResource RectangleInGraphHeightConverter}}" 
-                                       Stroke="{StaticResource Mex/ResColor/border_primary}" StrokeThickness="1"/>
+                                       Stroke="{StaticResource Mex/ResColor/border_primary}" 
+                                       StrokeThickness="0.5"
+                                       StrokeDashArray="1"/>
                         </VisualBrush.Visual>
                     </VisualBrush>
                 </Canvas.Background>
@@ -314,25 +328,33 @@
                              Text="Voltage"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="True"/>
+                             IsChecked="{Binding Model.IsCheckedVoltage, 
+                                                 Mode=TwoWay,
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xCurrent"
                              Text="Current"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="True"/>
+                             IsChecked="{Binding Model.IsCheckedCurrent, 
+                                                 Mode=TwoWay,
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xTempCheckBox"
                              Text="Temp."
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="True"/>
+                             IsChecked="{Binding Model.IsCheckedTemp, 
+                                                 Mode=TwoWay,
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xSocCheckBox"
                              Text="SoC"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="True"/>
+                             IsChecked="{Binding Model.IsCheckedSoc, 
+                                                 Mode=TwoWay,
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
         </StackPanel>
     </Grid>
 </UserControl>

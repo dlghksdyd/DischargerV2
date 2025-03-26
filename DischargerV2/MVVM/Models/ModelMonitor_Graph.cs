@@ -49,7 +49,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private bool _isCheckedSoc = false;
+        private bool _isCheckedSoc = true;
         public bool IsCheckedSoc
         {
             get
