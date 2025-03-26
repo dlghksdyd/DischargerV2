@@ -22,9 +22,13 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewMonitor_Graph : UserControl
     {
+        private ViewModelMonitor_Graph _viewModel = ViewModelMonitor_Graph.Instance;
+
         public ViewMonitor_Graph()
         {
             InitializeComponent();
+
+            this.DataContext = _viewModel;
         }
     }
 }
