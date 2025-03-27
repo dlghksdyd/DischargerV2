@@ -1,30 +1,18 @@
 ﻿using DischargerV2.MVVM.Models;
-using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
-using Microsoft.WindowsAPICodePack.Shell;
 using Prism.Commands;
 using Prism.Mvvm;
-using Serial.Client.TempModule;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Xml.Linq;
-using static System.Windows.Forms.AxHost;
 
 namespace DischargerV2.MVVM.ViewModels
 {

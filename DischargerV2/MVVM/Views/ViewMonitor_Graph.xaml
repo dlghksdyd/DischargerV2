@@ -16,8 +16,6 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Util:RectangleInGraphWidthConverter x:Key="RectangleInGraphWidthConverter"/>
-            <Util:RectangleInGraphHeightConverter x:Key="RectangleInGraphHeightConverter"/>
             <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -28,7 +26,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ScottPlot:WpfPlot x:Name="xDataGraph" Grid.Row="0"/>
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="1" Margin="0 24 0 0"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <Mex:MexCheckBox x:Name="xVoltCheckBox"
