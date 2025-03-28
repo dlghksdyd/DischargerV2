@@ -63,9 +63,10 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                         {
-                            Title = "Confirm Exit",
-                            Comment = "Do you want to exit?",
+                            Title = "Confirm Log-out",
+                            Comment = "Do you want to Log-out?",
                             CallBackDelegate = Logout,
+                            ConfirmText = "Logout"
                         };
 
                         ViewModelMain viewModelMain = ViewModelMain.Instance;

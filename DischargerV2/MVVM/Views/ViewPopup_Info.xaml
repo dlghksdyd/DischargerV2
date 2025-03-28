@@ -62,7 +62,7 @@
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Exit"
+                           Text="{Binding Model.ConfirmText, FallbackValue=Confirm}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            Cursor="Hand">

@@ -195,6 +195,7 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
+    <Compile Include="MVVM\Enums\Enums.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister.cs" />
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
@@ -334,6 +335,9 @@
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_Warning.xaml.cs">
       <DependentUpon>ViewPopup_Warning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewMonitor_ChannelState.xaml.cs">
+      <DependentUpon>ViewMonitor_ChannelState.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewUserSetting_Add.xaml.cs">
       <DependentUpon>ViewUserSetting_Add.xaml</DependentUpon>
@@ -488,6 +492,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewPopup_Warning.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewMonitor_ChannelState.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

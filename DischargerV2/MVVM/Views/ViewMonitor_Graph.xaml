@@ -26,7 +26,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ScottPlot:WpfPlot x:Name="xDataGraph" Grid.Row="0"/>
-        <StackPanel Grid.Row="1" Margin="0 24 0 0"
+        <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <Mex:MexCheckBox x:Name="xVoltCheckBox"
@@ -35,7 +35,8 @@
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding Model.IsCheckedVoltage, 
                                                  Mode=TwoWay,
-                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}" 
+                             MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xCurrent"
                              Text="Current"
@@ -43,7 +44,8 @@
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding Model.IsCheckedCurrent, 
                                                  Mode=TwoWay,
-                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
+                             MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xTempCheckBox"
                              Text="Temp."
@@ -51,7 +53,8 @@
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding Model.IsCheckedTemp, 
                                                  Mode=TwoWay,
-                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
+                             MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xSocCheckBox"
                              Text="SoC"
@@ -59,7 +62,11 @@
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding Model.IsCheckedSoc, 
                                                  Mode=TwoWay,
-                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"/>
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
+                             IsEnabled="{Binding Model.IsCheckedSoc, 
+                                                 Mode=TwoWay,
+                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
+                             MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
         </StackPanel>
     </Grid>
 </UserControl>

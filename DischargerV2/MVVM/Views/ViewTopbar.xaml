@@ -23,12 +23,13 @@
         <Image Grid.Column="1" 
                Margin="6"
                Source="{StaticResource Mex/ResImage/icon_discharger}"/>
-        <Mex:MexTextBlock Grid.Column="2" 
+        <Mex:MexTextBlock x:Name="xTitleTextBlock" Grid.Column="2" 
                           Padding="8,0,8,0"
                           Text="Smart Discharger v2.0.0" 
                           Foreground="{StaticResource Mex/ResColor/text_headings}" 
                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                          MouseLeftButtonDown="MexTextBlock_MouseLeftButtonDown">
+                          MouseLeftButtonDown="xTitleTextBlock_MouseLeftButtonDown"
+                          MouseDoubleClick="xTitleTextBlock_MouseDoubleClick">
         </Mex:MexTextBlock>
         <Grid Grid.Column="3" Cursor="Hand"
               Background="{Binding Model.Background_Minimize}">

@@ -330,6 +330,46 @@ namespace Utility.Common
             return Binding.DoNothing;
         }
     }
+
+    public class EDischargerStateToIntConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is ObservableCollection<EDischargerState> DischargerStates)
+            {
+                if (parameter is EMonitorState eMonitorState)
+                {
+                    if (eMonitorState == EMonitorState.All)
+                    {
+                        return DischargerStates.Count;
+                    }
+                    else if (eMonitorState == EMonitorState.Connected)
+                    {
+                        return DischargerStates.Where(
+                            x =>
+                            x.Equals(EDischargerState.Ready) ||
+                            x.Equals(EDischargerState.Discharging) ||
+                            x.Equals(EDischargerState.Pause)).Count();
+                    }
+                    else //id (eMonitorState == EMonitorState.Fault)
+                    {
+                        return DischargerStates.Where(
+                            x =>
+                            x.Equals(EDischargerState.SafetyOutOfRange) ||
+                            x.Equals(EDischargerState.ReturnCodeError) ||
+                            x.Equals(EDischargerState.ChStatusError) ||
+                            x.Equals(EDischargerState.DeviceError)).Count();
+                    }
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Binding.DoNothing;
+        }
+    }
     #endregion
 
     #region IMultiValueConverter

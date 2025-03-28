@@ -70,7 +70,7 @@
                     </StackPanel>
                     <!--Edit-->
                     <Mex:MexButton x:Name="xEditButton" Grid.Column="4"
-                                   Padding="12"
+                                   Width="48" Height="48" Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"
@@ -85,7 +85,7 @@
                     </Mex:MexButton>
                     <!--Delete-->
                     <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6" 
-                                   Padding="12"
+                                   Width="48" Height="48" Padding="12"
                                    BorderThickness="1"
                                    CornerRadius="8"
                                    ImageWidth="24" ImageHeight="24"

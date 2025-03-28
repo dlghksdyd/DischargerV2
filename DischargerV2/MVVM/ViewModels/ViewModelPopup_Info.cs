@@ -47,6 +47,12 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.Parameter;
             set => Model.Parameter = value;
         }
+
+        public string ConfirmText
+        {
+            get => Model.ConfirmText;
+            set => Model.ConfirmText = value;
+        }
         #endregion
 
         public ViewModelPopup_Info()

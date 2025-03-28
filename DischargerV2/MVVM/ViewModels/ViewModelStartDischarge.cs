@@ -57,6 +57,7 @@ namespace DischargerV2.MVVM.ViewModels
             // 초기화
             Model.PhaseNo = 0;
             Model.IsEnterLastPhase = false;
+            ViewModelMonitor_Graph.Instance.ClearReceiveData(Model.DischargerName);
 
             ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
             {
@@ -98,11 +99,15 @@ namespace DischargerV2.MVVM.ViewModels
         public void StopDischarge()
         {
             ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
+
+            DischargeTimer?.Stop();
+            DischargeTimer = null;
         }
 
         private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
+            ViewModelMonitor_Graph viewModelMonitor_Graph = ViewModelMonitor_Graph.Instance;
 
             EDischargerModel model = viewModelDischarger.Model.DischargerInfos[Model.DischargerIndex].Model;
             EDischargerState receiveState = viewModelDischarger.Model.DischargerStates[Model.DischargerIndex];
@@ -112,19 +117,29 @@ namespace DischargerV2.MVVM.ViewModels
 
             double safetyTempMin = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMin;
             double safetyTempMax = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMax;
-
+            
+            // 방전기 동작 설정 및 확인
             if (Model.IsEnterLastPhase == false)
             {
-                // 모델별 온도 안전 조건 확인하는 부분
+                // 모델별 온도 받아오는 게 다름
                 if (model == EDischargerModel.MBDC)
                 {
                     double receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
 
+                    // 온도 안전 조건 확인하는 부분
                     if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
                     {
                         viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
                         return;
                     }
+
+                    // Graph 데이터 전달
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex], receiveTemp);
+                }
+                else
+                {
+                    // Graph 데이터 전달
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex]);
                 }
 
                 // 타겟 전압에 도달했을 경우 Phase 상승

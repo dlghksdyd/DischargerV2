@@ -4,6 +4,7 @@ using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
 using ScottPlot.Plottables;
 using ScottPlot.AxisPanels;
+using ScottPlot;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -14,16 +15,6 @@ namespace DischargerV2.MVVM.Views
     {
         private ViewModelMonitor_Graph _viewModel = ViewModelMonitor_Graph.Instance;
 
-        private SignalXY _signalVoltage;
-        private SignalXY _signalCurrent;
-        private SignalXY _signalTemp;
-        private SignalXY _signalSoc;
-
-        private LeftAxis _yAxisVoltage;
-        private LeftAxis _yAxisCurrent;
-        private LeftAxis _yAxisTemp;
-        private LeftAxis _yAxisSoc;
-
         public ViewMonitor_Graph()
         {
             InitializeComponent();
@@ -31,127 +22,196 @@ namespace DischargerV2.MVVM.Views
 
             this.DataContext = _viewModel;
 
-            this.IsVisibleChanged += ViewMonitor_Graph_IsVisibleChanged;
-        }
-
-        private void ViewMonitor_Graph_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is bool isVisible && isVisible)
-            {
-                //System.Drawing.Color _voltageColor = System.Drawing.Color.FromArgb(ResColor.border_success.Color.R, ResColor.border_success.Color.G, ResColor.border_success.Color.B);
-                //ScottPlot.Color voltageColor = ScottPlot.Color.FromColor(_voltageColor);
-
-                //double[] exNoArray1 = new double[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                //double[] exVoltageArray1 = new double[10] { 90, 85, 80, 75, 70, 65, 60, 55, 50, 45 };
-                //double[] exNoArray2 = new double[15] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-                //double[] exVoltageArray2 = new double[15] { 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 60, 65, 70, 75, 80 };
-
-                //SignalXYSourceDoubleArray sourceVoltage;
-
-                ////sourceVoltage = new SignalXYSourceDoubleArray(exNoArray2, exVoltageArray2);
-                //sourceVoltage = new SignalXYSourceDoubleArray(exNoArray1, exVoltageArray1);
-
-                //xDataGraph.Plot.Remove(_signalVoltage);
-
-                //_signalVoltage = xDataGraph.Plot.Add.SignalXY(sourceVoltage, voltageColor);
-
-                //_signalSoc.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-                //_signalSoc.Axes.YAxis = _yAxisSoc;
-
-                //xDataGraph.Refresh();
-            }
+            _viewModel.GetDataChanged += _viewModel_GetDataChanged;
         }
 
         private void InitializeUI()
         {
-            System.Drawing.Color borderDrawingColor = System.Drawing.Color.FromArgb(ResColor.border_primary.Color.R, ResColor.border_primary.Color.G, ResColor.border_primary.Color.B);
-            ScottPlot.Color borderScottPlotColor = ScottPlot.Color.FromColor(borderDrawingColor);
-
-            System.Drawing.Color textDrawingColor = System.Drawing.Color.FromArgb(ResColor.text_body.Color.R, ResColor.text_body.Color.G, ResColor.text_body.Color.B);
-            ScottPlot.Color textScottPlotColor = ScottPlot.Color.FromColor(textDrawingColor);
-
-            System.Drawing.Color voltageDrawingColor = System.Drawing.Color.FromArgb(ResColor.border_success.Color.R, ResColor.border_success.Color.G, ResColor.border_success.Color.B);
-            ScottPlot.Color voltageScottPlotColor = ScottPlot.Color.FromColor(voltageDrawingColor);
-
-            System.Drawing.Color currentDrawingColor = System.Drawing.Color.FromArgb(ResColor.border_warning.Color.R, ResColor.border_warning.Color.G, ResColor.border_warning.Color.B);
-            ScottPlot.Color currentScottPlotColor = ScottPlot.Color.FromColor(currentDrawingColor);
-
-            System.Drawing.Color tempDrawingColor = System.Drawing.Color.FromArgb(ResColor.border_infomation.Color.R, ResColor.border_infomation.Color.G, ResColor.border_infomation.Color.B);
-            ScottPlot.Color tempScottPlotColor = ScottPlot.Color.FromColor(tempDrawingColor);
-
-            System.Drawing.Color socDrawingColor = System.Drawing.Color.FromArgb(ResColor.border_error.Color.R, ResColor.border_error.Color.G, ResColor.border_error.Color.B);
-            ScottPlot.Color socScottPlotColor = ScottPlot.Color.FromColor(socDrawingColor);
-
-            double[] exNoArray = new double[10] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            double[] exVoltageArray = new double[10] { 90, 85, 80, 75, 70, 65, 60, 55, 50, 45 };
-            double[] exCurrentrray = new double[10] { 80, 80, 70, 70, 60, 60, 50, 50, 40, 40 };
-            double[] exTempArray = new double[10] { 70, 75, 70, 65, 60, 65, 60, 55, 50, 45 };
-            double[] exSocArray = new double[10] { 60, 50, 40, 30, 20, 10, 5, 4, 5, 2 };
-
             // 그래프 색상 설정
             xDataGraph.Plot.FigureBackground.Color = ScottPlot.Color.FromColor(System.Drawing.Color.Transparent);
-            xDataGraph.Plot.Grid.MajorLineColor = borderScottPlotColor;
-            xDataGraph.Plot.Axes.Color(textScottPlotColor);
+            xDataGraph.Plot.Grid.MajorLineColor = _viewModel.LineColor;
+            xDataGraph.Plot.Axes.Color(_viewModel.TextColor);
 
             // 데이터 초기화
             xDataGraph.Plot.PlottableList.Clear();
 
-            _signalVoltage = xDataGraph.Plot.Add.SignalXY(exNoArray, exVoltageArray, voltageScottPlotColor);
-            _signalCurrent = xDataGraph.Plot.Add.SignalXY(exNoArray, exCurrentrray, currentScottPlotColor);
-            _signalTemp = xDataGraph.Plot.Add.SignalXY(exNoArray, exTempArray, tempScottPlotColor);
-            //_signalSoc = xDataGraph.Plot.Add.SignalXY(exNoArray, exSocArray, socScottPlotColor);
+            // X/Y축 디자인 변경
+            xDataGraph.Plot.Axes.Bottom.TickLabelStyle.IsVisible = false;
+            xDataGraph.Plot.Axes.Bottom.MajorTickStyle.Length = 0;
+            xDataGraph.Plot.Axes.Bottom.MinorTickStyle.Length = 0;
+            xDataGraph.Plot.Axes.Left.TickLabelStyle.IsVisible = false;
+            xDataGraph.Plot.Axes.Left.TickLabelStyle.FontSize = 0;
+            xDataGraph.Plot.Axes.Left.MajorTickStyle.Length = 0;
+            xDataGraph.Plot.Axes.Left.MinorTickStyle.Length = 0;
 
-            // Soc - Y축 생성
-            _yAxisSoc = (LeftAxis)xDataGraph.Plot.Axes.Left;
-            _yAxisSoc.Color(textScottPlotColor);
-            _yAxisSoc.LabelText = "SoC(%)";
-            _yAxisSoc.LabelFontColor = socScottPlotColor;
-            _yAxisSoc.LabelFontName = "맑은 고딕";
-            _yAxisSoc.LabelFontSize = (float)ResFontSize.heading_6;
+            // SoC - Y축 생성 및 디자인 변경
+            _viewModel.SocAxis = xDataGraph.Plot.Axes.AddLeftAxis();
+            _viewModel.SocAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
+            _viewModel.SocAxis.MajorTickStyle.Length = 0;
+            _viewModel.SocAxis.MinorTickStyle.Length = 0;
+            _viewModel.SocAxis.FrameLineStyle.Color = _viewModel.SocColor;
+            _viewModel.SocAxis.FrameLineStyle.Width = 2;
+            _viewModel.SocAxis.LabelFontColor = _viewModel.TextColor;
+            _viewModel.SocAxis.LabelText = "SoC (%)";
+            _viewModel.SocAxis.LabelFontName = "맑은 고딕";
+            _viewModel.SocAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            //_signalSoc.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-            //_signalSoc.Axes.YAxis = _yAxisSoc;
+            // Temp - Y축 생성 및 디자인 변경
+            _viewModel.TempAxis = xDataGraph.Plot.Axes.AddLeftAxis();
+            _viewModel.TempAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
+            _viewModel.TempAxis.MajorTickStyle.Length = 0;
+            _viewModel.TempAxis.MinorTickStyle.Length = 0;
+            _viewModel.TempAxis.FrameLineStyle.Color = _viewModel.TempColor;
+            _viewModel.TempAxis.FrameLineStyle.Width = 2;
+            _viewModel.TempAxis.LabelFontColor = _viewModel.TextColor;
+            _viewModel.TempAxis.LabelText = "Temp (℃)";
+            _viewModel.TempAxis.LabelFontName = "맑은 고딕";
+            _viewModel.TempAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            var scatterSoc = xDataGraph.Plot.Add.Scatter(exNoArray, exSocArray, socScottPlotColor);
-            scatterSoc.LineWidth = (float)1.5;
-            scatterSoc.MarkerSize = 5;
-            scatterSoc.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-            scatterSoc.Axes.YAxis = _yAxisSoc;
+            // Current - Y축 생성 및 디자인 변경
+            _viewModel.CurrentAxis = xDataGraph.Plot.Axes.AddLeftAxis();
+            _viewModel.CurrentAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
+            _viewModel.CurrentAxis.MajorTickStyle.Length = 0;
+            _viewModel.CurrentAxis.MinorTickStyle.Length = 0;
+            _viewModel.CurrentAxis.FrameLineStyle.Color = _viewModel.CurrentColor;
+            _viewModel.CurrentAxis.FrameLineStyle.Width = 2;
+            _viewModel.CurrentAxis.LabelFontColor = _viewModel.TextColor;
+            _viewModel.CurrentAxis.LabelText = "Current (A)";
+            _viewModel.CurrentAxis.LabelFontName = "맑은 고딕";
+            _viewModel.CurrentAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            // Temp
-            _yAxisTemp = xDataGraph.Plot.Axes.AddLeftAxis();
-            _yAxisTemp.Color(textScottPlotColor);
-            _yAxisTemp.LabelText = "Temp(℃)";
-            _yAxisTemp.LabelFontColor = tempScottPlotColor;
-            _yAxisTemp.LabelFontName = "맑은 고딕";
-            _yAxisTemp.LabelFontSize = (float)ResFontSize.heading_6;
+            // Voltage - Y축 생성 및 디자인 변경
+            _viewModel.VoltageAxis = xDataGraph.Plot.Axes.AddLeftAxis();
+            _viewModel.VoltageAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
+            _viewModel.VoltageAxis.MajorTickStyle.Length = 0;
+            _viewModel.VoltageAxis.MinorTickStyle.Length = 0;
+            _viewModel.VoltageAxis.FrameLineStyle.Color = _viewModel.VoltageColor;
+            _viewModel.VoltageAxis.FrameLineStyle.Width = 2;
+            _viewModel.VoltageAxis.LabelFontColor = _viewModel.TextColor;
+            _viewModel.VoltageAxis.LabelText = "Voltage (V)";
+            _viewModel.VoltageAxis.LabelFontName = "맑은 고딕";
+            _viewModel.VoltageAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            _signalTemp.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-            _signalTemp.Axes.YAxis = _yAxisTemp;
+            DrawGraph();
+        }
 
-            // Current
-            _yAxisCurrent = xDataGraph.Plot.Axes.AddLeftAxis();
-            _yAxisCurrent.Color(textScottPlotColor);
-            _yAxisCurrent.LabelText = "Current(A)";
-            _yAxisCurrent.LabelFontColor = currentScottPlotColor;
-            _yAxisCurrent.LabelFontName = "맑은 고딕";
-            _yAxisCurrent.LabelFontSize = (float)ResFontSize.heading_6;
+        private void _viewModel_GetDataChanged(object sender, System.EventArgs e)
+        {
+            DrawGraph();
+        }
 
-            _signalCurrent.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-            _signalCurrent.Axes.YAxis = _yAxisCurrent;
+        private void xCheckBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DrawGraph();
+        }
 
-            // Voltage
-            _yAxisVoltage = xDataGraph.Plot.Axes.AddLeftAxis();
-            _yAxisVoltage.Color(textScottPlotColor);
-            _yAxisVoltage.LabelText = "Voltage(V)";
-            _yAxisVoltage.LabelFontColor = voltageScottPlotColor;
-            _yAxisVoltage.LabelFontName = "맑은 고딕";
-            _yAxisVoltage.LabelFontSize = (float)ResFontSize.heading_6;
+        private void DrawGraph()
+        {
+            // 데이터 초기화
+            xDataGraph.Plot.PlottableList.Clear();
 
-            _signalVoltage.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-            _signalVoltage.Axes.YAxis = _yAxisVoltage;
+            // Voltage 
+            if (_viewModel.Model.IsCheckedVoltage)
+            {
+                // Y축 설정
+                _viewModel.VoltageAxis.IsVisible = true;
+
+                xDataGraph.Plot.Axes.Left.Min = _viewModel.VoltageAxis.Min;
+                xDataGraph.Plot.Axes.Left.Max = _viewModel.VoltageAxis.Max;
+
+                // Data 생성
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.VoltageScatter = xDataGraph.Plot.Add.Scatter(_viewModel.Model.DataNoList.ToArray(), _viewModel.Model.DataVoltageList.ToArray(), _viewModel.Model.GreenScottPlotColor);
+                    _viewModel.VoltageScatter.LineWidth = (float)1.5;
+                    _viewModel.VoltageScatter.MarkerSize = 5;
+                    _viewModel.VoltageScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                    _viewModel.VoltageScatter.Axes.YAxis = _viewModel.VoltageAxis;
+                });
+            }
+            else
+            {
+                // Y축 설정
+                _viewModel.VoltageAxis.IsVisible = false;
+            }
+
+            // Current 
+            if (_viewModel.Model.IsCheckedCurrent)
+            {
+                // Y축 설정
+                _viewModel.CurrentAxis.IsVisible = true;
+
+                xDataGraph.Plot.Axes.Left.Min = _viewModel.CurrentAxis.Min;
+                xDataGraph.Plot.Axes.Left.Max = _viewModel.CurrentAxis.Max;
+
+                // Data 생성
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.CurrentScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataCurrentArray, _viewModel.CurrentColor);
+                    _viewModel.CurrentScatter.LineWidth = (float)1.5;
+                    _viewModel.CurrentScatter.MarkerSize = 5;
+                    _viewModel.CurrentScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                    _viewModel.CurrentScatter.Axes.YAxis = _viewModel.CurrentAxis;
+                });
+            }
+            else
+            {
+                // Y축 설정
+                _viewModel.CurrentAxis.IsVisible = false;
+            }
+
+            // Temp 
+            if (_viewModel.Model.IsCheckedTemp)
+            {
+                // Y축 설정
+                _viewModel.TempAxis.IsVisible = true;
+
+                xDataGraph.Plot.Axes.Left.Min = _viewModel.TempAxis.Min;
+                xDataGraph.Plot.Axes.Left.Max = _viewModel.TempAxis.Max;
+
+                // Data 생성
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.TempScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataTempArray, _viewModel.TempColor);
+                    _viewModel.TempScatter.LineWidth = (float)1.5;
+                    _viewModel.TempScatter.MarkerSize = 5;
+                    _viewModel.TempScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                    _viewModel.TempScatter.Axes.YAxis = _viewModel.TempAxis;
+                });
+            }
+            else
+            {
+                // Y축 설정
+                _viewModel.TempAxis.IsVisible = false;
+            }
+
+            // SoC 
+            if (_viewModel.Model.IsCheckedSoc)
+            {
+                // Y축 설정
+                _viewModel.SocAxis.IsVisible = true;
+
+                xDataGraph.Plot.Axes.Left.Min = _viewModel.SocAxis.Min;
+                xDataGraph.Plot.Axes.Left.Max = _viewModel.SocAxis.Max;
+
+                // Data 생성
+                Dispatcher.Invoke(() =>
+                {
+                    _viewModel.SocScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataSocArray, _viewModel.SocColor);
+                    _viewModel.SocScatter.LineWidth = (float)1.5;
+                    _viewModel.SocScatter.MarkerSize = 5;
+                    _viewModel.SocScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                    _viewModel.SocScatter.Axes.YAxis = _viewModel.SocAxis;
+                });
+            }
+            else
+            {
+                // Y축 설정
+                _viewModel.SocAxis.IsVisible = false;
+            }
 
             xDataGraph.Refresh();
+            xDataGraph.Plot.Axes.AutoScale();
         }
     }
 }

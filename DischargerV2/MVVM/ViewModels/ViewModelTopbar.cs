@@ -52,7 +52,17 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else if (name == "xCloseImage")
                     {
-                        System.Diagnostics.Process.GetCurrentProcess().Kill();
+                        ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
+                        {
+                            Title = "Confirm Exit",
+                            Comment = "Do you want to exit?",
+                            CallBackDelegate = Close,
+                            ConfirmText = "Exit"
+                        };
+
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
+                        viewModelMain.OpenPopup(ModelMain.EPopup.Info);
                     }
                 }
             }
@@ -96,6 +106,11 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                 }
             }
+        }
+
+        private void Close()
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 }

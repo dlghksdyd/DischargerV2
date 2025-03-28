@@ -100,6 +100,7 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_Step.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
+            ViewModelMonitor_Graph.Instance.SetDischargerName(dischargerName);
         }
 
         public void InitializeModelDictionary()
@@ -185,9 +186,12 @@ namespace DischargerV2.MVVM.ViewModels
             if (!CheckNSetSafetyCondition()) return;
             if (!CalculateTarget(out ModelStartDischarge model)) return;
 
-            // 방전 모드 및 목표 설정 후 방전 시작
             if (ViewModelDictionary.ContainsKey(Model.DischargerName))
             {
+                // Graph 방전 모드 설정
+                ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
+
+                // Start 방전 모드 설정 및 방전 시작
                 ViewModelDictionary[Model.DischargerName].Model = model;
                 ViewModelDictionary[Model.DischargerName].StartDischarge();
 

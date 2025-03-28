@@ -29,9 +29,21 @@ namespace DischargerV2.MVVM.Views
             this.DataContext = new ViewModelTopbar();
         }
 
-        private void MexTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void xTitleTextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ViewMain.Instance.DragMove();
+        }
+
+        private void xTitleTextBlock_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ViewModelMain.Instance.Model.WindowState == WindowState.Maximized)
+            {
+                ViewModelMain.Instance.Model.WindowState = WindowState.Normal;
+            }
+            else if (ViewModelMain.Instance.Model.WindowState == WindowState.Normal)
+            {
+                ViewModelMain.Instance.Model.WindowState = WindowState.Maximized;
+            }
         }
     }
 }

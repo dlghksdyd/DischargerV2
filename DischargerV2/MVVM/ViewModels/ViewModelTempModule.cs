@@ -63,7 +63,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         ComportIndex = GetTempModuleDataIndex(info.TempModuleComPort),
                         Comport = info.TempModuleComPort,
-                        Channel = info.TempModuleChannel
+                        Channel = info.TempChannel
                     });
                 }
             }

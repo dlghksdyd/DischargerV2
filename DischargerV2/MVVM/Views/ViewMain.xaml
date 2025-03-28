@@ -52,7 +52,7 @@
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <uc:UcMonitor_ChannelState Grid.Row="0"/>
+                <view:ViewMonitor_ChannelState Grid.Row="0"/>
                 <view:ViewDischargerInfoTable Grid.Row="2"/>
                 <Grid Grid.Row="4">
                     <view:ViewSetMode>
@@ -82,7 +82,7 @@
             </Grid>
         </Grid>
         <!--Login-->
-        <!--<view:ViewLogin Grid.Row="1"/>-->
+        <view:ViewLogin Grid.Row="1"/>
         <!--Popup 활성화-->
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
                 Background="#22000000" 

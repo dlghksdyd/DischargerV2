@@ -54,5 +54,18 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _parameter, value);
             }
         }
+
+        private string _confirmText;
+        public string ConfirmText
+        {
+            get
+            {
+                return _confirmText;
+            }
+            set
+            {
+                SetProperty(ref _confirmText, value);
+            }
+        }
     }
 }

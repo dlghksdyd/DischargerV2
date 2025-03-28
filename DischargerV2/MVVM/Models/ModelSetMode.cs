@@ -14,27 +14,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace DischargerV2.MVVM.Enums
-{
-    public enum EDischargeMode
-    {
-        Preset, Step, Simple
-    }
-
-    public enum EDischargeTarget
-    {
-        Full, Zero, Voltage, SoC
-    }
-
-    public enum EDischargerData
-    {
-        Voltage, Current, Temp, SoC, 
-        SafetyVoltageMin, SafetyVoltageMax, 
-        SafetyCurrentMin, SafetyCurrentMax,
-        SafetyTempMin, SafetyTempMax
-    }
-}
-
 namespace DischargerV2.MVVM.Models
 {
     public class ModelSetMode : BindableBase
