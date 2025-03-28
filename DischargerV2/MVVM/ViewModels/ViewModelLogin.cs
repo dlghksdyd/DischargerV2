@@ -42,7 +42,7 @@ namespace DischargerV2.MVVM.ViewModels
             LoginCommand = new DelegateCommand(Login);
         }
 
-        private void Login()
+        public void Login()
         {
             List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 

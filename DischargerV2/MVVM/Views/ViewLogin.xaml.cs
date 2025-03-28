@@ -1,4 +1,5 @@
-﻿using Sqlite.Common;
+﻿using DischargerV2.MVVM.ViewModels;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,21 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewLogin : UserControl
     {
+        ViewModelLogin _viewModel = ViewModelLogin.Instance;
+
         public ViewLogin()
         {
             InitializeComponent();
+
+            this.DataContext = _viewModel;
+        }
+
+        private void xPasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) 
+            {
+                _viewModel.Login();
+            }
         }
     }
 }

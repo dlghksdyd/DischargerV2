@@ -9,7 +9,7 @@
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             DataContext="{StaticResource ViewModelLogin}"
+             DataContext="{x:Static vm:ViewModelLogin.Instance}"
              d:DesignHeight="1080" d:DesignWidth="1920"
              Visibility="{Binding Model.Visibility}">
     
@@ -61,7 +61,8 @@
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
                                     ImageSizeHidePassword="24"
                                     IsHidePassword="True" 
-                                    ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}">
+                                    ColorSet="{x:Static Mex:ResColorSet_TextBox.Primary}" 
+                                    KeyDown="xPasswordBox_KeyDown">
                 </Mex:MexPasswordBox>
             </StackPanel>
             <Grid Height="40"/>
