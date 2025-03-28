@@ -200,6 +200,7 @@
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
+    <Compile Include="MVVM\Models\ModelMonitor_Step.cs" />
     <Compile Include="MVVM\Models\ModelMonitor_State.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_Simple.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelDischarger.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMain.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_Graph.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelMonitor_Step.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_State.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />

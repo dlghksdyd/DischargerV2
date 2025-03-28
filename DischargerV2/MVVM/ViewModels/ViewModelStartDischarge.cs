@@ -21,7 +21,7 @@ using System.Windows.Media;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    public class ViewModelControlDischarge : BindableBase
+    public class ViewModelStartDischarge : BindableBase
     {
         #region Command
         #endregion
@@ -33,37 +33,34 @@ namespace DischargerV2.MVVM.ViewModels
         #region Property
         private System.Timers.Timer DischargeTimer = null;
 
-        private static ViewModelControlDischarge _instance;
-        public static ViewModelControlDischarge Instance
+        private int PhaseNo
         {
-            get
+            get => Model.PhaseNo;
+            set
             {
-                if (_instance == null)
-                {
-                    _instance = new ViewModelControlDischarge();
-                }
-                return _instance;
+                Model.PhaseNo = value;
+                ViewModelMonitor_Step.Instance.SetPhaseNo(PhaseNo);
             }
         }
         #endregion
 
-        public ViewModelControlDischarge()
+        public ViewModelStartDischarge()
         {
-            _instance = this;
+
         }
 
         public void StartDischarge()
         {
             // 초기화
-            Model.PhaseNo = 0;
+            PhaseNo = 0;
             Model.IsEnterLastPhase = false;
             ViewModelMonitor_Graph.Instance.ClearReceiveData(Model.DischargerName);
 
             ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
             {
                 DischargerName = Model.DischargerName,
-                Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
-                Current = Model.PhaseDataList[Model.PhaseNo].Current,
+                Voltage = Model.PhaseDataList[PhaseNo].Voltage,
+                Current = Model.PhaseDataList[PhaseNo].Current,
             });
 
             DischargeTimer?.Stop();
@@ -84,8 +81,8 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
             {
                 DischargerName = Model.DischargerName,
-                Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
-                Current = Model.PhaseDataList[Model.PhaseNo].Current,
+                Voltage = Model.PhaseDataList[PhaseNo].Voltage,
+                Current = Model.PhaseDataList[PhaseNo].Current,
             });
 
             DischargeTimer?.Stop();
@@ -143,12 +140,10 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // 타겟 전압에 도달했을 경우 Phase 상승
-                if (receiveVoltage <= Model.PhaseDataList[Model.PhaseNo].Voltage)
+                if (receiveVoltage <= Model.PhaseDataList[PhaseNo].Voltage)
                 {
-                    Model.PhaseNo++;
-
                     // 모든 Phase 끝났을 때
-                    if (Model.PhaseNo == Model.PhaseDataList.Count)
+                    if (PhaseNo == Model.PhaseDataList.Count - 1)
                     {
                         viewModelDischarger.StopDischarger(Model.DischargerName);
 
@@ -156,11 +151,13 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else
                     {
+                        PhaseNo++;
+
                         viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
                         {
                             DischargerName = Model.DischargerName,
-                            Voltage = Model.PhaseDataList[Model.PhaseNo].Voltage,
-                            Current = Model.PhaseDataList[Model.PhaseNo].Current,
+                            Voltage = Model.PhaseDataList[PhaseNo].Voltage,
+                            Current = Model.PhaseDataList[PhaseNo].Current,
                         });
                     }
                 }

@@ -19,7 +19,8 @@
         <Mex:MexTable x:Name="xTable"
                       Width="534" Height="208"
                       CornerRadius="8" 
-                      ColumnCount="4">
+                      ColumnCount="4"
+                      IsReadOnly="True">
             <Mex:MexTable.Header>
                 <Mex:MexTableHeader Height="52">
                     <Mex:MexTableHeaderColumn Width="60">

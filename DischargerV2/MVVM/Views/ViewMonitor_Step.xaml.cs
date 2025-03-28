@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
 using DischargerV2.MVVM.Models;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -23,16 +25,19 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewMonitor_Step : UserControl
     {
-        private ViewModelSetMode_Step _viewModel = ViewModelSetMode_Step.Instance;
+        private ViewModelMonitor_Step _viewModelMonitor_Step = ViewModelMonitor_Step.Instance;
+        private ViewModelSetMode_Step _viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
 
         public ViewMonitor_Step()
         {
             InitializeComponent();
 
-            this.DataContext = _viewModel;
+            this.DataContext = _viewModelMonitor_Step;
 
             this.Loaded += ViewMonitorStep_Loaded;
-            _viewModel.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
+
+            _viewModelMonitor_Step.PhaseNoChanged += _viewModelMonitor_Step_PhaseNoChanged;
+            _viewModelSetMode_Step.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
         }
 
         private void ViewMonitorStep_Loaded(object sender, RoutedEventArgs e)
@@ -40,9 +45,44 @@ namespace DischargerV2.MVVM.Views
             UpdateUI();
         }
 
+        private void _viewModelMonitor_Step_PhaseNoChanged(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // 현재 Phase 선택
+                xTable.SelectRow(xTable.Rows[_viewModelMonitor_Step.PhaseNo]);
+
+                // 선택한 Phase를 맨 위로 올릴 수 있도록 scroll offset 적용
+                double offset = 0;
+
+                for (int index = 0; index < _viewModelMonitor_Step.PhaseNo; index++)
+                {
+                    offset += xTable.Rows[index].Height;
+                }
+
+                xTable.ScrollToVerticalOffset(offset);
+            });
+        }
+
         private void _viewModel_SelectedDischargerChanged(object sender, EventArgs e)
         {
             UpdateUI();
+
+            Dispatcher.Invoke(() =>
+            {
+                // 현재 Phase 선택
+                xTable.SelectRow(xTable.Rows[_viewModelMonitor_Step.PhaseNo]);
+
+                // 선택한 Phase를 맨 위로 올릴 수 있도록 scroll offset 적용
+                double offset = 0;
+
+                for (int index = 0; index < _viewModelMonitor_Step.PhaseNo; index++)
+                {
+                    offset += xTable.Rows[index].Height;
+                }
+
+                xTable.ScrollToVerticalOffset(offset);
+            });
         }
 
         private void UpdateUI()

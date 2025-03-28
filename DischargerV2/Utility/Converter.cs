@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
+using DischargerV2.MVVM.ViewModels;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using System;

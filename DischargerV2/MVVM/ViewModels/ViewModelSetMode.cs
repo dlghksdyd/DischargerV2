@@ -68,8 +68,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private Dictionary<string, ViewModelControlDischarge> _viewModelDictionary = new Dictionary<string, ViewModelControlDischarge>();
-        public Dictionary<string, ViewModelControlDischarge> ViewModelDictionary
+        private Dictionary<string, ViewModelStartDischarge> _viewModelDictionary = new Dictionary<string, ViewModelStartDischarge>();
+        public Dictionary<string, ViewModelStartDischarge> ViewModelDictionary
         {
             get
             {
@@ -170,7 +170,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ModelStartDischarge modelStartDischarge = new ModelStartDischarge();
                 modelStartDischarge.DischargerName = dischargerName;
 
-                ViewModelDictionary.Add(dischargerName, new ViewModelControlDischarge()
+                ViewModelDictionary.Add(dischargerName, new ViewModelStartDischarge()
                 {
                     Model = modelStartDischarge
                 });
