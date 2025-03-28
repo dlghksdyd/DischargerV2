@@ -13,6 +13,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -194,6 +195,14 @@ namespace DischargerV2.MVVM.ViewModels
                 // Start 방전 모드 설정 및 방전 시작
                 ViewModelDictionary[Model.DischargerName].Model = model;
                 ViewModelDictionary[Model.DischargerName].StartDischarge();
+
+                // 방전기 동작 시작할때까지 기다림
+                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+
+                while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Discharging)
+                {
+                    Thread.Sleep(100);
+                }
 
                 // SetMode -> Monitor 화면 전환
                 ViewModelMain.Instance.SetIsStartedArray(true);

@@ -22,6 +22,7 @@
             <Util:EDischargerStateToForegroundConverter x:Key="EDischargerStateToForegroundConverter"/>
             <Util:EDischargerStateToStringConverter x:Key="EDischargerStateToStringConverter"/>
             <Util:EDischargerStateToVisibilityConverter x:Key="EDischargerStateToVisibilityConverter"/>
+            <Util:DischargerDatasToErrorCodeStringConverter x:Key="DischargerDatasToErrorCodeStringConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -92,10 +93,17 @@
                 </Mex:MexTextBlock>
                 <Mex:MexTextBlock x:Name="xErrorCodeTextBlock"
                                   Grid.Column="2" Grid.Row="2"
-                                  Text="Error Code: 0x100201"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                   HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Mex:MexTextBlock.Text>
+                        <MultiBinding Converter="{StaticResource DischargerDatasToErrorCodeStringConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
+                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </Mex:MexTextBlock.Text>
                     <Mex:MexTextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
                                       ConverterParameter="ERROR">
@@ -111,7 +119,8 @@
                                Padding="24,12,24,12"
                                Text="Detail"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"
-                               HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                               HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                               Click="xDetailButton_Click">
                     <Mex:MexButton.Visibility>
                         <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
                                       ConverterParameter="ERROR">

@@ -113,7 +113,7 @@ namespace DischargerV2.MVVM.ViewModels
             catch { }
         }
 
-        private void OpenPopupError(string dischargerName)
+        public void OpenPopupError(string dischargerName)
         {
             int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
             uint errorCode = Model.DischargerDatas[index].ErrorCode;

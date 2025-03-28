@@ -38,5 +38,12 @@ namespace DischargerV2.MVVM.Views
 
             _viewModel.ChangedState(mexTextBlock.Text);
         }
+
+        private void xDetailButton_Click(object sender, RoutedEventArgs e)
+        {
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+            ViewModelDischarger.Instance.OpenPopupError(dischargerName);
+        }
     }
 }

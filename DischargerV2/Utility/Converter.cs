@@ -3,6 +3,7 @@ using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.ViewModels;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -365,7 +366,6 @@ namespace Utility.Common
                     }
                 }
             }
-
             return Binding.DoNothing;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -583,6 +583,29 @@ namespace Utility.Common
         }
     }
 
+    public class DischargerDatasToErrorCodeStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value[0] is ObservableCollection<DischargerDatas> dischargerDatas)
+            {
+                if (value[1] is int dischargerIndex)
+                {
+                    uint errorCode = dischargerDatas[dischargerIndex].ErrorCode;
+
+                    return string.Format("Error Code: 0x{0}", errorCode.ToString("X"));
+                }
+            }
+
+            return Binding.DoNothing;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// if (EDischarggerState == ConverterParameter) return Visibility.Visible;
     /// ConverterParameter "ERROR", "PAUSE"
@@ -672,6 +695,12 @@ namespace Utility.Common
                     {
                         imagePrimary = errorImage;
                         targetColor = ResColor.icon_error;
+                    }
+                    // ready일 때 아이콘 어떻게 ????????????????????????????????????
+                    else if (eDischargerState == EDischargerState.Ready)
+                    {
+                        imagePrimary = dischargingImage;
+                        targetColor = ResColor.icon_primary;
                     }
                     else
                     {
