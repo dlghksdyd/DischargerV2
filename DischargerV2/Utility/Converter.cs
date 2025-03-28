@@ -663,6 +663,7 @@ namespace Utility.Common
 
     public class EDischargerStateToImageConverter : IMultiValueConverter
     {
+        public BitmapSource readyImage { get; set; } = ResImage.check_circle_outlined;
         public BitmapSource dischargingImage { get; set; } = ResImage.downloading;
         public BitmapSource pauseImage { get; set; } = ResImage.pause;
         public BitmapSource errorImage { get; set; } = ResImage.warning_amber;
@@ -696,10 +697,9 @@ namespace Utility.Common
                         imagePrimary = errorImage;
                         targetColor = ResColor.icon_error;
                     }
-                    // ready일 때 아이콘 어떻게 ????????????????????????????????????
                     else if (eDischargerState == EDischargerState.Ready)
                     {
-                        imagePrimary = dischargingImage;
+                        imagePrimary = readyImage;
                         targetColor = ResColor.icon_primary;
                     }
                     else
