@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -97,6 +98,14 @@ namespace DischargerV2.MVVM.ViewModels
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
             ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+
+            int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+            
+            // 방전기 동작이 멈출때까지 기다림
+            while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Ready)
+            {
+                Thread.Sleep(100);
+            }
 
             Model.PauseNResumeIsEnable = false;
             Model.StopIsEnable = false;

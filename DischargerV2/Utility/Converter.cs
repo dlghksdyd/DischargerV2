@@ -348,14 +348,16 @@ namespace Utility.Common
                     {
                         return DischargerStates.Where(
                             x =>
+                            x.Equals(EDischargerState.Connecting) ||
                             x.Equals(EDischargerState.Ready) ||
                             x.Equals(EDischargerState.Discharging) ||
                             x.Equals(EDischargerState.Pause)).Count();
                     }
-                    else //id (eMonitorState == EMonitorState.Fault)
+                    else //if (eMonitorState == EMonitorState.Fault)
                     {
                         return DischargerStates.Where(
                             x =>
+                            x.Equals(EDischargerState.Disconnected) ||
                             x.Equals(EDischargerState.SafetyOutOfRange) ||
                             x.Equals(EDischargerState.ReturnCodeError) ||
                             x.Equals(EDischargerState.ChStatusError) ||

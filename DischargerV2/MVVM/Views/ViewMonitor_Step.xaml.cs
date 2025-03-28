@@ -43,46 +43,18 @@ namespace DischargerV2.MVVM.Views
         private void ViewMonitorStep_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateUI();
+            SelectRow(0);
         }
 
         private void _viewModelMonitor_Step_PhaseNoChanged(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                // 현재 Phase 선택
-                xTable.SelectRow(xTable.Rows[_viewModelMonitor_Step.PhaseNo]);
-
-                // 선택한 Phase를 맨 위로 올릴 수 있도록 scroll offset 적용
-                double offset = 0;
-
-                for (int index = 0; index < _viewModelMonitor_Step.PhaseNo; index++)
-                {
-                    offset += xTable.Rows[index].Height;
-                }
-
-                xTable.ScrollToVerticalOffset(offset);
-            });
+            SelectRow();
         }
 
         private void _viewModel_SelectedDischargerChanged(object sender, EventArgs e)
         {
             UpdateUI();
-
-            Dispatcher.Invoke(() =>
-            {
-                // 현재 Phase 선택
-                xTable.SelectRow(xTable.Rows[_viewModelMonitor_Step.PhaseNo]);
-
-                // 선택한 Phase를 맨 위로 올릴 수 있도록 scroll offset 적용
-                double offset = 0;
-
-                for (int index = 0; index < _viewModelMonitor_Step.PhaseNo; index++)
-                {
-                    offset += xTable.Rows[index].Height;
-                }
-
-                xTable.ScrollToVerticalOffset(offset);
-            });
+            SelectRow();
         }
 
         private void UpdateUI()
@@ -171,6 +143,31 @@ namespace DischargerV2.MVVM.Views
 
                 xTable.Rows.Add(mexTableRow);
             }
+        }
+
+        /// <summary>
+        /// selectIndex 미설정 → _viewModelMonitor_Step.PhaseNo 값으로 선택
+        /// </summary>
+        /// <param name="index"></param>
+        private void SelectRow(int selectIndex = -1)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                selectIndex = (selectIndex < 0) ? _viewModelMonitor_Step.PhaseNo : selectIndex;
+
+                // 행 선택
+                xTable.SelectRow(xTable.Rows[selectIndex]);
+
+                // 선택한 행을 맨 위로 올릴 수 있도록 scroll offset 적용
+                double offset = 0;
+
+                for (int index = 0; index < selectIndex; index++)
+                {
+                    offset += xTable.Rows[index].Height;
+                }
+
+                xTable.ScrollToVerticalOffset(offset);
+            });
         }
     }
 }
