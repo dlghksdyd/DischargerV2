@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Ethernet.Client.Common;
+using Prism.Common;
 using Sqlite.Common;
 
 namespace Ethernet.Client.Discharger
@@ -303,6 +304,9 @@ namespace Ethernet.Client.Discharger
 
             /// 이전 에러 상태 초기화
             SendCommand_ClearAlarm();
+
+            /// 경광등 초기화
+            SendCommand_LampControl(EDioControl.TowerLampGreen, false);
 
             /// Safety Condition 설정
             bool safetyConditionResult = SendCommand_SetSafetyCondition(
@@ -605,6 +609,39 @@ namespace Ethernet.Client.Discharger
             }
         }
 
+        public bool SendCommand_LampControl(EDioControl dioControl, bool isBuzzer = false)
+        {
+            lock (_packetLock)
+            {
+                LogArgument logArgument = new LogArgument("Lamp Control.");
+
+                uint dioValue = (uint)dioControl;
+                if (isBuzzer)
+                {
+                    dioValue |= (uint)EDioControl.TowerLampBuzzer;
+                }
+
+                logArgument.Parameters["DioValue"] = dioValue;
+
+                byte[] writeBuffer = CreateLampControlCommand(
+                    _parameters.DischargerChannel, dioValue);
+
+                bool result = _dischargerClient.ProcessPacket(writeBuffer);
+                if (result != true)
+                {
+                    logArgument.Parameters["Result"] = "fail";
+                    AddTraceLog(logArgument);
+
+                    return false;
+                }
+
+                logArgument.Parameters["Result"] = "success";
+                AddTraceLog(logArgument);
+
+                return true;
+            }
+        }
+
         public bool SendCommand_RequestChannelInfo()
         {
             lock (_packetLock)
@@ -896,6 +933,35 @@ namespace Ethernet.Client.Discharger
             /// 데이터 생성
             ClearAlarm.Request data = new ClearAlarm.Request();
             data.ChannelNumber = channel;
+            byte[] dataByteArray = data.FromPacketToByteArray();
+
+            /// 테일 생성
+            DCCPacketTail tail = new DCCPacketTail();
+            byte[] tailByteArray = tail.FromPacketToByteArray();
+
+            /// 각 생성된 데이터들 병합
+            byte[] byteArraySum = new byte[0];
+            byteArraySum = byteArraySum.AppendByteArray(headerByteArray);
+            byteArraySum = byteArraySum.AppendByteArray(dataByteArray);
+            byteArraySum = byteArraySum.AppendByteArray(tailByteArray);
+
+            return byteArraySum;
+        }
+
+        private byte[] CreateLampControlCommand(short channel, uint value)
+        {
+            int length = Marshal.SizeOf(typeof(LampControl.Request)) + 6;  // 4 is header, 2 is tail
+
+            /// 헤더 생성
+            DCCPacketHeader header = new DCCPacketHeader();
+            header.SerialNumber = GetPacketSerialNumber();
+            header.Length = (short)length;
+            byte[] headerByteArray = header.FromPacketToByteArray();
+
+            /// 데이터 생성
+            LampControl.Request data = new LampControl.Request();
+            data.ChannelNumber = channel;
+            data.DioValue = (double)value;
             byte[] dataByteArray = data.FromPacketToByteArray();
 
             /// 테일 생성

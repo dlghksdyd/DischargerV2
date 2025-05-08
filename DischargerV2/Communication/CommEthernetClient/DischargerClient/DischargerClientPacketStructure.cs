@@ -35,6 +35,7 @@ namespace Ethernet.Client.Discharger
         SetValue = 18,
         WorkModeClearAlarm = 19,
         LimitingValues = 20,
+        DioControl = 55,
     }
 
     public enum EWorkMode
@@ -70,6 +71,15 @@ namespace Ethernet.Client.Discharger
         Standby5 = 5,
         CcCvMode = 6,
         Error = 15,
+    }
+
+    public enum EDioControl : uint
+    {
+        AcTrip = 0x00000001,
+        TowerLampRed = 0x00000002,
+        TowerLampYellow = 0x00000004,
+        TowerLampGreen = 0x00000008,
+        TowerLampBuzzer = 0x00000010,
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
@@ -218,6 +228,28 @@ namespace Ethernet.Client.Discharger
             private short NumberOfParameters = 1;
             private EParameterIndex Index1 = EParameterIndex.WorkModeClearAlarm;
             private double FixedValue = 1.0;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public class Reply
+        {
+            public ECommandCode CommandCode;
+            public EReturnCode ReturnCode;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+    public class LampControl
+    {
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public class Request
+        {
+            private ECommandCode CommandCode = ECommandCode.RequestCommand;
+            private short NumberOfChannels = 1;
+            public short ChannelNumber;
+            private short NumberOfParameters = 1;
+            private EParameterIndex Index1 = EParameterIndex.DioControl;
+            public double DioValue;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
