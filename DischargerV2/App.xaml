@@ -9,7 +9,6 @@
         <ResourceDictionary>
             <vm:ViewModelMain x:Key="ViewModelMain"/>
             <vm:ViewModelLogin x:Key="ViewModelLogin"/>
-            <vm:ViewModelDischarger x:Key="ViewModelDischarger"/>
             <vm:StartDischargerCommandParamConverter x:Key="StartDischargerCommandParamConverter"/>
 
             <ResourceDictionary.MergedDictionaries>

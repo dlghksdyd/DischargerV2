@@ -146,8 +146,8 @@ namespace DischargerV2.MVVM.ViewModels
                 modelSetMode_SafetyCondition.DischargerName = dischargerName;
                 modelSetMode_SafetyCondition.VoltageMin = dischargerInfo.SafetyVoltageMin.ToString();
                 modelSetMode_SafetyCondition.VoltageMax = dischargerInfo.SafetyVoltageMax.ToString();
-                modelSetMode_SafetyCondition.CurrentMin = dischargerInfo.SafetyCurrentMin.ToString();
-                modelSetMode_SafetyCondition.CurrentMax = dischargerInfo.SafetyCurrentMax.ToString();
+                modelSetMode_SafetyCondition.CurrentMin = (-dischargerInfo.SafetyCurrentMax).ToString();
+                modelSetMode_SafetyCondition.CurrentMax = (-dischargerInfo.SafetyCurrentMin).ToString();
                 modelSetMode_SafetyCondition.TempMin = dischargerInfo.SafetyTempMin.ToString();
                 modelSetMode_SafetyCondition.TempMax = dischargerInfo.SafetyTempMax.ToString();
                 ViewModelSetMode_SafetyCondition.Instance.ModelDictionary.Add(dischargerName, modelSetMode_SafetyCondition);
@@ -328,9 +328,9 @@ namespace DischargerV2.MVVM.ViewModels
                 MessageBox.Show("Current Min (A): 필수 정보입니다.");
                 return false;
             }
-            else if (Convert.ToDouble(modelSafetyCondition.CurrentMin) < dischargerInfo.SafetyCurrentMin)
+            else if (-Convert.ToDouble(modelSafetyCondition.CurrentMin) > dischargerInfo.SafetyCurrentMax)
             {
-                MessageBox.Show("Current Min (A): 설정 값이 스펙 범위를 벗어났습니다.");
+                MessageBox.Show("Current Max (A): 설정 값이 스펙 범위를 벗어났습니다.");
                 return false;
             }
             else if (modelSafetyCondition.CurrentMax == null || modelSafetyCondition.CurrentMax == "")
@@ -338,12 +338,12 @@ namespace DischargerV2.MVVM.ViewModels
                 MessageBox.Show("Current Max (A): 필수 정보입니다.");
                 return false;
             }
-            else if (Convert.ToDouble(modelSafetyCondition.CurrentMax) > dischargerInfo.SafetyCurrentMax)
+            else if (-Convert.ToDouble(modelSafetyCondition.CurrentMax) < dischargerInfo.SafetyCurrentMin)
             {
-                MessageBox.Show("Current Max (A): 설정 값이 스펙 범위를 벗어났습니다.");
+                MessageBox.Show("Current Min (A): 설정 값이 스펙 범위를 벗어났습니다.");
                 return false;
             }
-            else if (Convert.ToDouble(modelSafetyCondition.CurrentMin) >= Convert.ToDouble(modelSafetyCondition.CurrentMax))
+            else if (-Convert.ToDouble(modelSafetyCondition.CurrentMin) <= -Convert.ToDouble(modelSafetyCondition.CurrentMax))
             {
                 MessageBox.Show("Current Min ~ Max (A): 범위 설정 값이 잘못되었습니다.");
                 return false;
@@ -367,13 +367,14 @@ namespace DischargerV2.MVVM.ViewModels
             // 설정 값 적용
             double voltageMin = Convert.ToDouble(modelSafetyCondition.VoltageMin);
             double voltageMax = Convert.ToDouble(modelSafetyCondition.VoltageMax);
-            double currentMin = Convert.ToDouble(modelSafetyCondition.CurrentMin);
-            double currentMax = Convert.ToDouble(modelSafetyCondition.CurrentMax);
+            double currentMin = -Convert.ToDouble(modelSafetyCondition.CurrentMax);
+            double currentMax = -Convert.ToDouble(modelSafetyCondition.CurrentMin);
             double tempMin = Convert.ToDouble(modelSafetyCondition.TempMin);
             double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
 
             ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
-                voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
+                voltageMax + EthernetClientDischarger.SafetyMarginVoltage, voltageMin - EthernetClientDischarger.SafetyMarginVoltage, 
+                currentMax, currentMin, tempMax, tempMin);
 
             return true;
         }

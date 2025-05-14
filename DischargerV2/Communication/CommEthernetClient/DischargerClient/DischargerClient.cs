@@ -260,6 +260,8 @@ namespace Ethernet.Client.Discharger
 
         public bool Restart()
         {
+            Stop();
+
             return Start(_parameters);
         }
 
@@ -303,24 +305,40 @@ namespace Ethernet.Client.Discharger
             }
 
             /// 이전 에러 상태 초기화
-            SendCommand_ClearAlarm();
+            bool clearAlarmResult = SendCommand_ClearAlarm();
+            if (clearAlarmResult == false)
+            {
+                ChangeDischargerState(EDischargerState.Disconnected);
+                return false;
+            }
 
             /// 경광등 초기화
-            SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+            bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+            if (lampControlResult == false)
+            {
+                ChangeDischargerState(EDischargerState.Disconnected);
+                return false;
+            }
 
             /// Safety Condition 설정
             bool safetyConditionResult = SendCommand_SetSafetyCondition(
-                _parameters.SafetyVoltageMax, _parameters.SafetyCurrentMin,
+                _parameters.SafetyVoltageMax + SafetyMarginVoltage, _parameters.SafetyVoltageMin - SafetyMarginVoltage,
                 _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin,
                 _parameters.SafetyTempMax, _parameters.SafetyTempMin);
             if (safetyConditionResult == true)
             {
+                // _dischargerData에 있는 안전범위 값은 SW안전 범위 값
                 _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - SafetyMarginCurrent;
                 _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + SafetyMarginCurrent;
                 _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - SafetyMarginVoltage;
                 _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + SafetyMarginVoltage;
                 _dischargerData.SafetyTempMin = _parameters.SafetyTempMin;
                 _dischargerData.SafetyTempMax = _parameters.SafetyTempMax;
+            }
+            else
+            {
+                ChangeDischargerState(EDischargerState.Disconnected);
+                return false;
             }
 
             ReadInfoTimer?.Stop();
@@ -491,10 +509,10 @@ namespace Ethernet.Client.Discharger
                     return false;
                 }
 
-                _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
-                _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
-                _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
-                _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
+                _dischargerData.SafetyVoltageMin = voltageMin;
+                _dischargerData.SafetyVoltageMax = voltageMax;
+                _dischargerData.SafetyCurrentMin = currentMin;
+                _dischargerData.SafetyCurrentMax = currentMax;
                 _dischargerData.SafetyTempMin = tempMin;
                 _dischargerData.SafetyTempMax = tempMax;
 
@@ -728,8 +746,8 @@ namespace Ethernet.Client.Discharger
 
                     if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
-                        -channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
-                        -channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax ||
+                        channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
+                        channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax ||
                         channelInfo.AuxTemp1 < _dischargerData.SafetyTempMin ||
                         channelInfo.AuxTemp1 > _dischargerData.SafetyTempMax)
                     {
