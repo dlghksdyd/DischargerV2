@@ -196,14 +196,6 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelDictionary[Model.DischargerName].Model = model;
                 ViewModelDictionary[Model.DischargerName].StartDischarge();
 
-                // 방전기 동작 시작할때까지 기다림
-                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
-
-                while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Discharging)
-                {
-                    Thread.Sleep(100);
-                }
-
                 // SetMode -> Monitor 화면 전환
                 ViewModelMain.Instance.SetIsStartedArray(true);
             }

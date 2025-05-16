@@ -60,7 +60,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                Current = Model.PhaseDataList[PhaseNo].Current,
+                Current = -Model.PhaseDataList[PhaseNo].Current,
             });
 
             DischargeTimer?.Stop();
@@ -82,7 +82,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                Current = Model.PhaseDataList[PhaseNo].Current,
+                Current = -Model.PhaseDataList[PhaseNo].Current,
             });
 
             DischargeTimer?.Stop();
@@ -157,7 +157,7 @@ namespace DischargerV2.MVVM.ViewModels
                         {
                             DischargerName = Model.DischargerName,
                             Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                            Current = Model.PhaseDataList[PhaseNo].Current,
+                            Current = -Model.PhaseDataList[PhaseNo].Current,
                         });
                     }
                 }

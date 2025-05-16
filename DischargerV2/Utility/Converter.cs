@@ -418,15 +418,15 @@ namespace Utility.Common
                         }
                         else if (eDischargerData == EDischargerData.SafetyVoltageMax)
                         {
-                            return (dischargerData.SafetyVoltageMax - EthernetClientDischarger.SafetyMarginVoltage).ToString("F1");
+                            return (dischargerData.SafetyVoltageMax - EthernetClientDischarger.SafetyMarginVoltage).ToString("F1") ;
                         }
                         else if (eDischargerData == EDischargerData.SafetyCurrentMin)
                         {
-                            return (dischargerData.SafetyCurrentMin + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                            return (-dischargerData.SafetyCurrentMax + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
                         }
                         else if (eDischargerData == EDischargerData.SafetyCurrentMax)
                         {
-                            return (dischargerData.SafetyCurrentMax - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                            return (-dischargerData.SafetyCurrentMin - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
                         }
                         else if (eDischargerData == EDischargerData.SafetyTempMin)
                         {

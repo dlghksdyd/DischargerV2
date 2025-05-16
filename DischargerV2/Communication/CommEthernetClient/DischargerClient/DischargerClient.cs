@@ -325,17 +325,7 @@ namespace Ethernet.Client.Discharger
                 _parameters.SafetyVoltageMax + SafetyMarginVoltage, _parameters.SafetyVoltageMin - SafetyMarginVoltage,
                 _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin,
                 _parameters.SafetyTempMax, _parameters.SafetyTempMin);
-            if (safetyConditionResult == true)
-            {
-                // _dischargerData에 있는 안전범위 값은 SW안전 범위 값
-                _dischargerData.SafetyCurrentMin = _parameters.SafetyCurrentMin - SafetyMarginCurrent;
-                _dischargerData.SafetyCurrentMax = _parameters.SafetyCurrentMax + SafetyMarginCurrent;
-                _dischargerData.SafetyVoltageMin = _parameters.SafetyVoltageMin - SafetyMarginVoltage;
-                _dischargerData.SafetyVoltageMax = _parameters.SafetyVoltageMax + SafetyMarginVoltage;
-                _dischargerData.SafetyTempMin = _parameters.SafetyTempMin;
-                _dischargerData.SafetyTempMax = _parameters.SafetyTempMax;
-            }
-            else
+            if (safetyConditionResult == false)
             {
                 ChangeDischargerState(EDischargerState.Disconnected);
                 return false;
