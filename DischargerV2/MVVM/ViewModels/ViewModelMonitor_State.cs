@@ -86,6 +86,19 @@ namespace DischargerV2.MVVM.ViewModels
                     Model.FinishIsEnable = true;
                 }
             }
+            else if (Model.State == EDischargerState.Ready.ToString())
+            {
+                // 에러 발생하였을 때
+                if (state == EDischargerState.SafetyOutOfRange.ToString() ||
+                    state == EDischargerState.ReturnCodeError.ToString() ||
+                    state == EDischargerState.ChStatusError.ToString() ||
+                    state == EDischargerState.DeviceError.ToString())
+                {
+                    Model.PauseNResumeIsEnable = false;
+                    Model.StopIsEnable = false;
+                    Model.FinishIsEnable = true;
+                }
+            }
             Model.State = state;
         }
 

@@ -1,23 +1,7 @@
-﻿using DischargerV2.MVVM.Enums;
-using DischargerV2.MVVM.Models;
-using DischargerV2.MVVM.Views;
+﻿using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
-using MExpress.Mex;
-using Prism.Commands;
 using Prism.Mvvm;
 using Sqlite.Common;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -114,7 +98,16 @@ namespace DischargerV2.MVVM.ViewModels
 
             double safetyTempMin = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMin;
             double safetyTempMax = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMax;
-            
+
+            // 방전기 동작 에러 발생 시, 중단
+            if (receiveState == EDischargerState.SafetyOutOfRange ||
+                receiveState == EDischargerState.ReturnCodeError ||
+                receiveState == EDischargerState.ChStatusError ||
+                receiveState == EDischargerState.DeviceError)
+            {
+                StopDischarge();
+            }
+
             // 방전기 동작 설정 및 확인
             if (Model.IsEnterLastPhase == false)
             {
