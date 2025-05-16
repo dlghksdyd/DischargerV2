@@ -8,7 +8,6 @@
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:DischargerV2.UserControls"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelDeviceRegister_Info}"
              d:DesignHeight="180" d:DesignWidth="1520"
