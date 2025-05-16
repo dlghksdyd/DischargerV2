@@ -735,27 +735,23 @@ namespace Ethernet.Client.Discharger
                     _dischargerData.ReceiveDischargeCurrent = -channelInfo.BatteryCurrent;
                     _dischargerData.ReceiveDischargeTemp = channelInfo.AuxTemp1;
 
-                    if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
+                    if (_parameters.DischargerModel == EDischargerModel.MBDC && 
+                        (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
+                        channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
+                        channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
+                        channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax))
+                    {
+                        ChangeDischargerState(EDischargerState.SafetyOutOfRange);
+                    }
+                    else if (_parameters.DischargerModel != EDischargerModel.MBDC && 
+                        (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
                         channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
                         channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax ||
                         channelInfo.AuxTemp1 < _dischargerData.SafetyTempMin ||
-                        channelInfo.AuxTemp1 > _dischargerData.SafetyTempMax)
+                        channelInfo.AuxTemp1 > _dischargerData.SafetyTempMax))
                     {
-                        if (_parameters.DischargerModel == EDischargerModel.MBDC)
-                        {
-                            if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
-                                channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
-                                channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
-                                channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax)
-                            {
-                                ChangeDischargerState(EDischargerState.SafetyOutOfRange);
-                            }
-                        }
-                        else //if (_parameters.DischargerModel == EDischargerModel.MBDC25)
-                        {
-                            ChangeDischargerState(EDischargerState.SafetyOutOfRange);
-                        }
+                        ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                     }
                     else if (channelInfo.ErrorCode != 0) /// 에러코드 검사
                     {
