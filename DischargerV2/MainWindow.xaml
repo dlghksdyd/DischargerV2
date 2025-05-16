@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DischargerV2"
         xmlns:Util="clr-namespace:Utility.Common"
-        xmlns:uc="clr-namespace:DischargerV2.UserControls"
         xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
         x:Class="DischargerV2.MainWindow"
         mc:Ignorable="d"

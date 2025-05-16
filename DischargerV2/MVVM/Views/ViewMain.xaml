@@ -9,7 +9,6 @@
         xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
         xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:uc="clr-namespace:DischargerV2.UserControls"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance vm:ViewModelMain}" 
         Title="MainWindow" 
