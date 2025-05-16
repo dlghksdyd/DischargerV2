@@ -207,7 +207,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                         {
-                            Title = "Start discharging",
+                            Title = "Warning",
                             Comment = "Fail to start discharging.",
                         };
 

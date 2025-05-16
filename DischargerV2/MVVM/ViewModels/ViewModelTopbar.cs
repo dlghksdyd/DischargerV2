@@ -52,6 +52,21 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else if (name == "xCloseImage")
                     {
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+
+                        var viewModelDischarger = ViewModelDischarger.Instance;
+                        if (viewModelDischarger.IsDischarging())
+                        {
+                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            {
+                                Title = "Warning",
+                                Comment = "Please stop discharging before opening this popup.",
+                            };
+                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            return;
+                        }
+
                         ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                         {
                             Title = "Confirm Exit",
@@ -59,8 +74,6 @@ namespace DischargerV2.MVVM.ViewModels
                             CallBackDelegate = Close,
                             ConfirmText = "Exit"
                         };
-
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
                         viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
                         viewModelMain.OpenPopup(ModelMain.EPopup.Info);
                     }

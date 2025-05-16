@@ -196,6 +196,19 @@ namespace DischargerV2.MVVM.ViewModels
             _clients[dischargerName].ChangeDischargerState(eDischargerState);
         }
 
+        public bool IsDischarging()
+        {
+            foreach (var state in Model.DischargerStates)
+            {
+                if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void InitializeDischarger()
         {
             FinalizeDischarger();

@@ -38,6 +38,20 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void OpenPopup()
         {
+            var viewModelDischarger = ViewModelDischarger.Instance;
+            if (viewModelDischarger.IsDischarging())
+            {
+                ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                {
+                    Title = "Warning",
+                    Comment = "Please stop discharging before opening this popup.",
+                };
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                return;
+            }
+
             Model.IsPopupOpen = true;
         }
 
