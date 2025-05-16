@@ -199,6 +199,17 @@ namespace DischargerV2.MVVM.ViewModels
         {
             TableDischargerModel tableDischargerModel = new TableDischargerModel();
 
+            // Id 생성
+            var datas = SqliteDischargerModel.GetData().OrderByDescending(x => x.Id).ToList();
+            if (datas.Count == 0)
+            {
+                tableDischargerModel.Id = 0;
+            }
+            else
+            {
+                tableDischargerModel.Id = datas.First().Id + 1;
+            }
+
             foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
             {
                 if (Model.DischargerModel == eDischargerModel.ToString())

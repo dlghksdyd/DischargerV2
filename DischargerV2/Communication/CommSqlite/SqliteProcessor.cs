@@ -209,6 +209,7 @@ namespace Sqlite.Common
 
                 string query = "";
                 query += @"INSERT INTO " + ClassName + " (";
+                query += "'Id',";
                 query += "'Model',";
                 query += "'Type',";
                 query += "'Channel',";
@@ -222,6 +223,7 @@ namespace Sqlite.Common
                 query += "'SafetyTempMin'";
                 query += ") ";
                 query += "values (";
+                query += "'" + oneRowData.Id.ToString() + "', ";
                 query += "'" + oneRowData.Model.ToString() + "', ";
                 query += "'" + oneRowData.Type.ToString() + "', ";
                 query += "'" + oneRowData.Channel + "', ";
