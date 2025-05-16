@@ -196,6 +196,20 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelDictionary[Model.DischargerName].Model = model;
                 ViewModelDictionary[Model.DischargerName].StartDischarge();
 
+                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+                DateTime startTime = DateTime.Now;
+                while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Discharging)
+                {
+                    Thread.Sleep(100);
+
+                    // 5초가 지나면 방전 시작 실패로 간주
+                    if (DateTime.Now - startTime > TimeSpan.FromSeconds(5))
+                    {
+                        MessageBox.Show("방전 시작에 실패했습니다.");
+                        return;
+                    }
+                }
+
                 // SetMode -> Monitor 화면 전환
                 ViewModelMain.Instance.SetIsStartedArray(true);
             }
