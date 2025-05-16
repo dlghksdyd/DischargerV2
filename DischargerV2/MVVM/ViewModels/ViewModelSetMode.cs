@@ -205,7 +205,15 @@ namespace DischargerV2.MVVM.ViewModels
                     // 5초가 지나면 방전 시작 실패로 간주
                     if (DateTime.Now - startTime > TimeSpan.FromSeconds(5))
                     {
-                        MessageBox.Show("방전 시작에 실패했습니다.");
+                        ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                        {
+                            Title = "Start discharging",
+                            Comment = "Fail to start discharging.",
+                        };
+
+                        ViewModelMain viewModelMain = ViewModelMain.Instance;
+                        viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                        viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
                         return;
                     }
                 }

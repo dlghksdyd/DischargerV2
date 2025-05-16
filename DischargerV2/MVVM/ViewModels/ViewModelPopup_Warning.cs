@@ -61,10 +61,9 @@ namespace DischargerV2.MVVM.ViewModels
             CloseCommand = new DelegateCommand(Close);
         }
 
-
         private void Confirm()
         {
-            CallBackDelegate();
+            CallBackDelegate?.Invoke();
             Close();
         }
 
