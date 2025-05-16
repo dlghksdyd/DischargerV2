@@ -44,7 +44,7 @@ namespace DischargerV2.MVVM.Views
             xDataGraph.Plot.Axes.Left.MajorTickStyle.Length = 0;
             xDataGraph.Plot.Axes.Left.MinorTickStyle.Length = 0;
 
-            // SoC - Y축 생성 및 디자인 변경
+            // Y축 생성 및 디자인 변경 - SoC
             _viewModel.SocAxis = xDataGraph.Plot.Axes.AddLeftAxis();
             _viewModel.SocAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
             _viewModel.SocAxis.MajorTickStyle.Length = 0;
@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.Views
             _viewModel.SocAxis.LabelFontName = "맑은 고딕";
             _viewModel.SocAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            // Temp - Y축 생성 및 디자인 변경
+            // Y축 생성 및 디자인 변경 - Temp
             _viewModel.TempAxis = xDataGraph.Plot.Axes.AddLeftAxis();
             _viewModel.TempAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
             _viewModel.TempAxis.MajorTickStyle.Length = 0;
@@ -68,7 +68,7 @@ namespace DischargerV2.MVVM.Views
             _viewModel.TempAxis.LabelFontName = "맑은 고딕";
             _viewModel.TempAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            // Current - Y축 생성 및 디자인 변경
+            // Y축 생성 및 디자인 변경 - Current
             _viewModel.CurrentAxis = xDataGraph.Plot.Axes.AddLeftAxis();
             _viewModel.CurrentAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
             _viewModel.CurrentAxis.MajorTickStyle.Length = 0;
@@ -80,7 +80,7 @@ namespace DischargerV2.MVVM.Views
             _viewModel.CurrentAxis.LabelFontName = "맑은 고딕";
             _viewModel.CurrentAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            // Voltage - Y축 생성 및 디자인 변경
+            //  Y축 생성 및 디자인 변경 - Voltage
             _viewModel.VoltageAxis = xDataGraph.Plot.Axes.AddLeftAxis();
             _viewModel.VoltageAxis.TickLabelStyle.ForeColor = _viewModel.TextColor;
             _viewModel.VoltageAxis.MajorTickStyle.Length = 0;
