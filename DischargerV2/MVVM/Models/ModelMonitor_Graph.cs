@@ -206,7 +206,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private LeftAxis _voltageAxis;
+        private LeftAxis _voltageAxis = new LeftAxis();
         public LeftAxis VoltageAxis
         {
             get
@@ -219,7 +219,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private LeftAxis _currentAxis;
+        private LeftAxis _currentAxis = new LeftAxis();
         public LeftAxis CurrentAxis
         {
             get
@@ -232,7 +232,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private LeftAxis _tempAxis;
+        private LeftAxis _tempAxis = new LeftAxis();
         public LeftAxis TempAxis
         {
             get
@@ -245,7 +245,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private LeftAxis _socAxis;
+        private LeftAxis _socAxis = new LeftAxis();
         public LeftAxis SocAxis
         {
             get

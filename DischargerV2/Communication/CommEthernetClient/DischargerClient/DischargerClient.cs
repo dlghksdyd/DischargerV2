@@ -322,7 +322,7 @@ namespace Ethernet.Client.Discharger
 
             /// Safety Condition 설정
             bool safetyConditionResult = SendCommand_SetSafetyCondition(
-                _parameters.SafetyVoltageMax + SafetyMarginVoltage, _parameters.SafetyVoltageMin - SafetyMarginVoltage,
+                _parameters.SafetyVoltageMax, _parameters.SafetyVoltageMin,
                 _parameters.SafetyCurrentMax, _parameters.SafetyCurrentMin,
                 _parameters.SafetyTempMax, _parameters.SafetyTempMin);
             if (safetyConditionResult == false)
@@ -489,7 +489,8 @@ namespace Ethernet.Client.Discharger
 
                 byte[] writeBuffer = CreateSetSafetyConditionCommand(
                     _parameters.DischargerChannel,
-                    voltageMax, voltageMin, currentMax, currentMin);
+                    voltageMax + SafetyMarginVoltage, voltageMin - SafetyMarginVoltage, 
+                    currentMax, currentMin);
 
                 bool result = _dischargerClient.ProcessPacket(writeBuffer);
                 if (result != true)
@@ -499,10 +500,10 @@ namespace Ethernet.Client.Discharger
                     return false;
                 }
 
-                _dischargerData.SafetyVoltageMin = voltageMin;
-                _dischargerData.SafetyVoltageMax = voltageMax;
-                _dischargerData.SafetyCurrentMin = currentMin;
-                _dischargerData.SafetyCurrentMax = currentMax;
+                _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
+                _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
+                _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
+                _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
                 _dischargerData.SafetyTempMin = tempMin;
                 _dischargerData.SafetyTempMax = tempMax;
 
@@ -745,8 +746,8 @@ namespace Ethernet.Client.Discharger
                         {
                             if (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                                 channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
-                                -channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
-                                -channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax)
+                                channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
+                                channelInfo.BatteryCurrent > _dischargerData.SafetyCurrentMax)
                             {
                                 ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                             }

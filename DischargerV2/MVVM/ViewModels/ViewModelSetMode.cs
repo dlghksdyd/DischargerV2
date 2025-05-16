@@ -365,8 +365,7 @@ namespace DischargerV2.MVVM.ViewModels
             double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
 
             ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
-                voltageMax + EthernetClientDischarger.SafetyMarginVoltage, voltageMin - EthernetClientDischarger.SafetyMarginVoltage, 
-                currentMax, currentMin, tempMax, tempMin);
+                voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
             return true;
         }
