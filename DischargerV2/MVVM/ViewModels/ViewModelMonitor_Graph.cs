@@ -222,7 +222,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
-                ModelDictionary[dischargerName].DataNoList.Add(Model.DataNoList.Count + 1);
+                ModelDictionary[dischargerName].DataNoList.Add(ModelDictionary[dischargerName].DataNoList.Count + 1);
                 ModelDictionary[dischargerName].DataVoltageList.Add(dischargerDatas.ReceiveBatteryVoltage);
                 ModelDictionary[dischargerName].DataCurrentList.Add(dischargerDatas.ReceiveDischargeCurrent);
 
