@@ -90,8 +90,9 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
             ViewModelMonitor_Graph viewModelMonitor_Graph = ViewModelMonitor_Graph.Instance;
 
-            EDischargerModel model = viewModelDischarger.Model.DischargerInfos[Model.DischargerIndex].Model;
             EDischargerState receiveState = viewModelDischarger.Model.DischargerStates[Model.DischargerIndex];
+
+            bool isTempModule = viewModelDischarger.Model.DischargerInfos[Model.DischargerIndex].IsTempModule;
             
             double receiveVoltage = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveBatteryVoltage;
             double receiveCurrent = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveDischargeCurrent;
@@ -112,7 +113,7 @@ namespace DischargerV2.MVVM.ViewModels
             if (Model.IsEnterLastPhase == false)
             {
                 // 모델별 온도 받아오는 게 다름
-                if (model == EDischargerModel.MBDC)
+                if (isTempModule)
                 {
                     double receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
 
