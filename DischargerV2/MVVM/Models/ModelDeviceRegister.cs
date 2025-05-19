@@ -170,6 +170,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private bool _isTempModule;
+        public bool IsTempModule
+        {
+            get
+            {
+                return _isTempModule;
+            }
+            set
+            {
+                SetProperty(ref _isTempModule, value);
+            }
+        }
+
         private string _comport;
         public string Comport
         {

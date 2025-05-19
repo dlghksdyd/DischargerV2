@@ -345,6 +345,7 @@ namespace Sqlite.Common
                 query += "'SpecVoltage' REAL, ";
                 query += "'SpecCurrent' REAL, ";
                 query += "'IpAddress' TEXT, ";
+                query += "'IsTempModule' INTEGER, ";
                 query += "'TempModuleComPort' TEXT, ";
                 query += "'TempModuleChannel' TEXT, ";
                 query += "'TempChannel' TEXT";
@@ -371,6 +372,7 @@ namespace Sqlite.Common
                 query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage + "',";
                 query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent + "',";
                 query += "\"IpAddress\"='" + oneRowData.IpAddress + "',";
+                query += "\"IsTempModule\"='" + (oneRowData.IsTempModule == true ? 1 : 0) + "',";
                 query += "\"TempModuleComPort\"='" + oneRowData.TempModuleComPort + "',";
                 query += "\"TempModuleChannel\"='" + oneRowData.TempModuleChannel + "', ";
                 query += "\"TempChannel\"='" + oneRowData.TempChannel + "'";
@@ -398,6 +400,7 @@ namespace Sqlite.Common
                 query += "'SpecVoltage',";
                 query += "'SpecCurrent',";
                 query += "'IpAddress',";
+                query += "'IsTempModule',";
                 query += "'TempModuleComPort',";
                 query += "'TempModuleChannel',";
                 query += "'TempChannel'";
@@ -410,6 +413,7 @@ namespace Sqlite.Common
                 query += "'" + oneRowData.SpecVoltage + "', ";
                 query += "'" + oneRowData.SpecCurrent + "', ";
                 query += "'" + oneRowData.IpAddress + "', ";
+                query += "'" + (oneRowData.IsTempModule == true ? 1 : 0) + "', ";
                 query += "'" + oneRowData.TempModuleComPort + "', ";
                 query += "'" + oneRowData.TempModuleChannel + "', ";
                 query += "'" + oneRowData.TempChannel + "'";
@@ -446,6 +450,7 @@ namespace Sqlite.Common
                         oneRow.SpecVoltage = double.Parse(reader["SpecVoltage"].ToString());
                         oneRow.SpecCurrent = double.Parse(reader["SpecCurrent"].ToString());
                         oneRow.IpAddress = reader["IpAddress"].ToString();
+                        oneRow.IsTempModule = reader["IsTempModule"].ToString() == "1" ? true : false;
                         oneRow.TempModuleComPort = reader["TempModuleComPort"].ToString();
                         oneRow.TempModuleChannel = reader["TempModuleChannel"].ToString();
                         oneRow.TempChannel = reader["TempChannel"].ToString();

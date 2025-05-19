@@ -86,6 +86,7 @@ namespace DischargerV2.MVVM.Views
                             Channel = tableDischargerInfo.DischargerChannel.ToString(),
                             VoltSpec = tableDischargerInfo.SpecVoltage.ToString(),
                             CurrSpec = tableDischargerInfo.SpecCurrent.ToString(),
+                            IsTempModule = tableDischargerInfo.IsTempModule,
                             Comport = tableDischargerInfo.TempModuleComPort,
                             ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString(),
                             TempChannel = tableDischargerInfo.TempChannel.ToString()
@@ -108,6 +109,7 @@ namespace DischargerV2.MVVM.Views
                                 Channel = tableDischargerInfo.DischargerChannel.ToString(),
                                 VoltSpec = tableDischargerInfo.SpecVoltage.ToString(),
                                 CurrSpec = tableDischargerInfo.SpecCurrent.ToString(),
+                                IsTempModule = tableDischargerInfo.IsTempModule,
                                 Comport = tableDischargerInfo.TempModuleComPort,
                                 ModuleChannel = tableDischargerInfo.TempModuleChannel.ToString(),
                                 TempChannel = tableDischargerInfo.TempChannel.ToString(),

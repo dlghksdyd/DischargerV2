@@ -71,6 +71,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.Channel = "";
             Model.VoltSpec = "";
             Model.CurrSpec = "";
+            Model.IsTempModule = false;
             Model.Comport = "";
             Model.ModuleChannel = "";
             Model.TempChannel = "";
@@ -230,6 +231,7 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
             tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
             tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+            tableDischargerInfo.IsTempModule = Convert.ToBoolean(Model.IsTempModule);
             tableDischargerInfo.TempModuleComPort = Model.Comport;
             tableDischargerInfo.TempModuleChannel = Model.ModuleChannel;
             tableDischargerInfo.TempChannel = Model.TempChannel;
