@@ -71,6 +71,12 @@ namespace DischargerV2.MVVM.ViewModels
             set => Model.CurrSpec = value;
         }
 
+        public bool IsTempModule
+        {
+            get => Model.IsTempModule;
+            set => Model.IsTempModule = value;
+        }
+
         public string Comport
         {
             get => Model.Comport;

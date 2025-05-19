@@ -8,7 +8,7 @@ namespace Sqlite.Common
 {
     public enum EDischargerModel
     {
-        MBDC, MBDC25
+        MBDC
     }
 
     public enum EDischargeType
@@ -34,6 +34,7 @@ namespace Sqlite.Common
         public double SpecVoltage;
         public double SpecCurrent;
         public string IpAddress;
+        public bool IsTempModule;
         public string TempModuleComPort;
         public string TempModuleChannel;
         public string TempChannel;

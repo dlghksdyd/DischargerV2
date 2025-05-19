@@ -148,39 +148,55 @@ namespace DischargerV2.MVVM.Views
                 tempStackPanel.Orientation = Orientation.Horizontal;
                 tempStackPanel.Margin = new Thickness(16, 0, 16, 0);
 
-                MexTextBlock tempTextBlock = new MexTextBlock();
-                Binding foregroundBinding = new Binding("Foreground");
-                foregroundBinding.ElementName = "xTemp" + i;
-                tempTextBlock.SetBinding(MexTextBlock.ForegroundProperty, foregroundBinding);
-                tempTextBlock.FontSet = ResFontSet.body_md_regular;
-                int comportIndex = _viewModelTempModule.Model.TempModuleDictionary[dischargerName].ComportIndex;
-                BindingOperations.SetBinding(tempTextBlock, MexTextBlock.TextProperty,
-                   new Binding("Model.TempDatas[" + comportIndex + "][" + dischargerInfo.TempChannel + "]"));
-                
-                tempStackPanel.Children.Add(tempTextBlock);
+                if (dischargerInfo.IsTempModule)
+                {
+                    MexTextBlock tempTextBlock = new MexTextBlock();
+                    Binding foregroundBinding = new Binding("Foreground");
+                    foregroundBinding.ElementName = "xTemp" + i;
+                    tempTextBlock.SetBinding(MexTextBlock.ForegroundProperty, foregroundBinding);
+                    tempTextBlock.FontSet = ResFontSet.body_md_regular;
+                    int comportIndex = _viewModelTempModule.Model.TempModuleDictionary[dischargerName].ComportIndex;
+                    BindingOperations.SetBinding(tempTextBlock, MexTextBlock.TextProperty,
+                       new Binding("Model.TempDatas[" + comportIndex + "][" + dischargerInfo.TempChannel + "]"));
 
-                Image reconnectTempImage = new Image();
-                reconnectTempImage.Width = 24;
-                reconnectTempImage.Height = 24;
-                reconnectTempImage.Margin = new Thickness(8, 0, 0, 0);
-                reconnectTempImage.Cursor = Cursors.Hand;
-                reconnectTempImage.Source = (ImageSource)new ImageColorConverter().Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
+                    tempStackPanel.Children.Add(tempTextBlock);
 
-                BindingOperations.SetBinding(reconnectTempImage, Image.VisibilityProperty,
-                    new Binding("Model.ReconnectVisibility[" + comportIndex + "]"));
+                    Image reconnectTempImage = new Image();
+                    reconnectTempImage.Width = 24;
+                    reconnectTempImage.Height = 24;
+                    reconnectTempImage.Margin = new Thickness(8, 0, 0, 0);
+                    reconnectTempImage.Cursor = Cursors.Hand;
+                    reconnectTempImage.Source = (ImageSource)new ImageColorConverter().Convert(ResImage.refresh, null, ResColor.icon_infomation, null);
 
-                var reconnectTempModuleTriggerCollection = Interaction.GetTriggers(reconnectTempImage);
-                var reconnectTempModuleEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
-                reconnectTempModuleEventTrigger.EventName = "MouseLeftButtonUp";
-                var reconnectTempModuleAction = new InvokeCommandAction();
-                reconnectTempModuleAction.PassEventArgsToCommand = false;
-                reconnectTempModuleAction.CommandParameter = dischargerName;
-                BindingOperations.SetBinding(reconnectTempModuleAction, InvokeCommandAction.CommandProperty, 
-                    new Binding("ReconnectTempModuleCommand"));
-                reconnectTempModuleEventTrigger.Actions.Add(reconnectTempModuleAction);
-                reconnectTempModuleTriggerCollection.Add(reconnectTempModuleEventTrigger);
-                
-                tempStackPanel.Children.Add(reconnectTempImage);
+                    BindingOperations.SetBinding(reconnectTempImage, Image.VisibilityProperty,
+                        new Binding("Model.ReconnectVisibility[" + comportIndex + "]"));
+
+                    var reconnectTempModuleTriggerCollection = Interaction.GetTriggers(reconnectTempImage);
+                    var reconnectTempModuleEventTrigger = new Microsoft.Xaml.Behaviors.EventTrigger();
+                    reconnectTempModuleEventTrigger.EventName = "MouseLeftButtonUp";
+                    var reconnectTempModuleAction = new InvokeCommandAction();
+                    reconnectTempModuleAction.PassEventArgsToCommand = false;
+                    reconnectTempModuleAction.CommandParameter = dischargerName;
+                    BindingOperations.SetBinding(reconnectTempModuleAction, InvokeCommandAction.CommandProperty,
+                        new Binding("ReconnectTempModuleCommand"));
+                    reconnectTempModuleEventTrigger.Actions.Add(reconnectTempModuleAction);
+                    reconnectTempModuleTriggerCollection.Add(reconnectTempModuleEventTrigger);
+
+                    tempStackPanel.Children.Add(reconnectTempImage);
+                }
+                else
+                {
+                    MexTextBlock tempTextBlock = new MexTextBlock();
+                    tempTextBlock.DataContext = _viewModelDischarger;
+                    Binding foregroundBinding = new Binding("Foreground");
+                    foregroundBinding.ElementName = "xTemp" + i;
+                    tempTextBlock.SetBinding(MexTextBlock.ForegroundProperty, foregroundBinding);
+                    tempTextBlock.FontSet = ResFontSet.body_md_regular;
+                    BindingOperations.SetBinding(tempTextBlock, MexTextBlock.TextProperty,
+                       new Binding("Model.DischargerDatas[" + i + "].ReceiveDischargeTemp"));
+
+                    tempStackPanel.Children.Add(tempTextBlock);
+                }
 
                 tempRowColumn.Content = tempStackPanel;
 

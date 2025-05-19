@@ -57,7 +57,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (var info in infos)
             {
-                if (info.Model == EDischargerModel.MBDC)
+                if (info.IsTempModule == true)
                 {
                     Model.TempModuleDictionary.Add(info.DischargerName, new TempModule()
                     {

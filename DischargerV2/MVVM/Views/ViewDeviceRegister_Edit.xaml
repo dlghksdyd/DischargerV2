@@ -123,11 +123,18 @@
                                   Foreground="{StaticResource Mex/ResColor/text_headings}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Mex:MexTextBlock Grid.Column="1" IsTabStop="False"
-                                  Text="Temperature Module"
-                                  Foreground="{StaticResource Mex/ResColor/text_headings}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Mex:MexCheckBox CheckBoxSize="16" 
+                                     Padding="8 0 0 0"
+                                     IsChecked="{Binding Model.IsTempModule, 
+                                                         Source={x:Static vm:ViewModelDeviceRegister_Edit.Instance},
+                                                         Mode=TwoWay}"
+                                     Text="Temperature Module"
+                                     Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                     FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                                     ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"/>
+                </StackPanel>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

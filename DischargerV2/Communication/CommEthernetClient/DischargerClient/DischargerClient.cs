@@ -55,6 +55,7 @@ namespace Ethernet.Client.Discharger
         public EDischargerModel DischargerModel;
         public string DischargerName = string.Empty;
         public short DischargerChannel = short.MaxValue;
+        public bool DischargerIsTempModule { get; set; } = false;
         public IPAddress IpAddress = IPAddress.None;
         public int EthernetPort = int.MaxValue;
         public int TimeOutMs = int.MaxValue;
@@ -102,6 +103,7 @@ namespace Ethernet.Client.Discharger
         public EDischargerModel Model { get; set; }
         public string Name { get; set; } = string.Empty;
         public short Channel { get; set; } = short.MaxValue;
+        public bool IsTempModule { get; set; } = false;
         public IPAddress IpAddress { get; set; }
         public int EthernetPort { get; set; } = int.MaxValue;
         public int TimeOutMs { get; set; } = int.MaxValue;
@@ -225,8 +227,10 @@ namespace Ethernet.Client.Discharger
                 LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
                 logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
                 logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                if (_parameters.DischargerModel == EDischargerModel.MBDC25)
+                if (_parameters.DischargerIsTempModule)
+                {
                     logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
+                }
                 logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
                 logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
                 logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
@@ -363,7 +367,8 @@ namespace Ethernet.Client.Discharger
             temp.ErrorCode = _dischargerData.ErrorCode;
             temp.ChannelStatus = _dischargerData.ChannelStatus;
             temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
-            temp.ReceiveDischargeCurrent = double.Parse((_dischargerData.ReceiveDischargeCurrent).ToString("F1"));
+            temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F1"));
+            temp.ReceiveDischargeTemp = double.Parse(_dischargerData.ReceiveDischargeTemp.ToString("F1"));
 
             /// safety
             temp.SafetyCurrentMin = _dischargerData.SafetyCurrentMin;
@@ -735,7 +740,7 @@ namespace Ethernet.Client.Discharger
                     _dischargerData.ReceiveDischargeCurrent = -channelInfo.BatteryCurrent;
                     _dischargerData.ReceiveDischargeTemp = channelInfo.AuxTemp1;
 
-                    if (_parameters.DischargerModel == EDischargerModel.MBDC && 
+                    if (_parameters.DischargerIsTempModule == false && 
                         (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
                         channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
@@ -743,7 +748,7 @@ namespace Ethernet.Client.Discharger
                     {
                         ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                     }
-                    else if (_parameters.DischargerModel != EDischargerModel.MBDC && 
+                    else if (_parameters.DischargerIsTempModule == true && 
                         (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
                         channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
@@ -784,8 +789,10 @@ namespace Ethernet.Client.Discharger
                     LogArgument logArgument = new LogArgument("Discharger Info.");
                     logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
                     logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                    if (_parameters.DischargerModel == EDischargerModel.MBDC25)
+                    if (_parameters.DischargerIsTempModule)
+                    {
                         logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
+                    }
                     logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
                     logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
                     logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;

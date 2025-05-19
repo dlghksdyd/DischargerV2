@@ -65,6 +65,7 @@ namespace DischargerV2.MVVM.ViewModels
             SetModel.Channel = setModel.Channel;
             SetModel.VoltSpec = setModel.VoltSpec;
             SetModel.CurrSpec = setModel.CurrSpec;
+            Model.IsTempModule = setModel.IsTempModule; 
             Model.Comport = setModel.Comport;
             Model.ModuleChannel = setModel.ModuleChannel;
             Model.TempChannel = setModel.TempChannel;
@@ -86,6 +87,7 @@ namespace DischargerV2.MVVM.ViewModels
             // 기입한 값 초기화 (바인딩되는 값 제외)
             Model.Name = "";
             Model.Ip = "";
+            Model.IsTempModule = false;
             Model.Comport = "";
             Model.ModuleChannel = "";
             Model.TempChannel = "";
@@ -303,6 +305,7 @@ namespace DischargerV2.MVVM.ViewModels
             tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
             tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
             tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+            tableDischargerInfo.IsTempModule = Model.IsTempModule;
             tableDischargerInfo.TempModuleComPort = Model.Comport;
             tableDischargerInfo.TempModuleChannel = Model.ModuleChannel;
             tableDischargerInfo.TempChannel = Model.TempChannel;
