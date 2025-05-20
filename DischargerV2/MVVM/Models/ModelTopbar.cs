@@ -12,6 +12,19 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelTopbar : BindableBase
     {
+        private string _title = "Discharger";
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                SetProperty(ref _title, value);
+            }
+        }
+
         private SolidColorBrush _background_Minimize = ResColor.surface_page;
         public SolidColorBrush Background_Minimize
         {

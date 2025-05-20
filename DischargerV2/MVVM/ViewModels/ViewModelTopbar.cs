@@ -7,6 +7,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,6 +32,8 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelTopbar()
         {
             Model = new ModelTopbar();
+
+            Model.Title = $"Discharger v{Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}";
 
             xImage_MouseLeftButtonUpCommand = new RelayCommand<object>(xImage_MouseLeftButtonUp);
             xImage_MouseEnterCommand = new RelayCommand<object>(xImage_MouseEnter);
