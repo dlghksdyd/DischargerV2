@@ -19,6 +19,8 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelMain : BindableBase
     {
+        public event EventHandler UpdateDischargerInfoTableEvent;
+
         #region Command
         #endregion
 
@@ -59,6 +61,11 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.IsStartedArray.Add(false);
             }
+        }
+
+        public void UpdateDischargerInfoTable()
+        {
+            UpdateDischargerInfoTableEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public void OpenPopup(EPopup setPopup)

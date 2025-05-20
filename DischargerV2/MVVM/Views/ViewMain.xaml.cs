@@ -36,6 +36,13 @@ namespace DischargerV2.MVVM.Views
             Instance = this;
 
             this.DataContext = _viewModel;
+
+            _viewModel.UpdateDischargerInfoTableEvent += _viewModel_UpdateDischargerInfoTableEvent;
+        }
+
+        private void _viewModel_UpdateDischargerInfoTableEvent(object sender, EventArgs e)
+        {
+            xViewDischargerInfoTable.UpdateUi();
         }
     }
 }

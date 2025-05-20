@@ -38,8 +38,26 @@ namespace DischargerV2.MVVM.Views
             InitializeUi();
         }
 
+        public void UpdateUi()
+        {
+            _viewModelDischarger.InitializeDischarger();
+
+            InitializeUi();
+        }
+
         private void InitializeUi()
         {
+            foreach (var row in xTable.Rows)
+            {
+                foreach(var column in row.Columns)
+                {
+                    if (!string.IsNullOrEmpty(column.Name))
+                    {
+                        UnregisterName(column.Name);
+                    }
+                }
+            }
+
             xTable.Rows.Clear();
 
             for (int i = 0; i < _viewModelDischarger.Model.DischargerNameList.Count; i++)
@@ -93,7 +111,7 @@ namespace DischargerV2.MVVM.Views
                 MexTableRowColumn colStatus = new MexTableRowColumn();
                 colStatus.Name = "xStatus" + i;
                 this.RegisterName(colStatus.Name, colStatus);
-
+                
                 StackPanel spStatus = new StackPanel();
                 spStatus.Orientation = Orientation.Horizontal;
                 spStatus.Margin = new Thickness(16, 0, 16, 0);

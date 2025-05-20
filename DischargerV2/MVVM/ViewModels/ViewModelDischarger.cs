@@ -209,7 +209,7 @@ namespace DischargerV2.MVVM.ViewModels
             return false;
         }
 
-        private void InitializeDischarger()
+        public void InitializeDischarger()
         {
             FinalizeDischarger();
 

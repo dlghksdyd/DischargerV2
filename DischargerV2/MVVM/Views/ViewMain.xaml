@@ -52,7 +52,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <view:ViewMonitor_ChannelState Grid.Row="0"/>
-                <view:ViewDischargerInfoTable Grid.Row="2"/>
+                <view:ViewDischargerInfoTable Grid.Row="2" x:Name="xViewDischargerInfoTable" />
                 <Grid Grid.Row="4">
                     <view:ViewSetMode>
                         <view:ViewSetMode.Visibility>

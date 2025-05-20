@@ -93,29 +93,36 @@ namespace Ethernet.Client.Basic
                 ClientInstances[handle] = new EthernetClientInstance();
                 ClientInstances[handle].Client = new TcpClient();
 
-                var waiter = ClientInstances[handle].Client.BeginConnect(serverIpAddress, port, null, null);
-
-                if (waiter.AsyncWaitHandle.WaitOne(timeOutMs, true))
+                try
                 {
-                    ClientInstances[handle].Client.EndConnect(waiter);
+                    var waiter = ClientInstances[handle].Client.BeginConnect(serverIpAddress, port, null, null);
 
-                    if (ClientInstances[handle].Client.Connected)
+                    if (waiter.AsyncWaitHandle.WaitOne(timeOutMs, true))
                     {
-                        ClientInstances[handle].Client.ReceiveTimeout = timeOutMs;
-                        ClientInstances[handle].Stream = ClientInstances[handle].Client.GetStream();
-                        ClientInstances[handle].DataLock = new object();
+                        ClientInstances[handle].Client.EndConnect(waiter);
 
-                        return EthernetClientBasicStatus.EN_ERROR_OK;
-                    }
-                    else
-                    {
-                        Disconnect(handle);
+                        if (ClientInstances[handle].Client.Connected)
+                        {
+                            ClientInstances[handle].Client.ReceiveTimeout = timeOutMs;
+                            ClientInstances[handle].Stream = ClientInstances[handle].Client.GetStream();
+                            ClientInstances[handle].DataLock = new object();
 
-                        return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                            return EthernetClientBasicStatus.EN_ERROR_OK;
+                        }
+                        else
+                        {
+                            Disconnect(handle);
+
+                            return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                        }
                     }
+
+                    return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
                 }
-
-                return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                catch
+                {
+                    return EthernetClientBasicStatus.EN_ERROR_CONNECT_FAIL;
+                }
             }
         }
 

@@ -154,14 +154,25 @@ namespace Ethernet.Client.Discharger
             public double DCIR;
             public float AuxTemp1;
             public float AuxTemp2;
-            public Int16 DOModuleInfo;
-            public Int16 DIModuleInfo;
-            public double DischargeCapacity;
+            public byte DOModuleInfo;
+            public byte DIModuleInfo;
+            public DischargeCapacity DischargeCapacity;
             public float AuxTemp3;
             public float AuxTemp4;
             public double ChargeEnergy;
             public double DischargeEnergy;
         }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+    public class DischargeCapacity
+    {
+        public byte byte0;
+        public byte byte1;
+        public byte byte2;
+        public byte byte3;
+        public byte byte4;
+        public byte byte5;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
