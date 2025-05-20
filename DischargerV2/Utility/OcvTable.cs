@@ -71,7 +71,7 @@ namespace Utility.Common
 
         public static void initOcvTable()
         {
-            string fileName = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\OCV.csv";
+            string fileName = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\Database\\OCV.csv";
             StreamReader sr;
             try
             {
