@@ -6,6 +6,18 @@ def resolve_path(*parts):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     return os.path.join(base_dir, *parts)
 
+def delete_release_folder():
+    """Delete the bin\\Release folder"""
+    release_path = resolve_path("bin", "Release")
+    if os.path.exists(release_path):
+        try:
+            shutil.rmtree(release_path)
+            print(f"[DELETE] Removed folder: {release_path}")
+        except Exception as e:
+            print(f"[ERROR] Failed to delete {release_path}: {e}")
+    else:
+        print(f"[INFO] Folder does not exist: {release_path}")
+
 def copy_config_files(source_dir, target_dir):
     """Copy files from Config folder to bin\Release\Database"""
     if not os.path.isdir(source_dir):
@@ -33,6 +45,8 @@ def copy_config_files(source_dir, target_dir):
         print(f"Total files copied: {copied}")
 
 def main():
+    delete_release_folder()
+
     source = resolve_path("Config")
     target = resolve_path("bin", "Release", "Database")
     copy_config_files(source, target)
