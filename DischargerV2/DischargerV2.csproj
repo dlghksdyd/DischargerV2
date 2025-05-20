@@ -587,6 +587,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\update_msi_file_name.py" />
+    <Content Include="Scripts\update_msi_version_info.py" />
     <Resource Include="icon_discharger.ico" />
     <Content Include="Scripts\pre_build_copy_config.py" />
   </ItemGroup>
@@ -615,6 +617,7 @@
   <Import Project="..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.2.88.9\build\net462\SkiaSharp.NativeAssets.Linux.NoDependencies.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.2.88.9\build\net462\SkiaSharp.NativeAssets.Linux.NoDependencies.targets')" />
   <PropertyGroup>
     <PreBuildEvent>cd $(ProjectDir)Scripts
-python pre_build_copy_config.py</PreBuildEvent>
+python pre_build_copy_config.py
+python update_msi_version_info.py</PreBuildEvent>
   </PropertyGroup>
 </Project>
