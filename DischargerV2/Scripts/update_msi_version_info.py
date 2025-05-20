@@ -5,12 +5,10 @@ import uuid
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-# === 상대 경로 설정 ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSEMBLY_INFO_PATH = os.path.join(BASE_DIR, "..", "Properties", "AssemblyInfo.cs")
 VDPROJ_PATH = os.path.join(BASE_DIR, "..", "..", "Mintech Discharger", "Mintech Discharger.vdproj")
 
-# 정규식 패턴
 RE_ASSEMBLY_INFO_VERSION = re.compile(r'\[assembly:\s*AssemblyInformationalVersion\("(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?"\)\]')
 RE_PRODUCT_VERSION_LINE = re.compile(r'"ProductVersion" = "8:([\d\.]+)"')
 RE_PRODUCT_CODE_LINE = re.compile(r'"ProductCode" = "8:{([A-F0-9\-]+)}"', re.IGNORECASE)
@@ -80,6 +78,14 @@ def update_vdproj(path, new_version):
 
     write_file(path, updated_lines)
     print(".vdproj file updated.")
+
+    info_string = ""
+    info_string += "Update complete. Please rebuild the project to apply changes.\n"
+    info_string += "Update complete. Please rebuild the project to apply changes.\n"
+    info_string += "Update complete. Please rebuild the project to apply changes.\n"
+    info_string += "Update complete. Please rebuild the project to apply changes.\n"
+    info_string += "Update complete. Please rebuild the project to apply changes.\n"
+    raise Exception(info_string)
 
 
 def main():
