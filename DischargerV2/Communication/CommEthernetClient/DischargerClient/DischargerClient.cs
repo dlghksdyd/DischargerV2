@@ -317,7 +317,7 @@ namespace Ethernet.Client.Discharger
             }
 
             /// 경광등 초기화
-            bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+            bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
             if (lampControlResult == false)
             {
                 ChangeDischargerState(EDischargerState.Disconnected);
@@ -412,6 +412,8 @@ namespace Ethernet.Client.Discharger
         {
             if (!IsConnected())
             {
+                SendCommand_LampControl(EDioControl.TowerLampRed, false);
+
                 ChangeDischargerState(EDischargerState.Disconnected);
                 return;
             }
@@ -421,6 +423,8 @@ namespace Ethernet.Client.Discharger
                 _dischargerState == EDischargerState.ChStatusError ||
                 _dischargerState == EDischargerState.DeviceError)
             {
+                SendCommand_LampControl(EDioControl.TowerLampRed, true);
+
                 SendCommand_StopDischarge();
                 ReadInfoTimer?.Stop();
                 ReadInfoTimer = null;
@@ -431,10 +435,20 @@ namespace Ethernet.Client.Discharger
 
             if (_dischargerState == EDischargerState.Discharging)
             {
+                SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+
                 if (_dischargerData.ReceiveBatteryVoltage < 1 && _dischargerData.ReceiveDischargeCurrent < 0.1)
                 {
                     SendCommand_StopDischarge();
                 }
+            }
+            else if (_dischargerState == EDischargerState.Pause)
+            {
+                SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+            }
+            else if (_dischargerState == EDischargerState.None || _dischargerState == EDischargerState.Ready)
+            {
+                SendCommand_LampControl(EDioControl.TowerLampYellow, false);
             }
         }
 
@@ -637,8 +651,7 @@ namespace Ethernet.Client.Discharger
 
                 logArgument.Parameters["DioValue"] = dioValue;
 
-                byte[] writeBuffer = CreateLampControlCommand(
-                    _parameters.DischargerChannel, dioValue);
+                byte[] writeBuffer = CreateLampControlCommand(dioValue);
 
                 bool result = _dischargerClient.ProcessPacket(writeBuffer);
                 if (result != true)
@@ -960,7 +973,7 @@ namespace Ethernet.Client.Discharger
             return byteArraySum;
         }
 
-        private byte[] CreateLampControlCommand(short channel, uint value)
+        private byte[] CreateLampControlCommand(uint value)
         {
             int length = Marshal.SizeOf(typeof(LampControl.Request)) + 6;  // 4 is header, 2 is tail
 
@@ -972,7 +985,7 @@ namespace Ethernet.Client.Discharger
 
             /// 데이터 생성
             LampControl.Request data = new LampControl.Request();
-            data.ChannelNumber = channel;
+            data.ChannelNumber = 999; // 방전기가 다 채널일 경우에도 경광등은 하나라서 채널 번호는 999로 고정
             data.DioValue = (double)value;
             byte[] dataByteArray = data.FromPacketToByteArray();
 
