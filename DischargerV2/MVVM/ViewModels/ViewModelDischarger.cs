@@ -63,7 +63,17 @@ namespace DischargerV2.MVVM.ViewModels
         /// </summary>
         private Dictionary<string, EthernetClientDischarger> _clients = new Dictionary<string, EthernetClientDischarger>();
 
-        public ModelDischarger Model { get; set; } = new ModelDischarger();
+        public ObservableCollection<ModelDischarger> Model { get; set; } = new ObservableCollection<ModelDischarger>();
+
+        private string _selectedDischargerName = string.Empty;
+        public string SelectedDischargerName
+        {
+            get { return _selectedDischargerName; }
+            set
+            {
+                SetProperty(ref _selectedDischargerName, value);
+            }
+        }
 
         private static ViewModelDischarger _instance = null;
         public static ViewModelDischarger Instance
@@ -101,9 +111,9 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 if (Int32.TryParse(strSelectedIndex, out int selectedIndex))
                 {
-                    string selectedDischargerName = Model.DischargerNameList[selectedIndex];
+                    string selectedDischargerName = Model[selectedIndex].DischargerName;
 
-                    Model.SelectedDischargerName = selectedDischargerName;
+                    SelectedDischargerName = selectedDischargerName;
 
                     ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
                     ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
@@ -115,8 +125,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void OpenPopupError(string dischargerName)
         {
-            int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
-            uint errorCode = Model.DischargerDatas[index].ErrorCode;
+            int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
+            uint errorCode = Model[index].DischargerData.ErrorCode;
             
             List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
             TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
@@ -130,7 +140,7 @@ namespace DischargerV2.MVVM.ViewModels
                 "(Error Code: 0x{3})\n\n" +
                 "원인: \n{4}\n\n" +
                 "해결 방법: \n{5}",
-                dischargerName, Model.DischargerInfos[index].Channel,
+                dischargerName, Model[index].DischargerInfo.Channel,
                 tableDischargerErrorCode.Description,
                 tableDischargerErrorCode.Code.ToString("X"),
                 tableDischargerErrorCode.Cause, 
@@ -156,10 +166,10 @@ namespace DischargerV2.MVVM.ViewModels
             ReconnectDischarger(dischargerName);
         }
 
-        private void ReconnectDischarger(string dischargerName)
+        public void ReconnectDischarger(string dischargerName)
         {
-            int index = Model.DischargerNameList.ToList().FindIndex(x => x == dischargerName);
-            Model.ReconnectVisibility[index] = Visibility.Collapsed;
+            int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
+            Model[index].ReconnectVisibility = Visibility.Collapsed;
 
             Thread thread = new Thread(
                 delegate()
@@ -198,7 +208,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         public bool IsDischarging()
         {
-            foreach (var state in Model.DischargerStates)
+            foreach (var state in Model.ToList().ConvertAll(x => x.DischargerState))
             {
                 if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
                 {
@@ -215,19 +225,14 @@ namespace DischargerV2.MVVM.ViewModels
 
             List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
 
+            Model.Clear();
             for (int index = 0; index < infos.Count; index++) 
             {
-                Model.DischargerDatas.Add(new DischargerDatas());
-                Model.DischargerStates.Add(EDischargerState.None);
-                Model.StateColor.Add(ResColor.icon_disabled);
-                Model.ProgressTime.Add("00:00:00");
-                Model.ReconnectVisibility.Add(Visibility.Collapsed);
-                Model.ErrorVisibility.Add(Visibility.Collapsed);
-
+                var model = new ModelDischarger();
+                Model[index].No = (index + 1).ToString();
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
+                Model[index].DischargerInfo = dischargerInfo;
                 InitializeDischargerClients(dischargerInfo);
-
-                Model.DischargerNameList.Add(infos[index].DischargerName);
             }
 
             ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
@@ -250,15 +255,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
             _clients.Clear();
 
-            Model.DischargerNameList.Clear();
-            Model.SelectedDischargerName = string.Empty;
-            Model.DischargerDatas.Clear();
-            Model.DischargerInfos.Clear();
-            Model.DischargerStates.Clear();
-            Model.StateColor.Clear();
-            Model.ProgressTime.Clear();
-            Model.ReconnectVisibility.Clear();
-            Model.ErrorVisibility.Clear();
+            Model.Clear();
         }
 
         private DischargerInfo InitializeDischargerInfos(string name)
@@ -289,7 +286,6 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.SafetyCurrentMin = model.SafetyCurrentMin;
             dischargerInfo.SafetyTempMax = model.SafetyTempMax;
             dischargerInfo.SafetyTempMin = model.SafetyTempMin;
-            Model.DischargerInfos.Add(dischargerInfo);
 
             return dischargerInfo;
         }
@@ -321,55 +317,48 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
-            // CollectionChanged Event 발생 목적 변경
-            ObservableCollection<DischargerDatas> dischargerDatas = new ObservableCollection<DischargerDatas>();
-            ObservableCollection<EDischargerState> dischargerStates = new ObservableCollection<EDischargerState>();
-
-            for (int i = 0; i < Model.DischargerNameList.Count; i++)
+            for (int i = 0; i < Model.Count; i++)
             {
-                dischargerDatas.Add(_clients[Model.DischargerNameList[i]].GetDatas());
-                dischargerStates.Add(_clients[Model.DischargerNameList[i]].GetState());
+                Model[i].DischargerData = _clients[Model[i].DischargerName].GetDatas();
+                Model[i].DischargerState = _clients[Model[i].DischargerName].GetState();
             }
 
-            Model.DischargerDatas = dischargerDatas;
-            Model.DischargerStates = dischargerStates;
-
-            SetStateColor(Model.DischargerStates);
-            SetProgressTime(Model.DischargerStates, Model.DischargerDatas);
-            SetVisibility(Model.DischargerStates);
+            SetStateColor();
+            SetProgressTime();
+            SetVisibility();
         }
 
-        private void SetStateColor(ObservableCollection<EDischargerState> dischargerStates)
+        private void SetStateColor()
         {
-            for (int index = 0; index < dischargerStates.Count; index++) 
+            for (int index = 0; index < Model.Count; index++) 
             {
-                var state = dischargerStates[index];
+                var state = Model[index].DischargerState;
 
                 if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
                 {
-                    Model.StateColor[index] = ResColor.icon_disabled;
+                    Model[index].StateColor = ResColor.icon_disabled;
                 }
                 else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
                 {
-                    Model.StateColor[index] = ResColor.icon_success;
+                    Model[index].StateColor = ResColor.icon_success;
                 }
                 else if (state == EDischargerState.Pause)
                 {
-                    Model.StateColor[index] = ResColor.icon_primary;
+                    Model[index].StateColor = ResColor.icon_primary;
                 }
                 else
                 {
-                    Model.StateColor[index] = ResColor.icon_error;
+                    Model[index].StateColor = ResColor.icon_error;
                 }
             }
         }
 
-        private void SetProgressTime(ObservableCollection<EDischargerState> dischargerStates, ObservableCollection<DischargerDatas> dischargerDatas)
+        private void SetProgressTime()
         {
-            for (int index = 0; index < dischargerStates.Count; index++)
+            for (int index = 0; index < Model.Count; index++)
             {
-                var state = dischargerStates[index];
-                var dischargingStartTime = dischargerDatas[index].DischargingStartTime;
+                var state = Model[index].DischargerState;
+                var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
 
                 if (state == EDischargerState.Discharging && state == EDischargerState.Pause)
                 {
@@ -378,34 +367,34 @@ namespace DischargerV2.MVVM.ViewModels
                         diff.Hours.ToString("D2") + ":" +
                         diff.Minutes.ToString("D2") + ":" +
                         diff.Seconds.ToString("D2");
-                    Model.ProgressTime[index] = diffString;
+                    Model[index].ProgressTime = diffString;
                 }
             }
         }
 
-        private void SetVisibility(ObservableCollection<EDischargerState> dischargerStates)
+        private void SetVisibility()
         {
-            for (int index = 0; index < dischargerStates.Count; index++)
+            for (int index = 0; index < Model.Count; index++)
             {
-                var state = dischargerStates[index];
+                var state = Model[index].DischargerState;
 
                 if (state == EDischargerState.Disconnected)
                 {
-                    Model.ReconnectVisibility[index] = Visibility.Visible;
-                    Model.ErrorVisibility[index] = Visibility.Collapsed;
+                    Model[index].ReconnectVisibility = Visibility.Visible;
+                    Model[index].ErrorVisibility = Visibility.Collapsed;
                 }
                 else if (state == EDischargerState.SafetyOutOfRange ||
                     state == EDischargerState.ReturnCodeError ||
                     state == EDischargerState.ChStatusError ||
                     state == EDischargerState.DeviceError)
                 {
-                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
-                    Model.ErrorVisibility[index] = Visibility.Visible;
+                    Model[index].ReconnectVisibility = Visibility.Collapsed;
+                    Model[index].ErrorVisibility = Visibility.Visible;
                 }
                 else
                 {
-                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
-                    Model.ErrorVisibility[index] = Visibility.Collapsed;
+                    Model[index].ReconnectVisibility = Visibility.Collapsed;
+                    Model[index].ErrorVisibility = Visibility.Collapsed;
                 }
             }
         }

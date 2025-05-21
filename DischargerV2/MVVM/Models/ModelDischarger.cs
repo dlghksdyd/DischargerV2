@@ -1,4 +1,5 @@
 ﻿using Ethernet.Client.Discharger;
+using MExpress.Mex;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System;
@@ -17,58 +18,68 @@ namespace DischargerV2.MVVM.Models
     /// </summary>
     public class ModelDischarger : BindableBase
     {
-        private string _selectedDischargerName = string.Empty;
-        public string SelectedDischargerName
+        private SolidColorBrush _background = ResColor.surface_primary;
+        public SolidColorBrush Background
         {
-            get { return _selectedDischargerName; }
+            get { return _background; }
             set
             {
-                SetProperty(ref _selectedDischargerName, value);
+                SetProperty(ref _background, value);
             }
         }
 
-        private ObservableCollection<string> _dischargerNameList = new ObservableCollection<string>();
-        public ObservableCollection<string> DischargerNameList
+        private string _no = string.Empty;
+        public string No
         {
-            get { return _dischargerNameList; }
+            get { return _no; }
             set
             {
-                SetProperty(ref _dischargerNameList, value);
+                SetProperty(ref _no, value);
             }
         }
 
-        private ObservableCollection<DischargerDatas> _dischargerDatas = new ObservableCollection<DischargerDatas>();
-        public ObservableCollection<DischargerDatas> DischargerDatas
+        private string _dischargerName = string.Empty;
+        public string DischargerName
         {
-            get { return _dischargerDatas; }
+            get { return _dischargerName; }
             set
             {
-                SetProperty(ref _dischargerDatas, value);
+                SetProperty(ref _dischargerName, value);
             }
         }
 
-        private ObservableCollection<DischargerInfo> _dischargerInfos = new ObservableCollection<DischargerInfo>();
-        public ObservableCollection<DischargerInfo> DischargerInfos
+        private DischargerDatas _dischargerData = new DischargerDatas();
+        public DischargerDatas DischargerData
         {
-            get { return _dischargerInfos; }
+            get { return _dischargerData; }
             set
             {
-                SetProperty(ref _dischargerInfos, value);
+                SetProperty(ref _dischargerData, value);
             }
         }
 
-        private ObservableCollection<EDischargerState> _dischargerStates = new ObservableCollection<EDischargerState>();
-        public ObservableCollection<EDischargerState> DischargerStates
+        private DischargerInfo _dischargerInfo = new DischargerInfo();
+        public DischargerInfo DischargerInfo
         {
-            get { return _dischargerStates; }
+            get { return _dischargerInfo; }
             set
             {
-                SetProperty(ref _dischargerStates, value);
+                SetProperty(ref _dischargerInfo, value);
             }
         }
 
-        private ObservableCollection<SolidColorBrush> _stateColor = new ObservableCollection<SolidColorBrush>();
-        public ObservableCollection<SolidColorBrush> StateColor
+        private EDischargerState _dischargerState = EDischargerState.None;
+        public EDischargerState DischargerState
+        {
+            get { return _dischargerState; }
+            set
+            {
+                SetProperty(ref _dischargerState, value);
+            }
+        }
+
+        private SolidColorBrush _stateColor = ResColor.icon_disabled;
+        public SolidColorBrush StateColor
         {
             get {  return _stateColor; }
             set
@@ -77,8 +88,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private ObservableCollection<string> _progressTime = new ObservableCollection<string>();
-        public ObservableCollection<string> ProgressTime
+        private string _progressTime = "00:00:00";
+        public string ProgressTime
         {
             get { return _progressTime; }
             set
@@ -87,8 +98,28 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private ObservableCollection<Visibility> _reconnectVisibility = new ObservableCollection<Visibility>();
-        public ObservableCollection<Visibility> ReconnectVisibility
+        private Visibility _shortAvailableVisibility = Visibility.Hidden;
+        public Visibility ShortAvailableVisibility
+        {
+            get { return _shortAvailableVisibility; }
+            set
+            {
+                SetProperty(ref _shortAvailableVisibility, value);
+            }
+        }
+
+        private Visibility _tempReconnectVisibility = Visibility.Hidden;
+        public Visibility TempReconnectVisibility
+        {
+            get { return _tempReconnectVisibility; }
+            set
+            {
+                SetProperty(ref _tempReconnectVisibility, value);
+            }
+        }
+
+        private Visibility _reconnectVisibility = Visibility.Hidden;
+        public Visibility ReconnectVisibility
         {
             get { return _reconnectVisibility; }
             set
@@ -97,8 +128,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private ObservableCollection<Visibility> _errorVisibility = new ObservableCollection<Visibility>();
-        public ObservableCollection<Visibility> ErrorVisibility
+        private Visibility _errorVisibility = Visibility.Hidden;
+        public Visibility ErrorVisibility
         {
             get { return _errorVisibility; }
             set
