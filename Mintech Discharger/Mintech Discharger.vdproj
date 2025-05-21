@@ -2269,7 +2269,7 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mintech Discharger"
-        "ProductCode" = "8:{6F2E2982-680E-4817-BC0C-E04187BFE41C}"
+        "ProductCode" = "8:{BA1DE655-35D8-4D95-A158-A774FAB5E496}"
         "PackageCode" = "8:{C96ADD7F-3D47-4C9A-A336-1018EB18F730}"
         "UpgradeCode" = "8:{E47A4D5D-B451-4578-8EBB-C9BF7BE0E9BB}"
         "AspNetVersion" = "8:4.0.30319.0"

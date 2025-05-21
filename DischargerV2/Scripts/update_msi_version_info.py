@@ -85,7 +85,9 @@ def update_vdproj(path, new_version):
     info_string += "Update complete. Please rebuild the project to apply changes.\n"
     info_string += "Update complete. Please rebuild the project to apply changes.\n"
     info_string += "Update complete. Please rebuild the project to apply changes.\n"
-    raise Exception(info_string)
+    print(info_string)
+
+    sys.exit(1)
 
 
 def main():
