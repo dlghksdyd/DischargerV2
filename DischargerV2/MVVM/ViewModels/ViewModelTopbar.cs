@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -123,7 +124,16 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            try
+            {
+                new LogTrace(ELogTrace.TRACE_PROGRAM_END);
+
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+            catch
+            {
+                new LogTrace(ELogTrace.ERROR_PROGRAM_END);
+            }
         }
     }
 }

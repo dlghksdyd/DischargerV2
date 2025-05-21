@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.ViewModels;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.ViewModels;
 using MExpress.Example;
 using Sqlite.Common;
 using System;
@@ -29,15 +30,24 @@ namespace DischargerV2.MVVM.Views
 
         public ViewMain()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            SqliteUtility.InitializeDatabases();
+                SqliteUtility.InitializeDatabases();
 
-            Instance = this;
+                Instance = this;
 
-            this.DataContext = _viewModel;
+                this.DataContext = _viewModel;
 
-            _viewModel.UpdateDischargerInfoTableEvent += _viewModel_UpdateDischargerInfoTableEvent;
+                _viewModel.UpdateDischargerInfoTableEvent += _viewModel_UpdateDischargerInfoTableEvent;
+
+                new LogTrace(ELogTrace.TRACE_PROGRAM_START);
+            }
+            catch
+            {
+                new LogTrace(ELogTrace.ERROR_PROGRAM_START);
+            }
         }
 
         private void _viewModel_UpdateDischargerInfoTableEvent(object sender, EventArgs e)
