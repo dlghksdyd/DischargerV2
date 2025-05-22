@@ -426,8 +426,8 @@ namespace Ethernet.Client.Discharger
                 SendCommand_LampControl(EDioControl.TowerLampRed, true);
 
                 SendCommand_StopDischarge();
-                ReadInfoTimer?.Stop();
-                ReadInfoTimer = null;
+                //ReadInfoTimer?.Stop();
+                //ReadInfoTimer = null;
                 return;
             }
 
