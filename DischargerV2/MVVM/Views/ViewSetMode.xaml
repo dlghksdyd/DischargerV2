@@ -169,16 +169,8 @@
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
                            HorizontalAlignment="Stretch"
-                           Click="xStartButton_Click" >
-                <Mex:MexButton.IsEnabled>
-                    <MultiBinding Converter="{StaticResource EDischargerStateToBoolConverter}"
-                                  ConverterParameter="Ready">
-                        <MultiBinding.Bindings>
-                            <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                            <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                        </MultiBinding.Bindings>
-                    </MultiBinding>
-                </Mex:MexButton.IsEnabled>
+                           Click="xStartButton_Click"
+                           IsEnabled="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerState, Converter={StaticResource EDischargerStateToBoolConverter}, ConverterParameter=Ready}">
             </Mex:MexButton>
         </Grid>
     </Grid>

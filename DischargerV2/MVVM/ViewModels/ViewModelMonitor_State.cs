@@ -145,6 +145,9 @@ namespace DischargerV2.MVVM.ViewModels
             // Monitor -> SetMode 화면 전환
             ViewModelMain.Instance.SetIsStartedArray(false);
 
+            // PhaseNo 초기화
+            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
+
             // Button IsEnable Binding 값 초기화
             Model.PauseNResumeIsEnable = true;
             Model.StopIsEnable = true;

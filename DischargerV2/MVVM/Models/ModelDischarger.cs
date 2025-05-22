@@ -18,6 +18,16 @@ namespace DischargerV2.MVVM.Models
     /// </summary>
     public class ModelDischarger : BindableBase
     {
+        private int _dischargerIndex = 0;
+        public int DischargerIndex
+        {
+            get { return _dischargerIndex; }
+            set
+            {
+                SetProperty(ref _dischargerIndex, value);
+            }
+        }
+
         private SolidColorBrush _background = ResColor.surface_primary;
         public SolidColorBrush Background
         {
@@ -135,6 +145,26 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _errorVisibility, value);
+            }
+        }
+
+        /// 모니터링 프로퍼티
+        private Visibility _resumeButtonVisibility = Visibility.Hidden;
+        public Visibility ResumeButtonVisibility
+        {
+            get { return _resumeButtonVisibility; }
+            set
+            {
+                SetProperty(ref _resumeButtonVisibility, value);
+            }
+        }
+        private Visibility _errorDetailButtonVisibility = Visibility.Collapsed;
+        public Visibility ErrorDetailButtonVisibility
+        {
+            get { return _errorDetailButtonVisibility; }
+            set
+            {
+                SetProperty(ref _errorDetailButtonVisibility, value);
             }
         }
     }

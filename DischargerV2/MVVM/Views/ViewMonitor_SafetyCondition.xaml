@@ -59,16 +59,8 @@
                 <Mex:MexTextBox x:Name="xVoltTextBox" Grid.Column="2" 
                                 Padding="12,0,12,0" Height="40"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True">
-                    <Mex:MexTextBox.Text>
-                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                                <Binding Source="{x:Static enum:EDischargerData.Voltage}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBox.Text>
+                                IsReadOnly="True"
+                                Text="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerData.ReceiveBatteryVoltage, StringFormat=F1}">
                 </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : Current-->
@@ -84,16 +76,8 @@
                 <Mex:MexTextBox x:Name="xCurrentTextBox" Grid.Column="2"
                                 Padding="12,0,12,0" Height="40"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True">
-                    <Mex:MexTextBox.Text>
-                        <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                                <Binding Source="{x:Static enum:EDischargerData.Current}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBox.Text>
+                                IsReadOnly="True"
+                                Text="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerData.ReceiveDischargeCurrent, StringFormat=F1}">
                 </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : Temp-->
@@ -109,16 +93,8 @@
                 <Mex:MexTextBox x:Name="xTempTextBox" Grid.Column="2"
                                 Padding="12,0,12,0" Height="40"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                IsReadOnly="True">
-                    <Mex:MexTextBox.Text>
-                        <MultiBinding Converter="{StaticResource TempDataToStringConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.TempDatas" Source="{x:Static vm:ViewModelTempModule.Instance}"/>
-                                <Binding Path="Model.TempModuleIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                                <Binding Path="Model.TempModuleChannel" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBox.Text>
+                                IsReadOnly="True"
+                                Text="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerData.ReceiveDischargeTemp, StringFormat=F1}">
                 </Mex:MexTextBox>
             </Grid>
             <!--Monitor Value : SOC-->
@@ -149,8 +125,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SoC}"/>
                                 <Binding Path="ModelDictionary" Source="{x:Static vm:ViewModelSetMode_Preset.Instance}"/>
                                 <Binding Path="Model.DischargerName" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
@@ -179,8 +154,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyVoltageMin}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
@@ -200,8 +174,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyVoltageMax}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
@@ -224,8 +197,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyCurrentMin}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
@@ -245,8 +217,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyCurrentMax}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
@@ -269,8 +240,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyTempMin}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
@@ -290,8 +260,7 @@
                     <Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
+                                <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyTempMax}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>

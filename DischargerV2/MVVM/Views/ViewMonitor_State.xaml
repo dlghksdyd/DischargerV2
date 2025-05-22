@@ -36,16 +36,8 @@
         </Grid.RowDefinitions>
         <Border BorderThickness="1"
                 CornerRadius="8"
-                Background="{StaticResource Mex/ResColor/surface_primary}">
-            <Border.BorderBrush>
-                <MultiBinding Converter="{StaticResource EDischargerStateToBorderBrushConverter}"
-                              ConverterParameter="ERROR">
-                    <MultiBinding.Bindings>
-                        <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                        <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                    </MultiBinding.Bindings>
-                </MultiBinding>
-            </Border.BorderBrush>
+                Background="{StaticResource Mex/ResColor/surface_primary}"
+                BorderBrush="{Binding Path=SelectedModel.DischargerState, Source={x:Static vm:ViewModelDischarger.Instance}, Converter={StaticResource EDischargerStateToBorderBrushConverter}, ConverterParameter=ERROR}">
             <Grid Margin="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -59,60 +51,23 @@
                 </Grid.RowDefinitions>
                 <Image x:Name="xStateImage" 
                        Grid.Column="0" Grid.Row="0"
-                       Width="32" Height="32">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource EDischargerStateToImageConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Image.Source>
+                       Width="32" Height="32"
+                       Source="{Binding Path=SelectedModel.DischargerState, Source={x:Static vm:ViewModelDischarger.Instance}, Converter={StaticResource EDischargerStateToImageConverter}}">
                 </Image>
                 <Mex:MexTextBlock x:Name="xStateTextBlock"
                                   Grid.Column="2" Grid.Row="0"
                                   FontSet="{StaticResource Mex/ResFontSet/heading_h5}"
-                                  TextChanged="xStateTextBlock_TextChanged">
-                    <Mex:MexTextBlock.Foreground>
-                        <MultiBinding Converter="{StaticResource EDischargerStateToForegroundConverter}"
-                                      ConverterParameter="ERROR">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBlock.Foreground>
-                    <Mex:MexTextBlock.Text>
-                        <MultiBinding Converter="{StaticResource EDischargerStateToStringConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBlock.Text>
+                                  TextChanged="xStateTextBlock_TextChanged"
+                                  Foreground="{Binding Path=SelectedModel.DischargerState, Source={x:Static vm:ViewModelDischarger.Instance}, Converter={StaticResource EDischargerStateToForegroundConverter}, ConverterParameter=ERROR}"
+                                  Text="{Binding Path=SelectedModel.DischargerState, Source={x:Static vm:ViewModelDischarger.Instance}}">
                 </Mex:MexTextBlock>
                 <Mex:MexTextBlock x:Name="xErrorCodeTextBlock"
                                   Grid.Column="2" Grid.Row="2"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                  HorizontalAlignment="Left" VerticalAlignment="Top">
-                    <Mex:MexTextBlock.Text>
-                        <MultiBinding Converter="{StaticResource DischargerDatasToErrorCodeStringConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerDatas" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBlock.Text>
-                    <Mex:MexTextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
-                                      ConverterParameter="ERROR">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexTextBlock.Visibility>
+                                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  Text="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerData, Converter={StaticResource DischargerDatasToErrorCodeStringConverter}}"
+                                  Visibility="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerState, Converter={StaticResource EDischargerStateToVisibilityConverter}, ConverterParameter=ERROR}">
                 </Mex:MexTextBlock>
                 <Mex:MexButton x:Name="xDetailButton"
                                Grid.Column="2" Grid.Row="2"
@@ -120,16 +75,8 @@
                                Text="Detail"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"
                                HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                               Visibility="{Binding SelectedModel.ErrorDetailButtonVisibility, Source={x:Static vm:ViewModelDischarger.Instance}}"
                                Click="xDetailButton_Click">
-                    <Mex:MexButton.Visibility>
-                        <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
-                                      ConverterParameter="ERROR">
-                            <MultiBinding.Bindings>
-                                <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                                <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                            </MultiBinding.Bindings>
-                        </MultiBinding>
-                    </Mex:MexButton.Visibility>
                 </Mex:MexButton>
             </Grid>
         </Border>
@@ -168,23 +115,16 @@
                            ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/ResumeButtonOutline}"
+                           Visibility="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.ResumeButtonVisibility}"
+                           IsEnabled="{Binding Model.PauseNResumeIsEnable}"
                            HorizontalAlignment="Stretch">
-                <Mex:MexButton.Visibility>
-                    <MultiBinding Converter="{StaticResource EDischargerStateToVisibilityConverter}"
-                                  ConverterParameter="PAUSE">
-                        <MultiBinding.Bindings>
-                            <Binding Path="Model.DischargerStates" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
-                            <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelSetMode.Instance}"/>
-                        </MultiBinding.Bindings>
-                    </MultiBinding>
-                </Mex:MexButton.Visibility>
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
                         <b:InvokeCommandAction Command="{Binding ResumeDischargeCommand, 
                                                                  Source={x:Static vm:ViewModelMonitor_State.Instance}}"
                                                PassEventArgsToCommand="False"/>
                     </b:EventTrigger>
-                </b:Interaction.Triggers>   
+                </b:Interaction.Triggers>
             </Mex:MexButton>
             <!--Stop Button-->
             <Mex:MexButton x:Name="xStopButton" Grid.Column="2"

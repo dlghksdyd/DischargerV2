@@ -13,6 +13,8 @@ using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -63,7 +65,15 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ObservableCollection<ModelDischarger> Model { get; set; } = new ObservableCollection<ModelDischarger>();
 
-        public ModelDischarger SelectedModel { get; set; } = new ModelDischarger();
+        private ModelDischarger _selectedModel = new ModelDischarger();
+        public ModelDischarger SelectedModel
+        {
+            get { return _selectedModel; }
+            set
+            {
+                SetProperty(ref _selectedModel, value);
+            }
+        }
 
         private string _selectedDischargerName = string.Empty;
         public string SelectedDischargerName
@@ -123,6 +133,8 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelDischarger()
         {
             InitializeDischarger();
+
+            SelectDischarger(0);
 
             InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);
             FinalizeDischargerCommand = new DelegateCommand(FinalizeDischarger);
@@ -259,6 +271,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 var model = new ModelDischarger();
 
+                model.DischargerIndex = index;
                 model.No = (index + 1).ToString();
                 model.DischargerName = infos[index].DischargerName;
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
@@ -286,7 +299,47 @@ namespace DischargerV2.MVVM.ViewModels
                 if (e.PropertyName == nameof(ModelDischarger.DischargerState))
                 {
                     UpdateChannelState();
+
+                    Thread thread = new Thread(() =>
+                    {
+                        UpdateMonitoringUI(model);
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
                 }
+            }
+        }
+
+        private void UpdateMonitoringUI(ModelDischarger model)
+        {
+            model.ErrorDetailButtonVisibility = Visibility.Collapsed;
+
+            // 버튼 UI 업데이트
+            if (model.DischargerState == EDischargerState.Pause)
+            {
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
+                /// 방전기가 pause를 반영하는 시간
+                Thread.Sleep(3000);
+                model.ResumeButtonVisibility = Visibility.Visible;
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
+            }
+            else if (model.DischargerState == EDischargerState.Discharging)
+            {
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
+                Thread.Sleep(3000);
+                model.ResumeButtonVisibility = Visibility.Collapsed;
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
+            }
+            else if (model.DischargerState == EDischargerState.SafetyOutOfRange ||
+                model.DischargerState == EDischargerState.ReturnCodeError ||
+                model.DischargerState == EDischargerState.ChStatusError ||
+                model.DischargerState == EDischargerState.DeviceError)
+            {
+                model.ErrorDetailButtonVisibility = Visibility.Visible;
             }
         }
 
@@ -312,7 +365,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void FinalizeDischarger()
+        public void FinalizeDischarger()
         {
             OneSecondTimer?.Stop();
             OneSecondTimer = null;

@@ -340,62 +340,59 @@ namespace Utility.Common
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<DischargerDatas> dischargerDatas)
+            if (value[0] is DischargerDatas dischargerDatas)
             {
-                if (value[1] is int selectedIndex)
+                if (value[1] is EDischargerData eDischargerData)
                 {
-                    if (value[2] is EDischargerData eDischargerData)
+                    DischargerDatas dischargerData = dischargerDatas;
+
+                    if (eDischargerData == EDischargerData.Voltage)
                     {
-                        DischargerDatas dischargerData = dischargerDatas[selectedIndex];
-
-                        if (eDischargerData == EDischargerData.Voltage)
+                        return dischargerData.ReceiveBatteryVoltage.ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.Current)
+                    {
+                        return dischargerData.ReceiveDischargeCurrent.ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.Temp)
+                    {
+                        return dischargerData.ReceiveDischargeTemp.ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.SoC)
+                    {
+                        if (value[2] is Dictionary<string, ModelSetMode_Preset> modelDictionary)
                         {
-                            return dischargerData.ReceiveBatteryVoltage.ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.Current)
-                        {
-                            return dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.Temp)
-                        {
-                            return dischargerData.ReceiveDischargeTemp.ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.SoC)
-                        {
-                            if (value[3] is Dictionary<string, ModelSetMode_Preset> modelDictionary)
+                            if (value[3] is string dischargerName)
                             {
-                                if (value[4] is string dischargerName)
-                                {
-                                    string batteryType = modelDictionary[dischargerName].SelectedBatteryType;
+                                string batteryType = modelDictionary[dischargerName].SelectedBatteryType;
 
-                                    return OCV_Table.getSOC(batteryType, dischargerData.ReceiveBatteryVoltage).ToString("F1");
-                                }
+                                return OCV_Table.getSOC(batteryType, dischargerData.ReceiveBatteryVoltage).ToString("F1");
                             }
                         }
-                        else if (eDischargerData == EDischargerData.SafetyVoltageMin)
-                        {
-                            return (dischargerData.SafetyVoltageMin + EthernetClientDischarger.SafetyMarginVoltage).ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.SafetyVoltageMax)
-                        {
-                            return (dischargerData.SafetyVoltageMax - EthernetClientDischarger.SafetyMarginVoltage).ToString("F1") ;
-                        }
-                        else if (eDischargerData == EDischargerData.SafetyCurrentMin)
-                        {
-                            return (-dischargerData.SafetyCurrentMax + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.SafetyCurrentMax)
-                        {
-                            return (-dischargerData.SafetyCurrentMin - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.SafetyTempMin)
-                        {
-                            return dischargerData.SafetyTempMin.ToString("F1");
-                        }
-                        else if (eDischargerData == EDischargerData.SafetyTempMax)
-                        {
-                            return dischargerData.SafetyTempMax.ToString("F1");
-                        }
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyVoltageMin)
+                    {
+                        return (dischargerData.SafetyVoltageMin + EthernetClientDischarger.SafetyMarginVoltage).ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyVoltageMax)
+                    {
+                        return (dischargerData.SafetyVoltageMax - EthernetClientDischarger.SafetyMarginVoltage).ToString("F1") ;
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyCurrentMin)
+                    {
+                        return (-dischargerData.SafetyCurrentMax + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyCurrentMax)
+                    {
+                        return (-dischargerData.SafetyCurrentMin - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyTempMin)
+                    {
+                        return dischargerData.SafetyTempMin.ToString("F1");
+                    }
+                    else if (eDischargerData == EDischargerData.SafetyTempMax)
+                    {
+                        return dischargerData.SafetyTempMax.ToString("F1");
                     }
                 }
             }
@@ -435,24 +432,21 @@ namespace Utility.Common
         }
     }
 
-    public class EDischargerStateToStringConverter : IMultiValueConverter
+    public class EDischargerStateToStringConverter : IValueConverter
     {
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
-                {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                EDischargerState eDischargerState = dischargerStates;
 
-                    return eDischargerState.ToString();
-                }
+                return eDischargerState.ToString();
             }
 
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -462,31 +456,28 @@ namespace Utility.Common
     /// if (EDischarggerState == ConverterParameter) return true;
     /// ConverterParameter "READY"
     /// </summary>
-    public class EDischargerStateToBoolConverter : IMultiValueConverter
+    public class EDischargerStateToBoolConverter : IValueConverter
     {
         public bool TrueValue { get; set; } = true;
         public bool FalseValue { get; set; } = false;
 
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
-                {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                EDischargerState eDischargerState = dischargerStates;
 
-                    if (parameter != null)
+                if (parameter != null)
+                {
+                    if (parameter.ToString().ToUpper() == "READY")
                     {
-                        if (parameter.ToString().ToUpper() == "READY")
+                        if (eDischargerState == EDischargerState.Ready)
                         {
-                            if (eDischargerState == EDischargerState.Ready)
-                            {
-                                return TrueValue;
-                            }
-                            else
-                            {
-                                return FalseValue;
-                            }
+                            return TrueValue;
+                        }
+                        else
+                        {
+                            return FalseValue;
                         }
                     }
                 }
@@ -495,7 +486,7 @@ namespace Utility.Common
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -504,31 +495,28 @@ namespace Utility.Common
     /// <summary>
     /// ConverterParameter "ERROR"
     /// </summary>
-    public class EDischargerStateToForegroundConverter : IMultiValueConverter
+    public class EDischargerStateToForegroundConverter : IValueConverter
     {
         public SolidColorBrush ErrorValue { get; set; } = ResColor.text_error;
         public SolidColorBrush NoneErrorValue { get; set; } = ResColor.text_body;
 
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
-                {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                EDischargerState eDischargerState = dischargerStates;
 
-                    if (parameter != null)
+                if (parameter != null)
+                {
+                    if (parameter.ToString().ToUpper() == "ERROR")
                     {
-                        if (parameter.ToString().ToUpper() == "ERROR")
+                        if (eDischargerState >= EDischargerState.SafetyOutOfRange)
                         {
-                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
-                            {
-                                return ErrorValue;
-                            }
-                            else
-                            {
-                                return NoneErrorValue;
-                            }
+                            return ErrorValue;
+                        }
+                        else
+                        {
+                            return NoneErrorValue;
                         }
                     }
                 }
@@ -537,30 +525,27 @@ namespace Utility.Common
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class DischargerDatasToErrorCodeStringConverter : IMultiValueConverter
+    public class DischargerDatasToErrorCodeStringConverter : IValueConverter
     {
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<DischargerDatas> dischargerDatas)
+            if (value is DischargerDatas dischargerDatas)
             {
-                if (value[1] is int dischargerIndex)
-                {
-                    uint errorCode = dischargerDatas[dischargerIndex].ErrorCode;
+                uint errorCode = dischargerDatas.ErrorCode;
 
-                    return string.Format("Error Code: 0x{0}", errorCode.ToString("X"));
-                }
+                return string.Format("Error Code: 0x{0}", errorCode.ToString("X"));
             }
 
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -570,58 +555,55 @@ namespace Utility.Common
     /// if (EDischarggerState == ConverterParameter) return Visibility.Visible;
     /// ConverterParameter "ERROR", "PAUSE"
     /// </summary>
-    public class EDischargerStateToVisibilityConverter : IMultiValueConverter
+    public class EDischargerStateToVisibilityConverter : IValueConverter
     {
         public Visibility ErrorValue { get; set; } = Visibility.Visible;
         public Visibility NoneErrorValue { get; set; } = Visibility.Collapsed;
 
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
-                {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                EDischargerState eDischargerState = dischargerStates;
 
-                    if (parameter != null)
+                if (parameter != null)
+                {
+                    if (parameter.ToString().ToUpper() == "ERROR")
                     {
-                        if (parameter.ToString().ToUpper() == "ERROR")
+                        if (eDischargerState >= EDischargerState.SafetyOutOfRange)
                         {
-                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
-                            {
-                                return ErrorValue;
-                            }
-                            else
-                            {
-                                return NoneErrorValue;
-                            }
+                            return ErrorValue;
                         }
-                        else if (parameter.ToString().ToUpper() == "PAUSE")
+                        else
                         {
-                            if (eDischargerState == EDischargerState.Pause)
-                            {
-                                return ErrorValue;
-                            }
-                            else
-                            {
-                                return NoneErrorValue;
-                            }
+                            return NoneErrorValue;
                         }
-                        return ErrorValue;
                     }
+                    else if (parameter.ToString().ToUpper() == "PAUSE")
+                    {
+                        if (eDischargerState == EDischargerState.Pause)
+                        {
+                            return ErrorValue;
+                        }
+                        else
+                        {
+                            return NoneErrorValue;
+                        }
+                    }
+                    return ErrorValue;
                 }
             }
 
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class EDischargerStateToImageConverter : IMultiValueConverter
+    public class EDischargerStateToImageConverter : IValueConverter
     {
         public BitmapSource readyImage { get; set; } = ResImage.check_circle_outlined;
         public BitmapSource dischargingImage { get; set; } = ResImage.downloading;
@@ -632,113 +614,110 @@ namespace Utility.Common
         public SolidColorBrush pauseImageColor { get; set; } = ResColor.icon_primary;
         public SolidColorBrush errorImageColor { get; set; } = ResColor.icon_error;
 
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
+                EDischargerState eDischargerState = dischargerStates;
+                BitmapSource imagePrimary;
+                SolidColorBrush targetColor;
+
+                if (eDischargerState == EDischargerState.Discharging)
                 {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
-                    BitmapSource imagePrimary;
-                    SolidColorBrush targetColor;
-
-                    if (eDischargerState == EDischargerState.Discharging)
-                    {
-                        imagePrimary = dischargingImage;
-                        targetColor = ResColor.icon_primary;
-                    }
-                    else if (eDischargerState == EDischargerState.Pause)
-                    {
-                        imagePrimary = pauseImage;
-                        targetColor = ResColor.icon_primary;
-                    }
-                    else if (eDischargerState >= EDischargerState.SafetyOutOfRange)
-                    {
-                        imagePrimary = errorImage;
-                        targetColor = ResColor.icon_error;
-                    }
-                    else if (eDischargerState == EDischargerState.Ready)
-                    {
-                        imagePrimary = readyImage;
-                        targetColor = ResColor.icon_primary;
-                    }
-                    else
-                    {
-                        return Binding.DoNothing;
-                    }
-
-                    // ImageColorConverter와 동일
-                    System.Windows.Media.Color oldColor = Colors.Black;
-                    System.Windows.Media.Color newColor = targetColor.Color;
-
-                    FormatConvertedBitmap formatConvertedBitmap = new FormatConvertedBitmap();
-                    formatConvertedBitmap.BeginInit();
-                    formatConvertedBitmap.Source = imagePrimary;
-                    formatConvertedBitmap.DestinationFormat = PixelFormats.Bgra32;
-                    formatConvertedBitmap.EndInit();
-
-                    Bitmap bitmap = new Bitmap(formatConvertedBitmap.PixelWidth, formatConvertedBitmap.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    formatConvertedBitmap.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-                    bitmap.UnlockBits(data);
-
-                    for (int i = 0; i < bitmap.Width; i++)
-                    {
-                        for (int j = 0; j < bitmap.Height; j++)
-                        {
-                            var getColor = bitmap.GetPixel(i, j);
-
-                            int a = getColor.A;
-                            int r = 0;
-                            int g = 0;
-                            int b = 0;
-
-                            int rDiff = newColor.R - oldColor.R;
-                            int gDiff = newColor.G - oldColor.G;
-                            int bDiff = newColor.B - oldColor.B;
-
-                            if (getColor.A != 0)
-                            {
-                                // R
-                                r = getColor.R + rDiff;
-                                r = (r < 0) ? 0 : r;
-                                r = (r > 255) ? 255 : r;
-                                //G
-                                g = getColor.G + gDiff;
-                                g = (g < 0) ? 0 : g;
-                                g = (g > 255) ? 255 : g;
-                                //B
-                                b = getColor.B + bDiff;
-                                b = (b < 0) ? 0 : b;
-                                b = (b > 255) ? 255 : b;
-                            }
-
-                            bitmap.SetPixel(i, j, System.Drawing.Color.FromArgb(a, r, g, b));
-                        }
-                    }
-
-                    BitmapImage convertImage;
-
-                    using (MemoryStream memoryStream = new MemoryStream())
-                    {
-                        bitmap.Save(memoryStream, ImageFormat.Png);
-                        memoryStream.Position = 0;
-
-                        convertImage = new BitmapImage();
-                        convertImage.BeginInit();
-                        convertImage.StreamSource = memoryStream;
-                        convertImage.CacheOption = BitmapCacheOption.OnLoad;
-                        convertImage.EndInit();
-                        convertImage.Freeze();
-                    }
-                    return convertImage;
+                    imagePrimary = dischargingImage;
+                    targetColor = ResColor.icon_primary;
                 }
+                else if (eDischargerState == EDischargerState.Pause)
+                {
+                    imagePrimary = pauseImage;
+                    targetColor = ResColor.icon_primary;
+                }
+                else if (eDischargerState >= EDischargerState.SafetyOutOfRange)
+                {
+                    imagePrimary = errorImage;
+                    targetColor = ResColor.icon_error;
+                }
+                else if (eDischargerState == EDischargerState.Ready)
+                {
+                    imagePrimary = readyImage;
+                    targetColor = ResColor.icon_primary;
+                }
+                else
+                {
+                    return Binding.DoNothing;
+                }
+
+                // ImageColorConverter와 동일
+                System.Windows.Media.Color oldColor = Colors.Black;
+                System.Windows.Media.Color newColor = targetColor.Color;
+
+                FormatConvertedBitmap formatConvertedBitmap = new FormatConvertedBitmap();
+                formatConvertedBitmap.BeginInit();
+                formatConvertedBitmap.Source = imagePrimary;
+                formatConvertedBitmap.DestinationFormat = PixelFormats.Bgra32;
+                formatConvertedBitmap.EndInit();
+
+                Bitmap bitmap = new Bitmap(formatConvertedBitmap.PixelWidth, formatConvertedBitmap.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                formatConvertedBitmap.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+                bitmap.UnlockBits(data);
+
+                for (int i = 0; i < bitmap.Width; i++)
+                {
+                    for (int j = 0; j < bitmap.Height; j++)
+                    {
+                        var getColor = bitmap.GetPixel(i, j);
+
+                        int a = getColor.A;
+                        int r = 0;
+                        int g = 0;
+                        int b = 0;
+
+                        int rDiff = newColor.R - oldColor.R;
+                        int gDiff = newColor.G - oldColor.G;
+                        int bDiff = newColor.B - oldColor.B;
+
+                        if (getColor.A != 0)
+                        {
+                            // R
+                            r = getColor.R + rDiff;
+                            r = (r < 0) ? 0 : r;
+                            r = (r > 255) ? 255 : r;
+                            //G
+                            g = getColor.G + gDiff;
+                            g = (g < 0) ? 0 : g;
+                            g = (g > 255) ? 255 : g;
+                            //B
+                            b = getColor.B + bDiff;
+                            b = (b < 0) ? 0 : b;
+                            b = (b > 255) ? 255 : b;
+                        }
+
+                        bitmap.SetPixel(i, j, System.Drawing.Color.FromArgb(a, r, g, b));
+                    }
+                }
+
+                BitmapImage convertImage;
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    bitmap.Save(memoryStream, ImageFormat.Png);
+                    memoryStream.Position = 0;
+
+                    convertImage = new BitmapImage();
+                    convertImage.BeginInit();
+                    convertImage.StreamSource = memoryStream;
+                    convertImage.CacheOption = BitmapCacheOption.OnLoad;
+                    convertImage.EndInit();
+                    convertImage.Freeze();
+                }
+                return convertImage;
             }
 
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -747,31 +726,28 @@ namespace Utility.Common
     /// <summary>
     /// ConverterParameter "ERROR" 
     /// </summary>
-    public class EDischargerStateToBorderBrushConverter : IMultiValueConverter
+    public class EDischargerStateToBorderBrushConverter : IValueConverter
     {
         public SolidColorBrush ErrorValue { get; set; } = ResColor.border_error;
         public SolidColorBrush NoneErrorValue { get; set; } = ResColor.border_primary;
 
-        public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value[0] is ObservableCollection<EDischargerState> dischargerStates)
+            if (value is EDischargerState dischargerStates)
             {
-                if (value[1] is int selectedIndex)
-                {
-                    EDischargerState eDischargerState = dischargerStates[selectedIndex];
+                EDischargerState eDischargerState = dischargerStates;
 
-                    if (parameter != null)
+                if (parameter != null)
+                {
+                    if (parameter.ToString().ToUpper() == "ERROR")
                     {
-                        if (parameter.ToString().ToUpper() == "ERROR")
+                        if (eDischargerState >= EDischargerState.SafetyOutOfRange)
                         {
-                            if (eDischargerState >= EDischargerState.SafetyOutOfRange)
-                            {
-                                return ErrorValue;
-                            }
-                            else
-                            {
-                                return NoneErrorValue;
-                            }
+                            return ErrorValue;
+                        }
+                        else
+                        {
+                            return NoneErrorValue;
                         }
                     }
                 }
@@ -780,7 +756,7 @@ namespace Utility.Common
             return Binding.DoNothing;
         }
 
-        public object[] ConvertBack(object value, Type[] targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

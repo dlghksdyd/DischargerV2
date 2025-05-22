@@ -131,6 +131,8 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 new LogTrace(ELogTrace.TRACE_PROGRAM_END);
 
+                ViewModelDischarger.Instance.FinalizeDischarger();
+
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             catch
