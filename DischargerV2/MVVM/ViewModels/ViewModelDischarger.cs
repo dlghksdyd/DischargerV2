@@ -90,6 +90,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        private List<TableDischargerInfo> _dischargerInfos = null;
+
         public ViewModelDischarger()
         {
             InitializeDischarger();
@@ -226,7 +228,8 @@ namespace DischargerV2.MVVM.ViewModels
         {
             FinalizeDischarger();
 
-            List<TableDischargerInfo> infos = SqliteDischargerInfo.GetData();
+            _dischargerInfos = SqliteDischargerInfo.GetData();
+            List<TableDischargerInfo> infos = _dischargerInfos;
 
             Model.Clear();
             for (int index = 0; index < infos.Count; index++) 
@@ -267,7 +270,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private DischargerInfo InitializeDischargerInfos(string name)
         {
-            List<TableDischargerInfo> infoTable = SqliteDischargerInfo.GetData();
+            List<TableDischargerInfo> infoTable = _dischargerInfos;
             TableDischargerInfo info = infoTable.Find(x => x.DischargerName == name);
 
             List<TableDischargerModel> modelTable = SqliteDischargerModel.GetData();
@@ -328,6 +331,25 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model[i].DischargerData = _clients[Model[i].DischargerName].GetDatas();
                 Model[i].DischargerState = _clients[Model[i].DischargerName].GetState();
+
+                // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
+                try
+                {
+                    var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == Model[i].DischargerName);
+                    if (dischargerInfo.IsTempModule)
+                    {
+                        int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
+                        if (index >= 0)
+                        {
+                            var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
+                            Model[i].DischargerData.ReceiveDischargeTemp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+                        }
+                    }
+                }
+                catch
+                {
+                    // nothing to do.
+                }
             }
 
             SetStateColor();
