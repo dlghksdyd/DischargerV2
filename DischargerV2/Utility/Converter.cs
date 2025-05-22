@@ -333,47 +333,6 @@ namespace Utility.Common
         }
     }
 
-    public class EDischargerStateToIntConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is ObservableCollection<ModelDischarger> modelDischargers)
-            {
-                if (parameter is EMonitorState eMonitorState)
-                {
-                    if (eMonitorState == EMonitorState.All)
-                    {
-                        return modelDischargers.Count;
-                    }
-                    else if (eMonitorState == EMonitorState.Connected)
-                    {
-                        return modelDischargers.Where(
-                            x =>
-                            x.DischargerState == EDischargerState.Connecting ||
-                            x.DischargerState == EDischargerState.Ready ||
-                            x.DischargerState == EDischargerState.Discharging ||
-                            x.DischargerState == EDischargerState.Pause).Count();
-                    }
-                    else //if (eMonitorState == EMonitorState.Fault)
-                    {
-                        return modelDischargers.Where(
-                            x =>
-                            x.DischargerState == EDischargerState.None ||
-                            x.DischargerState == EDischargerState.Disconnected ||
-                            x.DischargerState == EDischargerState.SafetyOutOfRange ||
-                            x.DischargerState == EDischargerState.ReturnCodeError ||
-                            x.DischargerState == EDischargerState.ChStatusError ||
-                            x.DischargerState == EDischargerState.DeviceError).Count();
-                    }
-                }
-            }
-            return Binding.DoNothing;
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
-    }
     #endregion
 
     #region IMultiValueConverter

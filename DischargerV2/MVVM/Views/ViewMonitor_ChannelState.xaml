@@ -9,14 +9,9 @@
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             DataContext="{x:Static vm:ViewModelDischarger.Instance}"
              mc:Ignorable="d" 
              d:DesignHeight="48" d:DesignWidth="650">
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <Util:EDischargerStateToIntConverter x:Key="EDischargerStateToIntConverter"/>
-        </ResourceDictionary>
-    </UserControl.Resources>
 
     <StackPanel Orientation="Horizontal">
         <Border Padding="12,8,12,8"
@@ -31,10 +26,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}"
                                   Background="{StaticResource Mex/ResColor/surface_action}"
-                                  Text="{Binding Model,
-                                                 Source={x:Static vm:ViewModelDischarger.Instance},
-                                                 Converter={StaticResource EDischargerStateToIntConverter},
-                                                 ConverterParameter={x:Static enum:EMonitorState.All}}"
+                                  Text="{Binding AllChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
             </StackPanel>
@@ -52,10 +44,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/surface_action}"
-                                  Text="{Binding Model,
-                                                 Source={x:Static vm:ViewModelDischarger.Instance},
-                                                 Converter={StaticResource EDischargerStateToIntConverter},
-                                                 ConverterParameter={x:Static enum:EMonitorState.Connected}}"
+                                  Text="{Binding ConnectedChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
             </StackPanel>
@@ -73,10 +62,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/icon_error}"
-                                  Text="{Binding Model,
-                                                 Source={x:Static vm:ViewModelDischarger.Instance},
-                                                 Converter={StaticResource EDischargerStateToIntConverter},
-                                                 ConverterParameter={x:Static enum:EMonitorState.Fault}}"
+                                  Text="{Binding FaultChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
             </StackPanel>

@@ -77,6 +77,36 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        private int _allChannelCount = 0;
+        public int AllChannelCount
+        {
+            get { return _allChannelCount; }
+            set
+            {
+                SetProperty(ref _allChannelCount, value);
+            }
+        }
+
+        private int _connectedChannelCount = 0;
+        public int ConnectedChannelCount
+        {
+            get { return _connectedChannelCount; }
+            set
+            {
+                SetProperty(ref _connectedChannelCount, value);
+            }
+        }
+
+        private int _faultChannelCount = 0;
+        public int FaultChannelCount
+        {
+            get { return _faultChannelCount; }
+            set
+            {
+                SetProperty(ref _faultChannelCount, value);
+            }
+        }
+
         private static ViewModelDischarger _instance = null;
         public static ViewModelDischarger Instance
         {
@@ -242,6 +272,8 @@ namespace DischargerV2.MVVM.ViewModels
                 model.DischargerInfo = dischargerInfo;
                 InitializeDischargerClients(dischargerInfo);
 
+                model.PropertyChanged += Model_PropertyChanged;
+
                 Model.Add(model);
             }
 
@@ -252,6 +284,39 @@ namespace DischargerV2.MVVM.ViewModels
             OneSecondTimer.Elapsed += CopyDataFromDischargerClientToModel;
             OneSecondTimer.Interval = 500;
             OneSecondTimer.Start();
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is ModelDischarger model)
+            {
+                if (e.PropertyName == nameof(ModelDischarger.DischargerState))
+                {
+                    UpdateChannelState();
+                }
+            }
+        }
+
+        private void UpdateChannelState()
+        {
+            ConnectedChannelCount = 0;
+            FaultChannelCount = 0;
+            foreach (var model in Model)
+            {
+                AllChannelCount = Model.Count;
+
+                if (model.DischargerState == EDischargerState.Connecting ||
+                    model.DischargerState == EDischargerState.Ready ||
+                    model.DischargerState == EDischargerState.Discharging ||
+                    model.DischargerState == EDischargerState.Pause)
+                {
+                    ConnectedChannelCount += 1;
+                }
+                else
+                {
+                    FaultChannelCount += 1;
+                }
+            }
         }
 
         private void FinalizeDischarger()
@@ -265,6 +330,10 @@ namespace DischargerV2.MVVM.ViewModels
             }
             _clients.Clear();
 
+            foreach (var model in Model)
+            {
+                model.PropertyChanged -= Model_PropertyChanged;
+            }
             Model.Clear();
         }
 
