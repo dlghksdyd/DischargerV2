@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -136,10 +137,45 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void DeleteDischargerModel()
         {
-            SqliteDischargerModel.DeleteData(Model.Id);
+            try
+            {
+                // 모델 정보 제거
+                bool isOk = SqliteDischargerModel.DeleteData(Model.Id);
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
+                // 모델 정보 수정 Trace Log 저장
+                ModelData modelData = new ModelData()
+                {
+                    Id = Model.Id,
+                    Model = Model.DischargerModel,
+                    Type = Model.Type,
+                    Channel = Model.Channel,
+                    SpecVoltage = Model.VoltSpec,
+                    SpecCurrent = Model.CurrSpec,
+                    SafetyVoltMax = Model.VoltMax,
+                    SafetyVoltMin = Model.VoltMin,
+                    SafetyCurrentMax = Model.CurrMax,
+                    SafetyCurrentMin = Model.CurrMin,
+                    SafetyTempMax = Model.TempMax,
+                    SafetyTempMin = Model.TempMin
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_DELETE_MODEL, modelData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_DELETE_MODEL, modelData);
+                }
+
+                // 모델 정보 등록 화면 표시
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_DELETE_MODEL, ex);
+            }
         }
     }
 }

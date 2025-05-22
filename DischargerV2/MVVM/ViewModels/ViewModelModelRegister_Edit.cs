@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -285,37 +286,71 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void UpdateDischargerModel()
         {
-            TableDischargerModel tableDischargerModel = new TableDischargerModel();
-
-            tableDischargerModel.Id = Model.Id;
-
-            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            try
             {
-                if (Model.DischargerModel == eDischargerModel.ToString())
+                // 모델 정보 수정
+                TableDischargerModel tableDischargerModel = new TableDischargerModel();
+
+                tableDischargerModel.Id = Model.Id;
+
+                foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
                 {
-                    tableDischargerModel.Model = eDischargerModel;
+                    if (Model.DischargerModel == eDischargerModel.ToString())
+                    {
+                        tableDischargerModel.Model = eDischargerModel;
+                    }
+                }
+
+                foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+                {
+                    if (Model.Type == eDischargerType.ToString())
+                    {
+                        tableDischargerModel.Type = eDischargerType;
+                    }
+                }
+
+                tableDischargerModel.Channel = Convert.ToInt32(Model.Channel);
+                tableDischargerModel.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
+                tableDischargerModel.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+                tableDischargerModel.SafetyVoltMax = Convert.ToDouble(Model.VoltMax);
+                tableDischargerModel.SafetyVoltMin = Convert.ToDouble(Model.VoltMin);
+                tableDischargerModel.SafetyCurrentMax = Convert.ToDouble(Model.CurrMax);
+                tableDischargerModel.SafetyCurrentMin = Convert.ToDouble(Model.CurrMin);
+                tableDischargerModel.SafetyTempMax = Convert.ToDouble(Model.TempMax);
+                tableDischargerModel.SafetyTempMin = Convert.ToDouble(Model.TempMin);
+
+                bool isOk = SqliteDischargerModel.UpdateData(tableDischargerModel);
+
+                // 모델 정보 수정 Trace Log 저장
+                ModelData modelData = new ModelData()
+                {
+                    Id = Model.Id,
+                    Model = Model.DischargerModel,
+                    Type = Model.Type,
+                    Channel = Model.Channel,
+                    SpecVoltage = Model.VoltSpec,
+                    SpecCurrent = Model.CurrSpec,
+                    SafetyVoltMax = Model.VoltMax,
+                    SafetyVoltMin = Model.VoltMin,
+                    SafetyCurrentMax = Model.CurrMax,
+                    SafetyCurrentMin = Model.CurrMin,
+                    SafetyTempMax = Model.TempMax,
+                    SafetyTempMin = Model.TempMin
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_EDIT_MODEL, modelData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_EDIT_MODEL, modelData);
                 }
             }
-
-            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+            catch (Exception ex)
             {
-                if (Model.Type == eDischargerType.ToString())
-                {
-                    tableDischargerModel.Type = eDischargerType;
-                }
+                new LogTrace(ELogTrace.ERROR_EDIT_MODEL, ex);
             }
-
-            tableDischargerModel.Channel = Convert.ToInt32(Model.Channel);
-            tableDischargerModel.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
-            tableDischargerModel.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
-            tableDischargerModel.SafetyVoltMax = Convert.ToDouble(Model.VoltMax);
-            tableDischargerModel.SafetyVoltMin = Convert.ToDouble(Model.VoltMin);
-            tableDischargerModel.SafetyCurrentMax = Convert.ToDouble(Model.CurrMax);
-            tableDischargerModel.SafetyCurrentMin = Convert.ToDouble(Model.CurrMin);
-            tableDischargerModel.SafetyTempMax = Convert.ToDouble(Model.TempMax);
-            tableDischargerModel.SafetyTempMin = Convert.ToDouble(Model.TempMin);
-
-            SqliteDischargerModel.UpdateData(tableDischargerModel);
         }
     }
 }

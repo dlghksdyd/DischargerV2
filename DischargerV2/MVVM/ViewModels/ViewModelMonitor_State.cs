@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Enums;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
@@ -142,16 +143,29 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void ReturnSetMode()
         {
-            // Monitor -> SetMode 화면 전환
-            ViewModelMain.Instance.SetIsStartedArray(false);
+            try
+            {
+                // 방전 모드 설정 돌아가기
+                ViewModelMain.Instance.SetIsStartedArray(false);
 
-            // PhaseNo 초기화
-            ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
+                // PhaseNo 초기화
+                ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
 
-            // Button IsEnable Binding 값 초기화
-            Model.PauseNResumeIsEnable = true;
-            Model.StopIsEnable = true;
-            Model.FinishIsEnable = false;
+                // Button IsEnable Binding 값 초기화
+                Model.PauseNResumeIsEnable = true;
+                Model.StopIsEnable = true;
+                Model.FinishIsEnable = false;
+
+                // 방전 모드 설정 돌아가기 Trace Log 저장
+                DischargerData dischargerComm = new DischargerData();
+                dischargerComm.Name = ViewModelSetMode.Instance.Model.DischargerName;
+
+                new LogTrace(ELogTrace.TRACE_RETURN_SETMODE, dischargerComm);
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_RETURN_SETMODE, ex);
+            }
         }
     }
 }

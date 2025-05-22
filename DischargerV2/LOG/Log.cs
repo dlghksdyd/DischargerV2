@@ -13,19 +13,27 @@ namespace DischargerV2.LOG
 {
     public class Log
     {
-        public static void SaveFile(List<string> listTitle, List<string> listContent, string path, out string contentAll)
+        public static void SaveFile_Day(List<string> listTitle, List<string> listContent, string path, string fileName = null)
         {
-            contentAll = "";
-
             try
             {
-                string fileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd_HH") + ".csv";
+                if (fileName == null || fileName == string.Empty)
+                {
+                    fileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd") + ".csv";
+                }
+                else
+                {
+                    fileName = path + "\\" + fileName + "_" + DateTime.Now.ToString("yyyyMMdd") + ".csv";
+                }
+
                 string titleAll = "";
 
                 DirectoryInfo directoryInfo = new DirectoryInfo(path);
 
                 if (!directoryInfo.Exists)
+                {
                     directoryInfo.Create();
+                }
 
                 FileInfo fileInfo = new FileInfo(fileName);
                 StreamWriter streamWriter;
@@ -33,34 +41,25 @@ namespace DischargerV2.LOG
                 if (!fileInfo.Exists)
                 {
                     foreach (string title in listTitle)
+                    {
                         titleAll += title + ",";
+                    }
 
                     streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
                     streamWriter.WriteLine(titleAll);
                     streamWriter.Flush();
                     streamWriter.Close();
                 }
-                else
-                {
-                    if (IsUsedFile(fileInfo))
-                    {
-                        fileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
 
-                        foreach (string title in listTitle)
-                            titleAll += title + ",";
-
-                        streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
-                        streamWriter.WriteLine(titleAll);
-                        streamWriter.Flush();
-                        streamWriter.Close();
-                    }
-                }
+                string oneLine = string.Empty;
 
                 foreach (string content in listContent)
-                    contentAll += content + ",";
+                {
+                    oneLine += content + ",";
+                }
 
                 streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
-                streamWriter.WriteLine(contentAll);
+                streamWriter.WriteLine(oneLine);
                 streamWriter.Flush();
                 streamWriter.Close();
             }
@@ -70,18 +69,60 @@ namespace DischargerV2.LOG
             }
         }
 
-        private static bool IsUsedFile(FileInfo fileInfo)
+        public static void SaveFile_Hour(List<string> listTitle, List<string> listContent, string path, string fileName = null)
         {
             try
             {
-                FileStream fileStream = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.None);
-                fileStream.Close();
+                if (fileName == null || fileName == string.Empty)
+                {
+                    fileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd_HH") + ".csv";
+                }
+                else
+                {
+                    fileName = path + "\\" + fileName + "_" + DateTime.Now.ToString("yyyyMMdd_HH") + ".csv";
+                }
+
+                string titleAll = "";
+
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+
+                if (!directoryInfo.Exists)
+                {
+                    directoryInfo.Create();
+                }
+
+                FileInfo fileInfo = new FileInfo(fileName);
+                StreamWriter streamWriter;
+
+                if (!fileInfo.Exists)
+                {
+                    foreach (string title in listTitle)
+                    {
+                        titleAll += title + ",";
+                    }
+
+                    streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
+                    streamWriter.WriteLine(titleAll);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                string oneLine = string.Empty;
+
+                foreach (string content in listContent)
+                {
+                    oneLine += content + ",";
+                }
+
+                streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
+                streamWriter.WriteLine(oneLine);
+                streamWriter.Flush();
+                streamWriter.Close();
             }
             catch
             {
-                return true;
+                Debug.WriteLine("SAVE LOG FILE ERROR");
             }
-            return false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Prism.Commands;
@@ -10,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
@@ -40,6 +42,8 @@ namespace DischargerV2.MVVM.ViewModels
         public string DischargerName { get; set; } = string.Empty;
         public double Current { get; set; } = 0.0;
         public double Voltage { get; set; } = 0.0;
+
+        public bool? IsRestart { get; set; } = null;
     }
 
     public class ViewModelDischarger : BindableBase
@@ -199,51 +203,236 @@ namespace DischargerV2.MVVM.ViewModels
             viewModelMain.OpenPopup(ModelMain.EPopup.Error);
         }
 
+        /// <summary>
+        /// 방전기 에러 해제 
+        /// </summary>
+        /// <param name="dischargerName"></param>
         private void ResetError(string dischargerName)
         {
-            _clients[dischargerName].SendCommand_ClearAlarm();
+            try
+            {
+                // 방전기 에러 해제
+                bool isOk = _clients[dischargerName].SendCommand_ClearAlarm();
 
+                // 방전기 에러 해제 Trace Log 저장
+                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_CLEAR_ALARM, dischargerComm);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, dischargerComm);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, ex);
+            }
+            
             ReconnectDischarger(dischargerName);
         }
 
+        /// <summary>
+        /// 방전기 재 연결
+        /// </summary>
+        /// <param name="dischargerName"></param>
         public void ReconnectDischarger(string dischargerName)
         {
             int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
             Model[index].ReconnectVisibility = Visibility.Collapsed;
 
-            Thread thread = new Thread(
-                delegate()
-                {
-                    _clients[dischargerName].Restart();
-                });
-            thread.Start();
+            try
+            {
+                Thread thread = new Thread(
+                    delegate ()
+                    {
+                        // 방전기 재 연결
+                        bool isOk = _clients[dischargerName].Restart();
+
+                        // 방전기 재 연결 Trace Log 저장
+                        DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+
+                        if (isOk)
+                        {
+                            new LogTrace(ELogTrace.TRACE_RECONNECT_DISCHARGER, dischargerComm);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, dischargerComm);
+                        }
+                    });
+
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, ex);
+            }
         }
 
         public void StartDischarger(StartDischargerCommandParam param)
         {
-            _clients[param.DischargerName].SendCommand_StartDischarge(
-                EWorkMode.CcCvMode, param.Voltage, param.Current);
+            bool? isRestart = param.IsRestart;
+
+            try
+            {
+                // 방전 동작 시작
+                var isOk = _clients[param.DischargerName].SendCommand_StartDischarge(
+                    EWorkMode.CcCvMode, param.Voltage, param.Current);
+
+                // 방전 동작 시작 Trace Log 저장
+                DischargerData dischargerComm = _clients[param.DischargerName].GetDischargerComm();
+                dischargerComm.EWorkMode = EWorkMode.CcCvMode;
+                dischargerComm.SetValue_Voltage = param.Voltage;
+                dischargerComm.LimitingValue_Current = param.Current;
+
+                if (isOk == EDischargerClientError.Ok)
+                {
+                    if (isRestart != null)
+                    {
+                        if (isRestart == false)
+                        {
+                            new LogTrace(ELogTrace.TRACE_START_DISCHARGE, dischargerComm);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.TRACE_RESTART_DISCHARGE, dischargerComm);
+                        }
+                    }
+                }
+                else
+                {
+                    if (isRestart != null)
+                    {
+                        if (isRestart == false)
+                        {
+                            new LogTrace(ELogTrace.ERROR_START_DISCHARGE, dischargerComm);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.ERROR_RESTART_DISCHARGE, dischargerComm);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (isRestart != null)
+                {
+                    if (isRestart == false)
+                    {
+                        new LogTrace(ELogTrace.ERROR_START_DISCHARGE, ex);
+                    }
+                    else
+                    {
+                        new LogTrace(ELogTrace.ERROR_RESTART_DISCHARGE, ex);
+                    }
+                }
+            }
         }
 
         public void StopDischarger(string dischargerName)
         {
-            _clients[dischargerName].SendCommand_StopDischarge();
+            try
+            {
+                // 방전 동작 정지
+                var isOk = _clients[dischargerName].SendCommand_StopDischarge();
+
+                // 방전 동작 정지 Trace Log 저장
+                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+
+                if (isOk == EDischargerClientError.Ok)
+                {
+                    new LogTrace(ELogTrace.TRACE_STOP_DISCHARGE, dischargerComm);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_STOP_DISCHARGE, dischargerComm);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_STOP_DISCHARGE, ex);
+            }
         }
 
         public void PauseDischarger(string dischargerName)
         {
-            _clients[dischargerName].SendCommand_PauseDischarge();
+            try
+            {
+                // 방전 동작 일시 정지
+                var isOk = _clients[dischargerName].SendCommand_PauseDischarge();
+
+                // 방전 동작 일시 정지 Trace Log 저장
+                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+
+                if (isOk == EDischargerClientError.Ok)
+                {
+                    new LogTrace(ELogTrace.TRACE_PAUSE_DISCHARGE, dischargerComm);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_PAUSE_DISCHARGE, dischargerComm);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_PAUSE_DISCHARGE, ex);
+            }
         }
 
         public void SetSafetyCondition(string dischargerName, 
             double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
-            _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
+            try
+            {
+                // 방전 안전 조건 설정
+                bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
+
+                // 방전기 안전 조건 설정 Trace Log 저장
+                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_SET_SAFETYCONDITION, dischargerComm);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_SET_SAFETYCONDITION, dischargerComm);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_SET_SAFETYCONDITION, ex);
+            }
         }
 
         public void SetDischargerState(string dischargerName, EDischargerState eDischargerState)
         {
-            _clients[dischargerName].ChangeDischargerState(eDischargerState);
+            try
+            {
+                // 방전기 상태 설정
+                bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState);
+
+                // 방전기 상태 설정 Trace Log 저장
+                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                dischargerComm.EDischargerState = eDischargerState;
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_SET_STATE, dischargerComm);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_SET_STATE, dischargerComm);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_SET_STATE, ex);
+            }
         }
 
         public bool IsDischarging()
@@ -417,27 +606,54 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void InitializeDischargerClients(DischargerInfo info)
         {
-            EthernetClientDischargerStart parameters = new EthernetClientDischargerStart();
-            parameters.DischargerModel = info.Model;
-            parameters.DischargerName = info.Name;
-            parameters.DischargerChannel = info.Channel;
-            parameters.IpAddress = info.IpAddress;
-            parameters.EthernetPort = info.EthernetPort;
-            parameters.TimeOutMs = info.TimeOutMs;
-            parameters.SafetyVoltageMax = info.SafetyVoltageMax;
-            parameters.SafetyVoltageMin = info.SafetyVoltageMin;
-            parameters.SafetyCurrentMax = info.SafetyCurrentMax;
-            parameters.SafetyCurrentMin = info.SafetyCurrentMin;
-            parameters.SafetyTempMax = info.SafetyTempMax;
-            parameters.SafetyTempMin = info.SafetyTempMin;
-            _clients[info.Name] = new EthernetClientDischarger();
+            try
+            {
+                EthernetClientDischargerStart parameters = new EthernetClientDischargerStart();
+                parameters.DischargerModel = info.Model;
+                parameters.DischargerName = info.Name;
+                parameters.DischargerChannel = info.Channel;
+                parameters.IpAddress = info.IpAddress;
+                parameters.EthernetPort = info.EthernetPort;
+                parameters.TimeOutMs = info.TimeOutMs;
+                parameters.SafetyVoltageMax = info.SafetyVoltageMax;
+                parameters.SafetyVoltageMin = info.SafetyVoltageMin;
+                parameters.SafetyCurrentMax = info.SafetyCurrentMax;
+                parameters.SafetyCurrentMin = info.SafetyCurrentMin;
+                parameters.SafetyTempMax = info.SafetyTempMax;
+                parameters.SafetyTempMin = info.SafetyTempMin;
+                _clients[info.Name] = new EthernetClientDischarger();
 
-            Thread thread = new Thread(
-                delegate ()
-                {
-                    _clients[info.Name].Start(parameters);
-                });
-            thread.Start();
+                Thread thread = new Thread(
+                    delegate ()
+                    {
+                        // 방전기 연결
+                        bool isOk = _clients[info.Name].Start(parameters);
+
+                        // 방전기 연결 Trace Log 저장
+                        DischargerData dischargerComm = new DischargerData()
+                        {
+                            Name = info.Name,
+                            EDischargerModel = info.Model,
+                            Channel = info.Channel,
+                            IpAddress = info.IpAddress,
+                        };
+
+                        if (isOk)
+                        {
+                            new LogTrace(ELogTrace.TRACE_CONNECT_DISCHARGER, dischargerComm);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, dischargerComm);
+                        }
+                    });
+
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, ex);
+            }
         }
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)

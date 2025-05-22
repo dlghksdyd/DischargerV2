@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -98,10 +99,38 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void DeleteUserInfo()
         {
-            SqliteUserInfo.DeleteData(Id);
+            try
+            {
+                // 사용자 정보 제거
+                bool isOk = SqliteUserInfo.DeleteData(Id);
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+                // 사용자 정보 제거 Trace Log 저장
+                UserData userData = new UserData()
+                {
+                    UserId = Model.Id,
+                    Password = Model.Password,
+                    UserName = Model.Name,
+                    IsAdmin = Model.IsAdmin,
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_DELETE_USER, userData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_DELETE_USER, userData);
+                }
+
+                // 사용자 정보 등록 화면 표시
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_DELETE_USER, ex);
+            }
+            
         }
     }
 }
