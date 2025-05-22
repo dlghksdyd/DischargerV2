@@ -55,7 +55,7 @@
                 </Grid>
             </Border>
             <Border Grid.Row="1" CornerRadius="0 0 8 8" Background="{StaticResource Mex/ResColor/surface_primary}" BorderThickness="1" BorderBrush="{StaticResource Mex/ResColor/border_primary}">
-                <Mex:MexScrollViewer Height="285">
+                <Mex:MexScrollViewer Height="285" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <ItemsControl DataContext="{x:Static vm:ViewModelDischarger.Instance}" ItemsSource="{Binding Model}" d:ItemsSource="{d:SampleData ItemCount=6}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

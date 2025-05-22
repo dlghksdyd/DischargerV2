@@ -39,7 +39,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private int _dischargerIndex;
+        private int _dischargerIndex = -1;
         public int DischargerIndex
         {
             get

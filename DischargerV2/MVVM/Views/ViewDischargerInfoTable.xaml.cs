@@ -1,6 +1,7 @@
 ﻿using DischargerV2.MVVM.ViewModels;
 using MExpress.Mex;
 using Microsoft.Xaml.Behaviors;
+using ScottPlot.Palettes;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -35,14 +36,14 @@ namespace DischargerV2.MVVM.Views
             _viewModelDischarger = ViewModelDischarger.Instance;
             _viewModelTempModule = ViewModelTempModule.Instance;
 
-            SelectFirstDischarger();
+            InitializeDischargerSelection();
         }
 
         public void UpdateUi()
         {
             _viewModelDischarger.InitializeDischarger();
 
-            SelectFirstDischarger();
+            InitializeDischargerSelection();
         }
 
         private void xTempReconnectImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -93,6 +94,8 @@ namespace DischargerV2.MVVM.Views
             ViewModelMain.Instance.Model.SelectedDischargerName = dischargerName;
             ViewModelSetMode.Instance.SetDischargerName(dischargerName);
 
+            _viewModelDischarger.SelectDischarger(int.Parse(dischargerNoTextBlock.Text) - 1);
+
             // Table row 배경 설정
             foreach (var oneRow in _viewModelDischarger.Model)
             {
@@ -105,7 +108,7 @@ namespace DischargerV2.MVVM.Views
             }
         }
 
-        private void SelectFirstDischarger()
+        private void InitializeDischargerSelection()
         {
             if (_viewModelDischarger.Model.Count >= 1)
             {
@@ -114,6 +117,20 @@ namespace DischargerV2.MVVM.Views
                 ViewModelMain.Instance.Model.SelectedDischargerName = _viewModelDischarger.Model[0].DischargerName;
                 ViewModelSetMode.Instance.SetDischargerName(_viewModelDischarger.Model[0].DischargerName);
             }
+            else
+            {
+                _viewModelDischarger.SelectedDischargerName = string.Empty;
+                ViewModelMain.Instance.Model.DischargerIndex = -1;
+                ViewModelMain.Instance.Model.SelectedDischargerName = string.Empty;
+                ViewModelSetMode.Instance.SetDischargerName(string.Empty);
+            }
+
+            // 첫번째 방전기 선택 UI
+            foreach (var oneRow in _viewModelDischarger.Model)
+            {
+                oneRow.Background = ResColor.surface_primary;
+            }
+            _viewModelDischarger.Model[0].Background = ResColor.table_selected;
         }
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)

@@ -52,8 +52,6 @@ namespace DischargerV2.MVVM.ViewModels
 
         public DelegateCommand<string> OpenPopupErrorCommand { get; set; }
         public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
-
-        public DelegateCommand<string> SelectDischargerCommand { get; set; }
         #endregion
 
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
@@ -135,25 +133,20 @@ namespace DischargerV2.MVVM.ViewModels
 
             OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
             ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
-            
-            SelectDischargerCommand = new DelegateCommand<string>(SelectDischarger);
         }
 
-        private void SelectDischarger(string strSelectedIndex)
+        public void SelectDischarger(int selectedIndex)
         {
             try
             {
-                if (Int32.TryParse(strSelectedIndex, out int selectedIndex))
-                {
-                    string selectedDischargerName = Model[selectedIndex].DischargerName;
+                string selectedDischargerName = Model[selectedIndex].DischargerName;
 
-                    SelectedDischargerName = selectedDischargerName;
-                    SelectedModel = Model[selectedIndex];
+                SelectedDischargerName = selectedDischargerName;
+                SelectedModel = Model[selectedIndex];
 
-                    ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
-                    ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
-                    ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
-                }
+                ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
+                ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
+                ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
             }
             catch { }
         }

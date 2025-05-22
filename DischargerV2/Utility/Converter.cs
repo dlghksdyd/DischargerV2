@@ -797,6 +797,11 @@ namespace Utility.Common
             {
                 if (value[1] is int selectedIndex)
                 {
+                    if (selectedIndex < 0)
+                    {
+                        return FalseValue;
+                    }
+
                     if (parameter != null && parameter.ToString().ToUpper() == "INVERT")
                     {
                         if (isStartedArray[selectedIndex])
