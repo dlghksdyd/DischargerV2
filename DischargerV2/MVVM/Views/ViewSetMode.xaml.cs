@@ -33,7 +33,15 @@ namespace DischargerV2.MVVM.Views
 
         private void xStartButton_Click(object sender, RoutedEventArgs e)
         {
+            MexButton mexButton = sender as MexButton;
+
+            //mexButton.IsEnabled = false;
             _viewModel.StartDischarge();
+        }
+
+        private void xWaitStartDischarging_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

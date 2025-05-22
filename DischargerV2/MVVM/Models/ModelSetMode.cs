@@ -82,5 +82,18 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _mode, value);
             }
         }
+
+        private Visibility _waitStartDischargingButtonVisibility = Visibility.Collapsed;
+        public Visibility WaitStartDischargingButtonVisibility
+        {
+            get
+            {
+                return _waitStartDischargingButtonVisibility;
+            }
+            set
+            {
+                SetProperty(ref _waitStartDischargingButtonVisibility, value);
+            }
+        }
     }
 }

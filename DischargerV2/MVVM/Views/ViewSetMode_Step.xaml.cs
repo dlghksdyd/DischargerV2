@@ -77,7 +77,11 @@ namespace DischargerV2.MVVM.Views
             // ModelDictionary Model 다른 클래스에서 선언함에 따라 CollectionChanged Event 추가
             _viewModel.ModelDictionary[dischargerName].Content.CollectionChanged += Content_CollectionChanged;
 
-            UpdateUI();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // UI 업데이트
+                UpdateUI();
+            });
         }
 
         private void InitializeUI()

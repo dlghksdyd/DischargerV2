@@ -170,47 +170,56 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void StartDischarge()
         {
-            // 설정 값 적용
-            SetDischargerName(Model.DischargerName);
-
-            if (!CheckModeNTarget()) return;
-            if (!CheckNSetSafetyCondition()) return;
-            if (!CalculateTarget(out ModelStartDischarge model)) return;
-
-            if (ViewModelDictionary.ContainsKey(Model.DischargerName))
+            Thread thread = new Thread(() =>
             {
-                // Graph 방전 모드 설정
-                ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
+                Model.WaitStartDischargingButtonVisibility = Visibility.Visible;
 
-                // Start 방전 모드 설정 및 방전 시작
-                ViewModelDictionary[Model.DischargerName].Model = model;
-                ViewModelDictionary[Model.DischargerName].StartDischarge();
+                // 설정 값 적용
+                SetDischargerName(Model.DischargerName);
 
-                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
-                DateTime startTime = DateTime.Now;
-                while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
+                if (!CheckModeNTarget()) return;
+                if (!CheckNSetSafetyCondition()) return;
+                if (!CalculateTarget(out ModelStartDischarge model)) return;
+
+                if (ViewModelDictionary.ContainsKey(Model.DischargerName))
                 {
-                    Thread.Sleep(100);
+                    // Graph 방전 모드 설정
+                    ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
-                    // 5초가 지나면 방전 시작 실패로 간주
-                    if (DateTime.Now - startTime > TimeSpan.FromSeconds(5))
+                    // Start 방전 모드 설정 및 방전 시작
+                    ViewModelDictionary[Model.DischargerName].Model = model;
+                    ViewModelDictionary[Model.DischargerName].StartDischarge();
+
+                    int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+                    DateTime startTime = DateTime.Now;
+                    while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
                     {
-                        ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                        Thread.Sleep(100);
+
+                        // 5초가 지나면 방전 시작 실패로 간주
+                        if (DateTime.Now - startTime > TimeSpan.FromSeconds(5))
                         {
-                            Title = "Warning",
-                            Comment = "Fail to start discharging.",
-                        };
+                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            {
+                                Title = "Warning",
+                                Comment = "Fail to start discharging.",
+                            };
 
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                        viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
-                        return;
+                            ViewModelMain viewModelMain = ViewModelMain.Instance;
+                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            return;
+                        }
                     }
-                }
 
-                // SetMode -> Monitor 화면 전환
-                ViewModelMain.Instance.SetIsStartedArray(true);
-            }
+                    // SetMode -> Monitor 화면 전환
+                    ViewModelMain.Instance.SetIsStartedArray(true);
+
+                    Model.WaitStartDischargingButtonVisibility = Visibility.Collapsed;
+                }
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void SelectMode(string mode)
