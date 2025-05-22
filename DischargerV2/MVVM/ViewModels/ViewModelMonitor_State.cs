@@ -124,7 +124,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
             DateTime startTime = DateTime.Now;
-            while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Discharging)
+            while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
             {
                 Thread.Sleep(100);
 

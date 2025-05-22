@@ -43,13 +43,13 @@
                 <view:ViewTopmenu/>
             </Border>
             <Grid Grid.Row="1" 
-                  HorizontalAlignment="Center" VerticalAlignment="Center">
+                  HorizontalAlignment="Center" Margin="0 20 0 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <view:ViewMonitor_ChannelState Grid.Row="0"/>
                 <view:ViewDischargerInfoTable Grid.Row="2" x:Name="xViewDischargerInfoTable" />

@@ -69,8 +69,23 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        public bool IsTempModuleUsed(string dischargerName)
+        {
+            if (!Model.TempModuleDictionary.ContainsKey(dischargerName))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public bool IsConnected(string dischargerName)
         {
+            if (!Model.TempModuleDictionary.ContainsKey(dischargerName))
+            {
+                return false;
+            }
+
             string comport = Model.TempModuleDictionary[dischargerName].Comport;
 
             if (!_clients.ContainsKey(comport))
@@ -96,6 +111,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void ReconnectTempModule(string dischargerName)
         {
+            if (!Model.TempModuleDictionary.ContainsKey(dischargerName))
+            {
+                return;
+            }
+
             string comport = Model.TempModuleDictionary[dischargerName].Comport;
 
             Thread thread = new Thread(delegate()
@@ -121,7 +141,6 @@ namespace DischargerV2.MVVM.ViewModels
                 
                 Model.TempModuleComportList.Add(info.TempModuleComPort);
                 Model.TempDatas.Add(new ObservableCollection<double>());
-                Model.ReconnectVisibility.Add(Visibility.Collapsed);
 
                 for (int i = 0; i < _tempChannelCount; i++)
                 {
@@ -167,7 +186,6 @@ namespace DischargerV2.MVVM.ViewModels
                 datas.Clear();
             }
             Model.TempDatas.Clear();
-            Model.ReconnectVisibility.Clear();
         }
 
         private void CopyDataFromTempModuleClientToModel(object sender, System.Timers.ElapsedEventArgs e)
@@ -189,16 +207,6 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 string comPortStr = client.Key.ToString();
                 int index = Model.TempModuleComportList.FindIndex(x => x == comPortStr);
-
-                if (!client.Value.IsConnected())
-                {
-                    Model.ReconnectVisibility[index] = Visibility.Visible;
-                    continue;
-                }
-                else
-                {
-                    Model.ReconnectVisibility[index] = Visibility.Collapsed;
-                }
 
                 for (int i = 0; i < Model.TempDatas[index].Count; i++)
                 {

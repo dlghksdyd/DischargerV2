@@ -31,7 +31,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}"
                                   Background="{StaticResource Mex/ResColor/surface_action}"
-                                  Text="{Binding Model.DischargerStates,
+                                  Text="{Binding Model,
                                                  Source={x:Static vm:ViewModelDischarger.Instance},
                                                  Converter={StaticResource EDischargerStateToIntConverter},
                                                  ConverterParameter={x:Static enum:EMonitorState.All}}"
@@ -52,7 +52,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/surface_action}"
-                                  Text="{Binding Model.DischargerStates,
+                                  Text="{Binding Model,
                                                  Source={x:Static vm:ViewModelDischarger.Instance},
                                                  Converter={StaticResource EDischargerStateToIntConverter},
                                                  ConverterParameter={x:Static enum:EMonitorState.Connected}}"
@@ -73,7 +73,7 @@
                                   Width="32" Padding="10,0,10,0"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/icon_error}"
-                                  Text="{Binding Model.DischargerStates,
+                                  Text="{Binding Model,
                                                  Source={x:Static vm:ViewModelDischarger.Instance},
                                                  Converter={StaticResource EDischargerStateToIntConverter},
                                                  ConverterParameter={x:Static enum:EMonitorState.Fault}}"

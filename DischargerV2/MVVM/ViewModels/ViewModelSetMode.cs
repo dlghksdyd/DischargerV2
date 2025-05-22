@@ -114,8 +114,8 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_SafetyCondition.Instance.ModelDictionary.Clear();
 
             // Discharger에서 관련 값 받아와 사용
-            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
-            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.DischargerInfos.ToList();
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
+            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerInfo);
 
             for (int index = 0; index < dischargerNameList.Count; index++)
             {
@@ -161,8 +161,8 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelDictionary.Clear();
 
             // Discharger에서 관련 값 받아와 사용
-            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
-            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.DischargerInfos.ToList();
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
+            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerInfo);
 
             for (int index = 0; index < dischargerNameList.Count; index++)
             {
@@ -198,7 +198,7 @@ namespace DischargerV2.MVVM.ViewModels
 
                 int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                 DateTime startTime = DateTime.Now;
-                while (ViewModelDischarger.Instance.Model.DischargerStates[dischargerIndex] != EDischargerState.Discharging)
+                while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
                 {
                     Thread.Sleep(100);
 
@@ -309,7 +309,7 @@ namespace DischargerV2.MVVM.ViewModels
         private bool CheckNSetSafetyCondition()
         {
             // 설정 값 확인
-            DischargerInfo dischargerInfo = ViewModelDischarger.Instance.Model.DischargerInfos[Model.DischargerIndex];
+            DischargerInfo dischargerInfo = ViewModelDischarger.Instance.SelectedModel.DischargerInfo;
             ModelSetMode_SafetyCondition modelSafetyCondition = ViewModelSetMode_SafetyCondition.Instance.Model;
 
             if (modelSafetyCondition.VoltageMin == null || modelSafetyCondition.VoltageMin == "")
@@ -534,7 +534,7 @@ namespace DischargerV2.MVVM.ViewModels
                                 });
                             }
 
-                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.SelectedModel.DischargerData;
                             double currentVoltage = dischargerData.ReceiveBatteryVoltage;
 
                             model.Dvdq = 3 * currentVoltage / standardCapacity;
@@ -655,7 +655,7 @@ namespace DischargerV2.MVVM.ViewModels
                                 });
                             }
 
-                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.SelectedModel.DischargerData;
                             double currentVoltage = dischargerData.ReceiveBatteryVoltage;
 
                             model.Dvdq = 3 * currentVoltage / standardCapacity;
@@ -760,7 +760,7 @@ namespace DischargerV2.MVVM.ViewModels
                                 });
                             }
 
-                            DischargerDatas dischargerData = ViewModelDischarger.Instance.Model.DischargerDatas[Model.DischargerIndex];
+                            DischargerDatas dischargerData = ViewModelDischarger.Instance.SelectedModel.DischargerData;
                             double currentVoltage = dischargerData.ReceiveBatteryVoltage;
 
                             model.Dvdq = 3 * currentVoltage / standardCapacity;

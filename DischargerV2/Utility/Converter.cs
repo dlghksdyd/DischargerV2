@@ -337,32 +337,33 @@ namespace Utility.Common
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ObservableCollection<EDischargerState> DischargerStates)
+            if (value is ObservableCollection<ModelDischarger> modelDischargers)
             {
                 if (parameter is EMonitorState eMonitorState)
                 {
                     if (eMonitorState == EMonitorState.All)
                     {
-                        return DischargerStates.Count;
+                        return modelDischargers.Count;
                     }
                     else if (eMonitorState == EMonitorState.Connected)
                     {
-                        return DischargerStates.Where(
+                        return modelDischargers.Where(
                             x =>
-                            x.Equals(EDischargerState.Connecting) ||
-                            x.Equals(EDischargerState.Ready) ||
-                            x.Equals(EDischargerState.Discharging) ||
-                            x.Equals(EDischargerState.Pause)).Count();
+                            x.DischargerState == EDischargerState.Connecting ||
+                            x.DischargerState == EDischargerState.Ready ||
+                            x.DischargerState == EDischargerState.Discharging ||
+                            x.DischargerState == EDischargerState.Pause).Count();
                     }
                     else //if (eMonitorState == EMonitorState.Fault)
                     {
-                        return DischargerStates.Where(
+                        return modelDischargers.Where(
                             x =>
-                            x.Equals(EDischargerState.Disconnected) ||
-                            x.Equals(EDischargerState.SafetyOutOfRange) ||
-                            x.Equals(EDischargerState.ReturnCodeError) ||
-                            x.Equals(EDischargerState.ChStatusError) ||
-                            x.Equals(EDischargerState.DeviceError)).Count();
+                            x.DischargerState == EDischargerState.None ||
+                            x.DischargerState == EDischargerState.Disconnected ||
+                            x.DischargerState == EDischargerState.SafetyOutOfRange ||
+                            x.DischargerState == EDischargerState.ReturnCodeError ||
+                            x.DischargerState == EDischargerState.ChStatusError ||
+                            x.DischargerState == EDischargerState.DeviceError).Count();
                     }
                 }
             }

@@ -10,8 +10,8 @@
              xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="630" d:DesignWidth="1760"
-             MinHeight="315" MinWidth="1760">
+             d:DesignHeight="330" d:DesignWidth="1760"
+             MinHeight="330" MinWidth="1760">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,9 +21,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.IsSharedSizeScope="True">
+        <Grid Grid.Row="0" Grid.IsSharedSizeScope="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="45"></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -40,26 +40,26 @@
                         <ColumnDefinition SharedSizeGroup="Group6"></ColumnDefinition>
                         <ColumnDefinition SharedSizeGroup="Group7"></ColumnDefinition>
                         <ColumnDefinition SharedSizeGroup="Group8"></ColumnDefinition>
-                        <ColumnDefinition SharedSizeGroup="Group9"></ColumnDefinition>
+                        <ColumnDefinition SharedSizeGroup="Group9" Width="0.5*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Mex:MexTextBlock Grid.Column="0" Margin="16 0 32 0" Text="No." Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="1" Margin="0 0 32 0" Text="Discharger Name" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="2" Margin="0 0 60 0" Text="" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="3" Margin="0 0 48 0" Text="Channel" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="4" Margin="0 0 48 0" Text="Status" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="5" Margin="0 0 32 0" Text="Voltage (V)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="6" Margin="0 0 32 0" Text="Current (A)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="7" Margin="0 0 32 0" Text="Temperature (℃)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="8" Margin="0 0 48 0" Text="Progress Time" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="9" Margin="0 0 32 0" Text="Info" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="3" Margin="0 0 56 0" Text="Channel" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="4" Margin="0 0 80 0" Text="Status" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="5" Margin="0 0 88 0" Text="Voltage (V)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="6" Margin="0 0 88 0" Text="Current (A)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="7" Margin="0 0 88 0" Text="Temperature (℃)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="8" Margin="0 0 88 0" Text="Progress Time" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="9" Margin="0 0 48 0" Text="Info" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 </Grid>
             </Border>
             <Border Grid.Row="1" CornerRadius="0 0 8 8" Background="{StaticResource Mex/ResColor/surface_primary}" BorderThickness="1" BorderBrush="{StaticResource Mex/ResColor/border_primary}">
-                <Mex:MexScrollViewer Height="270">
+                <Mex:MexScrollViewer Height="285">
                     <ItemsControl DataContext="{x:Static vm:ViewModelDischarger.Instance}" ItemsSource="{Binding Model}" d:ItemsSource="{d:SampleData ItemCount=6}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" MouseLeftButtonUp="xOneDischargerBorder_MouseLeftButtonUp" BorderBrush="{StaticResource Mex/ResColor/border_primary}" BorderThickness="0 0 0 1">
+                                <Border Background="{Binding Background}" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" MouseLeftButtonUp="xOneDischargerBorder_MouseLeftButtonUp" BorderBrush="{StaticResource Mex/ResColor/border_primary}" BorderThickness="0 0 0 1">
                                     <Grid Height="44">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition SharedSizeGroup="Group0"></ColumnDefinition>
@@ -73,21 +73,21 @@
                                             <ColumnDefinition SharedSizeGroup="Group8"></ColumnDefinition>
                                             <ColumnDefinition SharedSizeGroup="Group9"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
-                                        <Mex:MexTextBlock Grid.Column="0" Text="{Binding No}" Margin="16 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
-                                        <Mex:MexTextBlock Grid.Column="1" Text="{Binding DischargerName}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="0" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding No}" Margin="16 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="1" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding DischargerName}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <Mex:MexLabel Grid.Column="2" Height="20" Margin="0 0 60 0" Visibility="{Binding ShortAvailableVisibility}" CornerRadius="4" Background="{StaticResource Mex/ResColor/surface_success}" Padding="8,0,8,0" Text="Short Available" Foreground="{StaticResource Mex/ResColor/text_success}" TextPadding="4,0,0,0" FontSet="{StaticResource Mex/ResFontSet/body_xs_regular}" ImageWidth="16" ImageHeight="16" ImageLeft="{Binding Source={StaticResource Mex/ResImage/electric_bolt}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_success}}"/>
-                                        <Mex:MexTextBlock Grid.Column="3" Text="{Binding DischargerInfo.Channel}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
-                                        <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0 0 48 0">
+                                        <Mex:MexTextBlock Grid.Column="3" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding DischargerInfo.Channel}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0 0 80 0">
                                             <Ellipse Width="12" Height="12" Fill="{Binding StateColor}"/>
                                             <Mex:MexTextBlock Text="{Binding DischargerState}" Grid.Column="1" Foreground="{StaticResource Mex/ResColor/text_body}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}" Padding="8,0,0,0"/>
                                         </StackPanel>
-                                        <Mex:MexTextBlock Grid.Column="5" Text="{Binding DischargerData.ReceiveBatteryVoltage}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
-                                        <Mex:MexTextBlock Grid.Column="6" Text="{Binding DischargerData.ReceiveDischargeCurrent}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="5" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding DischargerData.ReceiveBatteryVoltage}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="6" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding DischargerData.ReceiveDischargeCurrent}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <StackPanel Grid.Column="7" Orientation="Horizontal">
-                                            <Mex:MexTextBlock Text="{Binding DischargerData.ReceiveDischargeTemp}" Margin="0 0 4 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                            <Mex:MexTextBlock Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding DischargerData.ReceiveDischargeTemp}" Margin="0 0 4 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                             <Image MouseLeftButtonUp="xTempReconnectImage_MouseLeftButtonUp" Visibility="{Binding TempReconnectVisibility}" Width="24" Height="24" Margin="8 0 32 0" Cursor="Hand" Source="{Binding Source={StaticResource Mex/ResImage/refresh}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_infomation}}"></Image>
                                         </StackPanel>
-                                        <Mex:MexTextBlock Grid.Column="8" Text="{Binding ProgressTime}" Margin="0 0 48 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="8" Foreground="{StaticResource Mex/ResColor/text_body}" Text="{Binding ProgressTime}" Margin="0 0 48 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <StackPanel Grid.Column="9" MouseLeftButtonUp="xDischargerReconnectStackPanel_MouseLeftButtonUp" Visibility="{Binding ReconnectVisibility}" Orientation="Horizontal" Margin="0,0,32,0">
                                             <Image Width="24" Height="24" Margin="0 0 8 0" Source="{Binding Source={StaticResource Mex/ResImage/refresh}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_infomation}}"/>
                                             <Mex:MexTextBlock Text="Reconnect" Foreground="{StaticResource Mex/ResColor/text_infomation}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}" TextDecorations="Underline"/>
@@ -104,7 +104,7 @@
                 </Mex:MexScrollViewer>
             </Border>
         </Grid>
-        <Border CornerRadius="8" Grid.Row="1"
+        <Border CornerRadius="8" Grid.Row="1" Visibility="Hidden"
             Background="{StaticResource Mex/ResColor/surface_page}">
             <Mex:MexTable x:Name="xTable"
                       Width="1760" Height="315"

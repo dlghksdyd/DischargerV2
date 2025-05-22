@@ -32,16 +32,6 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private ObservableCollection<Visibility> _reconnectVisibility = new ObservableCollection<Visibility>();
-        public ObservableCollection<Visibility> ReconnectVisibility
-        {
-            get { return _reconnectVisibility; }
-            set
-            {
-                SetProperty(ref _reconnectVisibility, value);
-            }
-        }
-
         /// <summary>
         /// Key : DischargerName (e.g. TEST_DEVICE)
         /// </summary>

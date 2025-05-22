@@ -65,6 +65,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ObservableCollection<ModelDischarger> Model { get; set; } = new ObservableCollection<ModelDischarger>();
 
+        public ModelDischarger SelectedModel { get; set; } = new ModelDischarger();
+
         private string _selectedDischargerName = string.Empty;
         public string SelectedDischargerName
         {
@@ -114,6 +116,7 @@ namespace DischargerV2.MVVM.ViewModels
                     string selectedDischargerName = Model[selectedIndex].DischargerName;
 
                     SelectedDischargerName = selectedDischargerName;
+                    SelectedModel = Model[selectedIndex];
 
                     ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
                     ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
@@ -229,10 +232,14 @@ namespace DischargerV2.MVVM.ViewModels
             for (int index = 0; index < infos.Count; index++) 
             {
                 var model = new ModelDischarger();
-                Model[index].No = (index + 1).ToString();
+
+                model.No = (index + 1).ToString();
+                model.DischargerName = infos[index].DischargerName;
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
-                Model[index].DischargerInfo = dischargerInfo;
+                model.DischargerInfo = dischargerInfo;
                 InitializeDischargerClients(dischargerInfo);
+
+                Model.Add(model);
             }
 
             ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
@@ -395,6 +402,23 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Model[index].ReconnectVisibility = Visibility.Collapsed;
                     Model[index].ErrorVisibility = Visibility.Collapsed;
+                }
+
+                // 온도 모듈 새로 고침 visibility 설정
+                if (!ViewModelTempModule.Instance.IsTempModuleUsed(Model[index].DischargerName))
+                {
+                    Model[index].TempReconnectVisibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    if (!ViewModelTempModule.Instance.IsConnected(Model[index].DischargerName))
+                    {
+                        Model[index].TempReconnectVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Model[index].TempReconnectVisibility = Visibility.Collapsed;
+                    }
                 }
             }
         }

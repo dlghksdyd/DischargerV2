@@ -55,7 +55,7 @@ namespace DischargerV2.MVVM.ViewModels
             Model.IsStartedArray.Clear();
 
             // Discharger에서 관련 값 받아와 사용
-            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
 
             for (int index = 0; index < dischargerNameList.Count; index++)
             {

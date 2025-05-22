@@ -90,15 +90,15 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
             ViewModelMonitor_Graph viewModelMonitor_Graph = ViewModelMonitor_Graph.Instance;
 
-            EDischargerState receiveState = viewModelDischarger.Model.DischargerStates[Model.DischargerIndex];
+            EDischargerState receiveState = viewModelDischarger.SelectedModel.DischargerState;
 
-            bool isTempModule = viewModelDischarger.Model.DischargerInfos[Model.DischargerIndex].IsTempModule;
+            bool isTempModule = viewModelDischarger.SelectedModel.DischargerInfo.IsTempModule;
             
-            double receiveVoltage = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveBatteryVoltage;
-            double receiveCurrent = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].ReceiveDischargeCurrent;
+            double receiveVoltage = viewModelDischarger.SelectedModel.DischargerData.ReceiveBatteryVoltage;
+            double receiveCurrent = viewModelDischarger.SelectedModel.DischargerData.ReceiveDischargeCurrent;
 
-            double safetyTempMin = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMin;
-            double safetyTempMax = viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex].SafetyTempMax;
+            double safetyTempMin = viewModelDischarger.SelectedModel.DischargerData.SafetyTempMin;
+            double safetyTempMax = viewModelDischarger.SelectedModel.DischargerData.SafetyTempMax;
 
             // 방전기 동작 에러 발생 시, 중단
             if (receiveState == EDischargerState.SafetyOutOfRange ||
@@ -125,12 +125,12 @@ namespace DischargerV2.MVVM.ViewModels
                     }
 
                     // Graph 데이터 전달
-                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex], receiveTemp);
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.SelectedModel.DischargerData, receiveTemp);
                 }
                 else
                 {
                     // Graph 데이터 전달
-                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.Model.DischargerDatas[Model.DischargerIndex]);
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, viewModelDischarger.SelectedModel.DischargerData);
                 }
 
                 // 타겟 전압에 도달했을 경우 Phase 상승

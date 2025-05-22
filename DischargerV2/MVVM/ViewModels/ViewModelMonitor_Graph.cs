@@ -173,8 +173,8 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelMonitor_Graph.Instance.ModelDictionary.Clear();
 
             // Discharger에서 관련 값 받아와 사용
-            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.DischargerNameList.ToList();
-            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.DischargerInfos.ToList();
+            List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
+            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerInfo);
 
             for (int index = 0; index < dischargerNameList.Count; index++)
             {
