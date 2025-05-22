@@ -74,7 +74,6 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Model.PauseNResumeIsEnable = false;
                     Model.StopIsEnable = false;
-                    Model.FinishIsEnable = true;
                 }
                 // 에러 발생하였을 때
                 else if (state == EDischargerState.SafetyOutOfRange.ToString() ||
@@ -119,26 +118,37 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void StopDischarge()
         {
-            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
-
-            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
-
-            int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
-            DateTime startTime = DateTime.Now;
-            while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
+            Thread thread = new Thread(() =>
             {
-                Thread.Sleep(100);
+                Model.WaitStopButtonVisibility = Visibility.Visible;
 
-                if (DateTime.Now - startTime > TimeSpan.FromSeconds(3))
+                string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+                ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+
+                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+                DateTime startTime = DateTime.Now;
+                while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
                 {
-                    // 3초 지나면 while문 자동으로 빠져나옴.
-                    break;
-                }
-            }
+                    Thread.Sleep(100);
 
-            Model.PauseNResumeIsEnable = false;
-            Model.StopIsEnable = false;
-            Model.FinishIsEnable = true;
+                    if (DateTime.Now - startTime > TimeSpan.FromSeconds(3))
+                    {
+                        // 3초 지나면 while문 자동으로 빠져나옴.
+                        break;
+                    }
+                }
+
+                Thread.Sleep(3000);
+
+                Model.WaitStopButtonVisibility = Visibility.Collapsed;
+
+                Model.PauseNResumeIsEnable = false;
+                Model.StopIsEnable = false;
+                Model.FinishIsEnable = true;
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void ReturnSetMode()
