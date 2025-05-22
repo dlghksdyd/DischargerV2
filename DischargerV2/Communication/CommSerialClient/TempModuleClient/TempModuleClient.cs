@@ -65,17 +65,6 @@ namespace Serial.Client.TempModule
 
     public class SerialClientTempModule
     {
-        private class LogArgument
-        {
-            public LogArgument(string logMessage)
-            {
-                LogMessage = logMessage;
-            }
-
-            public string LogMessage { get; set; } = string.Empty;
-            public Dictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
-        }
-
         private SerialClient _tempModuleClient = null;
 
         private System.Timers.Timer _readInfoTimer = null;
@@ -85,43 +74,6 @@ namespace Serial.Client.TempModule
         private TempModuleDatas _tempModuleDatas = new TempModuleDatas();
 
         private ETempModuleState _tempModuleState = ETempModuleState.None;
-
-        private List<string> _traceLogs = new List<string>();
-        private object _traceLogLock = new object();
-
-        private void AddTraceLog(LogArgument logFormat)
-        {
-            string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
-            formattedMessage += _parameters.DeviceName + " - ";
-            formattedMessage += logFormat.LogMessage + " ";
-
-            for (int i = 0; i < logFormat.Parameters.Count; i++)
-            {
-                string key = logFormat.Parameters.Keys.ElementAt(i);
-                string value = logFormat.Parameters.Values.ElementAt(i).ToString();
-
-                if (i == 0)
-                {
-                    formattedMessage += "(";
-                }
-
-                formattedMessage += key + ": " + value;
-
-                if (i < logFormat.Parameters.Count - 1)
-                {
-                    formattedMessage += ", ";
-                }
-                else
-                {
-                    formattedMessage += ")";
-                }
-            }
-
-            lock (_traceLogLock)
-            {
-                _traceLogs.Add(formattedMessage);
-            }
-        }
 
         private bool IsParameterValid(SerialClientTempModuleStart parameters)
         {
@@ -144,12 +96,6 @@ namespace Serial.Client.TempModule
 
         private void ChangeTempModuleState(ETempModuleState state)
         {
-            if (_tempModuleState != state)
-            {
-                LogArgument logArgument = new LogArgument("Enter " + state + " State.");
-                AddTraceLog(logArgument);
-            }
-
             _tempModuleState = state;
         }
 
@@ -191,9 +137,6 @@ namespace Serial.Client.TempModule
             var result = _tempModuleClient.Connect(clientStart);
             if (result != ESerialClientStatus.OK)
             {
-                LogArgument logArgument = new LogArgument("Fail to connect.");
-                AddTraceLog(logArgument);
-
                 ChangeTempModuleState(ETempModuleState.Disconnect);
 
                 return ETempModuleClientError.FAIL_TO_CONNECT;
@@ -231,17 +174,6 @@ namespace Serial.Client.TempModule
             return _tempModuleState;
         }
 
-        public List<string> GetTraceLogs()
-        {
-            lock (_traceLogLock)
-            {
-                List<string> temp = _traceLogs.ConvertAll(x => x);
-                _traceLogs.Clear();
-
-                return temp;
-            }
-        }
-
         public void Stop()
         {
             _tempModuleClient?.Disconnect();
@@ -271,9 +203,6 @@ namespace Serial.Client.TempModule
             bool result = _tempModuleClient.ProcessPacket(writeString, "\r");
             if (result == false)
             {
-                LogArgument logArgument = new LogArgument("Fail to process request temperature command.");
-                AddTraceLog(logArgument);
-
                 return ETempModuleClientError.FAIL_PROCESS_PACKET;
             }
 
@@ -286,10 +215,6 @@ namespace Serial.Client.TempModule
             if (result != ESerialClientStatus.OK)
             {
                 Debug.WriteLine("Read Error: " + result.ToString());
-
-                LogArgument logArgument = new LogArgument("Fail to read data.");
-                AddTraceLog(logArgument);
-
                 return false;
             }
 
@@ -301,10 +226,6 @@ namespace Serial.Client.TempModule
             if (writeData == null || writeData.Length == 0)
             {
                 Debug.WriteLine("Write Error: Write String is Empty.");
-
-                LogArgument logArgument = new LogArgument("Write data is empty.");
-                AddTraceLog(logArgument);
-
                 return false;
             }
 
@@ -312,10 +233,6 @@ namespace Serial.Client.TempModule
             if (result != ESerialClientStatus.OK)
             {
                 Debug.WriteLine("Write Error: " + result.ToString());
-
-                LogArgument logArgument = new LogArgument("Fail to write data.");
-                AddTraceLog(logArgument);
-
                 return false;
             }
 
@@ -324,10 +241,6 @@ namespace Serial.Client.TempModule
 
         private bool ParseData(string readStr)
         {
-            LogArgument logArgument = new LogArgument("Read Temperature Data.");
-            logArgument.Parameters["RawData"] = readStr;
-            AddTraceLog(logArgument);
-
             // 데이터 read (ex>">+025.12+020.45+012.78+018.97+003.24+015.35+008.07+014.79")
             readStr = readStr.Replace(">", "");
 

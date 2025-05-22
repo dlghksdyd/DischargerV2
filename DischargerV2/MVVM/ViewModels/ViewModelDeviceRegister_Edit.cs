@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Enums;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
@@ -281,36 +282,69 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void UpdateDischargerInfo()
         {
-            TableDischargerInfo tableDischargerInfo = new TableDischargerInfo();
-
-            tableDischargerInfo.DischargerName = Model.Name;
-            tableDischargerInfo.IpAddress = Model.Ip;
-
-            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            try
             {
-                if (Model.DischargerModel == eDischargerModel.ToString())
+                // 방전기 정보 수정
+                TableDischargerInfo tableDischargerInfo = new TableDischargerInfo();
+
+                tableDischargerInfo.DischargerName = Model.Name;
+                tableDischargerInfo.IpAddress = Model.Ip;
+
+                foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
                 {
-                    tableDischargerInfo.Model = eDischargerModel;
+                    if (Model.DischargerModel == eDischargerModel.ToString())
+                    {
+                        tableDischargerInfo.Model = eDischargerModel;
+                    }
+                }
+
+                foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(Sqlite.Common.EDischargeType)))
+                {
+                    if (Model.Type == eDischargerType.ToString())
+                    {
+                        tableDischargerInfo.Type = eDischargerType;
+                    }
+                }
+
+                tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
+                tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
+                tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
+                tableDischargerInfo.IsTempModule = Model.IsTempModule;
+                tableDischargerInfo.TempModuleComPort = Model.Comport;
+                tableDischargerInfo.TempModuleChannel = Model.ModuleChannel;
+                tableDischargerInfo.TempChannel = Model.TempChannel;
+
+                bool isOk = SqliteDischargerInfo.UpdateData(tableDischargerInfo);
+
+                // 방전기 정보 수정 Trace Log 저장
+                DeviceData deviceData = new DeviceData()
+                {
+                    Name = Model.Name,
+                    Model = Model.DischargerModel,
+                    Type = Model.Type,
+                    Channel = Model.Channel,
+                    SpecVoltage = Model.VoltSpec,
+                    SpecCurrent = Model.CurrSpec,
+                    IpAddress = Model.Ip,
+                    IsTempModule = Model.IsTempModule,
+                    TempModuleComPort = Model.Comport,
+                    TempModuleChannel = Model.ModuleChannel,
+                    TempChannel = Model.TempChannel,
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_EDIT_DISCHARGER, deviceData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_EDIT_DISCHARGER, deviceData);
                 }
             }
-
-            foreach (Sqlite.Common.EDischargeType eDischargerType in Enum.GetValues(typeof(Sqlite.Common.EDischargeType)))
+            catch (Exception ex)
             {
-                if (Model.Type == eDischargerType.ToString())
-                {
-                    tableDischargerInfo.Type = eDischargerType;
-                }
+                new LogTrace(ELogTrace.ERROR_EDIT_DISCHARGER, ex);
             }
-
-            tableDischargerInfo.DischargerChannel = Convert.ToInt16(Model.Channel);
-            tableDischargerInfo.SpecVoltage = Convert.ToDouble(Model.VoltSpec);
-            tableDischargerInfo.SpecCurrent = Convert.ToDouble(Model.CurrSpec);
-            tableDischargerInfo.IsTempModule = Model.IsTempModule;
-            tableDischargerInfo.TempModuleComPort = Model.Comport;
-            tableDischargerInfo.TempModuleChannel = Model.ModuleChannel;
-            tableDischargerInfo.TempChannel = Model.TempChannel;
-
-            SqliteDischargerInfo.UpdateData(tableDischargerInfo);
         }
     }
 }

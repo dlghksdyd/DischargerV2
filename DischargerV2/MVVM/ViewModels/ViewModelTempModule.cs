@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Serial.Client.TempModule;
 using Sqlite.Common;
@@ -28,6 +29,11 @@ namespace DischargerV2.MVVM.ViewModels
         /// Key: ComPortString (e.g. COM3)
         /// </summary>
         private Dictionary<string, SerialClientTempModule> _clients = new Dictionary<string, SerialClientTempModule>();
+
+        /// <summary>
+        /// Key: ComPortString (e.g. COM3)
+        /// </summary>
+        private Dictionary<string, TempModuleData> _logParameter = new Dictionary<string, TempModuleData>();
 
         private int _tempChannelCount = 8;
 
@@ -96,14 +102,32 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void ReconnectTempModule(string dischargerName)
         {
-            string comport = Model.TempModuleDictionary[dischargerName].Comport;
-
-            Thread thread = new Thread(delegate()
+            try
             {
-                _clients[comport].Restart();
-            });
+                string comport = Model.TempModuleDictionary[dischargerName].Comport;
 
-            thread.Start();
+                Thread thread = new Thread(delegate ()
+                {
+                    // 온도 모듈 재 연결
+                    var isOk = _clients[comport].Restart();
+
+                    // 온도 모듈 재 연결 Trace Log 저장
+                    if (isOk == ETempModuleClientError.Ok)
+                    {
+                        new LogTrace(ELogTrace.TRACE_RECONNECT_TEMPMODULE, _logParameter[comport]);
+                    }
+                    else
+                    {
+                        new LogTrace(ELogTrace.ERROR_RECONNECT_TEMPMODULE, _logParameter[comport]);
+                    }
+                });
+
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
+            }
         }
 
         private void InitializeTempModule()
@@ -114,31 +138,64 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (var info in infos)
             {
-                if (Model.TempModuleComportList.Contains(info.TempModuleComPort))
+                try
                 {
-                    continue;
+                    if (Model.TempModuleComportList.Contains(info.TempModuleComPort))
+                    {
+                        continue;
+                    }
+
+                    Model.TempModuleComportList.Add(info.TempModuleComPort);
+                    Model.TempDatas.Add(new ObservableCollection<double>());
+                    Model.ReconnectVisibility.Add(Visibility.Collapsed);
+
+                    for (int i = 0; i < _tempChannelCount; i++)
+                    {
+                        Model.TempDatas.Last().Add(0.0);
+                    }
+
+                    SerialClientTempModuleStart parameters = new SerialClientTempModuleStart();
+                    parameters.DeviceName = "TempModule";
+                    parameters.ComPort = info.TempModuleComPort;
+                    parameters.BaudRate = 9600;
+                    parameters.TimeOutMs = 2000;
+                    parameters.Encoding = Encoding.UTF8;
+                    parameters.TempModuleChannel = Convert.ToInt32(info.TempModuleChannel);
+                    parameters.TempChannelCount = _tempChannelCount;
+
+                    _clients[info.TempModuleComPort] = new SerialClientTempModule();
+
+                    _logParameter[info.TempModuleComPort] = new TempModuleData()
+                    {
+                        DischargerName = info.DischargerName,
+                        EDischargerModel = info.Model,
+                        DischargerChannel = info.DischargerChannel,
+                        TempModuleComPort = info.TempModuleComPort,
+                        TempModuleChannel = info.TempModuleChannel,
+                        TempChannel = info.TempChannel,
+                    };
+
+                    if (info.IsTempModule)
+                    {
+                        // 온도 모듈 연결
+                        var isOk = _clients[info.TempModuleComPort].Start(parameters);
+
+                        // 온도 모듈 연결 Trace Log 저장
+                        if (isOk == ETempModuleClientError.Ok)
+                        {
+                            new LogTrace(ELogTrace.TRACE_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
                 }
                 
-                Model.TempModuleComportList.Add(info.TempModuleComPort);
-                Model.TempDatas.Add(new ObservableCollection<double>());
-                Model.ReconnectVisibility.Add(Visibility.Collapsed);
-
-                for (int i = 0; i < _tempChannelCount; i++)
-                {
-                    Model.TempDatas.Last().Add(0.0);
-                }
-
-                SerialClientTempModuleStart parameters = new SerialClientTempModuleStart();
-                parameters.DeviceName = "TempModule";
-                parameters.ComPort = info.TempModuleComPort;
-                parameters.BaudRate = 9600;
-                parameters.TimeOutMs = 2000;
-                parameters.Encoding = Encoding.UTF8;
-                parameters.TempModuleChannel = Convert.ToInt32(info.TempModuleChannel);
-                parameters.TempChannelCount = _tempChannelCount;
-
-                _clients[info.TempModuleComPort] = new SerialClientTempModule();
-                _clients[info.TempModuleComPort].Start(parameters);
             }
 
             OneSecondTimer?.Stop();

@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -90,13 +91,40 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void InsertUserInfo()
         {
-            TableUserInfo tableUserInfo = new TableUserInfo();
-            tableUserInfo.UserId = Model.Id;
-            tableUserInfo.Password = Model.Password;
-            tableUserInfo.UserName = Model.Name;
-            tableUserInfo.IsAdmin = Model.IsAdmin;
+            try
+            {
+                // 사용자 정보 추가
+                TableUserInfo tableUserInfo = new TableUserInfo();
+                tableUserInfo.UserId = Model.Id;
+                tableUserInfo.Password = Model.Password;
+                tableUserInfo.UserName = Model.Name;
+                tableUserInfo.IsAdmin = Model.IsAdmin;
 
-            SqliteUserInfo.InsertData(tableUserInfo);
+                bool isOk = SqliteUserInfo.InsertData(tableUserInfo);
+
+                // 사용자 정보 추가 Trace Log 저장
+                UserData userData = new UserData()
+                {
+                    UserId = Model.Id,
+                    Password = Model.Password,
+                    UserName = Model.Name,
+                    IsAdmin = Model.IsAdmin,
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_ADD_USER, userData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_ADD_USER, userData);
+                }
+            }
+            catch (Exception ex)
+            {
+                new LogTrace(ELogTrace.ERROR_ADD_USER, ex);
+            }
+            
         }
     }
 }

@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using DischargerV2.LOG;
 using Ethernet.Client.Common;
 using Prism.Common;
 using Sqlite.Common;
@@ -163,6 +164,26 @@ namespace Ethernet.Client.Discharger
         public static double SafetyMarginVoltage = 15;
         public static double SafetyMarginCurrent = 2;
 
+        public DischargerData GetDischargerComm()
+        {
+            DischargerData dischargerComm = new DischargerData()
+            {
+                Name = _parameters.DischargerName,
+                EDischargerModel = _parameters.DischargerModel,
+                Channel = _parameters.DischargerChannel,
+                IpAddress = _parameters.IpAddress,
+
+                SafetyVoltageMax = _parameters.SafetyVoltageMax,
+                SafetyVoltageMin = _parameters.SafetyVoltageMin,
+                SafetyCurrentMax = _parameters.SafetyCurrentMax,
+                SafetyCurrentMin = _parameters.SafetyCurrentMin,
+                SafetyTempMax = _parameters.SafetyTempMax,
+                SafetyTempMin = _parameters.SafetyTempMin,
+            };
+
+            return dischargerComm;
+        }
+
         private void AddTraceLog(LogArgument logFormat)
         {
             string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
@@ -207,37 +228,45 @@ namespace Ethernet.Client.Discharger
             return _dischargerClient.IsConnected();
         }
 
-        public void ChangeDischargerState(EDischargerState dischargerState)
+        public bool ChangeDischargerState(EDischargerState dischargerState)
         {
-            if (dischargerState == EDischargerState.SafetyOutOfRange)
+            try
             {
-                _dischargerData.ErrorCode = 0xF0000001;
-            }
-            else if (dischargerState == EDischargerState.ReturnCodeError)
-            {
-                _dischargerData.ErrorCode = 0xF0000002;
-            }
-            else if (dischargerState == EDischargerState.ChStatusError)
-            {
-                _dischargerData.ErrorCode = 0xF0000003;
-            }
-
-            if (_dischargerState != dischargerState)
-            {
-                LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
-                logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
-                logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                if (_parameters.DischargerIsTempModule)
+                if (dischargerState == EDischargerState.SafetyOutOfRange)
                 {
-                    logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
+                    _dischargerData.ErrorCode = 0xF0000001;
                 }
-                logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
-                logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
-                logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
-                AddTraceLog(logArgument);
-            }
+                else if (dischargerState == EDischargerState.ReturnCodeError)
+                {
+                    _dischargerData.ErrorCode = 0xF0000002;
+                }
+                else if (dischargerState == EDischargerState.ChStatusError)
+                {
+                    _dischargerData.ErrorCode = 0xF0000003;
+                }
 
-            _dischargerState = dischargerState;
+                if (_dischargerState != dischargerState)
+                {
+                    LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
+                    logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
+                    logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
+                    if (_parameters.DischargerIsTempModule)
+                    {
+                        logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
+                    }
+                    logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
+                    logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
+                    logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
+                    AddTraceLog(logArgument);
+                }
+                _dischargerState = dischargerState;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool IsParameterValid(EthernetClientDischargerStart parameters)
@@ -283,12 +312,12 @@ namespace Ethernet.Client.Discharger
 
             if (!_serialNumbers.ContainsKey(_parameters.IpAddress.ToString()))
             {
-                _serialNumbers[_parameters.IpAddress.ToString()] = 0;
+                _serialNumbers.Add(_parameters.IpAddress.ToString(), 0);
             }
 
             if (!_serialNumberDataLock.ContainsKey(_parameters.IpAddress.ToString()))
             {
-                _serialNumberDataLock[_parameters.IpAddress.ToString()] = new object();
+                _serialNumberDataLock.Add(_parameters.IpAddress.ToString(), new object());
             }
 
             EthernetClientStart clientStart = new EthernetClientStart();
@@ -607,19 +636,23 @@ namespace Ethernet.Client.Discharger
 
                 byte[] writeBuffer = CreateClearAlarmCommand(_parameters.DischargerChannel);
 
-                bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                if (result != true)
+                bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                if (isOk)
                 {
                     logArgument.Parameters["Result"] = "success";
                     AddTraceLog(logArgument);
 
+                    return true;
+                }
+                else
+                {
+                    logArgument.Parameters["Result"] = "fail";
+                    AddTraceLog(logArgument);
+
                     return false;
                 }
-
-                logArgument.Parameters["Result"] = "fail";
-                AddTraceLog(logArgument);
-
-                return true;
+                
             }
         }
 

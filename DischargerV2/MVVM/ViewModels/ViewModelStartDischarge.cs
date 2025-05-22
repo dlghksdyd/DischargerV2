@@ -28,11 +28,6 @@ namespace DischargerV2.MVVM.ViewModels
         }
         #endregion
 
-        public ViewModelStartDischarge()
-        {
-
-        }
-
         public void StartDischarge()
         {
             // 초기화
@@ -45,6 +40,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                IsRestart = false,
             });
 
             DischargeTimer?.Stop();
@@ -67,6 +63,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                IsRestart = true,
             });
 
             DischargeTimer?.Stop();

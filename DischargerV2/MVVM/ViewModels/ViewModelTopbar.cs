@@ -133,9 +133,9 @@ namespace DischargerV2.MVVM.ViewModels
 
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
-            catch
+            catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_PROGRAM_END);
+                new LogTrace(ELogTrace.ERROR_PROGRAM_END, ex);
             }
         }
     }

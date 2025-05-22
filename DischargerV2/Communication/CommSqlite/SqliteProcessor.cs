@@ -74,30 +74,38 @@ namespace Sqlite.Common
             }
         }
 
-        public static void InsertData(TableUserInfo oneRowData)
+        public static bool InsertData(TableUserInfo oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"INSERT INTO " + ClassName + " (";
-                query += "'UserId',";
-                query += "'Password',";
-                query += "'UserName',";
-                query += "'IsAdmin'";
-                query += ") ";
-                query += "values (";
-                query += "'" + oneRowData.UserId + "', ";
-                query += "'" + oneRowData.Password + "', ";
-                query += "'" + oneRowData.UserName + "', ";
-                query += "'" + oneRowData.IsAdmin + "'";
-                query += ")";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"INSERT INTO " + ClassName + " (";
+                    query += "'UserId',";
+                    query += "'Password',";
+                    query += "'UserName',";
+                    query += "'IsAdmin'";
+                    query += ") ";
+                    query += "values (";
+                    query += "'" + oneRowData.UserId + "', ";
+                    query += "'" + oneRowData.Password + "', ";
+                    query += "'" + oneRowData.UserName + "', ";
+                    query += "'" + oneRowData.IsAdmin + "'";
+                    query += ")";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -130,38 +138,54 @@ namespace Sqlite.Common
             return table;
         }
 
-        public static void UpdateData(TableUserInfo oneRowData)
+        public static bool UpdateData(TableUserInfo oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                var query = "";
-                query = @"UPDATE " + ClassName + " SET ";
-                query += "\"Password\"='" + oneRowData.Password.ToString() + "',";
-                query += "\"UserName\"='" + oneRowData.UserName.ToString() + "'";
-                query += "WHERE \"UserId\"='" + oneRowData.UserId + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    var query = "";
+                    query = @"UPDATE " + ClassName + " SET ";
+                    query += "\"Password\"='" + oneRowData.Password.ToString() + "',";
+                    query += "\"UserName\"='" + oneRowData.UserName.ToString() + "'";
+                    query += "WHERE \"UserId\"='" + oneRowData.UserId + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public static void DeleteData(string userId)
+        public static bool DeleteData(string userId)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"DELETE FROM " + ClassName + " WHERE \"UserId\"=='" + userId + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"DELETE FROM " + ClassName + " WHERE \"UserId\"=='" + userId + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
@@ -201,46 +225,54 @@ namespace Sqlite.Common
             }
         }
 
-        public static void InsertData(TableDischargerModel oneRowData)
+        public static bool InsertData(TableDischargerModel oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"INSERT INTO " + ClassName + " (";
-                query += "'Id',";
-                query += "'Model',";
-                query += "'Type',";
-                query += "'Channel',";
-                query += "'SpecVoltage',";
-                query += "'SpecCurrent',";
-                query += "'SafetyVoltMax',";
-                query += "'SafetyVoltMin',";
-                query += "'SafetyCurrentMax',";
-                query += "'SafetyCurrentMin',";
-                query += "'SafetyTempMax',";
-                query += "'SafetyTempMin'";
-                query += ") ";
-                query += "values (";
-                query += "'" + oneRowData.Id.ToString() + "', ";
-                query += "'" + oneRowData.Model.ToString() + "', ";
-                query += "'" + oneRowData.Type.ToString() + "', ";
-                query += "'" + oneRowData.Channel + "', ";
-                query += "'" + oneRowData.SpecVoltage + "', ";
-                query += "'" + oneRowData.SpecCurrent + "', ";
-                query += "'" + oneRowData.SafetyVoltMax + "', ";
-                query += "'" + oneRowData.SafetyVoltMin + "', ";
-                query += "'" + oneRowData.SafetyCurrentMax + "', ";
-                query += "'" + oneRowData.SafetyCurrentMin + "', ";
-                query += "'" + oneRowData.SafetyTempMax + "', ";
-                query += "'" + oneRowData.SafetyTempMin + "'";
-                query += ")";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"INSERT INTO " + ClassName + " (";
+                    query += "'Id',";
+                    query += "'Model',";
+                    query += "'Type',";
+                    query += "'Channel',";
+                    query += "'SpecVoltage',";
+                    query += "'SpecCurrent',";
+                    query += "'SafetyVoltMax',";
+                    query += "'SafetyVoltMin',";
+                    query += "'SafetyCurrentMax',";
+                    query += "'SafetyCurrentMin',";
+                    query += "'SafetyTempMax',";
+                    query += "'SafetyTempMin'";
+                    query += ") ";
+                    query += "values (";
+                    query += "'" + oneRowData.Id.ToString() + "', ";
+                    query += "'" + oneRowData.Model.ToString() + "', ";
+                    query += "'" + oneRowData.Type.ToString() + "', ";
+                    query += "'" + oneRowData.Channel + "', ";
+                    query += "'" + oneRowData.SpecVoltage + "', ";
+                    query += "'" + oneRowData.SpecCurrent + "', ";
+                    query += "'" + oneRowData.SafetyVoltMax + "', ";
+                    query += "'" + oneRowData.SafetyVoltMin + "', ";
+                    query += "'" + oneRowData.SafetyCurrentMax + "', ";
+                    query += "'" + oneRowData.SafetyCurrentMin + "', ";
+                    query += "'" + oneRowData.SafetyTempMax + "', ";
+                    query += "'" + oneRowData.SafetyTempMin + "'";
+                    query += ")";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -282,47 +314,63 @@ namespace Sqlite.Common
             return table;
         }
 
-        public static void UpdateData(TableDischargerModel oneRowData)
+        public static bool UpdateData(TableDischargerModel oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                var query = "";
-                query = @"UPDATE " + ClassName + " SET ";
-                query += "\"Model\"='" + oneRowData.Model.ToString() + "',";
-                query += "\"Type\"='" + oneRowData.Type.ToString() + "',";
-                query += "\"Channel\"='" + oneRowData.Channel.ToString() + "',";
-                query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage.ToString() + "',";
-                query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent.ToString() + "',";
-                query += "\"SafetyVoltMax\"='" + oneRowData.SafetyVoltMax.ToString() + "',";
-                query += "\"SafetyVoltMin\"='" + oneRowData.SafetyVoltMin.ToString() + "',";
-                query += "\"SafetyCurrentMax\"='" + oneRowData.SafetyCurrentMax.ToString() + "',";
-                query += "\"SafetyCurrentMin\"='" + oneRowData.SafetyCurrentMin.ToString() + "',";
-                query += "\"SafetyTempMax\"='" + oneRowData.SafetyTempMax.ToString() + "',";
-                query += "\"SafetyTempMin\"='" + oneRowData.SafetyTempMin.ToString() + "'";
-                query += "WHERE \"Id\"='" + oneRowData.Id + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    var query = "";
+                    query = @"UPDATE " + ClassName + " SET ";
+                    query += "\"Model\"='" + oneRowData.Model.ToString() + "',";
+                    query += "\"Type\"='" + oneRowData.Type.ToString() + "',";
+                    query += "\"Channel\"='" + oneRowData.Channel.ToString() + "',";
+                    query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage.ToString() + "',";
+                    query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent.ToString() + "',";
+                    query += "\"SafetyVoltMax\"='" + oneRowData.SafetyVoltMax.ToString() + "',";
+                    query += "\"SafetyVoltMin\"='" + oneRowData.SafetyVoltMin.ToString() + "',";
+                    query += "\"SafetyCurrentMax\"='" + oneRowData.SafetyCurrentMax.ToString() + "',";
+                    query += "\"SafetyCurrentMin\"='" + oneRowData.SafetyCurrentMin.ToString() + "',";
+                    query += "\"SafetyTempMax\"='" + oneRowData.SafetyTempMax.ToString() + "',";
+                    query += "\"SafetyTempMin\"='" + oneRowData.SafetyTempMin.ToString() + "'";
+                    query += "WHERE \"Id\"='" + oneRowData.Id + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public static void DeleteData(int id)
+        public static bool DeleteData(int id)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"DELETE FROM " + ClassName + " WHERE \"Id\"=='" + id + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"DELETE FROM " + ClassName + " WHERE \"Id\"=='" + id + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
@@ -360,71 +408,87 @@ namespace Sqlite.Common
             }
         }
 
-        public static void UpdateData(TableDischargerInfo oneRowData)
+        public static bool UpdateData(TableDischargerInfo oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                var query = "";
-                query = @"UPDATE " + ClassName + " SET ";
-                query += "\"Model\"='" + oneRowData.Model.ToString() + "',";
-                query += "\"Type\"='" + oneRowData.Type.ToString() + "',";
-                query += "\"Channel\"='" + oneRowData.DischargerChannel + "',";
-                query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage + "',";
-                query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent + "',";
-                query += "\"IpAddress\"='" + oneRowData.IpAddress + "',";
-                query += "\"IsTempModule\"='" + (oneRowData.IsTempModule == true ? 1 : 0) + "',";
-                query += "\"TempModuleComPort\"='" + oneRowData.TempModuleComPort + "',";
-                query += "\"TempModuleChannel\"='" + oneRowData.TempModuleChannel + "', ";
-                query += "\"TempChannel\"='" + oneRowData.TempChannel + "'";
-                query += "WHERE \"Name\"='" + oneRowData.DischargerName + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    var query = "";
+                    query = @"UPDATE " + ClassName + " SET ";
+                    query += "\"Model\"='" + oneRowData.Model.ToString() + "',";
+                    query += "\"Type\"='" + oneRowData.Type.ToString() + "',";
+                    query += "\"Channel\"='" + oneRowData.DischargerChannel + "',";
+                    query += "\"SpecVoltage\"='" + oneRowData.SpecVoltage + "',";
+                    query += "\"SpecCurrent\"='" + oneRowData.SpecCurrent + "',";
+                    query += "\"IpAddress\"='" + oneRowData.IpAddress + "',";
+                    query += "\"IsTempModule\"='" + (oneRowData.IsTempModule == true ? 1 : 0) + "',";
+                    query += "\"TempModuleComPort\"='" + oneRowData.TempModuleComPort + "',";
+                    query += "\"TempModuleChannel\"='" + oneRowData.TempModuleChannel + "', ";
+                    query += "\"TempChannel\"='" + oneRowData.TempChannel + "'";
+                    query += "WHERE \"Name\"='" + oneRowData.DischargerName + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        public static void InsertData(TableDischargerInfo oneRowData)
+        public static bool InsertData(TableDischargerInfo oneRowData)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"INSERT INTO " + ClassName + " (";
-                query += "'Name',";
-                query += "'Model',";
-                query += "'Type',";
-                query += "'Channel',";
-                query += "'SpecVoltage',";
-                query += "'SpecCurrent',";
-                query += "'IpAddress',";
-                query += "'IsTempModule',";
-                query += "'TempModuleComPort',";
-                query += "'TempModuleChannel',";
-                query += "'TempChannel'";
-                query += ") ";
-                query += "values (";
-                query += "'" + oneRowData.DischargerName + "', ";
-                query += "'" + oneRowData.Model.ToString() + "', ";
-                query += "'" + oneRowData.Type.ToString() + "', ";
-                query += "'" + oneRowData.DischargerChannel + "', ";
-                query += "'" + oneRowData.SpecVoltage + "', ";
-                query += "'" + oneRowData.SpecCurrent + "', ";
-                query += "'" + oneRowData.IpAddress + "', ";
-                query += "'" + (oneRowData.IsTempModule == true ? 1 : 0) + "', ";
-                query += "'" + oneRowData.TempModuleComPort + "', ";
-                query += "'" + oneRowData.TempModuleChannel + "', ";
-                query += "'" + oneRowData.TempChannel + "'";
-                query += ")";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"INSERT INTO " + ClassName + " (";
+                    query += "'Name',";
+                    query += "'Model',";
+                    query += "'Type',";
+                    query += "'Channel',";
+                    query += "'SpecVoltage',";
+                    query += "'SpecCurrent',";
+                    query += "'IpAddress',";
+                    query += "'IsTempModule',";
+                    query += "'TempModuleComPort',";
+                    query += "'TempModuleChannel',";
+                    query += "'TempChannel'";
+                    query += ") ";
+                    query += "values (";
+                    query += "'" + oneRowData.DischargerName + "', ";
+                    query += "'" + oneRowData.Model.ToString() + "', ";
+                    query += "'" + oneRowData.Type.ToString() + "', ";
+                    query += "'" + oneRowData.DischargerChannel + "', ";
+                    query += "'" + oneRowData.SpecVoltage + "', ";
+                    query += "'" + oneRowData.SpecCurrent + "', ";
+                    query += "'" + oneRowData.IpAddress + "', ";
+                    query += "'" + (oneRowData.IsTempModule == true ? 1 : 0) + "', ";
+                    query += "'" + oneRowData.TempModuleComPort + "', ";
+                    query += "'" + oneRowData.TempModuleChannel + "', ";
+                    query += "'" + oneRowData.TempChannel + "'";
+                    query += ")";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -464,19 +528,27 @@ namespace Sqlite.Common
             return table;
         }
 
-        public static void DeleteData(string name)
+        public static bool DeleteData(string name)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = "";
-                query += @"DELETE FROM " + ClassName + " WHERE \"Name\"=='" + name + "'";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
                 {
-                    command.ExecuteNonQuery();
+                    connection.Open();
+
+                    string query = "";
+                    query += @"DELETE FROM " + ClassName + " WHERE \"Name\"=='" + name + "'";
+
+                    using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

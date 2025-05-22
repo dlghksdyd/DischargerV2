@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -130,10 +131,44 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void DeleteDischargerInfo()
         {
-            SqliteDischargerInfo.DeleteData(Name);
+            try
+            {
+                // 방전기 정보 제거
+                bool isOk = SqliteDischargerInfo.DeleteData(Name);
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+                // 방전기 정보 제거 Trace Log 저장
+                DeviceData deviceData = new DeviceData()
+                {
+                    Name = Model.Name,
+                    Model = Model.DischargerModel,
+                    Type = Model.Type,
+                    Channel = Model.Channel,
+                    SpecVoltage = Model.VoltSpec,
+                    SpecCurrent = Model.CurrSpec,
+                    IpAddress = Model.Ip,
+                    IsTempModule = Model.IsTempModule,
+                    TempModuleComPort = Model.Comport,
+                    TempModuleChannel = Model.ModuleChannel,
+                    TempChannel = Model.TempChannel,
+                };
+
+                if (isOk)
+                {
+                    new LogTrace(ELogTrace.TRACE_DELETE_DISCHARGER, deviceData);
+                }
+                else
+                {
+                    new LogTrace(ELogTrace.ERROR_DELETE_DISCHARGER, deviceData);
+                }
+
+                // 장비 정보 등록 화면 표시
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+            }
+            catch (Exception ex) 
+            {
+                new LogTrace(ELogTrace.ERROR_DELETE_DISCHARGER, ex);
+            }
         }
     }
 }
