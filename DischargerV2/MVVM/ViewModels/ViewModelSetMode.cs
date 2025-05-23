@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Enums;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using Prism.Commands;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using Utility.Common;
+using static DischargerV2.LOG.LogDischarge;
 using static DischargerV2.MVVM.Models.ModelStartDischarge;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -170,6 +172,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void StartDischarge()
         {
+            string logFileName = "test";
+
             // 설정 값 적용
             SetDischargerName(Model.DischargerName);
 
@@ -182,9 +186,12 @@ namespace DischargerV2.MVVM.ViewModels
                 // Graph 방전 모드 설정
                 ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
+                // Discharge Log 저장 
+                new LogDischarge(GetDischargeConfig(), logFileName);
+
                 // Start 방전 모드 설정 및 방전 시작
                 ViewModelDictionary[Model.DischargerName].Model = model;
-                ViewModelDictionary[Model.DischargerName].StartDischarge();
+                ViewModelDictionary[Model.DischargerName].StartDischarge(logFileName);
 
                 int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                 DateTime startTime = DateTime.Now;
@@ -207,7 +214,6 @@ namespace DischargerV2.MVVM.ViewModels
                         return;
                     }
                 }
-
                 // SetMode -> Monitor 화면 전환
                 ViewModelMain.Instance.SetIsStartedArray(true);
             }
@@ -241,7 +247,7 @@ namespace DischargerV2.MVVM.ViewModels
                     return false;
                 }
 
-                if (modelPreset.EDischargeType == Enums.EDischargeTarget.Voltage)
+                if (modelPreset.EDischargeTarget == EDischargeTarget.Voltage)
                 {
                     if (modelPreset.TargetVoltage == null || modelPreset.TargetVoltage == "")
                     {
@@ -249,7 +255,7 @@ namespace DischargerV2.MVVM.ViewModels
                         return false;
                     }
                 }
-                else if (modelPreset.EDischargeType == Enums.EDischargeTarget.SoC)
+                else if (modelPreset.EDischargeTarget == EDischargeTarget.SoC)
                 {
                     if (modelPreset.TargetSoC == null || modelPreset.TargetSoC == "")
                     {
@@ -280,7 +286,7 @@ namespace DischargerV2.MVVM.ViewModels
                     return false;
                 }
 
-                if (modelSimple.EDischargeType == Enums.EDischargeTarget.Voltage)
+                if (modelSimple.EDischargeTarget == Enums.EDischargeTarget.Voltage)
                 {
                     if (modelSimple.TargetVoltage == null || modelSimple.TargetVoltage == "")
                     {
@@ -401,11 +407,11 @@ namespace DischargerV2.MVVM.ViewModels
                 ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
                 string batteryType = modelPreset.SelectedBatteryType;
 
-                model.Target = modelPreset.EDischargeType;
+                model.Target = modelPreset.EDischargeTarget;
 
                 // Full Discharge, 0V Discharge
-                if (modelPreset.EDischargeType == EDischargeTarget.Full ||
-                    modelPreset.EDischargeType == EDischargeTarget.Zero)
+                if (modelPreset.EDischargeTarget == EDischargeTarget.Full ||
+                    modelPreset.EDischargeTarget == EDischargeTarget.Zero)
                 {
                     model.PhaseDataList.Add(new PhaseData()
                     {
@@ -420,7 +426,7 @@ namespace DischargerV2.MVVM.ViewModels
                     });
                 }
                 // Target Voltage
-                else if (modelPreset.EDischargeType == EDischargeTarget.Voltage)
+                else if (modelPreset.EDischargeTarget == EDischargeTarget.Voltage)
                 {
                     int tagetVoltage = Convert.ToInt32(modelPreset.TargetVoltage);
 
@@ -437,7 +443,7 @@ namespace DischargerV2.MVVM.ViewModels
                     });
                 }
                 // Target SoC
-                else if (modelPreset.EDischargeType == EDischargeTarget.SoC)
+                else if (modelPreset.EDischargeTarget == EDischargeTarget.SoC)
                 {
                     int targetSoC = Convert.ToInt32(modelPreset.TargetSoC);
 
@@ -455,7 +461,7 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (modelStep.IsCompleteDischarge)
                 {
-                    model.Target = EDischargeTarget.Zero;
+                    model.Target = EDischargeTarget.Full;
                 }
                 else
                 {
@@ -469,7 +475,8 @@ namespace DischargerV2.MVVM.ViewModels
                     model.PhaseDataList.Add(new PhaseData()
                     {
                         Voltage = Convert.ToDouble(stepData.Voltage),
-                        Current = Convert.ToDouble(stepData.Current)
+                        Current = Convert.ToDouble(stepData.Current),
+                        CRate = Convert.ToDouble(stepData.CRate),
                     });
                 }
             }
@@ -478,9 +485,9 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
 
-                model.Target = modelSimple.EDischargeType;
+                model.Target = modelSimple.EDischargeTarget;
 
-                if (modelSimple.EDischargeType == EDischargeTarget.Full)
+                if (modelSimple.EDischargeTarget == EDischargeTarget.Full)
                 {
                     // 공칭 전압 X
                     if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
@@ -589,7 +596,7 @@ namespace DischargerV2.MVVM.ViewModels
                         }
                     }
                 }
-                else if (modelSimple.EDischargeType == EDischargeTarget.Zero)
+                else if (modelSimple.EDischargeTarget == EDischargeTarget.Zero)
                 {
                     // 공칭 전압 X
                     if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
@@ -710,7 +717,7 @@ namespace DischargerV2.MVVM.ViewModels
                         }
                     }
                 }
-                else if (modelSimple.EDischargeType == EDischargeTarget.Voltage)
+                else if (modelSimple.EDischargeTarget == EDischargeTarget.Voltage)
                 {
                     double targetVoltage = Convert.ToDouble(modelSimple.TargetVoltage);
 
@@ -811,6 +818,121 @@ namespace DischargerV2.MVVM.ViewModels
                 }
             }
             return true;
+        }
+
+        private DischargeConfig GetDischargeConfig()
+        {
+            DischargeConfig dischargeConfig = new DischargeConfig();
+
+            // Discharger
+            TableDischargerInfo tableDischargerInfo = SqliteDischargerInfo.GetData(Model.DischargerName);
+            dischargeConfig.DischargerName = tableDischargerInfo.DischargerName;
+            dischargeConfig.DischargerModel = tableDischargerInfo.Model;
+            dischargeConfig.DischargeType = tableDischargerInfo.Type;
+            dischargeConfig.DischargeChannel = tableDischargerInfo.DischargerChannel;
+            dischargeConfig.SpecVoltage = tableDischargerInfo.SpecVoltage;
+            dischargeConfig.SpecCurrent = tableDischargerInfo.SpecCurrent;
+            dischargeConfig.IPAddress = tableDischargerInfo.IpAddress;
+            dischargeConfig.IsTempModule = tableDischargerInfo.IsTempModule;
+            dischargeConfig.TempModuleComport = tableDischargerInfo.TempModuleComPort;
+            dischargeConfig.TempModuleChannel = tableDischargerInfo.TempModuleChannel;
+            dischargeConfig.Tempchannel = tableDischargerInfo.TempChannel;
+
+            // Discharge Mode
+            dischargeConfig.EDischargeMode = Model.Mode;
+
+            // Pre-set Mode
+            if (Model.Mode == EDischargeMode.Preset)
+            {
+                ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
+                var batteryType = modelPreset.SelectedBatteryType;
+                var currentSoC = modelPreset.CurrentSoC;
+                var dischargeTarget = modelPreset.EDischargeTarget;
+                var targetVoltage = modelPreset.TargetVoltage;
+                var targetSoC = modelPreset.TargetSoC;
+
+                // Discharge Mode Config
+                dischargeConfig.BatteryType = batteryType;
+                dischargeConfig.CurrentSoC = currentSoC;
+
+                // Discharge Target
+                dischargeConfig.EDischargeTarget = dischargeTarget;
+
+                if (dischargeTarget == EDischargeTarget.Voltage)
+                {
+                    dischargeConfig.TargetValue = targetVoltage;
+                }
+                else if (dischargeTarget == EDischargeTarget.SoC)
+                {
+                    dischargeConfig.TargetValue = targetSoC;
+                }
+            }
+            // Step Mode
+            else if (Model.Mode == EDischargeMode.Step)
+            {
+                ModelSetMode_Step modelStep = ViewModelSetMode_Step.Instance.Model;
+                var standardCapacity = modelStep.StandardCapacity;
+                var isCompleteDischarge = modelStep.IsCompleteDischarge;
+
+                List<PhaseData> phaseDataList = new List<PhaseData>();
+                foreach (var phaseData in modelStep.Content)
+                {
+                    phaseDataList.Add(new PhaseData()
+                    {
+                        Voltage = Convert.ToDouble(phaseData.Voltage),
+                        Current = Convert.ToDouble(phaseData.Current),
+                        CRate = Convert.ToDouble(phaseData.CRate),
+                    });
+                }
+
+                // Discharge Mode Config
+                dischargeConfig.StandardCapacity = standardCapacity;
+                dischargeConfig.PhaseDataList = phaseDataList;
+
+                // Discharge Target
+                if (isCompleteDischarge)
+                {
+                    dischargeConfig.EDischargeTarget = EDischargeTarget.Full;
+                }
+                else
+                {
+                    dischargeConfig.EDischargeTarget = EDischargeTarget.Voltage;
+                    dischargeConfig.TargetValue = phaseDataList.Last().Voltage.ToString();
+                }
+            }
+            // Simple Mode
+            else if (Model.Mode == EDischargeMode.Simple)
+            {
+                ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
+                var standartVoltage = modelSimple.StandardVoltage;
+                var standardCapacity = modelSimple.StandardCapacity;
+                var dischargeTarget = modelSimple.EDischargeTarget;
+                var targetVoltage = modelSimple.TargetVoltage;
+
+                // Discharge Mode Config
+                dischargeConfig.StandartVoltage = standartVoltage;
+                dischargeConfig.StandardCapacity = standardCapacity;
+
+                // Discharge Target
+                dischargeConfig.EDischargeTarget = dischargeTarget;
+
+                if (dischargeTarget == EDischargeTarget.Voltage)
+                {
+                    dischargeConfig.TargetValue = targetVoltage;
+                }
+            }
+
+            // SafetyCondition
+            ModelSetMode_SafetyCondition modelSafetyCondition = ViewModelSetMode_SafetyCondition.Instance.Model;
+
+            dischargeConfig.SafetyVoltageMax = modelSafetyCondition.VoltageMax;
+            dischargeConfig.SafetyVoltageMin = modelSafetyCondition.VoltageMin;
+            dischargeConfig.SafetyCurrentMax = modelSafetyCondition.CurrentMax;
+            dischargeConfig.SafetyCurrentMin = modelSafetyCondition.CurrentMin;
+            dischargeConfig.SafetyTempMax = modelSafetyCondition.TempMax;
+            dischargeConfig.SafetyTempMin = modelSafetyCondition.TempMin;
+
+            return dischargeConfig;
         }
     }
 }

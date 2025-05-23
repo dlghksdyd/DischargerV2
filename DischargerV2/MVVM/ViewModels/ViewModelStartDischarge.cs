@@ -17,7 +17,7 @@ namespace DischargerV2.MVVM.ViewModels
         #region Property
         private System.Timers.Timer DischargeTimer = null;
 
-        private int PhaseNo
+        public int PhaseNo
         {
             get => Model.PhaseNo;
             set
@@ -28,7 +28,7 @@ namespace DischargerV2.MVVM.ViewModels
         }
         #endregion
 
-        public void StartDischarge()
+        public void StartDischarge(string logFileName)
         {
             // 초기화
             PhaseNo = 0;
@@ -40,6 +40,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                LogFileName = logFileName,
                 IsRestart = false,
             });
 
@@ -158,7 +159,7 @@ namespace DischargerV2.MVVM.ViewModels
                 // 0.1A 미만이면 방전 자동 중지
                 if (receiveState == EDischargerState.Discharging)
                 {
-                    if (receiveCurrent <= 0.1)
+                    if (receiveCurrent >= -0.1)
                     {
                         viewModelDischarger.StopDischarger(Model.DischargerName);
                     }

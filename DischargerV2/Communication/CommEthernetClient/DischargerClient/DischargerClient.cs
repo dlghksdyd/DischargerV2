@@ -1,30 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
+using Discharger.MVVM.Repository;
 using DischargerV2.LOG;
 using Ethernet.Client.Common;
-using Prism.Common;
+using Microsoft.Xaml.Behaviors.Media;
 using Sqlite.Common;
+using static DischargerV2.LOG.LogDischarge;
+using static DischargerV2.LOG.LogTrace;
 
 namespace Ethernet.Client.Discharger
 {
@@ -49,6 +36,7 @@ namespace Ethernet.Client.Discharger
         Ok,
         InvalidDischargerState,
         FailProcessPacket,
+        Exception
     }
 
     public class EthernetClientDischargerStart
@@ -128,17 +116,6 @@ namespace Ethernet.Client.Discharger
 
     public class EthernetClientDischarger
     {
-        private class LogArgument
-        {
-            public LogArgument(string logMessage)
-            {
-                LogMessage = logMessage;
-            }
-
-            public string LogMessage { get; set; } = string.Empty;
-            public Dictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
-        }
-
         /// <summary>
         /// key: IP Address
         /// </summary>
@@ -158,15 +135,14 @@ namespace Ethernet.Client.Discharger
         private DischargerDatas _dischargerData = new DischargerDatas();
         private EDischargerState _dischargerState = EDischargerState.None;
 
-        private List<string> _traceLogs = new List<string>();
-        private object _traceLogLock = new object();
+        private string _logFileName = string.Empty;
 
         public static double SafetyMarginVoltage = 15;
         public static double SafetyMarginCurrent = 2;
 
-        public DischargerData GetDischargerComm()
+        public LogTrace.DischargerData GetLogSystemDischargerData()
         {
-            DischargerData dischargerComm = new DischargerData()
+            LogTrace.DischargerData dischargerData = new LogTrace.DischargerData()
             {
                 Name = _parameters.DischargerName,
                 EDischargerModel = _parameters.DischargerModel,
@@ -181,41 +157,12 @@ namespace Ethernet.Client.Discharger
                 SafetyTempMin = _parameters.SafetyTempMin,
             };
 
-            return dischargerComm;
+            return dischargerData;
         }
 
-        private void AddTraceLog(LogArgument logFormat)
+        public void SetLogFileName(string logFileName)
         {
-            string formattedMessage = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ");
-            formattedMessage += _parameters.DischargerName + " - ";
-            formattedMessage += logFormat.LogMessage + " ";
-
-            for (int i = 0; i < logFormat.Parameters.Count; i++)
-            {
-                string key = logFormat.Parameters.Keys.ElementAt(i);
-                string value = logFormat.Parameters.Values.ElementAt(i).ToString();
-
-                if (i == 0)
-                {
-                    formattedMessage += "(";
-                }
-
-                formattedMessage += key + ": " + value;
-
-                if (i < logFormat.Parameters.Count - 1)
-                {
-                    formattedMessage += ", ";
-                }
-                else
-                {
-                    formattedMessage += ")";
-                }
-            }
-
-            lock (_traceLogLock)
-            {
-                _traceLogs.Add(formattedMessage);
-            }
+            _logFileName = logFileName;
         }
 
         public bool IsConnected()
@@ -247,24 +194,29 @@ namespace Ethernet.Client.Discharger
 
                 if (_dischargerState != dischargerState)
                 {
-                    LogArgument logArgument = new LogArgument("Enter " + dischargerState + " State.");
-                    logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
-                    logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                    if (_parameters.DischargerIsTempModule)
+                    // 방전 Trace Log 저장 - 상태 변경
+                    var dischargerData = new LogDischarge.DischargerData()
                     {
-                        logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
-                    }
-                    logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
-                    logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
-                    logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
-                    AddTraceLog(logArgument);
+                        ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
+                        ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
+                        ReceiveDischargeTemp = (!_parameters.DischargerIsTempModule)?
+                            _dischargerData.ReceiveDischargeCurrent.ToString("F1") : string.Empty,
+                        ErrorCode = _dischargerData.ErrorCode,
+                        EReturnCode = _dischargerData.ReturnCode,
+                        EDischargerState = dischargerState,
+                    };
+                    new LogDischarge(ELogDischarge.TRACE_SET_STATE, _logFileName, dischargerData);
                 }
+
                 _dischargerState = dischargerState;
 
                 return true;
             }
-            catch
+            catch (Exception ex) 
             {
+                // 방전 Trace Log 저장 - 상태 변경 실패
+                new LogDischarge(ELogDischarge.ERROR_SET_STATE, _logFileName, ex);
+
                 return false;
             }
         }
@@ -392,41 +344,37 @@ namespace Ethernet.Client.Discharger
             /// Deep Copy
             DischargerDatas temp = new DischargerDatas();
 
-            /// receive data
-            temp.ErrorCode = _dischargerData.ErrorCode;
-            temp.ChannelStatus = _dischargerData.ChannelStatus;
-            temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
-            temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F1"));
-            temp.ReceiveDischargeTemp = double.Parse(_dischargerData.ReceiveDischargeTemp.ToString("F1"));
+            try
+            {
+                /// receive data
+                temp.ErrorCode = _dischargerData.ErrorCode;
+                temp.ChannelStatus = _dischargerData.ChannelStatus;
+                temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
+                temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F1"));
+                temp.ReceiveDischargeTemp = double.Parse(_dischargerData.ReceiveDischargeTemp.ToString("F1"));
 
-            /// safety
-            temp.SafetyCurrentMin = _dischargerData.SafetyCurrentMin;
-            temp.SafetyCurrentMax = _dischargerData.SafetyCurrentMax;
-            temp.SafetyVoltageMin = _dischargerData.SafetyVoltageMin;
-            temp.SafetyVoltageMax = _dischargerData.SafetyVoltageMax;
-            temp.SafetyTempMin = _dischargerData.SafetyTempMin;
-            temp.SafetyTempMax = _dischargerData.SafetyTempMax;
+                /// safety
+                temp.SafetyCurrentMin = _dischargerData.SafetyCurrentMin;
+                temp.SafetyCurrentMax = _dischargerData.SafetyCurrentMax;
+                temp.SafetyVoltageMin = _dischargerData.SafetyVoltageMin;
+                temp.SafetyVoltageMax = _dischargerData.SafetyVoltageMax;
+                temp.SafetyTempMin = _dischargerData.SafetyTempMin;
+                temp.SafetyTempMax = _dischargerData.SafetyTempMax;
 
-            /// start time
-            temp.DischargingStartTime = _dischargerData.DischargingStartTime;
+                /// start time
+                temp.DischargingStartTime = _dischargerData.DischargingStartTime;
 
-            return temp;
+                return temp;
+            }
+            catch
+            {
+                return temp;
+            }
         }
 
         public EDischargerState GetState()
         {
             return _dischargerState;
-        }
-
-        public List<string> GetTraceLogs()
-        {
-            lock (_traceLogLock)
-            {
-                List<string> temp = _traceLogs.ConvertAll(x => x);
-                _traceLogs.Clear();
-
-                return temp;
-            }
         }
 
         private byte GetPacketSerialNumber()
@@ -460,7 +408,8 @@ namespace Ethernet.Client.Discharger
 
             if (_dischargerState == EDischargerState.Discharging)
             {
-                if (_dischargerData.ReceiveBatteryVoltage < 1 && _dischargerData.ReceiveDischargeCurrent < 0.1)
+                if (_dischargerData.ReceiveBatteryVoltage < 1 && 
+                    _dischargerData.ReceiveDischargeCurrent < 0.1)
                 {
                     SendCommand_StopDischarge();
                 }
@@ -469,223 +418,363 @@ namespace Ethernet.Client.Discharger
 
         public EDischargerClientError SendCommand_StartDischarge(EWorkMode workMode, double setValue, double limitingValue)
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Start Discharge.");
-                logArgument.Parameters["Current"] = -limitingValue;
-
-                if (_dischargerState == EDischargerState.Discharging ||
-                    _dischargerState == EDischargerState.Ready ||
-                    _dischargerState == EDischargerState.Pause)
+                lock (_packetLock)
                 {
-                    byte[] writeBuffer = CreateStartDischargeCommand(
-                        _parameters.DischargerChannel, workMode, setValue, limitingValue);
+                    var dischargerData = new LogDischarge.DischargerData();
 
-                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                    if (result != true)
+                    if (_dischargerState == EDischargerState.Discharging ||
+                        _dischargerState == EDischargerState.Ready ||
+                        _dischargerState == EDischargerState.Pause)
                     {
-                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
-                        AddTraceLog(logArgument);
-                        return EDischargerClientError.FailProcessPacket;
+                        byte[] writeBuffer = CreateStartDischargeCommand(
+                            _parameters.DischargerChannel, workMode, setValue, limitingValue);
+
+                        // 동작 시작
+                        bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                        if (isOk)
+                        {
+                            if (_dischargerState == EDischargerState.Ready)
+                            {
+                                _dischargerData.DischargingStartTime = DateTime.Now;
+                            }
+
+                            // 방전 Trace Log 저장 - 동작 시작
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                EWorkMode = workMode,
+                                SetValue_Voltage = setValue,
+                                LimitingValue_Current = limitingValue
+                            };
+                            new LogDischarge(ELogDischarge.TRACE_START, _logFileName, dischargerData);
+
+                            return EDischargerClientError.Ok;
+                        }
+                        else
+                        {
+                            // 방전 Trace Log 저장 - 동작 시작 실패
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                EDischargerClientError = EDischargerClientError.FailProcessPacket,
+                                EWorkMode = workMode,
+                                SetValue_Voltage = setValue,
+                                LimitingValue_Current = limitingValue
+                            };
+                            new LogDischarge(ELogDischarge.ERROR_START, _logFileName, dischargerData);
+
+                            return EDischargerClientError.FailProcessPacket;
+                        }
                     }
-
-                    if (_dischargerState == EDischargerState.Ready)
+                    else
                     {
-                        _dischargerData.DischargingStartTime = DateTime.Now;
+                        // 방전 Trace Log 저장 - 동작 시작 실패
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            EDischargerClientError = EDischargerClientError.InvalidDischargerState,
+                            EWorkMode = workMode,
+                            SetValue_Voltage = setValue,
+                            LimitingValue_Current = limitingValue
+                        };
+                        new LogDischarge(ELogDischarge.ERROR_START, _logFileName, dischargerData);
+
+                        return EDischargerClientError.InvalidDischargerState;
                     }
                 }
-                else
-                {
-                    logArgument.Parameters["Discharger State"] = _dischargerState;
-                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
-                    AddTraceLog(logArgument);
-                    return EDischargerClientError.InvalidDischargerState;
-                }
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 동작 시작 실패
+                new LogDischarge(ELogDischarge.ERROR_START, _logFileName, ex);
 
-                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
-                AddTraceLog(logArgument);
-
-                return EDischargerClientError.Ok;
+                return EDischargerClientError.Exception;
             }
         }
 
         public bool SendCommand_SetSafetyCondition(double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Set Safety Condition.");
-                logArgument.Parameters["VoltMax"] = voltageMax;
-                logArgument.Parameters["VoltMin"] = voltageMin;
-                logArgument.Parameters["CurrentMax"] = currentMax;
-                logArgument.Parameters["CurrentMin"] = currentMin;
-                logArgument.Parameters["TempMax"] = tempMax;
-                logArgument.Parameters["TempMin"] = tempMin;
-
-                byte[] writeBuffer = CreateSetSafetyConditionCommand(
-                    _parameters.DischargerChannel,
-                    voltageMax + SafetyMarginVoltage, voltageMin - SafetyMarginVoltage, 
-                    currentMax, currentMin);
-
-                bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                if (result != true)
+                lock (_packetLock)
                 {
-                    logArgument.Parameters["Result"] = "fail";
-                    AddTraceLog(logArgument);
-                    return false;
+                    var dischargerData = new LogDischarge.DischargerData();
+
+                    LogArgument logArgument = new LogArgument("Set Safety Condition.");
+                    logArgument.Parameters["VoltMax"] = voltageMax;
+                    logArgument.Parameters["VoltMin"] = voltageMin;
+                    logArgument.Parameters["CurrentMax"] = currentMax;
+                    logArgument.Parameters["CurrentMin"] = currentMin;
+                    logArgument.Parameters["TempMax"] = tempMax;
+                    logArgument.Parameters["TempMin"] = tempMin;
+
+                    byte[] writeBuffer = CreateSetSafetyConditionCommand(
+                        _parameters.DischargerChannel,
+                        voltageMax + SafetyMarginVoltage, voltageMin - SafetyMarginVoltage,
+                        currentMax, currentMin);
+
+                    // 안전 조건 설정
+                    bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                    if (isOk)
+                    {
+                        _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
+                        _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
+                        _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
+                        _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
+                        _dischargerData.SafetyTempMax = tempMax;
+                        _dischargerData.SafetyTempMin = tempMin;
+
+                        // 방전 Trace Log 저장 - 안전 조건 설정
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            SafetyVoltageMax = voltageMax,
+                            SafetyVoltageMin = voltageMin,
+                            SafetyCurrentMax = currentMax,
+                            SafetyCurrentMin = currentMin,
+                            SafetyTempMax = tempMax,
+                            SafetyTempMin = tempMin,
+                        };
+                        new LogDischarge(ELogDischarge.TRACE_SET_SAFETYCONDITION, _logFileName, dischargerData);
+                        
+                        return true;
+                    }
+                    else
+                    {
+                        // 방전 Trace Log 저장 - 안전 조건 설정 실패
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            SafetyVoltageMax = voltageMax,
+                            SafetyVoltageMin = voltageMin,
+                            SafetyCurrentMax = currentMax,
+                            SafetyCurrentMin = currentMin,
+                            SafetyTempMax = tempMax,
+                            SafetyTempMin = tempMin,
+                        };
+                        new LogDischarge(ELogDischarge.ERROR_SET_SAFETYCONDITION, _logFileName, dischargerData);
+                        
+                        return false;
+                    }
                 }
-
-                _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
-                _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
-                _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
-                _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
-                _dischargerData.SafetyTempMin = tempMin;
-                _dischargerData.SafetyTempMax = tempMax;
-
-                logArgument.Parameters["Result"] = "success";
-                AddTraceLog(logArgument);
-
-                return true;
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 안전 조건 설정 실패
+                new LogDischarge(ELogDischarge.ERROR_SET_SAFETYCONDITION, _logFileName, ex);
+                return false;
             }
         }
 
         public EDischargerClientError SendCommand_StopDischarge()
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Stop Discharge."); ;
-
-                if (_dischargerState == EDischargerState.Discharging ||
-                    _dischargerState == EDischargerState.Pause ||
-                    _dischargerState == EDischargerState.SafetyOutOfRange ||
-                    _dischargerState == EDischargerState.ReturnCodeError ||
-                    _dischargerState == EDischargerState.ChStatusError ||
-                    _dischargerState == EDischargerState.DeviceError)
+                lock (_packetLock)
                 {
-                    byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
+                    var dischargerData = new LogDischarge.DischargerData();
 
-                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                    if (result != true)
+                    if (_dischargerState == EDischargerState.Discharging ||
+                        _dischargerState == EDischargerState.Pause ||
+                        _dischargerState == EDischargerState.SafetyOutOfRange ||
+                        _dischargerState == EDischargerState.ReturnCodeError ||
+                        _dischargerState == EDischargerState.ChStatusError ||
+                        _dischargerState == EDischargerState.DeviceError)
                     {
-                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
-                        AddTraceLog(logArgument);
+                        byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
 
-                        return EDischargerClientError.FailProcessPacket;
+                        // 동작 정지
+                        bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                        if (isOk)
+                        {
+                            if (_dischargerState == EDischargerState.Pause)
+                            {
+                                ChangeDischargerState(EDischargerState.Ready);
+                            }
+
+                            // 방전 Trace Log 저장 - 동작 정지
+                            new LogDischarge(ELogDischarge.TRACE_STOP, _logFileName);
+                            
+                            return EDischargerClientError.Ok;
+                        }
+                        else
+                        {
+                            // 방전 Trace Log 저장 - 동작 정지 실패
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                EDischargerClientError = EDischargerClientError.FailProcessPacket,
+                            };
+                            new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, dischargerData);
+
+                            return EDischargerClientError.FailProcessPacket;
+                        }
                     }
-
-                    if (_dischargerState == EDischargerState.Pause)
+                    else
                     {
-                        ChangeDischargerState(EDischargerState.Ready);
+                        // 방전 Trace Log 저장 - 동작 정지 실패
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            EDischargerClientError = EDischargerClientError.InvalidDischargerState,
+                        };
+                        new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, dischargerData);
+
+                        return EDischargerClientError.InvalidDischargerState;
                     }
                 }
-                else
-                {
-                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
-                    AddTraceLog(logArgument);
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 동작 정지 실패
+                new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, ex);
 
-                    return EDischargerClientError.InvalidDischargerState;
-                }
-
-                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
-                AddTraceLog(logArgument);
-
-                return EDischargerClientError.Ok;
+                return EDischargerClientError.Exception;
             }
         }
 
         public EDischargerClientError SendCommand_PauseDischarge()
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Pause Discharge.");
-
-                if (_dischargerState == EDischargerState.Discharging)
+                lock (_packetLock)
                 {
-                    byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
+                    var dischargerData = new LogDischarge.DischargerData();
 
-                    bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                    if (result != true)
+                    if (_dischargerState == EDischargerState.Discharging)
                     {
-                        logArgument.Parameters["Result"] = EDischargerClientError.FailProcessPacket;
-                        AddTraceLog(logArgument);
+                        byte[] writeBuffer = CreateStopDischargeCommand(_parameters.DischargerChannel);
 
-                        return EDischargerClientError.FailProcessPacket;
+                        bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                        if (isOk)
+                        {
+                            ChangeDischargerState(EDischargerState.Pause);
+
+                            // 방전 Trace Log 저장 - 동작 일시 정지
+                            new LogDischarge(ELogDischarge.TRACE_PAUSE, _logFileName);
+
+                            return EDischargerClientError.Ok;
+                        }
+                        else
+                        {
+                            // 방전 Trace Log 저장 - 동작 일시 정지 실패
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                EDischargerClientError = EDischargerClientError.FailProcessPacket,
+                            };
+                            new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, dischargerData);
+
+                            return EDischargerClientError.FailProcessPacket;
+                        }
                     }
+                    else
+                    {
+                        // 방전 Trace Log 저장 - 동작 일시 정지 실패
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            EDischargerClientError = EDischargerClientError.InvalidDischargerState,
+                        };
+                        new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, dischargerData);
 
-                    ChangeDischargerState(EDischargerState.Pause);
+                        return EDischargerClientError.InvalidDischargerState;
+                    }
                 }
-                else
-                {
-                    logArgument.Parameters["Result"] = EDischargerClientError.InvalidDischargerState;
-                    AddTraceLog(logArgument);
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 동작 일시 정지 실패
+                new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, ex);
 
-                    return EDischargerClientError.InvalidDischargerState;
-                }
-
-                logArgument.Parameters["Result"] = EDischargerClientError.Ok;
-                AddTraceLog(logArgument);
-
-                return EDischargerClientError.Ok;
+                return EDischargerClientError.Exception;
             }
         }
 
         public bool SendCommand_ClearAlarm()
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Clear Alarm.");
-
-                byte[] writeBuffer = CreateClearAlarmCommand(_parameters.DischargerChannel);
-
-                bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
-
-                if (isOk)
+                lock (_packetLock)
                 {
-                    logArgument.Parameters["Result"] = "success";
-                    AddTraceLog(logArgument);
+                    byte[] writeBuffer = CreateClearAlarmCommand(_parameters.DischargerChannel);
 
-                    return true;
-                }
-                else
-                {
-                    logArgument.Parameters["Result"] = "fail";
-                    AddTraceLog(logArgument);
+                    // 에러 해제
+                    bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
 
-                    return false;
+                    if (isOk)
+                    {
+                        // 방전 Trace Log 저장 - 에러 해제
+                        new LogDischarge(ELogDischarge.TRACE_CLEAR_ALARM, _logFileName);
+
+                        return true;
+                    }
+                    else
+                    {
+                        // 방전 Trace Log 저장 - 에러 해제 실패
+                        new LogDischarge(ELogDischarge.ERROR_CLEAR_ALARM, _logFileName);
+
+                        return false;
+                    }
+
                 }
-                
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 에러 해제 실패
+                new LogDischarge(ELogDischarge.ERROR_CLEAR_ALARM, _logFileName, ex);
+
+                return false;
             }
         }
 
         public bool SendCommand_LampControl(EDioControl dioControl, bool isBuzzer = false)
         {
-            lock (_packetLock)
+            try
             {
-                LogArgument logArgument = new LogArgument("Lamp Control.");
-
-                uint dioValue = (uint)dioControl;
-                if (isBuzzer)
+                lock (_packetLock)
                 {
-                    dioValue |= (uint)EDioControl.TowerLampBuzzer;
+                    var dischargerData = new LogDischarge.DischargerData();
+
+                    uint dioValue = (uint)dioControl;
+                    if (isBuzzer)
+                    {
+                        dioValue |= (uint)EDioControl.TowerLampBuzzer;
+                    }
+
+                    byte[] writeBuffer = CreateLampControlCommand(
+                        _parameters.DischargerChannel, dioValue);
+
+                    // 경광등 제어
+                    bool isOk = _dischargerClient.ProcessPacket(writeBuffer);
+
+                    if (isOk)
+                    {
+                        // 방전 Trace Log 저장 - 경광등 제어
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            LampDioValue = dioValue,
+                        };
+                        new LogDischarge(ELogDischarge.TRACE_CONTROL_LAMP, _logFileName, dischargerData);
+
+                        return true;
+                    }
+                    else
+                    {
+                        // 방전 Trace Log 저장 - 경광등 제어 실패
+                        dischargerData = new LogDischarge.DischargerData()
+                        {
+                            LampDioValue = dioValue,
+                        };
+                        new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, dischargerData);
+
+                        return false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 경광등 제어 실패
+                new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, ex);
 
-                logArgument.Parameters["DioValue"] = dioValue;
-
-                byte[] writeBuffer = CreateLampControlCommand(
-                    _parameters.DischargerChannel, dioValue);
-
-                bool result = _dischargerClient.ProcessPacket(writeBuffer);
-                if (result != true)
-                {
-                    logArgument.Parameters["Result"] = "fail";
-                    AddTraceLog(logArgument);
-
-                    return false;
-                }
-
-                logArgument.Parameters["Result"] = "success";
-                AddTraceLog(logArgument);
-
-                return true;
+                return false;
             }
         }
 
@@ -761,7 +850,7 @@ namespace Ethernet.Client.Discharger
                 {
                     short length = (short)Marshal.SizeOf(typeof(ChannelInfo.Reply));
                     dataByteArray = readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, length);
-                    ChannelInfo.Reply channelInfo = dataByteArray.FromByteArrayToPacket<Discharger.ChannelInfo.Reply>();
+                    ChannelInfo.Reply channelInfo = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply>();
 
                     /// 채널 상태 업데이트
                     _dischargerData.ErrorCode = channelInfo.ErrorCode;
@@ -819,26 +908,27 @@ namespace Ethernet.Client.Discharger
                 if (_dischargerState == EDischargerState.Discharging ||
                     _dischargerState == EDischargerState.Pause)
                 {
-                    LogArgument logArgument = new LogArgument("Discharger Info.");
-                    logArgument.Parameters["Voltage"] = _dischargerData.ReceiveBatteryVoltage.ToString("F1");
-                    logArgument.Parameters["Current"] = _dischargerData.ReceiveDischargeCurrent.ToString("F1");
-                    if (_parameters.DischargerIsTempModule)
+                    // 방전 Trace Log 저장 - 데이터 수신
+                    var dischargerData = new LogDischarge.DischargerData()
                     {
-                        logArgument.Parameters["Temp"] = _dischargerData.ReceiveDischargeTemp.ToString("F1");
-                    }
-                    logArgument.Parameters["ErrorCode"] = _dischargerData.ErrorCode;
-                    logArgument.Parameters["ReturnCode"] = _dischargerData.ReturnCode;
-                    logArgument.Parameters["ChannelStatus"] = _dischargerData.ChannelStatus;
-                    AddTraceLog(logArgument);
+                        ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
+                        ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
+                        ReceiveDischargeTemp = (!_parameters.DischargerIsTempModule) ?
+                            _dischargerData.ReceiveDischargeTemp.ToString("F1") : string.Empty,
+
+                        ErrorCode = _dischargerData.ErrorCode,
+                        EReturnCode = _dischargerData.ReturnCode,
+                        EChannelStatus = _dischargerData.ChannelStatus,
+                    };
+                    new LogDischarge(ELogDischarge.TRACE_GET_DATA, _logFileName, dischargerData);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
 
-                LogArgument logArgument = new LogArgument("Fail to Parse Discharger Packet.");
-                logArgument.Parameters["RawData"] = readBuffer.GetRawDataHexString();
-                AddTraceLog(logArgument);
+                // 방전 Trace Log 저장 - 데이터 수신 실패
+                new LogDischarge(ELogDischarge.ERROR_GET_DATA, _logFileName, readBuffer.GetRawDataHexString());
 
                 return false;
             }

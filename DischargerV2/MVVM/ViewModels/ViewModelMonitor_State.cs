@@ -1,27 +1,11 @@
 ﻿using DischargerV2.LOG;
-using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
-using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
-using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
-using Sqlite.Common;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using Utility.Common;
+using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -147,6 +131,9 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 // 방전 모드 설정 돌아가기
                 ViewModelMain.Instance.SetIsStartedArray(false);
+
+                // PhaseNo 초기화
+                ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
 
                 // Button IsEnable Binding 값 초기화
                 Model.PauseNResumeIsEnable = true;

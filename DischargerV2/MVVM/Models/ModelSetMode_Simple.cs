@@ -56,16 +56,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EDischargeTarget _eDischargeType = EDischargeTarget.Full;
-        public EDischargeTarget EDischargeType
+        private EDischargeTarget _eDischargeTarget = EDischargeTarget.Full;
+        public EDischargeTarget EDischargeTarget
         {
             get
             {
-                return _eDischargeType;
+                return _eDischargeTarget;
             }
             set
             {
-                SetProperty(ref _eDischargeType, value);
+                SetProperty(ref _eDischargeTarget, value);
             }
         }
 

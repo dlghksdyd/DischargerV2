@@ -65,7 +65,7 @@ namespace DischargerV2.LOG
             }
             catch
             {
-                Debug.WriteLine("SAVE LOG FILE ERROR");
+                Debug.WriteLine("ERROR 'SaveFile_Day'");
             }
         }
 
@@ -121,7 +121,68 @@ namespace DischargerV2.LOG
             }
             catch
             {
-                Debug.WriteLine("SAVE LOG FILE ERROR");
+                Debug.WriteLine("ERROR 'SaveFile_Hour'");
+            }
+        }
+
+        public static void SaveFile_DischargeConfig(List<string> listContent, string path, string fileName)
+        {
+            try
+            {
+                fileName = path + "\\" + fileName + ".csv";
+
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+
+                if (!directoryInfo.Exists)
+                {
+                    directoryInfo.Create();
+                }
+
+                FileInfo fileInfo = new FileInfo(fileName);
+                StreamWriter streamWriter;
+
+                if (!fileInfo.Exists)
+                {
+                    streamWriter = new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
+
+                    foreach (string content in listContent)
+                    {
+                        streamWriter.WriteLine(content);
+                    }
+                    
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+            }
+            catch
+            {
+                Debug.WriteLine("ERROR 'SaveFile_DischargeConfig'");
+            }
+        }
+
+        public static void SaveFile_Discharge(List<string> listContent, string path, string fileName)
+        {
+            try
+            {
+                fileName = path + "\\" + fileName + ".csv";
+
+                FileInfo fileInfo = new FileInfo(fileName);
+                StreamWriter streamWriter= new StreamWriter(fileName, true, Encoding.GetEncoding("UTF-8"));
+
+                string oneLine = string.Empty;
+
+                foreach (string content in listContent)
+                {
+                    oneLine += content + ",";
+                }
+
+                streamWriter.WriteLine(oneLine);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+            catch
+            {
+                Debug.WriteLine("ERROR 'SaveFile_Discharge'");
             }
         }
     }

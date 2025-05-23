@@ -22,6 +22,7 @@ namespace DischargerV2.MVVM.Models
         {
             public double Voltage { get; set; }
             public double Current { get; set; }
+            public double CRate { get; set; }
         }
 
         private string _dischargerName;
