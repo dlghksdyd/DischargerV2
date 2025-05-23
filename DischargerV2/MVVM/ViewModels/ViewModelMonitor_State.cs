@@ -75,6 +75,7 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Model.PauseNResumeIsEnable = false;
                     Model.StopIsEnable = false;
+                    Model.FinishIsEnable = true;
                 }
                 // 에러 발생하였을 때
                 else if (state == EDischargerState.SafetyOutOfRange.ToString() ||

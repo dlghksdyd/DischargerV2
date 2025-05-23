@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -175,10 +176,27 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
             TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
 
-            if (tableDischargerErrorCode == null) return;
-
-            string title = tableDischargerErrorCode.Title;
-            string comment = string.Format(
+            string title = string.Empty;
+            string comment = string.Empty;
+            if (tableDischargerErrorCode == null)
+            {
+                title = "Unknown error.";
+                comment = string.Format(
+                "{0} (Channel: {1})\n\n" +
+                "{2} 오류입니다.\n" +
+                "(Error Code: 0x{3})\n\n" +
+                "원인: \n{4}\n\n" +
+                "해결 방법: \n{5}",
+                dischargerName, Model[index].DischargerInfo.Channel,
+                "알 수 없는",
+                errorCode.ToString("X"),
+                "알 수 없음",
+                "알 수 없음");
+            }
+            else
+            {
+                title = tableDischargerErrorCode.Title;
+                comment = string.Format(
                 "{0} (Channel: {1})\n\n" +
                 "{2} 오류입니다.\n" +
                 "(Error Code: 0x{3})\n\n" +
@@ -187,8 +205,9 @@ namespace DischargerV2.MVVM.ViewModels
                 dischargerName, Model[index].DischargerInfo.Channel,
                 tableDischargerErrorCode.Description,
                 tableDischargerErrorCode.Code.ToString("X"),
-                tableDischargerErrorCode.Cause, 
+                tableDischargerErrorCode.Cause,
                 tableDischargerErrorCode.Action);
+            }
 
             ViewModelPopup_Error viewModelPopup_Error = new ViewModelPopup_Error()
             {
