@@ -238,6 +238,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_Graph.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_Step.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_State.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_Waiting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_StepData.cs" />
@@ -281,6 +282,9 @@
     </Compile>
     <Compile Include="MVVM\Views\ViewMonitor.xaml.cs">
       <DependentUpon>ViewMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_Waiting.xaml.cs">
+      <DependentUpon>ViewPopup_Waiting.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewSetMode_SafetyCondition.xaml.cs">
       <DependentUpon>ViewSetMode_SafetyCondition.xaml</DependentUpon>
@@ -419,6 +423,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewMonitor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_Waiting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

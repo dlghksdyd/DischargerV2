@@ -172,8 +172,6 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Thread thread = new Thread(() =>
             {
-                Model.WaitStartDischargingButtonVisibility = Visibility.Visible;
-
                 // 설정 값 적용
                 SetDischargerName(Model.DischargerName);
 
@@ -183,6 +181,15 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (ViewModelDictionary.ContainsKey(Model.DischargerName))
                 {
+                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    {
+                        Title = "Wait",
+                        Comment = "Wait for starting...",
+                    };
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
+                    viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
+                    viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
+
                     // Graph 방전 모드 설정
                     ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
@@ -205,9 +212,9 @@ namespace DischargerV2.MVVM.ViewModels
                                 Comment = "Fail to start discharging.",
                             };
 
-                            ViewModelMain viewModelMain = ViewModelMain.Instance;
                             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
                             viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            viewModelMain.OffPopup();
                             return;
                         }
                     }
@@ -215,7 +222,7 @@ namespace DischargerV2.MVVM.ViewModels
                     // SetMode -> Monitor 화면 전환
                     ViewModelMain.Instance.SetIsStartedArray(true);
 
-                    Model.WaitStartDischargingButtonVisibility = Visibility.Collapsed;
+                    viewModelMain.OffPopup();
                 }
             });
             thread.IsBackground = true;

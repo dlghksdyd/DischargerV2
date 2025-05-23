@@ -69,18 +69,5 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _finishIsEnable, value);
             }
         }
-
-        private Visibility _waitStopButtonVisibility = Visibility.Collapsed;
-        public Visibility WaitStopButtonVisibility
-        {
-            get
-            {
-                return _waitStopButtonVisibility;
-            }
-            set
-            {
-                SetProperty(ref _waitStopButtonVisibility, value);
-            }
-        }
     }
 }

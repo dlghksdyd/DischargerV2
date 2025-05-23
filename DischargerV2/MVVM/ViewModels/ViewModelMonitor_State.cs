@@ -6,6 +6,7 @@ using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
+using ScottPlot;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -120,7 +121,13 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Thread thread = new Thread(() =>
             {
-                Model.WaitStopButtonVisibility = Visibility.Visible;
+                ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                {
+                    Title = "Wait",
+                    Comment = "Wait for stopping..."
+                };
+                ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
 
                 string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
@@ -141,11 +148,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Thread.Sleep(3000);
 
-                Model.WaitStopButtonVisibility = Visibility.Collapsed;
-
                 Model.PauseNResumeIsEnable = false;
                 Model.StopIsEnable = false;
                 Model.FinishIsEnable = true;
+
+                ViewModelMain.Instance.OffPopup();
             });
             thread.IsBackground = true;
             thread.Start();

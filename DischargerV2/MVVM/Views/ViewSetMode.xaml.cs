@@ -35,7 +35,6 @@ namespace DischargerV2.MVVM.Views
         {
             MexButton mexButton = sender as MexButton;
 
-            //mexButton.IsEnabled = false;
             _viewModel.StartDischarge();
         }
 

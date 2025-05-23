@@ -150,7 +150,7 @@ namespace DischargerV2.MVVM.ViewModels
         /// </summary>
         /// <param name="dischargerIndex"></param>
         /// <param name="setIsStarted"></param>
-        public void SetIsStartedArray(bool setIsStarted = false)
+        public void SetIsStartedArray(bool setIsStarted)
         {
             ObservableCollection<bool> isStartedArray = new ObservableCollection<bool>();
 
@@ -192,6 +192,11 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetViewModelPopup_Warning(ViewModelPopup_Warning viewModelPopup_Warning)
         {
             Model.ViewModelPopup_Warning = viewModelPopup_Warning;
+        }
+
+        public void SetViewModelPopup_Waiting(ViewModelPopup_Waiting viewModelPopup_Waiting)
+        {
+            Model.ViewModelPopup_Waiting = viewModelPopup_Waiting;
         }
     }
 }

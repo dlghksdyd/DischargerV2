@@ -148,14 +148,6 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Mex:MexButton>
-            <Mex:MexButton x:Name="xWaitStopButton" Grid.Column="0" Grid.ColumnSpan="3"
-                           Padding="24,16,24,16"
-                           Text="Wait for stopping..."
-                           FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           HorizontalAlignment="Stretch"
-                           Visibility="{Binding Model.WaitStopButtonVisibility}">
-            </Mex:MexButton>
         </Grid>
         <!--Finish Button-->
         <Mex:MexButton x:Name="xFinishButton" Grid.Row="4"
