@@ -41,7 +41,7 @@
                     <Mex:MexTextBlock.Text>
                         <MultiBinding Converter="{StaticResource EDischargeTargetToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.EDischargeType" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
+                                <Binding Path="Model.EDischargeTarget" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
                                 <Binding Path="Model.TargetVoltage" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>

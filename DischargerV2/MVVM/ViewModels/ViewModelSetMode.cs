@@ -197,12 +197,12 @@ namespace DischargerV2.MVVM.ViewModels
                     // Graph 방전 모드 설정
                     ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
-                // Discharge Log 저장 
-                new LogDischarge(GetDischargeConfig(), logFileName);
+                    // Discharge Log 저장 
+                    new LogDischarge(GetDischargeConfig(), logFileName);
 
-                // Start 방전 모드 설정 및 방전 시작
-                ViewModelDictionary[Model.DischargerName].Model = model;
-                ViewModelDictionary[Model.DischargerName].StartDischarge(logFileName);
+                    // Start 방전 모드 설정 및 방전 시작
+                    ViewModelDictionary[Model.DischargerName].Model = model;
+                    ViewModelDictionary[Model.DischargerName].StartDischarge(logFileName);
 
                     int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                     DateTime startTime = DateTime.Now;
