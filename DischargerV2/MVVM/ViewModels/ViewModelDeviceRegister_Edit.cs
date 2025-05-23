@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
+using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.ViewModels
 {

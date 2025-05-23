@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.ViewModels
 {

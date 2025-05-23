@@ -11,10 +11,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
+using static DischargerV2.LOG.LogTrace;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -43,6 +43,8 @@ namespace DischargerV2.MVVM.ViewModels
         public string DischargerName { get; set; } = string.Empty;
         public double Current { get; set; } = 0.0;
         public double Voltage { get; set; } = 0.0;
+
+        public string LogFileName { get; set; } = string.Empty;
 
         public bool? IsRestart { get; set; } = null;
     }
@@ -234,7 +236,7 @@ namespace DischargerV2.MVVM.ViewModels
                 bool isOk = _clients[dischargerName].SendCommand_ClearAlarm();
 
                 // 방전기 에러 해제 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk)
                 {
@@ -271,7 +273,7 @@ namespace DischargerV2.MVVM.ViewModels
                         bool isOk = _clients[dischargerName].Restart();
 
                         // 방전기 재 연결 Trace Log 저장
-                        DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                        DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                         if (isOk)
                         {
@@ -297,12 +299,15 @@ namespace DischargerV2.MVVM.ViewModels
 
             try
             {
+                // 방전 동작 로그 파일명 설정
+                _clients[param.DischargerName].SetLogFileName(param.LogFileName);
+
                 // 방전 동작 시작
                 var isOk = _clients[param.DischargerName].SendCommand_StartDischarge(
                     EWorkMode.CcCvMode, param.Voltage, param.Current);
 
                 // 방전 동작 시작 Trace Log 저장
-                DischargerData dischargerComm = _clients[param.DischargerName].GetDischargerComm();
+                LogTrace.DischargerData dischargerComm = _clients[param.DischargerName].GetLogSystemDischargerData();
                 dischargerComm.EWorkMode = EWorkMode.CcCvMode;
                 dischargerComm.SetValue_Voltage = param.Voltage;
                 dischargerComm.LimitingValue_Current = param.Current;
@@ -360,7 +365,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var isOk = _clients[dischargerName].SendCommand_StopDischarge();
 
                 // 방전 동작 정지 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -385,7 +390,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var isOk = _clients[dischargerName].SendCommand_PauseDischarge();
 
                 // 방전 동작 일시 정지 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -411,7 +416,7 @@ namespace DischargerV2.MVVM.ViewModels
                 bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
                 // 방전기 안전 조건 설정 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk)
                 {
@@ -436,7 +441,7 @@ namespace DischargerV2.MVVM.ViewModels
                 bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState);
 
                 // 방전기 상태 설정 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetDischargerComm();
+                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
                 dischargerComm.EDischargerState = eDischargerState;
 
                 if (isOk)
@@ -647,7 +652,7 @@ namespace DischargerV2.MVVM.ViewModels
                         bool isOk = _clients[info.Name].Start(parameters);
 
                         // 방전기 연결 Trace Log 저장
-                        DischargerData dischargerComm = new DischargerData()
+                        LogTrace.DischargerData dischargerComm = new LogTrace.DischargerData()
                         {
                             Name = info.Name,
                             EDischargerModel = info.Model,

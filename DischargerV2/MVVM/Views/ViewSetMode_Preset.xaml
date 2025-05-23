@@ -115,7 +115,7 @@
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                         VerticalContentAlignment="Center"
-                                        IsChecked="{Binding Model.EDischargeType, 
+                                        IsChecked="{Binding Model.EDischargeTarget, 
                                                             Mode=TwoWay,
                                                             Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Full}}"/>
@@ -126,7 +126,7 @@
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                         ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                         VerticalContentAlignment="Center"
-                                        IsChecked="{Binding Model.EDischargeType, 
+                                        IsChecked="{Binding Model.EDischargeTarget, 
                                                             Mode=TwoWay,
                                                             Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Zero}}"/>
@@ -138,7 +138,7 @@
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                             ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                             VerticalContentAlignment="Center"
-                                            IsChecked="{Binding Model.EDischargeType, 
+                                            IsChecked="{Binding Model.EDischargeTarget, 
                                                                 Mode=TwoWay,
                                                                 Converter={StaticResource EDischargeTargetToBoolConverter},
                                                                 ConverterParameter={x:Static enum:EDischargeTarget.Voltage}}"/>
@@ -159,7 +159,7 @@
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                             ColorSet="{StaticResource Mex/ResColorSet_RadioButton/Primary}"
                                             VerticalContentAlignment="Center"
-                                            IsChecked="{Binding Model.EDischargeType, 
+                                            IsChecked="{Binding Model.EDischargeTarget, 
                                                                 Mode=TwoWay,
                                                                 Converter={StaticResource EDischargeTargetToBoolConverter},
                                                                 ConverterParameter={x:Static enum:EDischargeTarget.SoC}}"/>

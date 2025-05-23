@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+using static DischargerV2.LOG.LogTrace;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DischargerV2.MVVM.ViewModels

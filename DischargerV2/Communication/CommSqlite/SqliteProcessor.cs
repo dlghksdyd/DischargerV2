@@ -528,6 +528,40 @@ namespace Sqlite.Common
             return table;
         }
 
+        public static TableDischargerInfo GetData(string dischargerName)
+        {
+            TableDischargerInfo table = new TableDischargerInfo();
+
+            using (SQLiteConnection connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT * FROM " + ClassName;
+                query += " WHERE Name = '" + dischargerName + "'";
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    SQLiteDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        table.DischargerName = reader["Name"].ToString();
+                        table.Model = (EDischargerModel)Enum.Parse(typeof(EDischargerModel), reader["Model"].ToString());
+                        table.Type = (EDischargeType)Enum.Parse(typeof(EDischargeType), reader["Type"].ToString());
+                        table.DischargerChannel = short.Parse(reader["Channel"].ToString());
+                        table.SpecVoltage = double.Parse(reader["SpecVoltage"].ToString());
+                        table.SpecCurrent = double.Parse(reader["SpecCurrent"].ToString());
+                        table.IpAddress = reader["IpAddress"].ToString();
+                        table.IsTempModule = reader["IsTempModule"].ToString() == "1" ? true : false;
+                        table.TempModuleComPort = reader["TempModuleComPort"].ToString();
+                        table.TempModuleChannel = reader["TempModuleChannel"].ToString();
+                        table.TempChannel = reader["TempChannel"].ToString();
+                    }
+                }
+            }
+
+            return table;
+        }
+
         public static bool DeleteData(string name)
         {
             try

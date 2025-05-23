@@ -198,7 +198,8 @@
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
     <Compile Include="LOG\Log.cs" />
-    <Compile Include="LOG\SystemLogTrace.cs" />
+    <Compile Include="LOG\LogDischarge.cs" />
+    <Compile Include="LOG\LogTrace.cs" />
     <Compile Include="MVVM\Enums\Enums.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister.cs" />
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
