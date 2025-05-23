@@ -239,6 +239,7 @@
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_Graph.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_Step.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelMonitor_State.cs" />
+    <Compile Include="MVVM\ViewModels\ViewModelPopup_SetLogFileName.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelPopup_Waiting.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelSetMode_Simple.cs" />
@@ -283,6 +284,9 @@
     </Compile>
     <Compile Include="MVVM\Views\ViewMonitor.xaml.cs">
       <DependentUpon>ViewMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\Views\ViewPopup_SetLogFileName.xaml.cs">
+      <DependentUpon>ViewPopup_SetLogFileName.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Views\ViewPopup_Waiting.xaml.cs">
       <DependentUpon>ViewPopup_Waiting.xaml</DependentUpon>
@@ -424,6 +428,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\ViewMonitor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\Views\ViewPopup_SetLogFileName.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

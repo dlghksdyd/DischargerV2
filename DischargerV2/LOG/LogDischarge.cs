@@ -368,6 +368,8 @@ namespace DischargerV2.LOG
 
         private static void WriteLog(ELogDischarge eLogDischarge, string fileName, string parameter = "")
         {
+            if (fileName == null || fileName == string.Empty) return;
+
             SetTraceData(eLogDischarge, parameter);
 
             List<string> listContent = new List<string>

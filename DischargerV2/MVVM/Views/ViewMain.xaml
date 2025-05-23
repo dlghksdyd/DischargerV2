@@ -113,6 +113,10 @@
                                                            Source={x:Static vm:ViewModelMain.Instance}}"
                                       DataContext="{Binding Model.ViewModelPopup_Waiting,
                                                             Source={x:Static vm:ViewModelMain.Instance}}"/>
+                <view:ViewPopup_SetLogFileName Visibility="{Binding Model.PopupVisibility[6], 
+                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
+                                               DataContext="{Binding Model.ViewModelPopup_SetLogFileName,
+                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
             </Grid>
         </Border>
         <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 

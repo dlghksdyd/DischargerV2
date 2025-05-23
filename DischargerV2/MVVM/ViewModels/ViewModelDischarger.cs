@@ -501,7 +501,7 @@ namespace DischargerV2.MVVM.ViewModels
             OneSecondTimer?.Stop();
             OneSecondTimer = new System.Timers.Timer();
             OneSecondTimer.Elapsed += CopyDataFromDischargerClientToModel;
-            OneSecondTimer.Interval = 500;
+            OneSecondTimer.Interval = 1000;
             OneSecondTimer.Start();
         }
 

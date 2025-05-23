@@ -306,12 +306,8 @@ namespace DischargerV2.LOG
                     case ELogTrace.TRACE_SAVE_LOG:
                     case ELogTrace.ERROR_SAVE_LOG:
                         logParameter = string.Format(
-                            "\"Name:{0}, Model:{1}, Channel:{2}, IPAddress:{3}, " +
-                            "FileName:{4}\"",
+                            "\"Name:{0}, FileName:{2}\"",
                             dischargerData.Name,
-                            dischargerData.EDischargerModel,
-                            dischargerData.Channel,
-                            dischargerData.IpAddress,
                             dischargerData.FileName);
                         break;
                     case ELogTrace.TRACE_SET_SAFETYCONDITION:

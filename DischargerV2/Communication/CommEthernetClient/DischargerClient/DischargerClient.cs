@@ -133,7 +133,9 @@ namespace Ethernet.Client.Discharger
         private System.Timers.Timer ReadInfoTimer = null;
 
         private DischargerDatas _dischargerData = new DischargerDatas();
+       
         private EDischargerState _dischargerState = EDischargerState.None;
+        private uint _dioValue = uint.MaxValue;
 
         private string _logFileName = string.Empty;
 
@@ -142,7 +144,7 @@ namespace Ethernet.Client.Discharger
 
         public LogTrace.DischargerData GetLogSystemDischargerData()
         {
-            LogTrace.DischargerData dischargerData = new LogTrace.DischargerData()
+            var dischargerData = new LogTrace.DischargerData()
             {
                 Name = _parameters.DischargerName,
                 EDischargerModel = _parameters.DischargerModel,
@@ -200,7 +202,7 @@ namespace Ethernet.Client.Discharger
                         ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
                         ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
                         ReceiveDischargeTemp = (!_parameters.DischargerIsTempModule)?
-                            _dischargerData.ReceiveDischargeCurrent.ToString("F1") : string.Empty,
+                            _dischargerData.ReceiveDischargeTemp.ToString("F1") : string.Empty,
                         ErrorCode = _dischargerData.ErrorCode,
                         EReturnCode = _dischargerData.ReturnCode,
                         EDischargerState = dischargerState,
@@ -752,6 +754,8 @@ namespace Ethernet.Client.Discharger
                         dioValue |= (uint)EDioControl.TowerLampBuzzer;
                     }
 
+                    
+
                     byte[] writeBuffer = CreateLampControlCommand(dioValue);
 
                     // 경광등 제어
@@ -759,23 +763,33 @@ namespace Ethernet.Client.Discharger
 
                     if (isOk)
                     {
-                        // 방전 Trace Log 저장 - 경광등 제어
-                        dischargerData = new LogDischarge.DischargerData()
+                        if (_dioValue != dioValue)
                         {
-                            LampDioValue = dioValue,
-                        };
-                        new LogDischarge(ELogDischarge.TRACE_CONTROL_LAMP, _logFileName, dischargerData);
+                            // 방전 Trace Log 저장 - 경광등 제어
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                LampDioValue = dioValue,
+                            };
+                            new LogDischarge(ELogDischarge.TRACE_CONTROL_LAMP, _logFileName, dischargerData);
+                        }
+
+                        _dioValue = dioValue;
 
                         return true;
                     }
                     else
                     {
-                        // 방전 Trace Log 저장 - 경광등 제어 실패
-                        dischargerData = new LogDischarge.DischargerData()
+                        if (_dioValue != dioValue)
                         {
-                            LampDioValue = dioValue,
-                        };
-                        new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, dischargerData);
+                            // 방전 Trace Log 저장 - 경광등 제어 실패
+                            dischargerData = new LogDischarge.DischargerData()
+                            {
+                                LampDioValue = dioValue,
+                            };
+                            new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, dischargerData);
+                        }
+
+                        _dioValue = dioValue;
 
                         return false;
                     }

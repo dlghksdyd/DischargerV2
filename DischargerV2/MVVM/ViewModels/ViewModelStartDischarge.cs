@@ -30,7 +30,14 @@ namespace DischargerV2.MVVM.ViewModels
         }
         #endregion
 
-        public void StartDischarge(string logFileName)
+        private string _logFileName = string.Empty;
+
+        public void SetLogFileName(string logFileName)
+        {
+            _logFileName = logFileName;
+        }
+
+        public void StartDischarge()
         {
             // 초기화
             PhaseNo = 0;
@@ -42,7 +49,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
-                LogFileName = logFileName,
+                LogFileName = _logFileName,
                 IsRestart = false,
             });
 
@@ -66,6 +73,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                LogFileName = _logFileName,
                 IsRestart = true,
             });
 

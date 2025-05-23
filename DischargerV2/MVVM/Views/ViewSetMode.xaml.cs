@@ -33,9 +33,7 @@ namespace DischargerV2.MVVM.Views
 
         private void xStartButton_Click(object sender, RoutedEventArgs e)
         {
-            MexButton mexButton = sender as MexButton;
-
-            _viewModel.StartDischarge();
+            _viewModel.SetLogFileName();
         }
 
         private void xWaitStartDischarging_Click(object sender, RoutedEventArgs e)

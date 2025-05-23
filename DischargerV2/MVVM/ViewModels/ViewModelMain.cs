@@ -198,5 +198,15 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Model.ViewModelPopup_Waiting = viewModelPopup_Waiting;
         }
+
+        public void SetViewModelPopup_SetLogFileName(ViewModelPopup_SetLogFileName viewModelPopup_SetLogFileNa)
+        {
+            Model.ViewModelPopup_SetLogFileName = viewModelPopup_SetLogFileNa;
+        }
+
+        public string GetLogFileName()
+        {
+            return Model.ViewModelPopup_SetLogFileName.Comment;
+        }
     }
 }

@@ -82,5 +82,18 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _mode, value);
             }
         }
+
+        private string _logFileName = string.Empty;
+        public string LogFileName
+        {
+            get
+            {
+                return _logFileName;
+            }
+            set
+            {
+                SetProperty(ref _logFileName, value);
+            }
+        }
     }
 }

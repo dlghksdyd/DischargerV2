@@ -170,12 +170,47 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        public void SetLogFileName()
+        {
+            try
+            {
+                ViewModelPopup_SetLogFileName viewModelPopup_SetLogFileName = new ViewModelPopup_SetLogFileName()
+                {
+                    Title = "Please enter the LogFileName",
+                    CallBackDelegate = SetLogFileNameNStartDischarge,
+                    ConfirmText = "Enter"
+                };
+
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.SetViewModelPopup_SetLogFileName(viewModelPopup_SetLogFileName);
+                viewModelMain.OpenPopup(ModelMain.EPopup.SetLogFileName);
+            }
+            catch (Exception ex) 
+            {
+                // System Trace Log 저장 - 방전 동작 로그 파일 생성 실패
+                new LogTrace(LogTrace.ELogTrace.ERROR_SAVE_LOG, ex);
+            }
+        }
+
+        public void SetLogFileNameNStartDischarge()
+        {
+            Model.LogFileName = ViewModelMain.Instance.GetLogFileName();
+
+            // System Trace Log 저장 - 방전 동작 로그 파일 생성
+            var dischargerData = new LogTrace.DischargerData()
+            {
+                Name = Model.DischargerName,
+                FileName = Model.LogFileName
+            };
+            new LogTrace(LogTrace.ELogTrace.ERROR_SAVE_LOG, dischargerData);
+
+            StartDischarge();
+        }
+
         public void StartDischarge()
         {
             Thread thread = new Thread(() =>
             {
-                string logFileName = "test";
-
                 // 설정 값 적용
                 SetDischargerName(Model.DischargerName);
 
@@ -197,12 +232,13 @@ namespace DischargerV2.MVVM.ViewModels
                     // Graph 방전 모드 설정
                     ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
-                // Discharge Log 저장 
-                new LogDischarge(GetDischargeConfig(), logFileName);
+                    // Discharge Log 저장 
+                    new LogDischarge(GetDischargeConfig(), Model.LogFileName);
 
-                // Start 방전 모드 설정 및 방전 시작
-                ViewModelDictionary[Model.DischargerName].Model = model;
-                ViewModelDictionary[Model.DischargerName].StartDischarge(logFileName);
+                    // Start 방전 모드 설정 및 방전 시작
+                    ViewModelDictionary[Model.DischargerName].Model = model;
+                    ViewModelDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
+                    ViewModelDictionary[Model.DischargerName].StartDischarge();
 
                     int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                     DateTime startTime = DateTime.Now;

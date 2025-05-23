@@ -17,7 +17,7 @@ namespace DischargerV2.MVVM.Models
         public enum EPopup 
         { 
             UserSetting, DeviceRegister, ModelRegiseter, 
-            Info, Error, Waiting,
+            Info, Error, Waiting, SetLogFileName
         }
 
         public enum ENestedPopup
@@ -257,6 +257,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _viewModelPopup_Waiting, value);
+            }
+        }
+
+        private ViewModelPopup_SetLogFileName _viewModelPopup_SetLogFileName = new ViewModelPopup_SetLogFileName();
+        public ViewModelPopup_SetLogFileName ViewModelPopup_SetLogFileName
+        {
+            get
+            {
+                return _viewModelPopup_SetLogFileName;
+            }
+            set
+            {
+                SetProperty(ref _viewModelPopup_SetLogFileName, value);
             }
         }
     }
