@@ -120,43 +120,25 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void StopDischarge()
         {
-            Thread thread = new Thread(() =>
+            string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+
+            int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
+            DateTime startTime = DateTime.Now;
+            while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
             {
-                ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                Thread.Sleep(100);
+
+                if (DateTime.Now - startTime > TimeSpan.FromSeconds(3))
                 {
-                    Title = "Wait",
-                    Comment = "Wait for stopping..."
-                };
-                ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
-                ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
-
-                string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
-
-                ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
-
-                int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
-                DateTime startTime = DateTime.Now;
-                while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
-                {
-                    Thread.Sleep(100);
-
-                    if (DateTime.Now - startTime > TimeSpan.FromSeconds(3))
-                    {
-                        // 3초 지나면 while문 자동으로 빠져나옴.
-                        break;
-                    }
+                    // 3초 지나면 while문 자동으로 빠져나옴.
+                    break;
                 }
+            }
 
-                Thread.Sleep(3000);
-
-                Model.PauseNResumeIsEnable = false;
-                Model.StopIsEnable = false;
-                Model.FinishIsEnable = true;
-
-                ViewModelMain.Instance.OffPopup();
-            });
-            thread.IsBackground = true;
-            thread.Start();
+            Model.PauseNResumeIsEnable = false;
+            Model.StopIsEnable = false;
+            Model.FinishIsEnable = true;
         }
 
         private void ReturnSetMode()

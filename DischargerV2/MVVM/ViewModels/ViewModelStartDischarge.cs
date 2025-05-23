@@ -3,6 +3,7 @@ using Ethernet.Client.Discharger;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System.Linq;
+using System.Threading;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -77,10 +78,27 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void StopDischarge()
         {
-            ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
+            Thread thread = new Thread(() =>
+            {
+                ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                {
+                    Title = "Wait",
+                    Comment = "Wait for stopping..."
+                };
+                ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
 
-            DischargeTimer?.Stop();
-            DischargeTimer = null;
+                ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
+
+                DischargeTimer?.Stop();
+                DischargeTimer = null;
+
+                Thread.Sleep(3000);
+
+                ViewModelMain.Instance.OffPopup();
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -139,7 +157,7 @@ namespace DischargerV2.MVVM.ViewModels
                     // 모든 Phase 끝났을 때
                     if (PhaseNo == Model.PhaseDataList.Count - 1)
                     {
-                        viewModelDischarger.StopDischarger(Model.DischargerName);
+                        StopDischarge();
 
                         Model.IsEnterLastPhase = true;
                     }
@@ -163,7 +181,7 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     if (receiveCurrent <= 0.1)
                     {
-                        viewModelDischarger.StopDischarger(Model.DischargerName);
+                        StopDischarge();
                     }
                 }
             }

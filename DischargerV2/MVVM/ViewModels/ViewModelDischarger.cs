@@ -525,22 +525,20 @@ namespace DischargerV2.MVVM.ViewModels
             // 버튼 UI 업데이트
             if (model.DischargerState == EDischargerState.Pause)
             {
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
-                /// 방전기가 pause를 반영하는 시간
-                Thread.Sleep(3000);
                 model.ResumeButtonVisibility = Visibility.Visible;
                 ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
                 ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
             }
             else if (model.DischargerState == EDischargerState.Discharging)
             {
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
-                Thread.Sleep(3000);
                 model.ResumeButtonVisibility = Visibility.Collapsed;
                 ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
                 ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
+            }
+            else if (model.DischargerState == EDischargerState.Ready)
+            {
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
             }
             else if (model.DischargerState == EDischargerState.SafetyOutOfRange ||
                 model.DischargerState == EDischargerState.ReturnCodeError ||
