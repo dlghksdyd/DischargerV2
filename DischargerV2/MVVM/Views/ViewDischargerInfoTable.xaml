@@ -46,7 +46,7 @@
                     <Mex:MexTextBlock Grid.Column="1" Margin="0 0 32 0" Text="Discharger Name" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="2" Margin="0 0 60 0" Text="" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="3" Margin="0 0 56 0" Text="Channel" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
-                    <Mex:MexTextBlock Grid.Column="4" Margin="0 0 80 0" Text="Status" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
+                    <Mex:MexTextBlock Grid.Column="4" Margin="0 0 180 0" Text="Status" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="5" Margin="0 0 88 0" Text="Voltage (V)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="6" Margin="0 0 88 0" Text="Current (A)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="7" Margin="0 0 88 0" Text="Temperature (℃)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
