@@ -759,7 +759,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var state = Model[index].DischargerState;
                 var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
 
-                if (state == EDischargerState.Discharging && state == EDischargerState.Pause)
+                if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
                 {
                     TimeSpan diff = (DateTime.Now - dischargingStartTime);
                     string diffString =
