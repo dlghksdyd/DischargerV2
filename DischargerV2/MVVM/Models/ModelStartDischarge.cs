@@ -64,16 +64,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private EDischargeTarget _target;
-        public EDischargeTarget Target
+        private EDischargeTarget _eDischargeTarget;
+        public EDischargeTarget EDischargeTarget
         {
             get
             {
-                return _target;
+                return _eDischargeTarget;
             }
             set
             {
-                SetProperty(ref _target, value);
+                SetProperty(ref _eDischargeTarget, value);
             }
         }
 

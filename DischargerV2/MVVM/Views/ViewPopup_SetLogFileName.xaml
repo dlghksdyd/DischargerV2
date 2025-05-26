@@ -11,7 +11,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Info}"
-             d:DesignHeight="248" d:DesignWidth="600"
+             Height="Auto" Width="600"
              MinHeight="248" MinWidth="600"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
@@ -54,13 +54,21 @@
                 </b:Interaction.Triggers>
             </Image>
         </Grid>
-        <Mex:MexTextBox Grid.Row="2"
-                        TextPadding="12 8 12 8"
-                        Text="{Binding Model.Comment, 
-                                       Mode=TwoWay,
-                                       FallbackValue=LogFileName}"
-                        FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                        ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2">
+            <Mex:MexTextBox WaterMark="Enter LogFileName" 
+                            TextPadding="12 8 12 8"
+                            Text="{Binding Model.Comment, 
+                                           Mode=TwoWay}"
+                            FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                            ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                            KeyUp="MexTextBox_KeyUp"/>
+            <Mex:MexTextBlock Padding="12 4 12 8"
+                              Text="{Binding Description, 
+                                             FallbackValue=Please enter LogfileName}"
+                              FontSet="{StaticResource Mex/ResFontSet/body_sm_regular}"
+                              Foreground="{StaticResource Mex/ResColor/text_error}"
+                              HorizontalAlignment="Left"/>
+        </StackPanel>
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton Padding="24,10,24,10"
@@ -68,6 +76,8 @@
                            Text="{Binding Model.ConfirmText, FallbackValue=Confirm}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
+                           IsEnabled="{Binding IsEnabledConfirm, 
+                                               UpdateSourceTrigger=PropertyChanged}"
                            Cursor="Hand">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">

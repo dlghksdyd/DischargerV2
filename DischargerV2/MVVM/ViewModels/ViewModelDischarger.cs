@@ -18,6 +18,7 @@ using static DischargerV2.LOG.LogTrace;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
+using DischargerV2.MVVM.Enums;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -43,6 +44,8 @@ namespace DischargerV2.MVVM.ViewModels
         public string DischargerName { get; set; } = string.Empty;
         public double Current { get; set; } = 0.0;
         public double Voltage { get; set; } = 0.0;
+
+        public EDischargeTarget EDischargeTarget { get; set; }
 
         public string LogFileName { get; set; } = string.Empty;
 
@@ -307,7 +310,7 @@ namespace DischargerV2.MVVM.ViewModels
                     EWorkMode.CcCvMode, param.Voltage, param.Current);
 
                 // 방전 동작 시작 Trace Log 저장
-                LogTrace.DischargerData dischargerComm = _clients[param.DischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[param.DischargerName].GetLogSystemDischargerData();
                 dischargerComm.EWorkMode = EWorkMode.CcCvMode;
                 dischargerComm.SetValue_Voltage = param.Voltage;
                 dischargerComm.LimitingValue_Current = param.Current;
@@ -390,7 +393,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var isOk = _clients[dischargerName].SendCommand_PauseDischarge();
 
                 // 방전 동작 일시 정지 Trace Log 저장
-                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -416,7 +419,7 @@ namespace DischargerV2.MVVM.ViewModels
                 bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
                 // 방전기 안전 조건 설정 Trace Log 저장
-                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk)
                 {
@@ -441,7 +444,7 @@ namespace DischargerV2.MVVM.ViewModels
                 bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState);
 
                 // 방전기 상태 설정 Trace Log 저장
-                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
                 dischargerComm.EDischargerState = eDischargerState;
 
                 if (isOk)
