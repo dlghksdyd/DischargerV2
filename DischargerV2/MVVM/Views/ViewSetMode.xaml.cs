@@ -35,10 +35,5 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel.SetLogFileName();
         }
-
-        private void xWaitStartDischarging_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

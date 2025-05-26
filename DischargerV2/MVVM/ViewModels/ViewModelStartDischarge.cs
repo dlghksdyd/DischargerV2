@@ -49,6 +49,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                EDischargeTarget = Model.EDischargeTarget,
                 LogFileName = _logFileName,
                 IsRestart = false,
             });
@@ -73,6 +74,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerName = Model.DischargerName,
                 Voltage = Model.PhaseDataList[PhaseNo].Voltage,
                 Current = -Model.PhaseDataList[PhaseNo].Current,
+                EDischargeTarget = Model.EDischargeTarget,
                 LogFileName = _logFileName,
                 IsRestart = true,
             });
@@ -166,9 +168,14 @@ namespace DischargerV2.MVVM.ViewModels
                     // 모든 Phase 끝났을 때
                     if (PhaseNo == Model.PhaseDataList.Count - 1)
                     {
-                        StopDischarge();
-
-                        Model.IsEnterLastPhase = true;
+                        if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                        {
+                            Model.IsEnterLastPhase = true;
+                        }
+                        else
+                        {
+                            StopDischarge();
+                        }
                     }
                     else
                     {

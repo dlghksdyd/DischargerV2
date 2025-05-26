@@ -61,16 +61,16 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private Dictionary<string, ViewModelStartDischarge> _viewModelDictionary = new Dictionary<string, ViewModelStartDischarge>();
-        public Dictionary<string, ViewModelStartDischarge> ViewModelDictionary
+        private Dictionary<string, ViewModelStartDischarge> _startDischargeDictionary = new Dictionary<string, ViewModelStartDischarge>();
+        public Dictionary<string, ViewModelStartDischarge> StartDischargeDictionary
         {
             get
             {
-                return _viewModelDictionary;
+                return _startDischargeDictionary;
             }
             set
             {
-                SetProperty(ref _viewModelDictionary, value);
+                SetProperty(ref _startDischargeDictionary, value);
             }
         }
         #endregion
@@ -150,7 +150,7 @@ namespace DischargerV2.MVVM.ViewModels
         private void InitializeViewModelDictionary()
         {
             // 기존 값 초기화
-            ViewModelDictionary.Clear();
+            StartDischargeDictionary.Clear();
 
             // Discharger에서 관련 값 받아와 사용
             List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
@@ -163,7 +163,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ModelStartDischarge modelStartDischarge = new ModelStartDischarge();
                 modelStartDischarge.DischargerName = dischargerName;
 
-                ViewModelDictionary.Add(dischargerName, new ViewModelStartDischarge()
+                StartDischargeDictionary.Add(dischargerName, new ViewModelStartDischarge()
                 {
                     Model = modelStartDischarge
                 });
@@ -178,7 +178,7 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Title = "Please enter the LogFileName",
                     CallBackDelegate = SetLogFileNameNStartDischarge,
-                    ConfirmText = "Enter"
+                    ConfirmText = "Save"
                 };
 
                 ViewModelMain viewModelMain = ViewModelMain.Instance;
@@ -194,7 +194,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetLogFileNameNStartDischarge()
         {
-            Model.LogFileName = ViewModelMain.Instance.GetLogFileName();
+            string lofFileName = ViewModelMain.Instance.GetLogFileName();
+
+            Model.LogFileName = lofFileName;
 
             // System Trace Log 저장 - 방전 동작 로그 파일 생성
             var dischargerData = new LogTrace.DischargerData()
@@ -218,7 +220,7 @@ namespace DischargerV2.MVVM.ViewModels
                 if (!CheckNSetSafetyCondition()) return;
                 if (!CalculateTarget(out ModelStartDischarge model)) return;
 
-                if (ViewModelDictionary.ContainsKey(Model.DischargerName))
+                if (StartDischargeDictionary.ContainsKey(Model.DischargerName))
                 {
                     ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
@@ -236,9 +238,9 @@ namespace DischargerV2.MVVM.ViewModels
                     new LogDischarge(GetDischargeConfig(), Model.LogFileName);
 
                     // Start 방전 모드 설정 및 방전 시작
-                    ViewModelDictionary[Model.DischargerName].Model = model;
-                    ViewModelDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
-                    ViewModelDictionary[Model.DischargerName].StartDischarge();
+                    StartDischargeDictionary[Model.DischargerName].Model = model;
+                    StartDischargeDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
+                    StartDischargeDictionary[Model.DischargerName].StartDischarge();
 
                     int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                     DateTime startTime = DateTime.Now;
@@ -460,7 +462,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ModelSetMode_Preset modelPreset = ViewModelSetMode_Preset.Instance.Model;
                 string batteryType = modelPreset.SelectedBatteryType;
 
-                model.Target = modelPreset.EDischargeTarget;
+                model.EDischargeTarget = modelPreset.EDischargeTarget;
 
                 // Full Discharge, 0V Discharge
                 if (modelPreset.EDischargeTarget == EDischargeTarget.Full ||
@@ -514,11 +516,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (modelStep.IsCompleteDischarge)
                 {
-                    model.Target = EDischargeTarget.Full;
+                    model.EDischargeTarget = EDischargeTarget.Full;
                 }
                 else
                 {
-                    model.Target = EDischargeTarget.Voltage;
+                    model.EDischargeTarget = EDischargeTarget.Voltage;
                 }
 
                 foreach (var stepData in modelStep.Content)
@@ -538,7 +540,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 ModelSetMode_Simple modelSimple = ViewModelSetMode_Simple.Instance.Model;
 
-                model.Target = modelSimple.EDischargeTarget;
+                model.EDischargeTarget = modelSimple.EDischargeTarget;
 
                 if (modelSimple.EDischargeTarget == EDischargeTarget.Full)
                 {

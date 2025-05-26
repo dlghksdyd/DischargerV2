@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.LOG;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -53,6 +54,20 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.ConfirmText;
             set => Model.ConfirmText = value;
         }
+
+        private string _description = "Please enter LogFileName";
+        public string Description 
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        private bool _isEnabledConfirm = false;
+        public bool IsEnabledConfirm 
+        {
+            get => _isEnabledConfirm;
+            set => SetProperty(ref _isEnabledConfirm, value);
+        } 
         #endregion
 
         public ViewModelPopup_SetLogFileName()
@@ -61,6 +76,30 @@ namespace DischargerV2.MVVM.ViewModels
             CloseCommand = new DelegateCommand(Close);
         }
 
+        public void CheckLogFileName()
+        {
+            if (Comment == null || Comment == string.Empty)
+            {
+                Description = "Please enter LogFileName";
+                IsEnabledConfirm = false;
+            }
+            else
+            {
+                bool isExit = LogDischarge.CheckExit(Comment);
+
+                if (isExit)
+                {
+                    Description = string.Format(
+                        "대상 폴더에 이름이 \"{0}.csv\"인 파일이 이미 있습니다.", Comment);
+                    IsEnabledConfirm = false;
+                }
+                else
+                {
+                    Description = string.Empty;
+                    IsEnabledConfirm = true;
+                }
+            }
+        }
 
         private void Exit()
         {

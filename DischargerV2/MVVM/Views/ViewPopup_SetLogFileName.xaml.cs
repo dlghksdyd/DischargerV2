@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,14 @@ namespace DischargerV2.MVVM.Views
         public ViewPopup_SetLogFileName()
         {
             InitializeComponent();
+        }
+
+        private void MexTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (this.DataContext is ViewModelPopup_SetLogFileName viewModelSetLogFileName)
+            {
+                viewModelSetLogFileName.CheckLogFileName();
+            }
         }
     }
 }

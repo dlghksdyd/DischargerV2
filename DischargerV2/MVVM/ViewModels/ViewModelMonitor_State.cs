@@ -93,22 +93,21 @@ namespace DischargerV2.MVVM.ViewModels
         {
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
-            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].PauseDischarge();
+            ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName].PauseDischarge();
         }
 
         private void ResumeDischarge()
         {
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
-            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].ResumeDischarge();
+            ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName].ResumeDischarge();
         }
 
         private void StopDischarge()
         {
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
-            ViewModelSetMode.Instance.ViewModelDictionary[dischargerName].StopDischarge();
+            ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName].StopDischarge();
 
-            int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
             DateTime startTime = DateTime.Now;
             while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
             {
@@ -134,7 +133,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelMain.Instance.SetIsStartedArray(false);
 
                 // PhaseNo 초기화
-                ViewModelSetMode.Instance.ViewModelDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
+                ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
 
                 // Button IsEnable Binding 값 초기화
                 Model.PauseNResumeIsEnable = true;

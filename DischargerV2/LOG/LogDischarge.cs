@@ -4,6 +4,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -122,6 +123,15 @@ namespace DischargerV2.LOG
         
         public static Queue<List<string>> LogQueue = new Queue<List<string>>();
         private static readonly object WriteLock = new object();
+
+        public static bool CheckExit(string fileName)
+        {
+            string fileNameAll = string.Format("{0}\\{1}.csv", Path, fileName);
+
+            FileInfo fileInfo = new FileInfo(fileNameAll);
+
+            return (fileInfo.Exists) ? true : false;
+        }
 
         public LogDischarge(ELogDischarge eLogDischarge, string fileName, Exception ex)
         {
