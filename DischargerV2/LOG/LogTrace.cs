@@ -306,7 +306,7 @@ namespace DischargerV2.LOG
                     case ELogTrace.TRACE_SAVE_LOG:
                     case ELogTrace.ERROR_SAVE_LOG:
                         logParameter = string.Format(
-                            "\"Name:{0}, FileName:{2}\"",
+                            "\"Name:{0}, FileName:{1}\"",
                             dischargerData.Name,
                             dischargerData.FileName);
                         break;

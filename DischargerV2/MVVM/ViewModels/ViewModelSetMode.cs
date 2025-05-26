@@ -202,7 +202,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Name = Model.DischargerName,
                 FileName = Model.LogFileName
             };
-            new LogTrace(LogTrace.ELogTrace.ERROR_SAVE_LOG, dischargerData);
+            new LogTrace(LogTrace.ELogTrace.TRACE_SAVE_LOG, dischargerData);
 
             StartDischarge();
         }

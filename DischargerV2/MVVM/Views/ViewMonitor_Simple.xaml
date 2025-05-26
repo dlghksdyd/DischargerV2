@@ -31,7 +31,7 @@
                 CornerRadius="8"
                 Background="{StaticResource Mex/ResColor/surface_primary}">
             <StackPanel Orientation="Vertical" Margin="12">
-                <Mex:MexTextBlock Text="Discharger Type"
+                <Mex:MexTextBlock Text="Discharger Target"
                                   Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="8"/>
@@ -41,7 +41,7 @@
                     <Mex:MexTextBlock.Text>
                         <MultiBinding Converter="{StaticResource EDischargeTargetToStringConverter}">
                             <MultiBinding.Bindings>
-                                <Binding Path="Model.EDischargeType" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
+                                <Binding Path="Model.EDischargeTarget" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
                                 <Binding Path="Model.TargetVoltage" Source="{x:Static vm:ViewModelSetMode_Simple.Instance}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
