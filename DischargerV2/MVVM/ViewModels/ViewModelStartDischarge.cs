@@ -195,7 +195,7 @@ namespace DischargerV2.MVVM.ViewModels
                 // 0.1A 미만이면 방전 자동 중지
                 if (receiveState == EDischargerState.Discharging)
                 {
-                    if (receiveCurrent >= -0.1)
+                    if (receiveCurrent <= 0.1)
                     {
                         StopDischarge();
                     }
