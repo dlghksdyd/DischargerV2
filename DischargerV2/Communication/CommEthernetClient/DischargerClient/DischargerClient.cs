@@ -144,6 +144,8 @@ namespace Ethernet.Client.Discharger
         public static double SafetyMarginVoltage = 15;
         public static double SafetyMarginCurrent = 2;
 
+        public static bool IsLampBuzzerUsed = true;
+
         public LogTrace.DischargerData GetLogSystemDischargerData()
         {
             var dischargerData = new LogTrace.DischargerData()
@@ -407,11 +409,16 @@ namespace Ethernet.Client.Discharger
                 _dischargerState == EDischargerState.ChStatusError ||
                 _dischargerState == EDischargerState.DeviceError)
             {
-                SendCommand_LampControl(EDioControl.TowerLampRed, true);
+                if (IsLampBuzzerUsed)
+                {
+                    SendCommand_LampControl(EDioControl.TowerLampRed, true);
+                }
+                else
+                {
+                    SendCommand_LampControl(EDioControl.TowerLampRed, false);
+                }
 
                 SendCommand_StopDischarge();
-                //ReadInfoTimer?.Stop();
-                //ReadInfoTimer = null;
                 return;
             }
 

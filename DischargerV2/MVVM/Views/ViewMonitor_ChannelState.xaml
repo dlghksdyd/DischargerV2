@@ -2,17 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Util="clr-namespace:Utility.Common"
-             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
+             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
              xmlns:enum="clr-namespace:DischargerV2.MVVM.Enums"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              DataContext="{x:Static vm:ViewModelDischarger.Instance}"
              mc:Ignorable="d" 
-             d:DesignHeight="48" d:DesignWidth="650">
-
+             d:DesignHeight="48" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Mex:ImageColorConverter x:Key="ImageColorConverter"/>
+    </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
         <Border Padding="12,8,12,8"
                 CornerRadius="{StaticResource Mex/ResCornerRadius/radius_lg}" 
@@ -67,5 +69,10 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
             </StackPanel>
         </Border>
+        <Grid Width="16"/>
+        <Image x:Name="xSoundImage" 
+               Width="48" Height="48"
+               Source="{Binding Source={StaticResource Mex/ResImage/volume_up}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_primary}}" 
+               MouseLeftButtonUp="xSoundImage_MouseLeftButtonUp" Cursor="Hand"></Image>
     </StackPanel>
 </UserControl>
