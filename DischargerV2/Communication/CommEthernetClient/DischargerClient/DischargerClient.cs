@@ -119,11 +119,13 @@ namespace Ethernet.Client.Discharger
         /// <summary>
         /// key: IP Address
         /// </summary>
-        private static Dictionary<string, byte> _serialNumbers = null;
+        private static Dictionary<string, byte> _serialNumbers = new Dictionary<string, byte>();
         /// <summary>
         /// key: IP Address
         /// </summary>
-        private static Dictionary<string, object> _serialNumberDataLock = null;
+        private static Dictionary<string, object> _serialNumberDataLock = new Dictionary<string, object>();
+
+        private static object _serialNumberLock = new object();
 
         private object _packetLock = new object();
 
@@ -264,16 +266,17 @@ namespace Ethernet.Client.Discharger
                 return false;
             }
 
-            if (_serialNumbers == null) _serialNumbers = new Dictionary<string, byte>();
-            if (!_serialNumbers.ContainsKey(_parameters.IpAddress.ToString()))
+            lock (_serialNumberLock)
             {
-                _serialNumbers.Add(_parameters.IpAddress.ToString(), 0);
-            }
+                if (!_serialNumbers.ContainsKey(_parameters.IpAddress.ToString()))
+                {
+                    _serialNumbers.Add(_parameters.IpAddress.ToString(), 0);
+                }
 
-            if (_serialNumberDataLock == null) _serialNumberDataLock = new Dictionary<string, object>();
-            if (!_serialNumberDataLock.ContainsKey(_parameters.IpAddress.ToString()))
-            {
-                _serialNumberDataLock.Add(_parameters.IpAddress.ToString(), new object());
+                if (!_serialNumberDataLock.ContainsKey(_parameters.IpAddress.ToString()))
+                {
+                    _serialNumberDataLock.Add(_parameters.IpAddress.ToString(), new object());
+                }
             }
 
             EthernetClientStart clientStart = new EthernetClientStart();

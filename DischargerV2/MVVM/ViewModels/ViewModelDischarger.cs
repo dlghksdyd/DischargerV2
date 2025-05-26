@@ -672,7 +672,7 @@ namespace DischargerV2.MVVM.ViewModels
                             new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, dischargerComm);
                         }
                     });
-
+                thread.IsBackground = true;
                 thread.Start();
             }
             catch (Exception ex)
