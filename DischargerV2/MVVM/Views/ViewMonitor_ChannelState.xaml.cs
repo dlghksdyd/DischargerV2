@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
+using Ethernet.Client.Discharger;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -25,6 +26,22 @@ namespace DischargerV2.MVVM.Views
         public ViewMonitor_ChannelState()
         {
             InitializeComponent();
+        }
+
+        private void xSoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Image image = sender as Image;
+
+            if (EthernetClientDischarger.IsLampBuzzerUsed)
+            {
+                image.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_off, null, ResColor.icon_primary, null);
+                EthernetClientDischarger.IsLampBuzzerUsed = false;
+            }
+            else
+            {
+                image.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_up, null, ResColor.icon_primary, null);
+                EthernetClientDischarger.IsLampBuzzerUsed = true;
+            }
         }
     }
 }
