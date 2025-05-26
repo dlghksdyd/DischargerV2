@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Sqlite.Common;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -64,40 +65,87 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void PauseDischarge()
         {
-            ViewModelDischarger.Instance.PauseDischarger(Model.DischargerName);
+            Thread thread = new Thread(() =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    {
+                        Title = "Wait",
+                        Comment = "Wait to pause..."
+                    };
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                });
+
+                ViewModelDischarger.Instance.PauseDischarger(Model.DischargerName);
+
+                Thread.Sleep(3000);
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewModelMain.Instance.OffPopup();
+                });
+
+                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
+                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
+                ViewModelMonitor_State.Instance.Model.FinishIsEnable = false;
+
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void ResumeDischarge()
         {
-            ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
+            Thread thread = new Thread(() =>
             {
-                DischargerName = Model.DischargerName,
-                Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                Current = -Model.PhaseDataList[PhaseNo].Current,
-                EDischargeTarget = Model.EDischargeTarget,
-                LogFileName = _logFileName,
-                IsRestart = true,
-            });
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    {
+                        Title = "Wait",
+                        Comment = "Wait to resume..."
+                    };
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                });
 
-            DischargeTimer?.Stop();
-            DischargeTimer = null;
-            DischargeTimer = new System.Timers.Timer();
-            DischargeTimer.Interval = 1000;
-            DischargeTimer.Elapsed += OneSecondTimer_Elapsed;
-            DischargeTimer.Start();
+                ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
+                {
+                    DischargerName = Model.DischargerName,
+                    Voltage = Model.PhaseDataList[PhaseNo].Voltage,
+                    Current = -Model.PhaseDataList[PhaseNo].Current,
+                    EDischargeTarget = Model.EDischargeTarget,
+                    LogFileName = _logFileName,
+                    IsRestart = true,
+                });
+
+                Thread.Sleep(3000);
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewModelMain.Instance.OffPopup();
+                });
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void StopDischarge()
         {
             Thread thread = new Thread(() =>
             {
-                ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Title = "Wait",
-                    Comment = "Wait for stopping..."
-                };
-                ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
-                ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    {
+                        Title = "Wait",
+                        Comment = "Wait for stopping..."
+                    };
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                });
 
                 ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
 
@@ -106,7 +154,10 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Thread.Sleep(3000);
 
-                ViewModelMain.Instance.OffPopup();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ViewModelMain.Instance.OffPopup();
+                });
             });
             thread.IsBackground = true;
             thread.Start();
