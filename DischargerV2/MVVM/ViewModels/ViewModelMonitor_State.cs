@@ -129,18 +129,6 @@ namespace DischargerV2.MVVM.ViewModels
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
             ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName].StopDischarge();
 
-            DateTime startTime = DateTime.Now;
-            while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
-            {
-                Thread.Sleep(100);
-
-                if (DateTime.Now - startTime > TimeSpan.FromSeconds(3))
-                {
-                    // 3초 지나면 while문 자동으로 빠져나옴.
-                    break;
-                }
-            }
-
             Model.PauseNResumeIsEnable = false;
             Model.StopIsEnable = false;
             Model.FinishIsEnable = true;
