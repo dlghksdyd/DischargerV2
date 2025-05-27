@@ -20,9 +20,6 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelPopup_Info : BindableBase
     {
         #region Command
-        public DelegateCommand ExitCommand { get; set; }
-        public DelegateCommand CloseCommand { get; set; }
-
         public delegate void callBackDelegate();
         public callBackDelegate CallBackDelegate { get; set; }
         #endregion
@@ -53,22 +50,26 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.ConfirmText;
             set => Model.ConfirmText = value;
         }
+
+        public Visibility CancelVisibility
+        {
+            get => Model.CancelVisibility;
+            set => Model.CancelVisibility = value;
+        }
         #endregion
 
         public ViewModelPopup_Info()
         {
-            ExitCommand = new DelegateCommand(Exit);
-            CloseCommand = new DelegateCommand(Close);
+
         }
 
-
-        private void Exit()
+        public void Ok()
         {
-            CallBackDelegate();
-            Close();
+            CallBackDelegate?.Invoke();
+            Cancel();
         }
 
-        private void Close()
+        public void Cancel()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OffPopup();

@@ -45,14 +45,8 @@
                                     Converter={StaticResource ImageColorConverter}, 
                                     ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
                    HorizontalAlignment="Right"
-                   Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="MouseLeftButtonUp">
-                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Image>
+                   Cursor="Hand"
+                   MouseLeftButtonUp="xCloseImage_MouseLeftButtonUp"/>
         </Grid>
         <Mex:MexTextBlock Grid.Row="2"
                           Text="{Binding Model.Comment, FallbackValue=Comment}"
@@ -62,31 +56,20 @@
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="{Binding Model.ConfirmText, FallbackValue=Confirm}"
+                           Text="{Binding Model.ConfirmText, FallbackValue=Ok}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
-                           Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding ExitCommand}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Mex:MexButton>
+                           Cursor="Hand"
+                           Click="xOkButton_Click"/>
             <Grid Width="12"/>
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
                            Text="Cancel"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
-                           Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding CloseCommand}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Mex:MexButton>
+                           Visibility="{Binding Model.CancelVisibility}"
+                           Cursor="Hand"
+                           Click="xCancelButton_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

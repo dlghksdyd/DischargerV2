@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,30 @@ namespace DischargerV2.MVVM.Views
         public ViewPopup_Info()
         {
             InitializeComponent();
+        }
+
+        private void xOkButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is ViewModelPopup_Info viewModel)
+            {
+                viewModel.Ok();
+            }
+        }
+
+        private void xCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is ViewModelPopup_Info viewModel)
+            {
+                viewModel.Cancel();
+            }
+        }
+
+        private void xCloseImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (this.DataContext is ViewModelPopup_Info viewModel)
+            {
+                viewModel.Cancel();
+            }
         }
     }
 }

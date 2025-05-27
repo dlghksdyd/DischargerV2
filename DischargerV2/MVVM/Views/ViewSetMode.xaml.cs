@@ -33,7 +33,7 @@ namespace DischargerV2.MVVM.Views
 
         private void xStartButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SetLogFileName();
+            _viewModel.Start();
         }
     }
 }

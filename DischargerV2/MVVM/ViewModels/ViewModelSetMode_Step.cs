@@ -101,12 +101,10 @@ namespace DischargerV2.MVVM.ViewModels
             // ModelDictionary 값 가져오기
             Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
             Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;
+            
             SetModelContent(Model, ModelDictionary[dischargerName]);
 
-            if (SelectedDischargerChanged != null)
-            {
-                this.SelectedDischargerChanged(this, EventArgs.Empty);
-            }
+            SelectedDischargerChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void EnterStandardCapacity()

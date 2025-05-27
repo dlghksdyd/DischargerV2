@@ -103,7 +103,6 @@ namespace DischargerV2.MVVM.ViewModels
                 if (!(model.Value.BatteryTypeList.Count > 0))
                 {
                     model.Value.BatteryTypeList = batteryTypeList;
-                    model.Value.SelectedBatteryType = batteryTypeList[0];
                 }
             }
         }
