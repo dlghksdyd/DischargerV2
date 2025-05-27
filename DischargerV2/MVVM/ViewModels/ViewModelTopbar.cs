@@ -126,7 +126,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private void Close()
+        public static void Close()
         {
             try
             {

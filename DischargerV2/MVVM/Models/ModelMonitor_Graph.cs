@@ -323,6 +323,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private Visibility _visibilitySoc = Visibility.Visible;
+        public Visibility VisibilitySoc
+        {
+            get
+            {
+                return _visibilitySoc;
+            }
+            set
+            {
+                SetProperty(ref _visibilitySoc, value);
+            }
+        }
+
         private List<double> _dataNoList = new List<double>();
         public List<double> DataNoList
         {

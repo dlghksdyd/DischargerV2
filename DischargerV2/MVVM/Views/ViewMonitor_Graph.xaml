@@ -14,12 +14,6 @@
              d:DesignHeight="448" d:DesignWidth="744"
              MaxHeight="448" MaxWidth="744">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -63,9 +57,8 @@
                              IsChecked="{Binding Model.IsCheckedSoc, 
                                                  Mode=TwoWay,
                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
-                             IsEnabled="{Binding Model.IsCheckedSoc, 
-                                                 Mode=TwoWay,
-                                                 Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
+                             Visibility="{Binding Model.VisibilitySoc, 
+                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
         </StackPanel>
     </Grid>

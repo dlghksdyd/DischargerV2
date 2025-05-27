@@ -194,14 +194,22 @@ namespace DischargerV2.MVVM.ViewModels
         {
             ModelDictionary[dischargerName].EDischargeMode = eDischargeMode;
 
+            ModelDictionary[dischargerName].IsCheckedVoltage = true;
+            ModelDictionary[dischargerName].IsCheckedCurrent = true;
+            ModelDictionary[dischargerName].IsCheckedTemp = true;
+
             if (eDischargeMode == EDischargeMode.Preset)
             {
                 ModelDictionary[dischargerName].IsCheckedSoc = true;
+                ModelDictionary[dischargerName].VisibilitySoc = Visibility.Visible;
             }
             else
             {
                 ModelDictionary[dischargerName].IsCheckedSoc = false;
+                ModelDictionary[dischargerName].VisibilitySoc = Visibility.Collapsed;
             }
+
+            Model = ModelDictionary[dischargerName];
         }
 
         public void ClearReceiveData(string dischargerName)
@@ -236,7 +244,7 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // Soc의 경우 Preset 모드에서만 표시
-                if (ModelDictionary[dischargerName].IsCheckedSoc)
+                if (ModelDictionary[dischargerName].VisibilitySoc == Visibility.Visible)
                 {
                     ViewModelSetMode_Preset viewModelSetMode_Preset = ViewModelSetMode_Preset.Instance;
 

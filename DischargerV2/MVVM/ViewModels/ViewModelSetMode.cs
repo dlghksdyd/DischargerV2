@@ -12,7 +12,9 @@ using System.Threading;
 using System.Windows;
 using Utility.Common;
 using static DischargerV2.LOG.LogDischarge;
+using static DischargerV2.LOG.LogTrace;
 using static DischargerV2.MVVM.Models.ModelStartDischarge;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -170,7 +172,27 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void SetLogFileName()
+        public void Start()
+        {
+            // 설정 값 적용
+            SetDischargerName(Model.DischargerName);
+
+            // 설정 값 확인
+            if (!CheckModeNTarget()) return;
+            if (!CheckNSetSafetyCondition()) return;
+            if (!CalculateTarget(out ModelStartDischarge model)) return;
+
+            // 설정 값 적용
+            StartDischargeDictionary[Model.DischargerName].Model = model;
+
+            // 방전 로그 파일명 설정 및 확인
+            CheckLogFileName();
+        }
+
+        /// <summary>
+        /// CallBackDelegate is SetLogFileNameNStartDischarge
+        /// </summary>
+        public void CheckLogFileName()
         {
             try
             {
@@ -213,13 +235,6 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Thread thread = new Thread(() =>
             {
-                // 설정 값 적용
-                SetDischargerName(Model.DischargerName);
-
-                if (!CheckModeNTarget()) return;
-                if (!CheckNSetSafetyCondition()) return;
-                if (!CalculateTarget(out ModelStartDischarge model)) return;
-
                 if (StartDischargeDictionary.ContainsKey(Model.DischargerName))
                 {
                     ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
@@ -227,6 +242,7 @@ namespace DischargerV2.MVVM.ViewModels
                         Title = "Wait",
                         Comment = "Wait for starting...",
                     };
+
                     ViewModelMain viewModelMain = ViewModelMain.Instance;
                     viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
                     viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
@@ -238,12 +254,11 @@ namespace DischargerV2.MVVM.ViewModels
                     new LogDischarge(GetDischargeConfig(), Model.LogFileName);
 
                     // Start 방전 모드 설정 및 방전 시작
-                    StartDischargeDictionary[Model.DischargerName].Model = model;
                     StartDischargeDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
                     StartDischargeDictionary[Model.DischargerName].StartDischarge();
 
-                    int dischargerIndex = ViewModelSetMode.Instance.Model.DischargerIndex;
                     DateTime startTime = DateTime.Now;
+
                     while (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
                     {
                         Thread.Sleep(100);
@@ -269,7 +284,24 @@ namespace DischargerV2.MVVM.ViewModels
 
                     viewModelMain.OffPopup();
                 }
+                else
+                {
+                    // 프로그램 오류 메세지 활성화
+                    ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
+                    {
+                        Title = "Program error",
+                        Comment = "Please restart the program",
+                        ConfirmText = "Ok",
+                        CancelVisibility = Visibility.Collapsed,
+                    };
+
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
+                    viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
+                    viewModelMain.OpenPopup(ModelMain.EPopup.Info);
+                    return;
+                }
             });
+
             thread.IsBackground = true;
             thread.Start();
         }
