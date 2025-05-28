@@ -14,7 +14,8 @@
              d:DataContext="{d:DesignInstance vm:ViewModelSetMode_Preset}"
              d:DesignHeight="448" d:DesignWidth="990"
              MinHeight="448" MinWidth="990"
-             Background="{StaticResource Mex/ResColor/surface_page}">
+             Background="{StaticResource Mex/ResColor/surface_page}"
+             Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -47,6 +48,7 @@
                               VerticalContentAlignment="Top"/>
                 <Grid Height="16"/>
                 <Mex:MexItemBox x:Name="xBatteryTypeItemBox" 
+                                MouseLeftButtonUp="xBatteryTypeItemBox_MouseLeftButtonUp"
                                 Width="{Binding ElementName=xBatteryTypeStackPanel, Path=ActualWidth}" 
                                 IsParent="False"
                                 BorderThickness="1"
@@ -58,13 +60,6 @@
                                 SelectedItem="{Binding Model.SelectedBatteryType, Mode=TwoWay, FallbackValue=null}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                 ColorSet="{StaticResource Mex/ResColorSet_ItemBox/Primary}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="MouseLeftButtonUp">
-                            <b:InvokeCommandAction Command="{Binding SelectBatteryTypeCommand, 
-                                                                     Source={x:Static vm:ViewModelSetMode_Preset.Instance}}"
-                                               PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
                     <Mex:MexScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Vertical">
                             <Mex:MexTextBlock Text="EV6 Long Range Pack 1"/>

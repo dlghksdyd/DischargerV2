@@ -20,10 +20,6 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelSetMode_Preset : BindableBase
     {
-        #region Command
-        public DelegateCommand SelectBatteryTypeCommand { get; set; }
-        #endregion
-
         #region Model
         private ModelSetMode_Preset _model = new ModelSetMode_Preset();
         public ModelSetMode_Preset Model
@@ -69,8 +65,6 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelSetMode_Preset()
         {
             _instance = this;
-
-            SelectBatteryTypeCommand = new DelegateCommand(SelectBatteryType);
         }
 
         public void SetDischargerName(string dischargerName)
@@ -90,6 +84,7 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetBatteryType()
         {
             List<string> batteryTypeList = new List<string>();
+            int index = 0;
 
             OCV_Table.initOcvTable();
 
@@ -98,24 +93,38 @@ namespace DischargerV2.MVVM.ViewModels
                 batteryTypeList.Add(data.battTypeName);
             }
 
-            foreach (var model in ModelDictionary)
+            foreach (var model in ModelDictionary.Values)
             {
-                if (!(model.Value.BatteryTypeList.Count > 0))
+                if (!(model.BatteryTypeList.Count > 0))
                 {
-                    model.Value.BatteryTypeList = batteryTypeList;
+                    model.BatteryTypeList = batteryTypeList;
+                    model.SelectedBatteryType = model.BatteryTypeList[0]; // 기본값 설정
+
+                    SelectBatteryType(model, index);
+
+                    index += 1;
                 }
             }
         }
 
-        private void SelectBatteryType()
+        public void SelectBatteryType(ModelSetMode_Preset modelSetMode_Preset, int dischargerIndex = 0)
         {
-            ModelDischarger modelDischarger = ViewModelDischarger.Instance.SelectedModel;
+            ModelDischarger modelDischarger;
+
+            if (dischargerIndex >= 0)
+            {
+                modelDischarger = ViewModelDischarger.Instance.Model[dischargerIndex];
+            }
+            else
+            {
+                modelDischarger = ViewModelDischarger.Instance.SelectedModel;
+            }
 
             double receiveBatteryVoltage = modelDischarger.DischargerData.ReceiveBatteryVoltage;
-            string batteryType = Model.SelectedBatteryType;
+            string batteryType = modelSetMode_Preset.SelectedBatteryType;
             string currentSoC = OCV_Table.getSOC(batteryType, receiveBatteryVoltage).ToString();
 
-            Model.CurrentSoC = currentSoC;
+            modelSetMode_Preset.CurrentSoC = currentSoC;
         }
     }
 }
