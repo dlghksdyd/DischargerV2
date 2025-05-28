@@ -167,7 +167,7 @@ namespace DischargerV2.MVVM.ViewModels
             InitializeModelDictionary();
         }
 
-        private void InitializeModelDictionary()
+        public void InitializeModelDictionary()
         {
             // 기존 값 초기화
             ViewModelMonitor_Graph.Instance.ModelDictionary.Clear();

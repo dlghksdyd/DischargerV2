@@ -149,7 +149,7 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_Preset.Instance.SetBatteryType();
         }
 
-        private void InitializeViewModelDictionary()
+        public void InitializeViewModelDictionary()
         {
             // 기존 값 초기화
             StartDischargeDictionary.Clear();
