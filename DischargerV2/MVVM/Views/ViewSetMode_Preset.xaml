@@ -14,8 +14,7 @@
              d:DataContext="{d:DesignInstance vm:ViewModelSetMode_Preset}"
              d:DesignHeight="448" d:DesignWidth="990"
              MinHeight="448" MinWidth="990"
-             Background="{StaticResource Mex/ResColor/surface_page}"
-             Loaded="UserControl_Loaded">
+             Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>
         <ResourceDictionary>

@@ -32,15 +32,6 @@ namespace DischargerV2.MVVM.Views
             this.DataContext = _viewModel;
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-            foreach (var item in _viewModel.ModelDictionary.Values)
-            {
-
-            }
-        }
-
         private void xBatteryTypeItemBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _viewModel.SelectBatteryType(_viewModel.Model, -1);
