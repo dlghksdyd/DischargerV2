@@ -22,6 +22,7 @@ namespace DischargerV2.MVVM.Views
 
             this.DataContext = _viewModel;
 
+            _viewModel.DischargerChanged += _viewModel_DischargerChanged;
             _viewModel.GetDataChanged += _viewModel_GetDataChanged;
         }
 
@@ -92,6 +93,12 @@ namespace DischargerV2.MVVM.Views
             _viewModel.VoltageAxis.LabelFontName = "맑은 고딕";
             _viewModel.VoltageAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
+            DrawGraph();
+        }
+
+        private void _viewModel_DischargerChanged(object sender, System.EventArgs e)
+        {
+            //InitializeUI();
             DrawGraph();
         }
 

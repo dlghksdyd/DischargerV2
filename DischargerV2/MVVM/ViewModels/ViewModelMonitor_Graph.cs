@@ -28,6 +28,7 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelMonitor_Graph : BindableBase
     {
         #region Event
+        public event EventHandler DischargerChanged;
         public event EventHandler GetDataChanged;
         #endregion
 
@@ -48,6 +49,11 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+
+        public LeftAxis VoltageAxis { get; set; }
+        public LeftAxis CurrentAxis { get; set; }
+        public LeftAxis TempAxis { get; set; }
+        public LeftAxis SocAxis { get; set; }
 
         private Dictionary<string, ModelMonitor_Graph> _modelDictionary = new Dictionary<string, ModelMonitor_Graph>();
         public Dictionary<string, ModelMonitor_Graph> ModelDictionary
@@ -110,29 +116,29 @@ namespace DischargerV2.MVVM.ViewModels
             set => Model.SocScatter = value;
         }
 
-        public LeftAxis VoltageAxis
-        {
-            get => Model.VoltageAxis;
-            set => Model.VoltageAxis = value;
-        }
+        //public LeftAxis VoltageAxis
+        //{
+        //    get => Model.VoltageAxis;
+        //    set => Model.VoltageAxis = value;
+        //}
 
-        public LeftAxis CurrentAxis
-        {
-            get => Model.CurrentAxis;
-            set => Model.CurrentAxis = value;
-        }
+        //public LeftAxis CurrentAxis
+        //{
+        //    get => Model.CurrentAxis;
+        //    set => Model.CurrentAxis = value;
+        //}
 
-        public LeftAxis TempAxis
-        {
-            get => Model.TempAxis;
-            set => Model.TempAxis = value;
-        }
+        //public LeftAxis TempAxis
+        //{
+        //    get => Model.TempAxis;
+        //    set => Model.TempAxis = value;
+        //}
 
-        public LeftAxis SocAxis
-        {
-            get => Model.SocAxis;
-            set => Model.SocAxis = value;
-        }
+        //public LeftAxis SocAxis
+        //{
+        //    get => Model.SocAxis;
+        //    set => Model.SocAxis = value;
+        //}
 
         public double[] DataNoArray
         {
@@ -188,6 +194,8 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetDischargerName(string dischargerName)
         {
             Model = ModelDictionary[dischargerName];
+
+            DischargerChanged?.Invoke(Instance, EventArgs.Empty);
         }
 
         public void SetDischargeMode(string dischargerName, EDischargeMode eDischargeMode)
