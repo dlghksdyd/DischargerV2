@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.ViewModels;
+﻿using DischargerV2.MVVM.Models;
+using DischargerV2.MVVM.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utility.Common;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -28,6 +30,20 @@ namespace DischargerV2.MVVM.Views
             InitializeComponent();
 
             this.DataContext = _viewModel;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+            foreach (var item in _viewModel.ModelDictionary.Values)
+            {
+
+            }
+        }
+
+        private void xBatteryTypeItemBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.SelectBatteryType(_viewModel.Model, -1);
         }
     }
 }
