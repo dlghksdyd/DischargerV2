@@ -44,6 +44,11 @@ namespace DischargerV2.MVVM.Views
             _viewModelDischarger.InitializeDischarger();
 
             InitializeDischargerSelection();
+
+            ViewModelMain.Instance.InitializeModel();
+            ViewModelSetMode.Instance.InitializeModelDictionary();
+            ViewModelSetMode.Instance.InitializeViewModelDictionary();
+            ViewModelMonitor_Graph.Instance.InitializeModelDictionary();
         }
 
         private void xTempReconnectImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
