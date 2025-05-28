@@ -98,7 +98,6 @@ namespace DischargerV2.MVVM.Views
 
         private void _viewModel_DischargerChanged(object sender, System.EventArgs e)
         {
-            //InitializeUI();
             DrawGraph();
         }
 

@@ -37,6 +37,8 @@ namespace DischargerV2.MVVM.ViewModels
         #endregion
 
         #region Property
+        public string SelectedDischargerName;
+
         private static ViewModelMonitor_Graph _instance = new ViewModelMonitor_Graph();
         public static ViewModelMonitor_Graph Instance
         {
@@ -193,6 +195,15 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetDischargerName(string dischargerName)
         {
+            if (SelectedDischargerName != null && SelectedDischargerName != "")
+            {
+                // 현재 값을 ModelDictionary에 넣기 
+                ModelDictionary[SelectedDischargerName] = Model;
+            }
+
+            SelectedDischargerName = dischargerName;
+
+            // ModelDictionary 값 가져오기
             Model = ModelDictionary[dischargerName];
 
             DischargerChanged?.Invoke(Instance, EventArgs.Empty);
