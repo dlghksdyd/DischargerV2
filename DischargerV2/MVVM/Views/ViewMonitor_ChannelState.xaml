@@ -71,7 +71,7 @@
         </Border>
         <Grid Width="16"/>
         <Image x:Name="xSoundImage" 
-               Width="48" Height="48"
+               Width="40" Height="40"
                Source="{Binding Source={StaticResource Mex/ResImage/volume_up}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_primary}}" 
                MouseLeftButtonUp="xSoundImage_MouseLeftButtonUp" Cursor="Hand"></Image>
     </StackPanel>
