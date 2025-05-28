@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MExpress.Mex;
-using DischargerV2.MVVM.ViewModels;
 using Ethernet.Client.Discharger;
+using static DischargerV2.Ini.IniDischarge;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -26,6 +15,24 @@ namespace DischargerV2.MVVM.Views
         public ViewMonitor_ChannelState()
         {
             InitializeComponent();
+            InitializeIni();
+        }
+
+        private void InitializeIni()
+        {
+            // Ini
+            var eSound = GetIniData<ESound>(EIniData.Sound);
+
+            if (eSound == ESound.On)
+            {
+                xSoundImage.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_up, null, ResColor.icon_primary, null);
+                EthernetClientDischarger.IsLampBuzzerUsed = true;
+            }
+            else
+            {
+                xSoundImage.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_off, null, ResColor.icon_primary, null);
+                EthernetClientDischarger.IsLampBuzzerUsed = false;
+            }
         }
 
         private void xSoundImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -36,11 +43,15 @@ namespace DischargerV2.MVVM.Views
             {
                 image.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_off, null, ResColor.icon_primary, null);
                 EthernetClientDischarger.IsLampBuzzerUsed = false;
+
+                SetIniData(EIniData.Sound, ESound.Off);
             }
             else
             {
                 image.Source = (BitmapImage)new ImageColorConverter().Convert(ResImage.volume_up, null, ResColor.icon_primary, null);
                 EthernetClientDischarger.IsLampBuzzerUsed = true;
+
+                SetIniData(EIniData.Sound, ESound.On);
             }
         }
     }
