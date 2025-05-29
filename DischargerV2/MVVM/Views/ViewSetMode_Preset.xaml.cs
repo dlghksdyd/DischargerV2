@@ -34,7 +34,7 @@ namespace DischargerV2.MVVM.Views
 
         private void xBatteryTypeItemBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _viewModel.SelectBatteryType(_viewModel.Model, -1);
+            _viewModel.GetCurrentSoc(_viewModel.Model, -1);
         }
     }
 }
