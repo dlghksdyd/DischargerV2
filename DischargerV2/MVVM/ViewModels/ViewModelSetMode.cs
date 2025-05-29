@@ -235,16 +235,6 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (StartDischargeDictionary.ContainsKey(Model.DischargerName))
             {
-                ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
-                {
-                    Title = "Wait",
-                    Comment = "Wait for starting...",
-                };
-
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
-
                 // Graph 방전 모드 설정
                 ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
@@ -257,6 +247,16 @@ namespace DischargerV2.MVVM.ViewModels
                 // 방전 시작
                 Thread thread = new Thread(() =>
                 {
+                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    {
+                        Title = "Wait",
+                        Comment = "Wait for starting...",
+                    };
+
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
+                    viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
+                    viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
+
                     StartDischargeDictionary[Model.DischargerName].StartDischarge();
 
                     DateTime startTime = DateTime.Now;
