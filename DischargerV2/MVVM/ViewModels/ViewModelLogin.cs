@@ -58,6 +58,7 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Model.UserName = user.UserName;
                     Model.Initial = user.UserName.Substring(0, 1).ToUpper();
+                    Model.IsAdmin = user.IsAdmin;
                     Model.Permission = user.IsAdmin? "Admin" : "User";
                     Model.Visibility = Visibility.Collapsed;
 
@@ -75,6 +76,16 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 new LogTrace(ELogTrace.ERROR_LOGIN, ex);
             }
+        }
+
+        public bool IsAdmin()
+        {
+            return Model.IsAdmin;
+        }
+
+        public bool IsMintech()
+        {
+            return (Model.UserId == "mintech") ? true : false;
         }
     }
 }

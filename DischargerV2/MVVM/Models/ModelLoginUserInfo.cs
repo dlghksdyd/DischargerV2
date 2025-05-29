@@ -75,7 +75,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _permission = "Admin";
+        private string _permission = "User";
         public string Permission
         {
             get
@@ -85,6 +85,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _permission, value);
+            }
+        }
+
+        private bool _isAdmin = false;
+        public bool IsAdmin
+        {
+            get
+            {
+                return _isAdmin;
+            }
+            set
+            {
+                SetProperty(ref _isAdmin, value);
             }
         }
     }

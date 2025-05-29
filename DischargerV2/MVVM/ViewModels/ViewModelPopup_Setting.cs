@@ -46,18 +46,39 @@ namespace DischargerV2.MVVM.ViewModels
 
                     if (name == "xUserSettingLabel")
                     {
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+                        if (ViewModelLogin.Instance.IsAdmin())
+                        {
+                            ViewModelMain viewModelMain = ViewModelMain.Instance;
+                            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+                        }
+                        else
+                        {
+                            MessageBox.Show("사용자 등록 정보를 볼 권한이 없습니다.");
+                        }
                     }
                     else if (name == "xDeviceRegisterLabel")
                     {
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+                        if (ViewModelLogin.Instance.IsAdmin())
+                        {
+                            ViewModelMain viewModelMain = ViewModelMain.Instance;
+                            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+                        }
+                        else
+                        {
+                            MessageBox.Show("방전기 등록 정보를 볼 권한이 없습니다.");
+                        }
                     }
                     else if (name == "xModelRegisterLabel")
                     {
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-                        viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
+                        if (ViewModelLogin.Instance.IsMintech())
+                        {
+                            ViewModelMain viewModelMain = ViewModelMain.Instance;
+                            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
+                        }
+                        else
+                        {
+                            MessageBox.Show("모델 등록 정보를 볼 권한이 없습니다.");
+                        }
                     }
                     else if (name == "xLogoutLabel")
                     {
