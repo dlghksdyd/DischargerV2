@@ -2,6 +2,7 @@
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Prism.Mvvm;
+using ScottPlot.Panels;
 using Sqlite.Common;
 using System.Linq;
 using System.Threading;
@@ -71,8 +72,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait",
-                        Comment = "Wait to pause..."
+                        Title = "Wait to pause",
+                        Comment = $"Discharger Name: {Model.DischargerName}",
                     };
                     ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
@@ -99,8 +100,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait",
-                        Comment = "Wait to resume..."
+                        Title = "Wait to resume",
+                        Comment = $"Discharger Name: {Model.DischargerName}",
                     };
                     ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
@@ -135,8 +136,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait",
-                        Comment = "Wait for stopping..."
+                        Title = "Wait to stop",
+                        Comment = $"Discharger Name: {Model.DischargerName}",
                     };
                     ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
