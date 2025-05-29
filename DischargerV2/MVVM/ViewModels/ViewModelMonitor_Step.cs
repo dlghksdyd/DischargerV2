@@ -25,18 +25,6 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelMonitor_Step : BindableBase
     {
-        #region
-        public event EventHandler PhaseNoChanged;
-        #endregion
-
-        #region Command
-        #endregion
-
-        #region Model
-        public ModelMonitor_Step Model { get; set; } = new ModelMonitor_Step();
-        #endregion
-
-        #region Property
         private static ViewModelMonitor_Step _instance = new ViewModelMonitor_Step();
         public static ViewModelMonitor_Step Instance
         {
@@ -50,25 +38,128 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public int PhaseNo
+        #region Defines
+        public class PhaseDataBinding : BindableBase
         {
-            get => Model.PhaseNo;
-            set => Model.PhaseNo = value;
+            private string _no;
+            public string No
+            {
+                get => _no;
+                set => SetProperty(ref _no, value);
+            }
+
+            private string _mode;
+            public string Mode
+            {
+                get => _mode;
+                set => SetProperty(ref _mode, value);
+            }
+
+            private double _voltage;
+            public double Voltage
+            {
+                get => _voltage;
+                set => SetProperty(ref _voltage, value);
+            }
+
+            private double _current;
+            public double Current
+            {
+                get => _current;
+                set => SetProperty(ref _current, value);
+            }
+
+            private SolidColorBrush _background = ResColor.transparent;
+            public SolidColorBrush Background
+            {
+                get => _background;
+                set => SetProperty(ref _background, value);
+            }
         }
         #endregion
 
+        #region Property
+        private ObservableCollection<PhaseDataBinding> _phaseData = new ObservableCollection<PhaseDataBinding>();
+        public ObservableCollection<PhaseDataBinding> PhaseData
+        {
+            get => _phaseData;
+            set => SetProperty(ref _phaseData, value);
+        }
+        #endregion
+
+        private MexScrollViewer _scrollViewer = null;
+
+        private object _phaseDataLock = new object();
+
         public ViewModelMonitor_Step()
         {
-            _instance = this;
+
         }
 
-        public void SetPhaseNo(int phaseNo)
+        public void SetScrollViewer(MexScrollViewer scrollViewer)
         {
-            PhaseNo = phaseNo;
+            _scrollViewer = scrollViewer;
+        }
 
-            if (PhaseNoChanged != null)
+        public void UpdatePhaseData(string dischargerName)
+        {
+            // 현재 선택된 방전기의 PhaseData를 UI에 반영
+            var startDischarge = ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName];
+            var phaseDataList = startDischarge.Model.PhaseDataList;
+
+            lock (_phaseDataLock)
             {
-                PhaseNoChanged(Instance, EventArgs.Empty);
+                PhaseData.Clear();
+                foreach (var phaseData in phaseDataList)
+                {
+                    PhaseDataBinding binding = new PhaseDataBinding
+                    {
+                        No = phaseData.No,
+                        Mode = phaseData.Mode,
+                        Voltage = phaseData.Voltage,
+                        Current = phaseData.Current,
+                        Background = ResColor.transparent
+                    };
+                    PhaseData.Add(binding);
+                }
+            }
+
+            UpdatePhaseIndex();
+        }
+
+        public void UpdatePhaseIndex()
+        {
+            // 현재 선택된 방전기의 PhaseIndex를 UI에 반영
+            lock (_phaseDataLock)
+            {
+                var selectedDischargerName = ViewModelSetMode.Instance.SelectedDischargerName;
+                var selectedStartDischarge = ViewModelSetMode.Instance.StartDischargeDictionary[selectedDischargerName];
+
+                if (selectedStartDischarge.PhaseIndex >= PhaseData.Count) return;
+
+                for (int i = 0; i < PhaseData.Count; i++)
+                {
+                    if (i == selectedStartDischarge.PhaseIndex)
+                    {
+                        PhaseData[i].Background = ResColor.table_selected;
+                    }
+                    else
+                    {
+                        PhaseData[i].Background = ResColor.transparent;
+                    }
+                }
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (selectedStartDischarge.PhaseIndex >= 3)
+                    {
+                        _scrollViewer.ScrollToVerticalOffset(((double)selectedStartDischarge.PhaseIndex - 2) * 52);
+                    }
+                    else
+                    {
+                        _scrollViewer.ScrollToVerticalOffset(0);
+                    }
+                });
             }
         }
     }

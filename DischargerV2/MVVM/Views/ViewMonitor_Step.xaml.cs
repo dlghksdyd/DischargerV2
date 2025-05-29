@@ -25,152 +25,20 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewMonitor_Step : UserControl
     {
-        private ViewModelMonitor_Step _viewModelMonitor_Step = ViewModelMonitor_Step.Instance;
-        private ViewModelSetMode_Step _viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
+        private ViewModelMonitor_Step _viewModel = ViewModelMonitor_Step.Instance;
 
         public ViewMonitor_Step()
         {
             InitializeComponent();
 
-            this.DataContext = _viewModelMonitor_Step;
+            this.DataContext = _viewModel;
 
-            this.Loaded += ViewMonitorStep_Loaded;
-
-            _viewModelMonitor_Step.PhaseNoChanged += _viewModelMonitor_Step_PhaseNoChanged;
-            _viewModelSetMode_Step.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
+            this.Loaded += ViewMonitor_Step_Loaded; ;
         }
 
-        private void ViewMonitorStep_Loaded(object sender, RoutedEventArgs e)
+        private void ViewMonitor_Step_Loaded(object sender, RoutedEventArgs e)
         {
-            UpdateUI();
-            SelectRow(0);
-        }
-
-        private void _viewModelMonitor_Step_PhaseNoChanged(object sender, EventArgs e)
-        {
-            SelectRow();
-        }
-
-        private void _viewModel_SelectedDischargerChanged(object sender, EventArgs e)
-        {
-            UpdateUI();
-            SelectRow();
-        }
-
-        private void UpdateUI()
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (this.Visibility != Visibility.Visible) return;
-
-                // Table 초기화
-                xTable.Rows.Clear();
-
-                ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
-
-                for (int index = 0; index < viewModelSetMode_Step.Model.Content.Count; index++)
-                {
-                    ModelSetMode_StepData stepData = viewModelSetMode_Step.Model.Content[index];
-
-                    MexTableRow mexTableRow = new MexTableRow()
-                    {
-                        Height = 52
-                    };
-
-                    // No
-                    mexTableRow.Columns.Add(new MexTableRowColumn()
-                    {
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Content = new MexTextBlock()
-                        {
-                            Margin = new Thickness(16, 0, 16, 0),
-                            Text = (index + 1).ToString(),
-                            Foreground = ResColor.text_body,
-                            FontSet = ResFontSet.body_md_regular
-                        }
-                    });
-
-                    // Mode
-                    if (index == viewModelSetMode_Step.Model.Content.Count - 1 &&
-                        viewModelSetMode_Step.Model.IsCompleteDischarge)
-                    {
-                        mexTableRow.Columns.Add(new MexTableRowColumn()
-                        {
-                            Content = new MexTextBlock()
-                            {
-                                Margin = new Thickness(16, 0, 16, 0),
-                                Text = "CCCV",
-                                Foreground = ResColor.text_body,
-                                FontSet = ResFontSet.body_md_regular
-                            }
-                        });
-                    }
-                    else
-                    {
-                        mexTableRow.Columns.Add(new MexTableRowColumn()
-                        {
-                            Content = new MexTextBlock()
-                            {
-                                Margin = new Thickness(16, 0, 16, 0),
-                                Text = "CC",
-                                Foreground = ResColor.text_body,
-                                FontSet = ResFontSet.body_md_regular
-                            }
-                        });
-                    }
-
-                    // Voltage
-                    mexTableRow.Columns.Add(new MexTableRowColumn()
-                    {
-                        Content = new MexTextBlock()
-                        {
-                            Margin = new Thickness(16, 0, 16, 0),
-                            Text = stepData.Voltage,
-                            Foreground = ResColor.text_body,
-                            FontSet = ResFontSet.body_md_regular
-                        }
-                    });
-
-                    // Current
-                    mexTableRow.Columns.Add(new MexTableRowColumn()
-                    {
-                        Content = new MexTextBlock()
-                        {
-                            Margin = new Thickness(16, 0, 16, 0),
-                            Text = stepData.Current,
-                            Foreground = ResColor.text_body,
-                            FontSet = ResFontSet.body_md_regular
-                        }
-                    });
-
-                    xTable.Rows.Add(mexTableRow);
-                }
-            });
-        }
-
-        /// <summary>
-        /// selectIndex 미설정 → _viewModelMonitor_Step.PhaseNo 값으로 선택
-        /// </summary>
-        /// <param name="index"></param>
-        private void SelectRow(int selectIndex = -1)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                selectIndex = (selectIndex < 0) ? _viewModelMonitor_Step.PhaseNo : selectIndex;
-
-                // 행 선택
-                xTable.SelectRow(xTable.Rows[selectIndex]);
-
-                // 선택한 행을 맨 위로 올릴 수 있도록 scroll offset 적용
-                double offset = 0;
-
-                for (int index = 0; index < selectIndex; index++)
-                {
-                    offset += xTable.Rows[index].Height;
-                }
-
-                xTable.ScrollToVerticalOffset(offset);
-            });
+            _viewModel.SetScrollViewer(xScrollViewer);
         }
     }
 }

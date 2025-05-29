@@ -142,7 +142,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelMain.Instance.SetIsStartedArray(false);
 
                 // PhaseNo 초기화
-                ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
+                ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseIndex = 0;
 
                 // Button IsEnable Binding 값 초기화
                 Model.PauseNResumeIsEnable = true;

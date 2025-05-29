@@ -101,7 +101,7 @@ namespace DischargerV2.MVVM.ViewModels
             // ModelDictionary 값 가져오기
             Model.StandardCapacity = ModelDictionary[dischargerName].StandardCapacity;
             Model.IsCompleteDischarge = ModelDictionary[dischargerName].IsCompleteDischarge;
-            
+           
             SetModelContent(Model, ModelDictionary[dischargerName]);
 
             SelectedDischargerChanged?.Invoke(this, EventArgs.Empty);
@@ -149,7 +149,7 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         Voltage = stepInfo.VoltPerModule.ToString(),
                         Current = stepInfo.FixedCurrent.ToString(),
-                        CRate = stepInfo.CratePerModule.ToString()
+                        CRate = stepInfo.CratePerModule.ToString(),
                     });
                 }
 

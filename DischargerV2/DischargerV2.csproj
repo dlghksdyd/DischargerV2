@@ -207,7 +207,6 @@
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
     <Compile Include="MVVM\Models\ModelDischarger.cs" />
     <Compile Include="MVVM\Models\ModelLoginUserInfo.cs" />
-    <Compile Include="MVVM\Models\ModelMonitor_Step.cs" />
     <Compile Include="MVVM\Models\ModelMonitor_State.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_SafetyCondition.cs" />
     <Compile Include="MVVM\Models\ModelSetMode_Simple.cs" />
