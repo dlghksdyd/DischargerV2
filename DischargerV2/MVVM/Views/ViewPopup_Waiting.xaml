@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Warning}"
              d:DesignHeight="248" d:DesignWidth="600"
-             MinHeight="248" MinWidth="600"
+             Height="Auto" MinWidth="600"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>
@@ -30,9 +30,9 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <Image Width="30" Height="30" Source="{Binding Source={StaticResource Mex/ResImage/progress_circle}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/text_headings}}">
+                <Image Width="24" Height="24" Source="{Binding Source={StaticResource Mex/ResImage/progress_circle}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/text_headings}}">
                     <Image.RenderTransform>
-                        <RotateTransform x:Name="xRotate" CenterX="15" CenterY="15"/>
+                        <RotateTransform x:Name="xRotate" CenterX="12" CenterY="12"/>
                     </Image.RenderTransform>
                 </Image>
                 <Mex:MexLabel Text="{Binding Title, FallbackValue=Title}" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/heading_h6}" TextPadding="12 0 0 0" HorizontalAlignment="Left"/>

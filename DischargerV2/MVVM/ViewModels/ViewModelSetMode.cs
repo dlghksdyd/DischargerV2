@@ -264,8 +264,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait",
-                        Comment = "Wait for starting...",
+                        Title = "Wait to start",
+                        Comment = $"Discharger Name: {Model.DischargerName}",
                     };
 
                     ViewModelMain viewModelMain = ViewModelMain.Instance;
