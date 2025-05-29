@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
+using MExpress.Mex;
 using Prism.Mvvm;
 using Sqlite.Common;
 using System.Linq;
@@ -20,13 +21,12 @@ namespace DischargerV2.MVVM.ViewModels
         #region Property
         private System.Timers.Timer DischargeTimer = null;
 
-        public int PhaseNo
+        public int PhaseIndex
         {
-            get => Model.PhaseNo;
+            get => Model.PhaseIndex;
             set
             {
-                Model.PhaseNo = value;
-                ViewModelMonitor_Step.Instance.SetPhaseNo(PhaseNo);
+                Model.PhaseIndex = value;
             }
         }
         #endregion
@@ -41,15 +41,15 @@ namespace DischargerV2.MVVM.ViewModels
         public void StartDischarge()
         {
             // 초기화
-            PhaseNo = 0;
+            PhaseIndex = 0;
             Model.IsEnterLastPhase = false;
             ViewModelMonitor_Graph.Instance.ClearReceiveData(Model.DischargerName);
 
             ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
             {
                 DischargerName = Model.DischargerName,
-                Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                Current = -Model.PhaseDataList[PhaseNo].Current,
+                Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                Current = -Model.PhaseDataList[PhaseIndex].Current,
                 EDischargeTarget = Model.EDischargeTarget,
                 LogFileName = _logFileName,
                 IsRestart = false,
@@ -109,8 +109,8 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
                 {
                     DischargerName = Model.DischargerName,
-                    Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                    Current = -Model.PhaseDataList[PhaseNo].Current,
+                    Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                    Current = -Model.PhaseDataList[PhaseIndex].Current,
                     EDischargeTarget = Model.EDischargeTarget,
                     LogFileName = _logFileName,
                     IsRestart = true,
@@ -209,10 +209,10 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // 타겟 전압에 도달했을 경우 Phase 상승
-                if (receiveVoltage <= Model.PhaseDataList[PhaseNo].Voltage)
+                if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
                 {
                     // 모든 Phase 끝났을 때
-                    if (PhaseNo == Model.PhaseDataList.Count - 1)
+                    if (PhaseIndex == Model.PhaseDataList.Count - 1)
                     {
                         if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
                         {
@@ -225,13 +225,15 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else
                     {
-                        PhaseNo++;
+                        PhaseIndex += 1;
+
+                        ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
 
                         viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
                         {
                             DischargerName = Model.DischargerName,
-                            Voltage = Model.PhaseDataList[PhaseNo].Voltage,
-                            Current = -Model.PhaseDataList[PhaseNo].Current,
+                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                            Current = -Model.PhaseDataList[PhaseIndex].Current,
                         });
                     }
                 }

@@ -18,11 +18,42 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelStartDischarge : BindableBase
     {
-        public class PhaseData
+        public class PhaseData : BindableBase
         {
-            public double Voltage { get; set; }
-            public double Current { get; set; }
-            public double CRate { get; set; }
+            private string _no;
+            public string No
+            {
+                get => _no;
+                set => SetProperty(ref _no, value);
+            }
+
+            private string _mode;
+            public string Mode
+            {
+                get => _mode;
+                set => SetProperty(ref _mode, value);
+            }
+
+            private double _voltage;
+            public double Voltage
+            {
+                get => _voltage;
+                set => SetProperty(ref _voltage, value);
+            }
+
+            private double _current;
+            public double Current
+            {
+                get => _current;
+                set => SetProperty(ref _current, value);
+            }
+
+            private double _cRate;
+            public double CRate
+            {
+                get => _cRate;
+                set => SetProperty(ref _cRate, value);
+            }
         }
 
         private string _dischargerName;
@@ -90,8 +121,8 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private List<PhaseData> _phaseDataList = new List<PhaseData>();
-        public List<PhaseData> PhaseDataList
+        private ObservableCollection<PhaseData> _phaseDataList = new ObservableCollection<PhaseData>();
+        public ObservableCollection<PhaseData> PhaseDataList
         {
             get
             {
@@ -117,7 +148,7 @@ namespace DischargerV2.MVVM.Models
         }
 
         private int _phaseNo = 0;
-        public int PhaseNo
+        public int PhaseIndex
         {
             get
             {

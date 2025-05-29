@@ -8,6 +8,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Windows;
 using Utility.Common;
@@ -75,6 +76,17 @@ namespace DischargerV2.MVVM.ViewModels
                 SetProperty(ref _startDischargeDictionary, value);
             }
         }
+
+        private string _selectedDischargerName = string.Empty;
+        public string SelectedDischargerName
+        {
+            get => _selectedDischargerName;
+            set
+            {
+                SetProperty(ref _selectedDischargerName, value);
+            }
+        }
+
         #endregion
 
         public ViewModelSetMode()
@@ -89,6 +101,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetDischargerName(string dischargerName)
         {
+            SelectedDischargerName = dischargerName;
             Model = ModelDictionary[dischargerName];
 
             ViewModelSetMode_Preset.Instance.SetDischargerName(dischargerName);
@@ -96,6 +109,7 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelSetMode_Simple.Instance.SetDischargerName(dischargerName);
             ViewModelSetMode_SafetyCondition.Instance.SetDischargerName(dischargerName);
             ViewModelMonitor_Graph.Instance.SetDischargerName(dischargerName);
+            ViewModelMonitor_Step.Instance.UpdatePhaseData(dischargerName);
         }
 
         public void InitializeModelDictionary()
@@ -184,6 +198,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             // 설정 값 적용
             StartDischargeDictionary[Model.DischargerName].Model = model;
+            ViewModelMonitor_Step.Instance.UpdatePhaseData(Model.DischargerName);
 
             // 방전 로그 파일명 설정 및 확인
             CheckLogFileName();
@@ -547,25 +562,35 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 ModelSetMode_Step modelStep = ViewModelSetMode_Step.Instance.Model;
 
+                for (int index = 0; index < modelStep.Content.ToList().Count; index++)
+                {
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        No = (index + 1).ToString(),
+                        Mode = "CC",
+                        Voltage = Convert.ToDouble(modelStep.Content[index].Voltage),
+                        Current = Convert.ToDouble(modelStep.Content[index].Current),
+                        CRate = Convert.ToDouble(modelStep.Content[index].CRate),
+                    });
+                }
+
                 if (modelStep.IsCompleteDischarge)
                 {
                     model.EDischargeTarget = EDischargeTarget.Full;
+
+                    int count = model.PhaseDataList.Count;
+                    model.PhaseDataList.Add(new PhaseData()
+                    {
+                        No = (count + 1).ToString(),
+                        Mode = "CCCV",
+                        Voltage = Convert.ToDouble(0.0),
+                        Current = Convert.ToDouble(modelStep.Content.Last().Current),
+                        CRate = Convert.ToDouble(modelStep.Content.Last().CRate),
+                    });
                 }
                 else
                 {
                     model.EDischargeTarget = EDischargeTarget.Voltage;
-                }
-
-                foreach (var stepData in modelStep.Content)
-                {
-                    if (stepData == null) continue;
-
-                    model.PhaseDataList.Add(new PhaseData()
-                    {
-                        Voltage = Convert.ToDouble(stepData.Voltage),
-                        Current = Convert.ToDouble(stepData.Current),
-                        CRate = Convert.ToDouble(stepData.CRate),
-                    });
                 }
             }
             // Simple Mode

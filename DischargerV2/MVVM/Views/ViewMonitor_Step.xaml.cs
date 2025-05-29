@@ -25,22 +25,18 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewMonitor_Step : UserControl
     {
-        private ViewModelMonitor_Step _viewModelMonitor_Step = ViewModelMonitor_Step.Instance;
-        private ViewModelSetMode_Step _viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
+        private ViewModelMonitor_Step _viewModel = ViewModelMonitor_Step.Instance;
 
         public ViewMonitor_Step()
         {
             InitializeComponent();
 
-            this.DataContext = _viewModelMonitor_Step;
+            this.DataContext = _viewModel;
 
-            this.Loaded += ViewMonitorStep_Loaded;
-
-            _viewModelMonitor_Step.PhaseNoChanged += _viewModelMonitor_Step_PhaseNoChanged;
-            _viewModelSetMode_Step.SelectedDischargerChanged += _viewModel_SelectedDischargerChanged;
+            this.Loaded += ViewMonitor_Step_Loaded; ;
         }
 
-        private void ViewMonitorStep_Loaded(object sender, RoutedEventArgs e)
+        private void ViewMonitor_Step_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateUI();
             SelectRow(0);
