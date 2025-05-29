@@ -41,5 +41,18 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _comment, value);
             }
         }
+
+        private Visibility _cancelButtonVisibility = Visibility.Visible;
+        public Visibility CancelButtonVisibility
+        {
+            get
+            {
+                return _cancelButtonVisibility;
+            }
+            set
+            {
+                SetProperty(ref _cancelButtonVisibility, value);
+            }
+        }
     }
 }

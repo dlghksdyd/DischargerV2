@@ -287,6 +287,7 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 Title = "Warning",
                                 Comment = "Fail to start discharging.",
+                                CancelButtonVisibility = Visibility.Hidden
                             };
 
                             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);

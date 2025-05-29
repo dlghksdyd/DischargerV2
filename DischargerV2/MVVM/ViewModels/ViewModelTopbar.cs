@@ -66,6 +66,7 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 Title = "Warning",
                                 Comment = "Please stop discharging before opening this popup.",
+                                CancelButtonVisibility = Visibility.Hidden,
                             };
                             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
                             viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);

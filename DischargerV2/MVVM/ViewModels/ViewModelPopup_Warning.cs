@@ -53,6 +53,18 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.Comment = value;
             }
         }
+
+        public Visibility CancelButtonVisibility
+        {
+            get
+            {
+                return Model.CancelButtonVisibility;
+            }
+            set
+            {
+                Model.CancelButtonVisibility = value;
+            }
+        }
         #endregion
 
         public ViewModelPopup_Warning()
