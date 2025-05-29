@@ -235,6 +235,7 @@ namespace DischargerV2.MVVM.ViewModels
                             DischargerName = Model.DischargerName,
                             Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
                             Current = -Model.PhaseDataList[PhaseIndex].Current,
+                            LogFileName = _logFileName
                         });
                     }
                 }

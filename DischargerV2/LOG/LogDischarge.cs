@@ -2,6 +2,7 @@
 using Ethernet.Client.Discharger;
 using Sqlite.Common;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -121,7 +122,7 @@ namespace DischargerV2.LOG
 
         public static string Path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\LOG\\Discharge";
         
-        public static Queue<List<string>> LogQueue = new Queue<List<string>>();
+        public static ConcurrentQueue<List<string>> LogQueue = new ConcurrentQueue<List<string>>();
         private static readonly object WriteLock = new object();
 
         public static bool CheckExit(string fileName)
@@ -382,19 +383,22 @@ namespace DischargerV2.LOG
 
             SetTraceData(eLogDischarge, parameter);
 
-            List<string> listContent = new List<string>
+            LogQueue.Enqueue(new List<string>
             {
                 " " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 Code.ToString(), Level, Mnemonic, Description, Parameter
-            };
-
-            LogQueue.Enqueue(listContent);
+            });
 
             lock (WriteLock)
             {
                 while (LogQueue.Count > 0)
                 {
-                    SaveFile_Discharge(LogQueue.Dequeue(), Path, fileName);
+                    if (LogQueue.TryDequeue(out List<string> listContent))
+                    {
+                        if (listContent == null) continue;
+
+                        SaveFile_Discharge(listContent, Path, fileName);
+                    }
                 }
             }
         }

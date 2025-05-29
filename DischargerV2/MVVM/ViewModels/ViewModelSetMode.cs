@@ -536,12 +536,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                     model.PhaseDataList.Add(new PhaseData()
                     {
-                        Voltage = OCV_Table.getPhase2Volt(batteryType),
-                        Current = OCV_Table.getCapcity(batteryType) / 3
-                    });
-
-                    model.PhaseDataList.Add(new PhaseData()
-                    {
                         Voltage = tagetVoltage,
                         Current = OCV_Table.getCapcity(batteryType) / 3
                     });
