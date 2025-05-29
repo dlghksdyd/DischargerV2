@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
 
 namespace DischargerV2.MVVM.Views
@@ -27,6 +14,36 @@ namespace DischargerV2.MVVM.Views
             InitializeComponent();
 
             this.DataContext = new ViewModelUserSetting_Info();
+
+            this.DataContextChanged += ViewUserSetting_Info_DataContextChanged;
+        }
+
+        private void ViewUserSetting_Info_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.DataContext is ViewModelUserSetting_Info viewModelUserSetting)
+            {
+                if (viewModelUserSetting.Id.ToLower() == "admin" ||
+                    viewModelUserSetting.Id.ToLower() == "mintech")
+                {
+                    xDeleteImage.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void xEditImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (this.DataContext is ViewModelUserSetting_Info viewModelUserSetting)
+            {
+                viewModelUserSetting.OpenPopupEditUser();
+            }
+        }
+
+        private void xDeleteImage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (this.DataContext is ViewModelUserSetting_Info viewModelUserSetting)
+            {
+                viewModelUserSetting.DeleteUserInfo();
+            }
         }
     }
 }

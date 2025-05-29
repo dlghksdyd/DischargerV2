@@ -29,9 +29,8 @@
             <Grid Grid.Row="0" Margin="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="24"/>
-                    <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                     <Grid Width="35" Height="35">
@@ -65,27 +64,15 @@
                        Width="24" Height="24"
                        Source="{Binding Source={StaticResource Mex/ResImage/edit},
                                         Converter={StaticResource ImageColorConverter}, 
-                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="MouseLeftButtonUp">
-                            <b:InvokeCommandAction Command="{Binding OpenPopupEditUserCommand}"
-                                                   PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                </Image>
-                <Image x:Name="xDeleteImage" Grid.Column="3"
-                       Width="24" Height="24"
+                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                       MouseLeftButtonUp="xEditImage_MouseLeftButtonUp"/>
+                <Image x:Name="xDeleteImage" Grid.Column="2" 
+                       Width="24" Height="24" Margin="8 0 0 0"
                        Cursor="Hand"
                        Source="{Binding Source={StaticResource Mex/ResImage/delete},
                                         Converter={StaticResource ImageColorConverter}, 
-                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="MouseLeftButtonUp">
-                            <b:InvokeCommandAction Command="{Binding OpenPopupDeleteCommand}"
-                                                   PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                </Image>
+                                        ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                       MouseLeftButtonUp="xDeleteImage_MouseLeftButtonUp"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"

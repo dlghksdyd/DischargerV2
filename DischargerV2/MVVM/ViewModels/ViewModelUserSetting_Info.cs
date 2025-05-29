@@ -23,11 +23,6 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelUserSetting_Info : BindableBase
     {
-        #region Command
-        public DelegateCommand OpenPopupEditUserCommand { get; set; }
-        public DelegateCommand OpenPopupDeleteCommand { get; set; }
-        #endregion
-
         #region Model
         public ModelUserSetting_Info Model { get; set; } = new ModelUserSetting_Info();
 
@@ -62,13 +57,7 @@ namespace DischargerV2.MVVM.ViewModels
         }
         #endregion
 
-        public ViewModelUserSetting_Info()
-        {
-            OpenPopupEditUserCommand = new DelegateCommand(OpenPopupEditUser);
-            OpenPopupDeleteCommand = new DelegateCommand(OpenPopupDelete);
-        }
-
-        private void OpenPopupEditUser()
+        public void OpenPopupEditUser()
         {
             ViewModelPopup_EditUser viewModelPopup_EditUser = new ViewModelPopup_EditUser()
             {
@@ -83,7 +72,7 @@ namespace DischargerV2.MVVM.ViewModels
             viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.EditUser);
         }
 
-        private void OpenPopupDelete()
+        public void OpenPopupDelete()
         {
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
@@ -131,7 +120,6 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 new LogTrace(ELogTrace.ERROR_DELETE_USER, ex);
             }
-            
         }
     }
 }
