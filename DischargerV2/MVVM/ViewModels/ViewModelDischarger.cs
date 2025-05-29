@@ -478,19 +478,20 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (sender is ModelDischarger model)
+            if (sender is ModelDischarger modelDischarger)
             {
                 if (e.PropertyName == nameof(ModelDischarger.DischargerState))
                 {
-                    UpdateChannelState();
+                    UpdateChannelState(modelDischarger);
                 }
             }
         }
 
-        private void UpdateChannelState()
+        private void UpdateChannelState(ModelDischarger modelDischarger)
         {
             ConnectedChannelCount = 0;
             FaultChannelCount = 0;
+
             foreach (var model in Model)
             {
                 AllChannelCount = Model.Count;
@@ -499,6 +500,11 @@ namespace DischargerV2.MVVM.ViewModels
                     model.DischargerState == EDischargerState.Discharging ||
                     model.DischargerState == EDischargerState.Pause)
                 {
+                    if (model == modelDischarger)
+                    {
+                        ViewModelSetMode_Preset.Instance.GetCurrentSoc(model);
+                    }
+
                     ConnectedChannelCount += 1;
                 }
                 else

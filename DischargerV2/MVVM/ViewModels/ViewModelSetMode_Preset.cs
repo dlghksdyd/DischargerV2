@@ -1,5 +1,6 @@
 ﻿using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
+using Ethernet.Client.Discharger;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,7 +86,6 @@ namespace DischargerV2.MVVM.ViewModels
         public void SetBatteryType()
         {
             List<string> batteryTypeList = new List<string>();
-            int index = 0;
 
             OCV_Table.initOcvTable();
 
@@ -99,15 +100,27 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     model.BatteryTypeList = batteryTypeList;
                     model.SelectedBatteryType = model.BatteryTypeList[0]; // 기본값 설정
-
-                    SelectBatteryType(model, index);
-
-                    index += 1;
                 }
             }
         }
 
-        public void SelectBatteryType(ModelSetMode_Preset modelSetMode_Preset, int dischargerIndex = 0)
+        public void GetCurrentSoc(ModelDischarger modelDischarger)
+        {
+            if (modelDischarger.DischargerState == EDischargerState.Ready)
+            {
+                if (modelDischarger.DischargerData.ReceiveBatteryVoltage == 0)
+                {
+                    Thread.Sleep(1000);
+                }
+
+                var modelSetMode_Preset = Instance.ModelDictionary[modelDischarger.DischargerName];
+                var dischargerIndex = modelDischarger.DischargerIndex;
+
+                GetCurrentSoc(modelSetMode_Preset, dischargerIndex);
+            }
+        }
+
+        public void GetCurrentSoc(ModelSetMode_Preset modelSetMode_Preset, int dischargerIndex = 0)
         {
             ModelDischarger modelDischarger;
 
