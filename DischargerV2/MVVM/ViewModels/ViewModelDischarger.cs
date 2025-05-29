@@ -22,23 +22,6 @@ using DischargerV2.MVVM.Enums;
 
 namespace DischargerV2.MVVM.ViewModels
 {
-    class StartDischargerCommandParamConverter : IMultiValueConverter
-    {
-        public object Convert(object[] Values, Type Target_Type, object Parameter, CultureInfo culture)
-        {
-            StartDischargerCommandParam param = new StartDischargerCommandParam();
-            param.DischargerName = (string)Values[0];
-            param.Voltage = (double)Values[1];
-            param.Current = (double)Values[2];
-
-            return param;
-        }
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class StartDischargerCommandParam
     {
         public string DischargerName { get; set; } = string.Empty;
@@ -54,18 +37,6 @@ namespace DischargerV2.MVVM.ViewModels
 
     public class ViewModelDischarger : BindableBase
     {
-        #region Command
-        public DelegateCommand InitializeDischargerCommand { get; set; }
-        public DelegateCommand FinalizeDischargerCommand { get; set; }
-
-        public DelegateCommand<StartDischargerCommandParam> StartDischargerCommand { get; set; }
-        public DelegateCommand<string> StopDischargerCommand { get; set; }
-        public DelegateCommand<string> PauseDischargerCommand { get; set; }
-
-        public DelegateCommand<string> OpenPopupErrorCommand { get; set; }
-        public DelegateCommand<string> ReconnectDischargerCommand { get; set; }
-        #endregion
-
         private System.Timers.Timer OneSecondTimer { get; set; } = null;
 
         /// <summary>
@@ -145,19 +116,9 @@ namespace DischargerV2.MVVM.ViewModels
             InitializeDischarger();
 
             SelectDischarger(0);
-
-            InitializeDischargerCommand = new DelegateCommand(InitializeDischarger);
-            FinalizeDischargerCommand = new DelegateCommand(FinalizeDischarger);
-
-            StartDischargerCommand = new DelegateCommand<StartDischargerCommandParam>(StartDischarger);
-            StopDischargerCommand = new DelegateCommand<string>(StopDischarger);
-            PauseDischargerCommand = new DelegateCommand<string>(PauseDischarger);
-
-            OpenPopupErrorCommand = new DelegateCommand<string>(OpenPopupError);
-            ReconnectDischargerCommand = new DelegateCommand<string>(ReconnectDischarger);
         }
 
-        public void SelectDischarger(int selectedIndex)
+        public void SelectDischarger(int selectedIndex, bool IsSetDischargerName = true)
         {
             try
             {
@@ -168,7 +129,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 ViewModelMain.Instance.Model.DischargerIndex = selectedIndex;
                 ViewModelMain.Instance.Model.SelectedDischargerName = selectedDischargerName;
-                ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
+
+                if (IsSetDischargerName)
+                {
+                    ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
+                }
             }
             catch { }
         }
@@ -483,6 +448,7 @@ namespace DischargerV2.MVVM.ViewModels
             List<TableDischargerInfo> infos = _dischargerInfos;
 
             Model.Clear();
+
             for (int index = 0; index < infos.Count; index++) 
             {
                 var model = new ModelDischarger();
@@ -490,8 +456,10 @@ namespace DischargerV2.MVVM.ViewModels
                 model.DischargerIndex = index;
                 model.No = (index + 1).ToString();
                 model.DischargerName = infos[index].DischargerName;
+
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
                 model.DischargerInfo = dischargerInfo;
+
                 InitializeDischargerClients(dischargerInfo);
 
                 model.PropertyChanged += Model_PropertyChanged;
@@ -515,45 +483,7 @@ namespace DischargerV2.MVVM.ViewModels
                 if (e.PropertyName == nameof(ModelDischarger.DischargerState))
                 {
                     UpdateChannelState();
-
-                    Thread thread = new Thread(() =>
-                    {
-                        UpdateMonitoringUI(model);
-                    });
-                    thread.IsBackground = true;
-                    thread.Start();
                 }
-            }
-        }
-
-        private void UpdateMonitoringUI(ModelDischarger model)
-        {
-            model.ErrorDetailButtonVisibility = Visibility.Collapsed;
-
-            // 버튼 UI 업데이트
-            if (model.DischargerState == EDischargerState.Pause)
-            {
-                model.ResumeButtonVisibility = Visibility.Visible;
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
-            }
-            else if (model.DischargerState == EDischargerState.Discharging)
-            {
-                model.ResumeButtonVisibility = Visibility.Collapsed;
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
-            }
-            else if (model.DischargerState == EDischargerState.Ready)
-            {
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = false;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = false;
-            }
-            else if (model.DischargerState == EDischargerState.SafetyOutOfRange ||
-                model.DischargerState == EDischargerState.ReturnCodeError ||
-                model.DischargerState == EDischargerState.ChStatusError ||
-                model.DischargerState == EDischargerState.DeviceError)
-            {
-                model.ErrorDetailButtonVisibility = Visibility.Visible;
             }
         }
 
@@ -565,8 +495,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 AllChannelCount = Model.Count;
 
-                if (model.DischargerState == EDischargerState.Connecting ||
-                    model.DischargerState == EDischargerState.Ready ||
+                if (model.DischargerState == EDischargerState.Ready || 
                     model.DischargerState == EDischargerState.Discharging ||
                     model.DischargerState == EDischargerState.Pause)
                 {

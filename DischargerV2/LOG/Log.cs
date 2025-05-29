@@ -73,6 +73,8 @@ namespace DischargerV2.LOG
         {
             try
             {
+                if (listContent == null) return;
+
                 if (fileName == null || fileName == string.Empty)
                 {
                     fileName = path + "\\" + DateTime.Now.ToString("yyyyMMdd_HH") + ".csv";

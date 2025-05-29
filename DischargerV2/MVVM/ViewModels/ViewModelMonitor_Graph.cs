@@ -29,11 +29,12 @@ namespace DischargerV2.MVVM.ViewModels
     {
         #region Event
         public event EventHandler DischargerChanged;
+        public event EventHandler DischargeModeChanged;
         public event EventHandler GetDataChanged;
         #endregion
 
         #region Model
-        public ModelMonitor_Graph Model { get; set; } = new ModelMonitor_Graph();
+        public ModelMonitor_Graph Model { get; set; }
         #endregion
 
         #region Property
@@ -118,29 +119,35 @@ namespace DischargerV2.MVVM.ViewModels
             set => Model.SocScatter = value;
         }
 
-        //public LeftAxis VoltageAxis
-        //{
-        //    get => Model.VoltageAxis;
-        //    set => Model.VoltageAxis = value;
-        //}
+        public bool IsCheckedVoltage
+        {
+            get => Model.IsCheckedVoltage;
+            set => Model.IsCheckedVoltage = value;
+        }
 
-        //public LeftAxis CurrentAxis
-        //{
-        //    get => Model.CurrentAxis;
-        //    set => Model.CurrentAxis = value;
-        //}
+        public bool IsCheckedCurrent
+        {
+            get => Model.IsCheckedCurrent;
+            set => Model.IsCheckedCurrent = value;
+        }
 
-        //public LeftAxis TempAxis
-        //{
-        //    get => Model.TempAxis;
-        //    set => Model.TempAxis = value;
-        //}
+        public bool IsCheckedTemp
+        {
+            get => Model.IsCheckedTemp;
+            set => Model.IsCheckedTemp = value;
+        }
 
-        //public LeftAxis SocAxis
-        //{
-        //    get => Model.SocAxis;
-        //    set => Model.SocAxis = value;
-        //}
+        public bool IsCheckedSoc
+        {
+            get => Model.IsCheckedSoc;
+            set => Model.IsCheckedSoc = value;
+        }
+
+        public Visibility VisibilitySoc
+        {
+            get => Model.VisibilitySoc;
+            set => Model.VisibilitySoc = value;
+        }
 
         public double[] DataNoArray
         {
@@ -182,7 +189,6 @@ namespace DischargerV2.MVVM.ViewModels
 
             // Discharger에서 관련 값 받아와 사용
             List<string> dischargerNameList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerName);
-            List<DischargerInfo> dischargerInfoList = ViewModelDischarger.Instance.Model.ToList().ConvertAll(x => x.DischargerInfo);
 
             for (int index = 0; index < dischargerNameList.Count; index++)
             {
@@ -229,6 +235,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
 
             Model = ModelDictionary[dischargerName];
+
+            DischargeModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void ClearReceiveData(string dischargerName)
@@ -239,10 +247,7 @@ namespace DischargerV2.MVVM.ViewModels
             ModelDictionary[dischargerName].DataTempList.Clear();
             ModelDictionary[dischargerName].DataSocList.Clear();
 
-            if (Instance.GetDataChanged != null)
-            {
-                Instance.GetDataChanged(Instance, EventArgs.Empty);
-            }
+            GetDataChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
@@ -276,10 +281,7 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                 }
 
-                if (Instance.GetDataChanged != null)
-                {
-                    Instance.GetDataChanged(Instance, EventArgs.Empty);
-                }
+                GetDataChanged?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {

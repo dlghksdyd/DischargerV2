@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
 using static System.Windows.Forms.AxHost;
+using Ethernet.Client.Discharger;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -34,9 +35,41 @@ namespace DischargerV2.MVVM.Views
 
         private void xStateTextBlock_TextChanged(object sender, EventArgs e)
         {
-            MexTextBlock mexTextBlock = sender as MexTextBlock;
+            if (xPauseButton == null || xResumeButton == null ||
+                xStopButton == null || xFinishButton == null)
+            {
+                return;
+            }
 
-            _viewModel.ChangedState(mexTextBlock.Text);
+            string state = xStateTextBlock.Text;
+
+            if (state == EDischargerState.Discharging.ToString())
+            {
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
+                xStopButton.IsEnabled = true;
+                xFinishButton.IsEnabled = false;
+            }
+            else if (state == EDischargerState.Ready.ToString())
+            {
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = false;
+                xStopButton.IsEnabled = false;
+                xFinishButton.IsEnabled = true;
+            }
+            else if (state == EDischargerState.Pause.ToString())
+            {
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
+                xStopButton.IsEnabled = true;
+                xFinishButton.IsEnabled = false;
+            }
+            else if (state == EDischargerState.SafetyOutOfRange.ToString() ||
+                     state == EDischargerState.ReturnCodeError.ToString() ||
+                     state == EDischargerState.ChStatusError.ToString() ||
+                     state == EDischargerState.DeviceError.ToString())
+            {
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = false;
+                xStopButton.IsEnabled = false;
+                xFinishButton.IsEnabled = true;
+            }
         }
 
         private void xDetailButton_Click(object sender, RoutedEventArgs e)

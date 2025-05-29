@@ -27,7 +27,7 @@
                              Text="Voltage"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="{Binding Model.IsCheckedVoltage, 
+                             IsChecked="{Binding IsCheckedVoltage, 
                                                  Mode=TwoWay,
                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}" 
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
@@ -36,7 +36,7 @@
                              Text="Current"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="{Binding Model.IsCheckedCurrent, 
+                             IsChecked="{Binding IsCheckedCurrent, 
                                                  Mode=TwoWay,
                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
@@ -45,7 +45,7 @@
                              Text="Temp."
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="{Binding Model.IsCheckedTemp, 
+                             IsChecked="{Binding IsCheckedTemp, 
                                                  Mode=TwoWay,
                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
@@ -54,10 +54,10 @@
                              Text="SoC"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
-                             IsChecked="{Binding Model.IsCheckedSoc, 
+                             IsChecked="{Binding IsCheckedSoc, 
                                                  Mode=TwoWay,
                                                  Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
-                             Visibility="{Binding Model.VisibilitySoc, 
+                             Visibility="{Binding VisibilitySoc, 
                                                   Source={x:Static vm:ViewModelMonitor_Graph.Instance}}"
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
         </StackPanel>

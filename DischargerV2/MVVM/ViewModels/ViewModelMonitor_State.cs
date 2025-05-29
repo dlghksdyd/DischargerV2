@@ -6,7 +6,10 @@ using Prism.Mvvm;
 using ScottPlot;
 using Sqlite.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Windows;
 using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -14,18 +17,15 @@ namespace DischargerV2.MVVM.ViewModels
     public class ViewModelMonitor_State : BindableBase
     {
         #region Command
-        public DelegateCommand<string> ChangedStateCommand { get; set; }
         public DelegateCommand PauseDischargeCommand { get; set; }
         public DelegateCommand ResumeDischargeCommand { get; set; }
         public DelegateCommand StopDischargeCommand { get; set; }
         public DelegateCommand ReturnSetModeCommand { get; set; }
         #endregion
 
-        #region Model
-        public ModelMonitor_State Model { get; set; } = new ModelMonitor_State();
-        #endregion
-
         #region Property
+        public string SelectedDischargerName;
+
         private static ViewModelMonitor_State _instance = new ViewModelMonitor_State();
         public static ViewModelMonitor_State Instance
         {
@@ -44,70 +44,10 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
-            ChangedStateCommand = new DelegateCommand<string>(ChangedState);
             PauseDischargeCommand = new DelegateCommand(PauseDischarge);
             ResumeDischargeCommand = new DelegateCommand(ResumeDischarge);
             StopDischargeCommand = new DelegateCommand(StopDischarge);
             ReturnSetModeCommand = new DelegateCommand(ReturnSetMode);
-        }
-
-        public void ChangedState(string state)
-        {
-            if (Model.State == EDischargerState.Discharging.ToString())
-            {
-                // 방전 완료되었을 때
-                if (state == EDischargerState.Ready.ToString())
-                {
-                    Model.PauseNResumeIsEnable = false;
-                    Model.StopIsEnable = false;
-                    Model.FinishIsEnable = true;
-                }
-                // 에러 발생하였을 때
-                else if (state == EDischargerState.SafetyOutOfRange.ToString() ||
-                         state == EDischargerState.ReturnCodeError.ToString() ||
-                         state == EDischargerState.ChStatusError.ToString() ||
-                         state == EDischargerState.DeviceError.ToString())
-                {
-                    Model.PauseNResumeIsEnable = false;
-                    Model.StopIsEnable = false;
-                    Model.FinishIsEnable = true;
-                }
-                // 일시 정지 했을 때
-                else if (state == EDischargerState.Pause.ToString())
-                {
-                    Model.PauseNResumeIsEnable = true;
-                    Model.StopIsEnable = true;
-                    Model.FinishIsEnable = false;
-                }
-            }
-            else if (Model.State == EDischargerState.Ready.ToString())
-            {
-                // 에러 발생하였을 때
-                if (state == EDischargerState.SafetyOutOfRange.ToString() ||
-                    state == EDischargerState.ReturnCodeError.ToString() ||
-                    state == EDischargerState.ChStatusError.ToString() ||
-                    state == EDischargerState.DeviceError.ToString())
-                {
-                    Model.PauseNResumeIsEnable = false;
-                    Model.StopIsEnable = false;
-                    Model.FinishIsEnable = true;
-                }
-            }
-            else if (Model.State == EDischargerState.Pause.ToString())
-            {
-                // 에러 발생하였을 때
-                if (state == EDischargerState.SafetyOutOfRange.ToString() ||
-                    state == EDischargerState.ReturnCodeError.ToString() ||
-                    state == EDischargerState.ChStatusError.ToString() ||
-                    state == EDischargerState.DeviceError.ToString())
-                {
-                    Model.PauseNResumeIsEnable = false;
-                    Model.StopIsEnable = false;
-                    Model.FinishIsEnable = true;
-                }
-            }
-
-            Model.State = state;
         }
 
         private void PauseDischarge()
@@ -128,10 +68,6 @@ namespace DischargerV2.MVVM.ViewModels
         {
             string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
             ViewModelSetMode.Instance.StartDischargeDictionary[dischargerName].StopDischarge();
-
-            Model.PauseNResumeIsEnable = false;
-            Model.StopIsEnable = false;
-            Model.FinishIsEnable = true;
         }
 
         private void ReturnSetMode()
@@ -143,11 +79,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                 // PhaseNo 초기화
                 ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseNo = 0;
-
-                // Button IsEnable Binding 값 초기화
-                Model.PauseNResumeIsEnable = true;
-                Model.StopIsEnable = true;
-                Model.FinishIsEnable = false;
 
                 // 방전 모드 설정 돌아가기 Trace Log 저장
                 DischargerData dischargerComm = new DischargerData();

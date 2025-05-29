@@ -233,28 +233,30 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void StartDischarge()
         {
-            Thread thread = new Thread(() =>
+            if (StartDischargeDictionary.ContainsKey(Model.DischargerName))
             {
-                if (StartDischargeDictionary.ContainsKey(Model.DischargerName))
+                ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                 {
-                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
-                    {
-                        Title = "Wait",
-                        Comment = "Wait for starting...",
-                    };
+                    Title = "Wait",
+                    Comment = "Wait for starting...",
+                };
 
-                    ViewModelMain viewModelMain = ViewModelMain.Instance;
-                    viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                    viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
+                viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
 
-                    // Graph 방전 모드 설정
-                    ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
+                // Graph 방전 모드 설정
+                ViewModelMonitor_Graph.Instance.SetDischargeMode(Model.DischargerName, Model.Mode);
 
-                    // Discharge Log 저장 
-                    new LogDischarge(GetDischargeConfig(), Model.LogFileName);
+                // Discharge Log 저장 
+                new LogDischarge(GetDischargeConfig(), Model.LogFileName);
 
-                    // Start 방전 모드 설정 및 방전 시작
-                    StartDischargeDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
+                // Start 방전 모드 설정
+                StartDischargeDictionary[Model.DischargerName].SetLogFileName(Model.LogFileName);
+
+                // 방전 시작
+                Thread thread = new Thread(() =>
+                {
                     StartDischargeDictionary[Model.DischargerName].StartDischarge();
 
                     DateTime startTime = DateTime.Now;
@@ -283,27 +285,26 @@ namespace DischargerV2.MVVM.ViewModels
                     ViewModelMain.Instance.SetIsStartedArray(true);
 
                     viewModelMain.OffPopup();
-                }
-                else
+                });
+                thread.IsBackground = true;
+                thread.Start();
+            }
+            else
+            {
+                // 프로그램 오류 메세지 활성화
+                ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                 {
-                    // 프로그램 오류 메세지 활성화
-                    ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
-                    {
-                        Title = "Program error",
-                        Comment = "Please restart the program",
-                        ConfirmText = "Ok",
-                        CancelVisibility = Visibility.Collapsed,
-                    };
+                    Title = "Program error",
+                    Comment = "Please restart the program",
+                    ConfirmText = "Ok",
+                    CancelVisibility = Visibility.Collapsed,
+                };
 
-                    ViewModelMain viewModelMain = ViewModelMain.Instance;
-                    viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
-                    viewModelMain.OpenPopup(ModelMain.EPopup.Info);
-                    return;
-                }
-            });
-
-            thread.IsBackground = true;
-            thread.Start();
+                ViewModelMain viewModelMain = ViewModelMain.Instance;
+                viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
+                viewModelMain.OpenPopup(ModelMain.EPopup.Info);
+                return;
+            }
         }
 
         private void SelectMode(string mode)

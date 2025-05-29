@@ -86,11 +86,6 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelMain.Instance.OffPopup();
                 });
-
-                ViewModelMonitor_State.Instance.Model.PauseNResumeIsEnable = true;
-                ViewModelMonitor_State.Instance.Model.StopIsEnable = true;
-                ViewModelMonitor_State.Instance.Model.FinishIsEnable = false;
-
             });
             thread.IsBackground = true;
             thread.Start();

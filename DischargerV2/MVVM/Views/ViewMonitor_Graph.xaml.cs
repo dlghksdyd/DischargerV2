@@ -5,6 +5,9 @@ using DischargerV2.MVVM.ViewModels;
 using ScottPlot.Plottables;
 using ScottPlot.AxisPanels;
 using ScottPlot;
+using System.Threading;
+using System.Windows.Threading;
+using System;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -21,8 +24,9 @@ namespace DischargerV2.MVVM.Views
             InitializeUI();
 
             this.DataContext = _viewModel;
-
+            
             _viewModel.DischargerChanged += _viewModel_DischargerChanged;
+            _viewModel.DischargeModeChanged += _viewModel_DischargeModeChanged;
             _viewModel.GetDataChanged += _viewModel_GetDataChanged;
         }
 
@@ -98,7 +102,13 @@ namespace DischargerV2.MVVM.Views
 
         private void _viewModel_DischargerChanged(object sender, System.EventArgs e)
         {
+            UpdateUI();
             DrawGraph();
+        }
+
+        private void _viewModel_DischargeModeChanged(object sender, System.EventArgs e)
+        {
+            UpdateUI();
         }
 
         private void _viewModel_GetDataChanged(object sender, System.EventArgs e)
@@ -111,13 +121,22 @@ namespace DischargerV2.MVVM.Views
             DrawGraph();
         }
 
+        private void UpdateUI()
+        {
+            xVoltCheckBox.IsChecked = _viewModel.IsCheckedVoltage;
+            xCurrent.IsChecked = _viewModel.IsCheckedCurrent;
+            xTempCheckBox.IsChecked = _viewModel.IsCheckedTemp;
+            xSocCheckBox.IsChecked = _viewModel.IsCheckedSoc;
+            xSocCheckBox.Visibility = _viewModel.VisibilitySoc;
+        }
+
         private void DrawGraph()
         {
             // 데이터 초기화
             xDataGraph.Plot.PlottableList.Clear();
 
             // Voltage 
-            if (_viewModel.Model.IsCheckedVoltage)
+            if (_viewModel.IsCheckedVoltage)
             {
                 // Y축 설정
                 _viewModel.VoltageAxis.IsVisible = true;
@@ -142,7 +161,7 @@ namespace DischargerV2.MVVM.Views
             }
 
             // Current 
-            if (_viewModel.Model.IsCheckedCurrent)
+            if (_viewModel.IsCheckedCurrent)
             {
                 // Y축 설정
                 _viewModel.CurrentAxis.IsVisible = true;
@@ -167,7 +186,7 @@ namespace DischargerV2.MVVM.Views
             }
 
             // Temp 
-            if (_viewModel.Model.IsCheckedTemp)
+            if (_viewModel.IsCheckedTemp)
             {
                 // Y축 설정
                 _viewModel.TempAxis.IsVisible = true;
@@ -192,7 +211,7 @@ namespace DischargerV2.MVVM.Views
             }
 
             // SoC 
-            if (_viewModel.Model.IsCheckedSoc)
+            if (_viewModel.IsCheckedSoc)
             {
                 // Y축 설정
                 _viewModel.SocAxis.IsVisible = true;

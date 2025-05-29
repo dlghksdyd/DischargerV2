@@ -206,55 +206,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private LeftAxis _voltageAxis;
-        public LeftAxis VoltageAxis
+        private EDischargeMode _eDischargeMode = EDischargeMode.Preset;
+        public EDischargeMode EDischargeMode
         {
             get
             {
-                return _voltageAxis;
+                return _eDischargeMode;
             }
             set
             {
-                SetProperty(ref _voltageAxis, value);
-            }
-        }
-
-        private LeftAxis _currentAxis;
-        public LeftAxis CurrentAxis
-        {
-            get
-            {
-                return _currentAxis;
-            }
-            set
-            {
-                SetProperty(ref _currentAxis, value);
-            }
-        }
-
-        private LeftAxis _tempAxis;
-        public LeftAxis TempAxis
-        {
-            get
-            {
-                return _tempAxis;
-            }
-            set
-            {
-                SetProperty(ref _tempAxis, value);
-            }
-        }
-
-        private LeftAxis _socAxis;
-        public LeftAxis SocAxis
-        {
-            get
-            {
-                return _socAxis;
-            }
-            set
-            {
-                SetProperty(ref _socAxis, value);
+                SetProperty(ref _eDischargeMode, value);
             }
         }
 
@@ -268,19 +229,6 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _isCheckedVoltage, value);
-            }
-        }
-
-        private EDischargeMode _eDischargeMode = EDischargeMode.Preset;
-        public EDischargeMode EDischargeMode
-        {
-            get
-            {
-                return _eDischargeMode;
-            }
-            set
-            {
-                SetProperty(ref _eDischargeMode, value);
             }
         }
 

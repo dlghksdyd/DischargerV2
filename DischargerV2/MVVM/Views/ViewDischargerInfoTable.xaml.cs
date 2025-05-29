@@ -99,7 +99,7 @@ namespace DischargerV2.MVVM.Views
             ViewModelMain.Instance.Model.SelectedDischargerName = dischargerName;
             ViewModelSetMode.Instance.SetDischargerName(dischargerName);
 
-            _viewModelDischarger.SelectDischarger(int.Parse(dischargerNoTextBlock.Text) - 1);
+            _viewModelDischarger.SelectDischarger(int.Parse(dischargerNoTextBlock.Text) - 1, false);
 
             // Table row 배경 설정
             foreach (var oneRow in _viewModelDischarger.Model)

@@ -154,23 +154,27 @@ namespace DischargerV2.MVVM.Views
         /// <param name="index"></param>
         private void SelectRow(int selectIndex = -1)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                selectIndex = (selectIndex < 0) ? _viewModelMonitor_Step.PhaseNo : selectIndex;
-
-                // 행 선택
-                xTable.SelectRow(xTable.Rows[selectIndex]);
-
-                // 선택한 행을 맨 위로 올릴 수 있도록 scroll offset 적용
-                double offset = 0;
-
-                for (int index = 0; index < selectIndex; index++)
+                Dispatcher.Invoke(() =>
                 {
-                    offset += xTable.Rows[index].Height;
-                }
+                    selectIndex = (selectIndex < 0) ? _viewModelMonitor_Step.PhaseNo : selectIndex;
 
-                xTable.ScrollToVerticalOffset(offset);
-            });
+                    // 행 선택
+                    xTable.SelectRow(xTable.Rows[selectIndex]);
+
+                    // 선택한 행을 맨 위로 올릴 수 있도록 scroll offset 적용
+                    double offset = 0;
+
+                    for (int index = 0; index < selectIndex; index++)
+                    {
+                        offset += xTable.Rows[index].Height;
+                    }
+
+                    xTable.ScrollToVerticalOffset(offset);
+                });
+            }
+            catch { }
         }
     }
 }

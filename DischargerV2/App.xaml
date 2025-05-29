@@ -9,7 +9,6 @@
         <ResourceDictionary>
             <vm:ViewModelMain x:Key="ViewModelMain"/>
             <vm:ViewModelLogin x:Key="ViewModelLogin"/>
-            <vm:StartDischargerCommandParamConverter x:Key="StartDischargerCommandParamConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"/>
