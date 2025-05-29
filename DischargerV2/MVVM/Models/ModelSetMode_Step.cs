@@ -26,6 +26,7 @@ namespace DischargerV2.MVVM.Models
 
     public class StepConfigure
     {
+        public string StandardCapacity = string.Empty;
         public bool IsCompleteDischarge = true;
         public List<StepInfo> StepInfos = new List<StepInfo>();
     }

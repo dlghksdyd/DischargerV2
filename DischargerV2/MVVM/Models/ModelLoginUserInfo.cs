@@ -48,5 +48,44 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _password, value);
             }
         }
+
+        private string _userName = "mintech";
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                SetProperty(ref _userName, value);
+            }
+        }
+
+        private string _initial = "M";
+        public string Initial
+        {
+            get
+            {
+                return _initial;
+            }
+            set
+            {
+                SetProperty(ref _initial, value);
+            }
+        }
+
+        private string _permission = "Admin";
+        public string Permission
+        {
+            get
+            {
+                return _permission;
+            }
+            set
+            {
+                SetProperty(ref _permission, value);
+            }
+        }
     }
 }

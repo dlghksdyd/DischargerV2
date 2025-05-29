@@ -163,7 +163,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Model.Content.RemoveAt(0);
 
-                // 완전 방전 진행 여부 설정 값
+                // 정격 용량 및 완전 방전 진행 여부 설정 값
+                Model.StandardCapacity = stepConfigure.StandardCapacity;
                 Model.IsCompleteDischarge = stepConfigure.IsCompleteDischarge;
             }
             catch
@@ -269,6 +270,7 @@ namespace DischargerV2.MVVM.ViewModels
                     CratePerModule = cRate
                 };
 
+                stepConfigure.StandardCapacity = Model.StandardCapacity;
                 stepConfigure.IsCompleteDischarge = Model.IsCompleteDischarge;
                 stepConfigure.StepInfos.Add(stepInfo);
             }

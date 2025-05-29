@@ -30,23 +30,28 @@
                         BorderThickness="0,0,0,1"/>
                 <StackPanel Orientation="Horizontal" Margin="20,28,20,28">
                     <Grid Width="35" Height="36">
-                        <Ellipse x:Name="xNameEllipse" 
+                        <Ellipse x:Name="xNameEllipse"
                                  Fill="{StaticResource Mex/ResColor/surface_success}"/>
                         <Mex:MexTextBlock x:Name="xInitialNameTextBlock"
-                                          Text="M"
+                                          Text="{Binding Path=Model.Initial,
+                                                         Source={x:Static vm:ViewModelLogin.Instance}}"
                                           Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Width="8"/>
-                    <Mex:MexTextBlock x:Name="xIdTextBlock" 
-                                      Text="mintech"
+                    <Mex:MexTextBlock x:Name="xUserNameTextBlock" 
+                                      Margin="0 0 0 4"
+                                      Text="{Binding Path=Model.UserName,
+                                                      Source={x:Static vm:ViewModelLogin.Instance}}"
                                       Foreground="{StaticResource Mex/ResColor/text_headings}"
                                       FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                                       VerticalAlignment="Bottom"/>
                     <Grid Width="8"/>
                     <Mex:MexTextBlock x:Name="xPermissionTextBlock" 
-                                      Text="Admin"
+                                      Margin="0 0 0 4"
+                                      Text="{Binding Path=Model.Permission,
+                                                     Source={x:Static vm:ViewModelLogin.Instance}}"
                                       Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                       VerticalAlignment="Bottom"/>

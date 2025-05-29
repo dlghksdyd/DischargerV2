@@ -23,8 +23,8 @@ namespace DischargerV2.MVVM.ViewModels
         public ModelLoginUserInfo Model { get; set; } = new ModelLoginUserInfo();
         #endregion
 
+        #region Property
         private static ViewModelLogin _instance = null;
-
         public static ViewModelLogin Instance
         {
             get
@@ -36,6 +36,7 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
+        #endregion
 
         public ViewModelLogin()
         {
@@ -55,6 +56,9 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (user != null)
                 {
+                    Model.UserName = user.UserName;
+                    Model.Initial = user.UserName.Substring(0, 1).ToUpper();
+                    Model.Permission = user.IsAdmin? "Admin" : "User";
                     Model.Visibility = Visibility.Collapsed;
 
                     new LogTrace(ELogTrace.TRACE_LOGIN, Model.UserId);
