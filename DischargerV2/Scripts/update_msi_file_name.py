@@ -8,8 +8,8 @@ sys.stdout.reconfigure(encoding='utf-8')
 # === 상대 경로 설정 ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSEMBLY_INFO_PATH = os.path.join(BASE_DIR, "..", "Properties", "AssemblyInfo.cs")
-MSI_OUTPUT_DIR = os.path.join(BASE_DIR, "..", "..", "Mintech Discharger", "Release")
-MSI_FILE_NAME = "Mintech Discharger"
+MSI_OUTPUT_DIR = os.path.join(BASE_DIR, "..", "..", "Smart Discharger", "Release")
+MSI_FILE_NAME = "Smart Discharger"
 
 # AssemblyInformationalVersion 정규식 (1.2.3 또는 1.2.3-beta 허용)
 RE_ASSEMBLY_INFO_VERSION = re.compile(

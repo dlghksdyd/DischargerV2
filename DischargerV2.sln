@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DischargerV2", "DischargerV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MExpress", "mexpress\MExpress\MExpress.csproj", "{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Mintech Discharger", "Mintech Discharger\Mintech Discharger.vdproj", "{F26F8E8C-C192-E127-D495-F22C5F29FFC8}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Smart Discharger", "Smart Discharger\Smart Discharger.vdproj", "{1F3B3E9F-E0A7-4108-8C7A-503F63E9CA94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,8 +23,10 @@ Global
 		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F26F8E8C-C192-E127-D495-F22C5F29FFC8}.Debug|Any CPU.ActiveCfg = Debug
-		{F26F8E8C-C192-E127-D495-F22C5F29FFC8}.Release|Any CPU.ActiveCfg = Release
+		{1F3B3E9F-E0A7-4108-8C7A-503F63E9CA94}.Debug|Any CPU.ActiveCfg = Debug
+		{1F3B3E9F-E0A7-4108-8C7A-503F63E9CA94}.Debug|Any CPU.Build.0 = Debug
+		{1F3B3E9F-E0A7-4108-8C7A-503F63E9CA94}.Release|Any CPU.ActiveCfg = Release
+		{1F3B3E9F-E0A7-4108-8C7A-503F63E9CA94}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

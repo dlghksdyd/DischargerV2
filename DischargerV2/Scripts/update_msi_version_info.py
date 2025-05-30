@@ -7,7 +7,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSEMBLY_INFO_PATH = os.path.join(BASE_DIR, "..", "Properties", "AssemblyInfo.cs")
-VDPROJ_PATH = os.path.join(BASE_DIR, "..", "..", "Mintech Discharger", "Mintech Discharger.vdproj")
+VDPROJ_PATH = os.path.join(BASE_DIR, "..", "..", "Smart Discharger", "Smart Discharger.vdproj")
 
 RE_ASSEMBLY_INFO_VERSION = re.compile(r'\[assembly:\s*AssemblyInformationalVersion\("(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?"\)\]')
 RE_PRODUCT_VERSION_LINE = re.compile(r'"ProductVersion" = "8:([\d\.]+)"')
