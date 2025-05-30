@@ -142,6 +142,13 @@ namespace DischargerV2.MVVM.ViewModels
 
         private bool CheckData()
         {
+            List<TableDischargerInfo> dischargerInfos = SqliteDischargerInfo.GetData();
+            int dischargerNameIndex = dischargerInfos.FindIndex(x => x.DischargerName.ToUpper() == Model.Name.ToUpper());
+            if (dischargerNameIndex >= 0)
+            {
+                MessageBox.Show("Name: 이미 존재하는 이름입니다.");
+                return false;
+            }
             if (Model.Name == null || Model.Name == "")
             {
                 MessageBox.Show("Name: 필수 정보입니다.");
