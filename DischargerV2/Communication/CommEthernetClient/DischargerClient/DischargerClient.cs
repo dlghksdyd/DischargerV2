@@ -398,8 +398,6 @@ namespace Ethernet.Client.Discharger
         {
             if (!IsConnected())
             {
-                SendCommand_LampControl(EDioControl.TowerLampRed, false);
-
                 ChangeDischargerState(EDischargerState.Disconnected);
                 return;
             }
@@ -855,7 +853,7 @@ namespace Ethernet.Client.Discharger
             EthernetClientStatus result = _dischargerClient.Write(handle, writeBuffer);
             if (result != EthernetClientStatus.OK)
             {
-                Debug.WriteLine("Write Error: " + result.ToString());
+                Debug.WriteLine("WriteData Write Error: " + result.ToString());
 
                 return false;
             }

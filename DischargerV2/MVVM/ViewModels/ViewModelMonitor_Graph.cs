@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Enums;
+﻿using DischargerV2.Ini;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using Ethernet.Client.Discharger;
@@ -246,6 +247,8 @@ namespace DischargerV2.MVVM.ViewModels
             ModelDictionary[dischargerName].DataCurrentList.Clear();
             ModelDictionary[dischargerName].DataTempList.Clear();
             ModelDictionary[dischargerName].DataSocList.Clear();
+            ModelDictionary[dischargerName].ActiveCount = 1;
+            ModelDictionary[dischargerName].ReceiveCount = 0;
 
             GetDataChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -254,6 +257,13 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
+                ModelDictionary[dischargerName].ReceiveCount += 1;
+                if (ModelDictionary[dischargerName].ReceiveCount < ModelDictionary[dischargerName].ActiveCount)
+                {
+                    return;
+                }
+                ModelDictionary[dischargerName].ReceiveCount = 0;
+
                 ModelDictionary[dischargerName].DataNoList.Add(ModelDictionary[dischargerName].DataNoList.Count + 1);
                 ModelDictionary[dischargerName].DataVoltageList.Add(dischargerDatas.ReceiveBatteryVoltage);
                 ModelDictionary[dischargerName].DataCurrentList.Add(dischargerDatas.ReceiveDischargeCurrent);
@@ -278,6 +288,47 @@ namespace DischargerV2.MVVM.ViewModels
                         double getSoc = OCV_Table.getSOC(batteryType, dischargerDatas.ReceiveBatteryVoltage);
 
                         ModelDictionary[dischargerName].DataSocList.Add(getSoc);
+                    }
+                }
+
+                // DataNoList가 특정 개수가 되면 데이터 절반으로 줄임
+                int dataCount = ModelDictionary[dischargerName].DataNoList.Count;
+                int activeCount = ModelDictionary[dischargerName].ActiveCount;
+                int limitCount = IniDischarge.GetIniData<int>(IniDischarge.EIniData.MaxSampleNum);
+                while (true)
+                {
+                    if (activeCount > limitCount)
+                    {
+                        limitCount = activeCount;
+                        break;
+                    }
+
+                    activeCount += ModelDictionary[dischargerName].ActiveCount;
+                }
+                if (dataCount >= limitCount)
+                {
+                    ModelDictionary[dischargerName].ActiveCount *= 2;
+
+                    // 짝수 인덱스 항목만 삭제
+                    for (int i = (dataCount - 1); i >= 0; i--)
+                    {
+                        if ((i % 2) == 0)
+                        {
+                            ModelDictionary[dischargerName].DataNoList.RemoveAt(i);
+                            ModelDictionary[dischargerName].DataVoltageList.RemoveAt(i);
+                            ModelDictionary[dischargerName].DataCurrentList.RemoveAt(i);
+                            ModelDictionary[dischargerName].DataTempList.RemoveAt(i);
+                            if (ModelDictionary[dischargerName].VisibilitySoc == Visibility.Visible)
+                            {
+                                ModelDictionary[dischargerName].DataSocList.RemoveAt(i);
+                            }
+                        }
+                    }
+
+                    // DataNoList 값 갱신
+                    for (int i = 0; i < ModelDictionary[dischargerName].DataNoList.Count; i++)
+                    {
+                        ModelDictionary[dischargerName].DataNoList[i] = i + 1;
                     }
                 }
 

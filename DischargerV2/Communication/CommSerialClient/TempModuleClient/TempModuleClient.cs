@@ -225,14 +225,14 @@ namespace Serial.Client.TempModule
         {
             if (writeData == null || writeData.Length == 0)
             {
-                Debug.WriteLine("Write Error: Write String is Empty.");
+                Debug.WriteLine("WriteData Write Error: Write String is Empty.");
                 return false;
             }
 
             ESerialClientStatus result = _tempModuleClient.Write(comPortStr, writeData);
             if (result != ESerialClientStatus.OK)
             {
-                Debug.WriteLine("Write Error: " + result.ToString());
+                Debug.WriteLine("WriteData Write Error: " + result.ToString());
                 return false;
             }
 

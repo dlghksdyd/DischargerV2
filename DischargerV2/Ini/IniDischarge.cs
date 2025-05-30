@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace DischargerV2.Ini
 {
     partial class IniDischarge : Ini
     {
-        public enum EIniData { Sound }
+        public enum EIniData { Sound, MaxSampleNum }
 
         public enum ESound { On, Off }
 
@@ -14,8 +15,20 @@ namespace DischargerV2.Ini
         {
             // 사용자 정보
             { EIniData.Sound, new IniData { Section = "Sound", Key = "Value", Value = "On" } },
+            { EIniData.MaxSampleNum, new IniData { Section = "Graph", Key = "MaxSampleNum", Value = "1600" } },
         };
 
+        public static void InitializeIniFile()
+        {
+            FileInfo fileInfo = new FileInfo(Ini.Path);
+            if (!fileInfo.Exists)
+            {
+                foreach (var iniData in DicIniData)
+                {
+                    SetIniData(iniData.Key, iniData.Value.Value);
+                }
+            }
+        }
 
         public static void SetIniData(EIniData eIniData, string value)
         {

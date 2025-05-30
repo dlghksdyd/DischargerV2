@@ -163,7 +163,7 @@ namespace Ethernet.Client.Common
         {
             if (writeBuffer == null || writeBuffer.Length == 0)
             {
-                Debug.WriteLine("Write Error: Write Buffer is Empty.");
+                Debug.WriteLine("WriteFunctionExample Write Error: Write Buffer is Empty.");
 
                 return false;
             }
@@ -171,7 +171,7 @@ namespace Ethernet.Client.Common
             EthernetClientStatus result = Write(handle, writeBuffer);
             if (result != EthernetClientStatus.OK)
             {
-                Debug.WriteLine("Write Error: " + result.ToString());
+                Debug.WriteLine("WriteFunctionExample Write Error: " + result.ToString());
 
                 return false;
             }

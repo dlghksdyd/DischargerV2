@@ -188,7 +188,7 @@ namespace Serial.Client.Common
         {
             if (writeStr == null || writeStr.Length == 0)
             {
-                Debug.WriteLine("Write Error: Write String is Empty.");
+                Debug.WriteLine("WriteFunctionExample Write Error: Write String is Empty.");
 
                 return false;
             }
@@ -196,7 +196,7 @@ namespace Serial.Client.Common
             ESerialClientStatus result = Write(comPortStr, writeStr);
             if (result != ESerialClientStatus.OK)
             {
-                Debug.WriteLine("Write Error: " + result.ToString());
+                Debug.WriteLine("WriteFunctionExample Write Error: " + result.ToString());
 
                 return false;
             }

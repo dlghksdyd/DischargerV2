@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.Ini;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -44,6 +45,8 @@ namespace DischargerV2.MVVM.ViewModels
         public ViewModelMain()
         {
             _instance = this;
+
+            IniDischarge.InitializeIniFile();
 
             InitializeModel();
             InitializePopup();
