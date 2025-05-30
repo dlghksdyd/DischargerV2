@@ -260,6 +260,8 @@ namespace DischargerV2.MVVM.ViewModels
 
             foreach (var client in _clients)
             {
+                if (!client.Value.IsConnected()) continue;
+
                 string comPortStr = client.Key.ToString();
                 int index = Model.TempModuleComportList.FindIndex(x => x == comPortStr);
 

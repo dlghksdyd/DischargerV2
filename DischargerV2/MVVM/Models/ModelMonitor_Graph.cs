@@ -348,5 +348,31 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _dataSocList, value);
             }
         }
+
+        private int _activeTimeCount = 0;
+        public int ActiveCount
+        {
+            get
+            {
+                return _activeTimeCount;
+            }
+            set
+            {
+                SetProperty(ref _activeTimeCount, value);
+            }
+        }
+
+        private int _receiveTimePeriod = 1;
+        public int ReceiveCount
+        {
+            get
+            {
+                return _receiveTimePeriod;
+            }
+            set
+            {
+                SetProperty(ref _receiveTimePeriod, value);
+            }
+        }
     }
 }
