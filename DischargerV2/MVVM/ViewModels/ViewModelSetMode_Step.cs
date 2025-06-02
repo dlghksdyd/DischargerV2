@@ -28,7 +28,6 @@ namespace DischargerV2.MVVM.ViewModels
         public event EventHandler SelectedDischargerChanged;
 
         #region Command
-        public DelegateCommand EnterStandardCapacityCommand { get; set; }
         public DelegateCommand LoadStepInfoListCommand { get; set; }
         public DelegateCommand SaveStepInfoListCommand { get; set; }
         public DelegateCommand AddStepInfoCommand { get; set; }
@@ -81,7 +80,6 @@ namespace DischargerV2.MVVM.ViewModels
         {
             _instance = this;
 
-            EnterStandardCapacityCommand = new DelegateCommand(EnterStandardCapacity);
             LoadStepInfoListCommand = new DelegateCommand(LoadStepInfoList);
             SaveStepInfoListCommand = new DelegateCommand(SaveStepInfoList);
             AddStepInfoCommand = new DelegateCommand(AddStepInfo);
@@ -107,15 +105,25 @@ namespace DischargerV2.MVVM.ViewModels
             SelectedDischargerChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void EnterStandardCapacity()
+        public void ChangeStandardCapacityText()
         {
-            if (Model.StandardCapacity == null || Model.StandardCapacity == "")
-                return;
-
-            foreach (var stepData in Model.Content)
+            if (Model.StandardCapacity == string.Empty)
             {
-                stepData.Current = "";
-                stepData.CRate = "";
+                foreach (var stepData in Model.Content)
+                {
+                    stepData.Current = string.Empty;
+                    stepData.CRate = string.Empty;
+                    stepData.CRateEnabled = false;
+                }
+            }
+            else
+            {
+                foreach (var stepData in Model.Content)
+                {
+                    stepData.Current = string.Empty;
+                    stepData.CRate = string.Empty;
+                    stepData.CRateEnabled = true;
+                }
             }
         }
 
@@ -211,7 +219,18 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void AddStepInfo()
         {
-            Model.Content.Add(new ModelSetMode_StepData());
+            var model = new ModelSetMode_StepData();
+
+            if (Model.Content.Count >= 1)
+            {
+                model.CRateEnabled = Model.Content[0].CRateEnabled;
+            }
+            else
+            {
+                model.CRateEnabled = false;
+            }
+
+            Model.Content.Add(model);
         }
 
         private void DeleteStepInfo(object obj)

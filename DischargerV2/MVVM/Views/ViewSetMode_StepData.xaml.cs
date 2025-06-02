@@ -21,13 +21,21 @@ namespace DischargerV2.MVVM.Views
     /// </summary>
     public partial class ViewSetMode_StepData : UserControl
     {
-        private ViewModelSetMode_StepData ViewModel = new ViewModelSetMode_StepData();
-
         public ViewSetMode_StepData()
         {
             InitializeComponent();
+        }
 
-            this.DataContext = ViewModel;
+        private void xCurrTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var viewModel = (DataContext as ViewModelSetMode_StepData);
+            viewModel.CalculateCRate();
+        }
+
+        private void xCRateTextBox_TextChanged(object sender, EventArgs e)
+        {
+            var viewModel = (DataContext as ViewModelSetMode_StepData);
+            viewModel.CalculateCurrent();
         }
     }
 }

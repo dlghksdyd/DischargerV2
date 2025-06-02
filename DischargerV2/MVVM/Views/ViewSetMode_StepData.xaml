@@ -71,13 +71,8 @@
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="LostFocus">
-                            <b:InvokeCommandAction Command="{Binding CalculateCurrentCommand}"
-                                                   PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                TextChanged="xCurrTextBox_TextChanged">
                 </Mex:MexTextBox>
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="4"
@@ -93,14 +88,11 @@
                                 Text="{Binding Model.CRate, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
+                                IsEnabled="{Binding Model.CRateEnabled}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="LostFocus">
-                            <b:InvokeCommandAction Command="{Binding CalculateCRateCommand}"
-                                                   PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers></Mex:MexTextBox>
+                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                                TextChanged="xCRateTextBox_TextChanged">
+                </Mex:MexTextBox>
             </StackPanel>
             <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6"
                            Width="48" Height="48" Padding="12"

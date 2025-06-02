@@ -51,13 +51,9 @@
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                HorizontalAlignment="Left">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="LostFocus">
-                            <b:InvokeCommandAction Command="{Binding EnterStandardCapacityCommand}"
-                                                   PassEventArgsToCommand="False"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers></Mex:MexTextBox>
+                                HorizontalAlignment="Left"
+                                TextChanged="xStandardCapacityTextBox_TextChanged">
+                </Mex:MexTextBox>
                 <Mex:MexButton x:Name="xLoadButton" Grid.Column="4"
                                Padding="24,9,24,9"
                                CornerRadius="8"

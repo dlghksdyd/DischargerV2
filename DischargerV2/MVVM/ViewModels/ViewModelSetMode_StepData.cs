@@ -19,11 +19,6 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelSetMode_StepData : BindableBase
     {
-        #region Command
-        public DelegateCommand CalculateCurrentCommand { get; set; }
-        public DelegateCommand CalculateCRateCommand { get; set; }
-        #endregion
-
         #region Model
         public ModelSetMode_StepData Model { get; set; } = new ModelSetMode_StepData();
         #endregion
@@ -52,23 +47,39 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.CRate;
             set => Model.CRate = value;
         }
+
+        public bool CRateEnabled
+        {
+            get => Model.CRateEnabled;
+            set => Model.CRateEnabled = value;
+        }
         #endregion
 
         public ViewModelSetMode_StepData()
         {
-            CalculateCurrentCommand = new DelegateCommand(CalculateCurrent);
-            CalculateCRateCommand = new DelegateCommand(CalculateCRate);
+
         }
 
-        private void CalculateCurrent()
+        private bool _isCRateCalculating = false;
+        public void CalculateCRate()
         {
+            if (_isCurrentCalculating) return;
+
+            _isCRateCalculating = true;
+
             ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
 
             if (Model.Current == null || Model.Current == "")
+            {
+                _isCRateCalculating = false;
                 return;
+            }
 
             if (viewModelSetMode_Step.Model.StandardCapacity == null || viewModelSetMode_Step.Model.StandardCapacity == "")
+            {
+                _isCRateCalculating = false;
                 return;
+            }
 
             double standardCapacity = Convert.ToDouble(viewModelSetMode_Step.Model.StandardCapacity);
 
@@ -76,14 +87,24 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.CRate = (current / standardCapacity).ToString("F1");
             }
+
+            _isCRateCalculating = false;
         }
 
-        private void CalculateCRate()
+        private bool _isCurrentCalculating = false;
+        public void CalculateCurrent()
         {
+            if (_isCRateCalculating) return;
+
+            _isCurrentCalculating = true;
+
             ViewModelSetMode_Step viewModelSetMode_Step = ViewModelSetMode_Step.Instance;
 
             if (Model.CRate == null || Model.CRate == "")
+            {
+                _isCurrentCalculating = false;
                 return;
+            }
 
             if (viewModelSetMode_Step.Model.StandardCapacity == null || viewModelSetMode_Step.Model.StandardCapacity == "")
             {
@@ -91,6 +112,8 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.CRate = "";
 
                 MessageBox.Show("Standard Capacity: 필수 정보입니다.");
+
+                _isCurrentCalculating = false;
 
                 return;
             }
@@ -101,6 +124,8 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Model.Current = (standardCapacity * cRate).ToString("F1");
             }
+
+            _isCurrentCalculating = false;
         }
     }
 }

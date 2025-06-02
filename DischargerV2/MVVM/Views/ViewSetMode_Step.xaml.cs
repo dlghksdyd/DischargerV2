@@ -107,6 +107,7 @@ namespace DischargerV2.MVVM.Views
                         Voltage = model.Voltage,
                         Current = model.Current,
                         CRate = model.CRate,
+                        CRateEnabled = model.CRateEnabled,
                     };
 
                     ViewSetMode_StepData view = new ViewSetMode_StepData();
@@ -129,6 +130,11 @@ namespace DischargerV2.MVVM.Views
             {
                 _viewModel.Model.Content.Add(new ModelSetMode_StepData());
             }
+        }
+
+        private void xStandardCapacityTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _viewModel.ChangeStandardCapacityText();
         }
     }
 }
