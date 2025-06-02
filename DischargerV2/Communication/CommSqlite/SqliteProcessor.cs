@@ -828,6 +828,12 @@ namespace Sqlite.Common
             oneRow = new TableDischargerErrorCode(0x01000038, "", "parallel setting commend Alarm", "병렬지령 설정 에러", "병렬 설정이 잘못되었습니다.", "설정을 다시 확인하십시오");
             InsertData(oneRow);
 
+            oneRow = new TableDischargerErrorCode(0xA00000FF, "", "DIO Contact Alarm", "접점부 에러", "DI 접점값이 비정상입니다.", "접점값을 다시 확인 하십시오.");
+            InsertData(oneRow);
+
+            oneRow = new TableDischargerErrorCode(0x010000FF, "", "ABTC - Firmware Communication Alarm", "ABTC - 펌웨어 통신불량", "ABTC와 충방전기 통신이 원활하지 않습니다.", "설정을 다시 확인하십시오.");
+            InsertData(oneRow);
+
             oneRow = new TableDischargerErrorCode(0xF0000001, "ERR_SW_SafetyOutOfRange", "SafetyOutOfRange", "안전 범위 벗어남", "전압/전류/온도 중 하나 이상이 안전 범위를 벗어났습니다.", "안전 범위를 벗어난 항목에 대한 조치가 필요합니다.");
             InsertData(oneRow);
 
