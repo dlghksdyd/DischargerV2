@@ -31,7 +31,7 @@
                 CornerRadius="8"
                 Background="{StaticResource Mex/ResColor/surface_primary}">
             <StackPanel Orientation="Vertical" Margin="12">
-                <Mex:MexTextBlock Text="Discharge Type"
+                <Mex:MexTextBlock Text="Discharge Target"
                                   Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="8"/>
