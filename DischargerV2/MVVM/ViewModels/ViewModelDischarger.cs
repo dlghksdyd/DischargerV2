@@ -549,6 +549,7 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.Model = model.Model;
             dischargerInfo.Name = name;
             dischargerInfo.Channel = info.DischargerChannel;
+            dischargerInfo.IsTempModule = info.IsTempModule;
             dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
             dischargerInfo.EthernetPort = 10004;
             dischargerInfo.TimeOutMs = 1000;
@@ -572,6 +573,7 @@ namespace DischargerV2.MVVM.ViewModels
                 parameters.DischargerModel = info.Model;
                 parameters.DischargerName = info.Name;
                 parameters.DischargerChannel = info.Channel;
+                parameters.DischargerIsTempModule = info.IsTempModule;
                 parameters.IpAddress = info.IpAddress;
                 parameters.EthernetPort = info.EthernetPort;
                 parameters.TimeOutMs = info.TimeOutMs;
@@ -633,7 +635,10 @@ namespace DischargerV2.MVVM.ViewModels
                         if (index >= 0)
                         {
                             var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
-                            Model[i].DischargerData.ReceiveDischargeTemp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+                            var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+
+                            Model[i].DischargerData.ReceiveDischargeTemp = temp;
+                            _clients[Model[i].DischargerName].SetReceiveTemp(temp);
                         }
                     }
                 }

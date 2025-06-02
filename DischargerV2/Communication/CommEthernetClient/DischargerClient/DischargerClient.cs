@@ -205,8 +205,8 @@ namespace Ethernet.Client.Discharger
                     {
                         ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
                         ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
-                        ReceiveDischargeTemp = (!_parameters.DischargerIsTempModule)?
-                            _dischargerData.ReceiveDischargeTemp.ToString("F1") : string.Empty,
+                        ReceiveDischargeTemp = _dischargerData.ReceiveDischargeTemp.ToString("F1"),
+                        
                         ErrorCode = _dischargerData.ErrorCode,
                         EReturnCode = _dischargerData.ReturnCode,
                         EDischargerState = dischargerState,
@@ -379,6 +379,11 @@ namespace Ethernet.Client.Discharger
             {
                 return temp;
             }
+        }
+
+        public void SetReceiveTemp(double temp)
+        {
+            _dischargerData.ReceiveDischargeTemp = temp;
         }
 
         public EDischargerState GetState()
@@ -896,9 +901,13 @@ namespace Ethernet.Client.Discharger
                     /// 전압, 전류, 온도 값 업데이트
                     _dischargerData.ReceiveBatteryVoltage = channelInfo.BatteryVoltage;
                     _dischargerData.ReceiveDischargeCurrent = -channelInfo.BatteryCurrent;
-                    _dischargerData.ReceiveDischargeTemp = channelInfo.AuxTemp1;
 
-                    if (_parameters.DischargerIsTempModule == false && 
+                    if (!_parameters.DischargerIsTempModule)
+                    {
+                        _dischargerData.ReceiveDischargeTemp = channelInfo.AuxTemp1;
+                    }
+
+                    if (_parameters.DischargerIsTempModule == true && 
                         (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
                         channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
@@ -906,7 +915,7 @@ namespace Ethernet.Client.Discharger
                     {
                         ChangeDischargerState(EDischargerState.SafetyOutOfRange);
                     }
-                    else if (_parameters.DischargerIsTempModule == true && 
+                    else if (_parameters.DischargerIsTempModule == false && 
                         (channelInfo.BatteryVoltage < _dischargerData.SafetyVoltageMin ||
                         channelInfo.BatteryVoltage > _dischargerData.SafetyVoltageMax ||
                         channelInfo.BatteryCurrent < _dischargerData.SafetyCurrentMin ||
@@ -949,8 +958,7 @@ namespace Ethernet.Client.Discharger
                     {
                         ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
                         ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
-                        ReceiveDischargeTemp = (!_parameters.DischargerIsTempModule) ?
-                            _dischargerData.ReceiveDischargeTemp.ToString("F1") : string.Empty,
+                        ReceiveDischargeTemp = _dischargerData.ReceiveDischargeTemp.ToString("F1"),
 
                         ErrorCode = _dischargerData.ErrorCode,
                         EReturnCode = _dischargerData.ReturnCode,
