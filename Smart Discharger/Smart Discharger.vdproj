@@ -2268,8 +2268,8 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Smart Discharger"
-        "ProductCode" = "8:{0F84037D-FE0C-4A81-BDDC-C2260AA61C18}"
+        "ProductName" = "8:Smart Discharger v2.0.0"
+        "ProductCode" = "8:{44AE5B20-9467-40C6-AB8E-BFC8CC32B55D}"
         "PackageCode" = "8:{4F4EA52D-407F-46CA-9B60-31185CE5754C}"
         "UpgradeCode" = "8:{E47A4D5D-B451-4578-8EBB-C9BF7BE0E9BB}"
         "AspNetVersion" = "8:4.0.30319.0"

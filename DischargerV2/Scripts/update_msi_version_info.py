@@ -12,6 +12,7 @@ VDPROJ_PATH = os.path.join(BASE_DIR, "..", "..", "Smart Discharger", "Smart Disc
 RE_ASSEMBLY_INFO_VERSION = re.compile(r'\[assembly:\s*AssemblyInformationalVersion\("(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?"\)\]')
 RE_PRODUCT_VERSION_LINE = re.compile(r'"ProductVersion" = "8:([\d\.]+)"')
 RE_PRODUCT_CODE_LINE = re.compile(r'"ProductCode" = "8:{([A-F0-9\-]+)}"', re.IGNORECASE)
+RE_PRODUCT_NAME = re.compile(r'"ProductName" = "8:([^"]+)"', re.IGNORECASE)
 
 
 def read_file(path):
@@ -48,6 +49,7 @@ def update_vdproj(path, new_version):
 
     current_version = None
     current_product_code = None
+    current_product_name = None
     new_version_short = '.'.join(new_version.split('.')[:3])
 
     for line in lines:
@@ -59,6 +61,10 @@ def update_vdproj(path, new_version):
             match = RE_PRODUCT_CODE_LINE.search(line)
             if match:
                 current_product_code = match.group(1)
+        if "ProductName" in line:
+            match = RE_PRODUCT_NAME.search(line)
+            if match:
+                current_product_name = match.group(1)
 
     if current_version == new_version_short:
         print(f"ProductVersion is already up to date: {current_version}")
@@ -74,6 +80,11 @@ def update_vdproj(path, new_version):
         elif "ProductCode" in line:
             print(f"Replacing ProductCode: {current_product_code} -> {new_guid}")
             line = RE_PRODUCT_CODE_LINE.sub(f'"ProductCode" = "8:{{{new_guid}}}"', line)
+        elif "ProductName" in line:
+            new_product_name = f"Smart Discharger v{new_version_short}"
+            print(f"[INFO] Replacing ProductName: {current_product_name} -> {new_product_name}")
+            line = RE_PRODUCT_NAME.sub(f'"ProductName" = "8:{new_product_name}"', line)
+
         updated_lines.append(line)
 
     write_file(path, updated_lines)
