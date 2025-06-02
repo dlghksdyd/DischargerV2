@@ -107,7 +107,6 @@ namespace DischargerV2.MVVM.Views
                         Voltage = model.Voltage,
                         Current = model.Current,
                         CRate = model.CRate,
-                        CRateEnabled = model.CRateEnabled,
                     };
 
                     ViewSetMode_StepData view = new ViewSetMode_StepData();

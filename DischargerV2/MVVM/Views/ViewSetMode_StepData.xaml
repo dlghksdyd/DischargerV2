@@ -17,6 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Mex:IsDoubleConverter x:Key="IsDoubleConverter"/>
+            <Util:IsStringEmptyToBoolConverter x:Key="IsStringEmptyToBoolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -88,7 +89,9 @@
                                 Text="{Binding Model.CRate, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
-                                IsEnabled="{Binding Model.CRateEnabled}"
+                                IsEnabled="{Binding Path=Model.StandardCapacity,
+                                                    Source={x:Static vm:ViewModelSetMode_Step.Instance},
+                                                    Converter={StaticResource IsStringEmptyToBoolConverter}}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 TextChanged="xCRateTextBox_TextChanged">

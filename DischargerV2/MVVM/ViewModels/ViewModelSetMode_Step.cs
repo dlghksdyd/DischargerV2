@@ -111,18 +111,22 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 foreach (var stepData in Model.Content)
                 {
-                    stepData.Current = string.Empty;
-                    stepData.CRate = string.Empty;
-                    stepData.CRateEnabled = false;
+                    if (stepData != null)
+                    {
+                        stepData.Current = string.Empty;
+                        stepData.CRate = string.Empty;
+                    }
                 }
             }
             else
             {
                 foreach (var stepData in Model.Content)
                 {
-                    stepData.Current = string.Empty;
-                    stepData.CRate = string.Empty;
-                    stepData.CRateEnabled = true;
+                    if (stepData != null)
+                    {
+                        stepData.Current = string.Empty;
+                        stepData.CRate = string.Empty;
+                    }
                 }
             }
         }
@@ -219,18 +223,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void AddStepInfo()
         {
-            var model = new ModelSetMode_StepData();
-
-            if (Model.Content.Count >= 1)
-            {
-                model.CRateEnabled = Model.Content[0].CRateEnabled;
-            }
-            else
-            {
-                model.CRateEnabled = false;
-            }
-
-            Model.Content.Add(model);
+            Model.Content.Add(new ModelSetMode_StepData());
         }
 
         private void DeleteStepInfo(object obj)

@@ -68,18 +68,5 @@ namespace DischargerV2.MVVM.Models
                 SetProperty(ref _cRate, value);
             }
         }
-
-        private bool _cRateEnabled = false;
-        public bool CRateEnabled
-        {
-            get
-            {
-                return _cRateEnabled;
-            }
-            set
-            {
-                SetProperty(ref _cRateEnabled, value);
-            }
-        }
     }
 }

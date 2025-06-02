@@ -857,6 +857,33 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
+
+    public class IsStringEmptyToBoolConverter : IValueConverter
+    {
+        public bool NotEmpty { get; set; } = true;
+        public bool Empty { get; set; } = false;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string stringValue)
+            {
+                if (stringValue != string.Empty)
+                {
+                    return NotEmpty;
+                }
+                else
+                {
+                    return Empty;
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     #endregion
 }
 

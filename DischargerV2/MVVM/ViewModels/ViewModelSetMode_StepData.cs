@@ -47,12 +47,6 @@ namespace DischargerV2.MVVM.ViewModels
             get => Model.CRate;
             set => Model.CRate = value;
         }
-
-        public bool CRateEnabled
-        {
-            get => Model.CRateEnabled;
-            set => Model.CRateEnabled = value;
-        }
         #endregion
 
         public ViewModelSetMode_StepData()

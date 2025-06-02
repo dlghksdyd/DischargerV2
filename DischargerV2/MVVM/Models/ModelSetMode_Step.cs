@@ -46,7 +46,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _standardCapacity;
+        private string _standardCapacity = string.Empty;
         public string StandardCapacity
         {
             get
@@ -59,7 +59,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private bool _isCompleteDischarge;
+        private bool _isCompleteDischarge = false;
         public bool IsCompleteDischarge
         {
             get
