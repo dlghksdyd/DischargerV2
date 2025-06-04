@@ -112,7 +112,14 @@ namespace DischargerV2.MVVM.ViewModels
                 return;
             }
 
-            double standardCapacity = Convert.ToDouble(viewModelSetMode_Step.Model.StandardCapacity);
+            if (!double.TryParse(viewModelSetMode_Step.Model.StandardCapacity, out double standardCapacity))
+            {
+                MessageBox.Show("Standard Capacity: 숫자가 아닙니다.");
+
+                _isCurrentCalculating = false;
+
+                return;
+            }
 
             if (double.TryParse(Model.CRate, out double cRate))
             {
