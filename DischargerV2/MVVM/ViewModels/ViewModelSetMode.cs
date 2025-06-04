@@ -208,8 +208,11 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("ViewModelSetMode.cs, Start()");
-                Debug.WriteLine(ex.Message);
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
 
@@ -1004,11 +1007,17 @@ namespace DischargerV2.MVVM.ViewModels
                         currentInFor = Convert.ToDouble(phaseData.Current);
                         cRateInFor = Convert.ToDouble(phaseData.CRate);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         voltageInFor = 0;
                         currentInFor = 0;
                         cRateInFor = 0;
+
+                        MessageBox.Show(
+                            $"Error 발생\n\n" +
+                            $"ClassName: {this.GetType().Name}\n" +
+                            $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                            $"Exception: {ex.Message}");
                     }
 
                     phaseDataList.Add(new PhaseData()

@@ -242,15 +242,26 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void ClearReceiveData(string dischargerName)
         {
-            ModelDictionary[dischargerName].DataNoList.Clear();
-            ModelDictionary[dischargerName].DataVoltageList.Clear();
-            ModelDictionary[dischargerName].DataCurrentList.Clear();
-            ModelDictionary[dischargerName].DataTempList.Clear();
-            ModelDictionary[dischargerName].DataSocList.Clear();
-            ModelDictionary[dischargerName].ActiveCount = 1;
-            ModelDictionary[dischargerName].ReceiveCount = 0;
+            try
+            {
+                ModelDictionary[dischargerName].DataNoList.Clear();
+                ModelDictionary[dischargerName].DataVoltageList.Clear();
+                ModelDictionary[dischargerName].DataCurrentList.Clear();
+                ModelDictionary[dischargerName].DataTempList.Clear();
+                ModelDictionary[dischargerName].DataSocList.Clear();
+                ModelDictionary[dischargerName].ActiveCount = 1;
+                ModelDictionary[dischargerName].ReceiveCount = 0;
 
-            GetDataChanged?.Invoke(this, EventArgs.Empty);
+                GetDataChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+            }
         }
 
         public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
@@ -336,7 +347,11 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
     }
