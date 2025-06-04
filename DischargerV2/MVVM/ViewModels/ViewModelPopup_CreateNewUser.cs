@@ -55,39 +55,51 @@ namespace DischargerV2.MVVM.ViewModels
 
         private int CheckData()
         {
-            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
+            try
+            {
+                List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-            if (Model.Id == null || Model.Id == "")
+                if (Model.Id == null || Model.Id == "")
+                {
+                    MessageBox.Show("ID: 필수 정보입니다.");
+                    return -1;
+                }
+                if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
+                {
+                    MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
+                    return -1;
+                }
+                if (Model.Password == null || Model.Password == "")
+                {
+                    MessageBox.Show("Password: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
+                {
+                    MessageBox.Show("Confirm Password: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.Name == null || Model.Name == "")
+                {
+                    MessageBox.Show("User Name: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.Password != Model.ConfirmPassword)
+                {
+                    MessageBox.Show("Password가 일치하지 않습니다.");
+                    return -1;
+                }
+                return 0;
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("ID: 필수 정보입니다.");
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
                 return -1;
             }
-            if (tableUserInfoList.Find(x => x.UserId == Model.Id) != null)
-            {
-                MessageBox.Show("ID: 이미 등록되어있는 정보입니다.");
-                return -1;
-            }
-            if (Model.Password == null || Model.Password == "")
-            {
-                MessageBox.Show("Password: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.ConfirmPassword == null || Model.ConfirmPassword == "")
-            {
-                MessageBox.Show("Confirm Password: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.Name == null || Model.Name == "")
-            {
-                MessageBox.Show("User Name: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.Password != Model.ConfirmPassword)
-            {
-                MessageBox.Show("Password가 일치하지 않습니다.");
-                return -1;
-            }
-            return 0;
         }
 
         private void InsertUserInfo()
@@ -118,14 +130,21 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
+                    MessageBox.Show("사용자 정보 추가 실패");
+
                     new LogTrace(ELogTrace.ERROR_ADD_USER, userData);
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+         
                 new LogTrace(ELogTrace.ERROR_ADD_USER, ex);
             }
-            
         }
     }
 }

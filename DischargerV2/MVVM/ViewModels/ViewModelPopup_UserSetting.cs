@@ -43,16 +43,27 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadUserInfoList()
         {
-            List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
-
-            ObservableCollection<TableUserInfo> content = new ObservableCollection<TableUserInfo>();
-
-            for (int index = 0; index < tableUserInfoList.Count; index++)
+            try
             {
-                content.Add(tableUserInfoList[index]);
-            }
+                List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-            Model.Content = content;
+                ObservableCollection<TableUserInfo> content = new ObservableCollection<TableUserInfo>();
+
+                for (int index = 0; index < tableUserInfoList.Count; index++)
+                {
+                    content.Add(tableUserInfoList[index]);
+                }
+
+                Model.Content = content;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                       $"Error 발생\n\n" +
+                       $"ClassName: {this.GetType().Name}\n" +
+                       $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                       $"Exception: {ex.Message}");
+            }
         }
     }
 }

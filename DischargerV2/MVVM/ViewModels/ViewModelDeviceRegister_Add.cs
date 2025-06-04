@@ -58,8 +58,16 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (CheckData())
             {
-                InsertDischargerInfo();
-                Close();
+                bool isOk = InsertDischargerInfo();
+
+                if (isOk)
+                {
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("장비 정보 추가 실패");
+                }
             }
         }
 
@@ -84,137 +92,168 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadModelInfoList()
         {
-            List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
+            try
+            {
+                List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
 
-            // DischargerModelList
-            string model = Model.DischargerModel;
+                // DischargerModelList
+                string model = Model.DischargerModel;
 
-            List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
-            modelList = modelList.Distinct().ToList();
+                List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
+                modelList = modelList.Distinct().ToList();
 
-            Model.DischargerModelList = modelList;
-            Model.DischargerModel = modelList.Contains(model) ? model : "";
+                Model.DischargerModelList = modelList;
+                Model.DischargerModel = modelList.Contains(model) ? model : "";
 
-            // TypeList
-            string type = Model.Type;
+                // TypeList
+                string type = Model.Type;
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
 
-            List<string> typeList = tableDischargerModelList.Select(x => x.Type.ToString()).ToList();
-            typeList = typeList.Distinct().ToList();
+                List<string> typeList = tableDischargerModelList.Select(x => x.Type.ToString()).ToList();
+                typeList = typeList.Distinct().ToList();
 
-            Model.TypeList = typeList;
-            Model.Type = typeList.Contains(type) ? type : "";
+                Model.TypeList = typeList;
+                Model.Type = typeList.Contains(type) ? type : "";
 
-            // ChannelList
-            string channel = Model.Channel;
-        
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
-            
-            List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
-            channelList = channelList.Distinct().ToList();
+                // ChannelList
+                string channel = Model.Channel;
 
-            Model.ChannelList = channelList;
-            Model.Channel = channelList.Contains(channel) ? channel : "";
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
 
-            // VoltSpecList
-            string voltSpec = Model.VoltSpec;
+                List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
+                channelList = channelList.Distinct().ToList();
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
-            
-            List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
-            voltSpecList = voltSpecList.Distinct().ToList();
+                Model.ChannelList = channelList;
+                Model.Channel = channelList.Contains(channel) ? channel : "";
 
-            Model.VoltSpecList = voltSpecList;
-            Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
+                // VoltSpecList
+                string voltSpec = Model.VoltSpec;
 
-            // CurrSpecList
-            string currSpec = Model.CurrSpec;
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
-           
-            List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
-            currSpecList = currSpecList.Distinct().ToList();
+                List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
+                voltSpecList = voltSpecList.Distinct().ToList();
 
-            Model.CurrSpecList = currSpecList;
-            Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+                Model.VoltSpecList = voltSpecList;
+                Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
+
+                // CurrSpecList
+                string currSpec = Model.CurrSpec;
+
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
+
+                List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
+                currSpecList = currSpecList.Distinct().ToList();
+
+                Model.CurrSpecList = currSpecList;
+                Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+            }
         }
 
         private bool CheckData()
         {
-            List<TableDischargerInfo> dischargerInfos = SqliteDischargerInfo.GetData();
-            int dischargerNameIndex = dischargerInfos.FindIndex(x => x.DischargerName.ToUpper() == Model.Name.ToUpper());
-            if (dischargerNameIndex >= 0)
+            try
             {
-                MessageBox.Show("Name: 이미 존재하는 이름입니다.");
+                List<TableDischargerInfo> dischargerInfos = SqliteDischargerInfo.GetData();
+
+                if (dischargerInfos == null)
+                {
+                    MessageBox.Show("방전기 DB 정보를 불러오는데 실패하였습니다.");
+                    return false;
+                }
+
+                int dischargerNameIndex = dischargerInfos.FindIndex(x => x.DischargerName.ToUpper() == Model.Name.ToUpper());
+
+                if (dischargerNameIndex >= 0)
+                {
+                    MessageBox.Show("Name: 이미 존재하는 이름입니다.");
+                    return false;
+                }
+                if (Model.Name == null || Model.Name == "")
+                {
+                    MessageBox.Show("Name: 필수 정보입니다.");
+                    return false;
+                }
+                if (Model.Ip == null || Model.Ip == "")
+                {
+                    MessageBox.Show("Ip: 필수 정보입니다.");
+                    return false;
+                }
+                if (Model.DischargerModel == null || Model.DischargerModel == "")
+                {
+                    MessageBox.Show("Model: 필수 정보입니다.");
+                    return false;
+                }
+                if (Model.Type == null || Model.Type == "")
+                {
+                    MessageBox.Show("Type: 필수 정보입니다.");
+                    return false;
+                }
+                if (Model.Channel == null || Model.Channel == "")
+                {
+                    MessageBox.Show("Channel: 필수 정보입니다.");
+                    return false;
+                }
+                if (!Int16.TryParse(Model.Channel, out Int16 channel))
+                {
+                    MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
+                    return false;
+                }
+                if (Model.VoltSpec == null || Model.VoltSpec == "")
+                {
+                    MessageBox.Show("VoltSpec: 필수 정보입니다.");
+                    return false;
+                }
+                if (!double.TryParse(Model.VoltSpec, out double voltSpec))
+                {
+                    MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
+                    return false;
+                }
+                if (Model.CurrSpec == null || Model.CurrSpec == "")
+                {
+                    MessageBox.Show("CurrSpec: 필수 정보입니다.");
+                    return false;
+                }
+                if (!double.TryParse(Model.CurrSpec, out double surrSpec))
+                {
+                    MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
+                    return false;
+                }
+                if (Model.ModuleChannel != null && Model.ModuleChannel != ""
+                    && !Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
+                {
+                    MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
+                    return false;
+                }
+                if (Model.TempChannel != null && Model.TempChannel != ""
+                    && !Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
+                {
+                    MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
                 return false;
             }
-            if (Model.Name == null || Model.Name == "")
-            {
-                MessageBox.Show("Name: 필수 정보입니다.");
-                return false;
-            }
-            if (Model.Ip == null || Model.Ip == "")
-            {
-                MessageBox.Show("Ip: 필수 정보입니다.");
-                return false;
-            }
-            if (Model.DischargerModel == null || Model.DischargerModel == "")
-            {
-                MessageBox.Show("Model: 필수 정보입니다.");
-                return false;
-            }
-            if (Model.Type == null || Model.Type == "")
-            {
-                MessageBox.Show("Type: 필수 정보입니다.");
-                return false;
-            }
-            if (Model.Channel == null || Model.Channel == "")
-            {
-                MessageBox.Show("Channel: 필수 정보입니다.");
-                return false;
-            }
-            if (!Int16.TryParse(Model.Channel, out Int16 channel))
-            {
-                MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
-                return false;
-            }
-            if (Model.VoltSpec == null || Model.VoltSpec == "")
-            {
-                MessageBox.Show("VoltSpec: 필수 정보입니다.");
-                return false;
-            }
-            if (!double.TryParse(Model.VoltSpec, out double voltSpec))
-            {
-                MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
-                return  false;
-            }
-            if (Model.CurrSpec == null || Model.CurrSpec == "")
-            {
-                MessageBox.Show("CurrSpec: 필수 정보입니다.");
-                return false;
-            }
-            if (!double.TryParse(Model.CurrSpec, out double surrSpec))
-            {
-                MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
-                return false;
-            }
-            if (Model.ModuleChannel != null && Model.ModuleChannel != ""
-                && !Int32.TryParse(Model.ModuleChannel, out Int32 moduleChannel))
-            {
-                MessageBox.Show("ModuleChannel: 데이터 형식이 잘못되었습니다.");
-                return false;
-            }
-            if (Model.TempChannel != null && Model.TempChannel != ""
-                && !Int32.TryParse(Model.TempChannel, out Int32 tempChannel))
-            {
-                MessageBox.Show("TempChannel: 데이터 형식이 잘못되었습니다.");
-                return false;
-            }
-            return true;
         }
 
-        private void InsertDischargerInfo()
+        private bool InsertDischargerInfo()
         {
             try
             {
@@ -272,12 +311,23 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
+                    MessageBox.Show("장비 정보 추가 실패");
+
                     new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, deviceData);
                 }
+
+                return isOk;
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, ex);
+                return false;
             }
         }
     }
