@@ -60,8 +60,16 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (!(CheckData() < 0))
             {
-                InsertDischargerModel();
-                Close();
+                bool isOk = InsertDischargerModel();
+
+                if (isOk)
+                {
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("모델 정보 추가 실패");
+                }
             }
         }
 
@@ -73,131 +81,154 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadDischargerModelList()
         {
-            List<string> modelList = new List<string>();
-
-            foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+            try
             {
-                modelList.Add(eDischargerModel.ToString());
+                List<string> modelList = new List<string>();
+
+                foreach (EDischargerModel eDischargerModel in Enum.GetValues(typeof(EDischargerModel)))
+                {
+                    modelList.Add(eDischargerModel.ToString());
+                }
+
+                Model.DischargerModelList = modelList;
+
+                List<string> typeList = new List<string>();
+
+                foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+                {
+                    typeList.Add(eDischargerType.ToString());
+                }
+
+                Model.TypeList = typeList;
             }
-
-            Model.DischargerModelList = modelList;
-
-            List<string> typeList = new List<string>();
-
-            foreach (EDischargeType eDischargerType in Enum.GetValues(typeof(EDischargeType)))
+            catch (Exception ex)
             {
-                typeList.Add(eDischargerType.ToString());
+                MessageBox.Show(
+                   $"Error 발생\n\n" +
+                   $"ClassName: {this.GetType().Name}\n" +
+                   $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                   $"Exception: {ex.Message}");
             }
-
-            Model.TypeList = typeList;
         }
 
         private int CheckData()
         {
-            if (Model.DischargerModel == null || Model.DischargerModel == "")
+            try
             {
-                MessageBox.Show("Model: 필수 정보입니다.");
+                if (Model.DischargerModel == null || Model.DischargerModel == "")
+                {
+                    MessageBox.Show("Model: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.Type == null || Model.Type == "")
+                {
+                    MessageBox.Show("Type: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.Channel == null || Model.Channel == "")
+                {
+                    MessageBox.Show("Channel: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!Int32.TryParse(Model.Channel, out Int32 channel))
+                {
+                    MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.VoltSpec == null || Model.VoltSpec == "")
+                {
+                    MessageBox.Show("VoltSpec: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.VoltSpec, out double voltSpec))
+                {
+                    MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.CurrSpec == null || Model.CurrSpec == "")
+                {
+                    MessageBox.Show("CurrSpec: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.CurrSpec, out double surrSpec))
+                {
+                    MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.VoltMax == null || Model.VoltMax == "")
+                {
+                    MessageBox.Show("VoltMax: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.VoltMax, out double voltMax))
+                {
+                    MessageBox.Show("VoltMax: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.VoltMin == null || Model.VoltMin == "")
+                {
+                    MessageBox.Show("VoltMin: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.VoltMin, out double voltMin))
+                {
+                    MessageBox.Show("VoltMin: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.CurrMax == null || Model.CurrMax == "")
+                {
+                    MessageBox.Show("CurrMax: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.CurrMax, out double currMax))
+                {
+                    MessageBox.Show("CurrMax: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.CurrMin == null || Model.CurrMin == "")
+                {
+                    MessageBox.Show("CurrMin: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.CurrMin, out double currMin))
+                {
+                    MessageBox.Show("CurrMin: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.TempMax == null || Model.TempMax == "")
+                {
+                    MessageBox.Show("TempMax: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.TempMax, out double tempMax))
+                {
+                    MessageBox.Show("TempMax: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                if (Model.TempMin == null || Model.TempMin == "")
+                {
+                    MessageBox.Show("TempMin: 필수 정보입니다.");
+                    return -1;
+                }
+                if (!double.TryParse(Model.TempMin, out double tempMin))
+                {
+                    MessageBox.Show("TempMin: 데이터 형식이 잘못되었습니다.");
+                    return -1;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
                 return -1;
             }
-            if (Model.Type == null || Model.Type == "")
-            {
-                MessageBox.Show("Type: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.Channel == null || Model.Channel == "")
-            {
-                MessageBox.Show("Channel: 필수 정보입니다.");
-                return -1;
-            }
-            if (!Int32.TryParse(Model.Channel, out Int32 channel))
-            {
-                MessageBox.Show("Channel: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.VoltSpec == null || Model.VoltSpec == "")
-            {
-                MessageBox.Show("VoltSpec: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.VoltSpec, out double voltSpec))
-            {
-                MessageBox.Show("VoltSpec: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.CurrSpec == null || Model.CurrSpec == "")
-            {
-                MessageBox.Show("CurrSpec: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.CurrSpec, out double surrSpec))
-            {
-                MessageBox.Show("CurrSpec: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.VoltMax == null || Model.VoltMax == "")
-            {
-                MessageBox.Show("VoltMax: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.VoltMax, out double voltMax))
-            {
-                MessageBox.Show("VoltMax: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.VoltMin == null || Model.VoltMin == "")
-            {
-                MessageBox.Show("VoltMin: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.VoltMin, out double voltMin))
-            {
-                MessageBox.Show("VoltMin: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.CurrMax == null || Model.CurrMax == "")
-            {
-                MessageBox.Show("CurrMax: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.CurrMax, out double currMax))
-            {
-                MessageBox.Show("CurrMax: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.CurrMin == null || Model.CurrMin == "")
-            {
-                MessageBox.Show("CurrMin: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.CurrMin, out double currMin))
-            {
-                MessageBox.Show("CurrMin: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.TempMax == null || Model.TempMax == "")
-            {
-                MessageBox.Show("TempMax: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.TempMax, out double tempMax))
-            {
-                MessageBox.Show("TempMax: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            if (Model.TempMin == null || Model.TempMin == "")
-            {
-                MessageBox.Show("TempMin: 필수 정보입니다.");
-                return -1;
-            }
-            if (!double.TryParse(Model.TempMin, out double tempMin))
-            {
-                MessageBox.Show("TempMin: 데이터 형식이 잘못되었습니다.");
-                return -1;
-            }
-            return 0;
         }
 
-        private void InsertDischargerModel()
+        private bool InsertDischargerModel()
         {
             try
             {
@@ -269,10 +300,19 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     new LogTrace(ELogTrace.ERROR_ADD_MODEL, modelData);
                 }
+
+                return isOk;
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_ADD_MODEL, ex);
+                return false;
             }
         }
     }

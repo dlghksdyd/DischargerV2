@@ -99,42 +99,63 @@ namespace DischargerV2.MVVM.ViewModels
         {
             if (!(CheckData() < 0))
             {
-                UpdateUserInfo();
-                Close();
+                bool isOk = UpdateUserInfo();
+
+                if (isOk)
+                {
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("사용자 정보 변경 실패");
+                }
             }
         }
 
         private int CheckData()
         {
-            if (Model.CurrentPassword == null || Model.CurrentPassword == "")
+            try
             {
-                MessageBox.Show("Current Password: 필수 정보입니다.");
+                if (Model.CurrentPassword == null || Model.CurrentPassword == "")
+                {
+                    MessageBox.Show("Current Password: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.NewPassword == null || Model.NewPassword == "")
+                {
+                    MessageBox.Show("New Password: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.ConfirmNewPassword == null || Model.ConfirmNewPassword == "")
+                {
+                    MessageBox.Show("Confirm New Password: 필수 정보입니다.");
+                    return -1;
+                }
+                if (Model.CurrentPassword != Model.ConfirmCurrentPassword)
+                {
+                    MessageBox.Show("Current Password가 일치하지 않습니다.");
+                    return -1;
+                }
+                if (Model.NewPassword != Model.ConfirmNewPassword)
+                {
+                    MessageBox.Show("New Password가 일치하지 않습니다.");
+                    return -1;
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 return -1;
             }
-            if (Model.NewPassword == null || Model.NewPassword == "")
-            {
-                MessageBox.Show("New Password: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.ConfirmNewPassword == null || Model.ConfirmNewPassword == "")
-            {
-                MessageBox.Show("Confirm New Password: 필수 정보입니다.");
-                return -1;
-            }
-            if (Model.CurrentPassword != Model.ConfirmCurrentPassword)
-            {
-                MessageBox.Show("Current Password가 일치하지 않습니다.");
-                return -1;
-            }
-            if (Model.NewPassword != Model.ConfirmNewPassword)
-            {
-                MessageBox.Show("New Password가 일치하지 않습니다.");
-                return -1;
-            }
-            return 0;
         }
 
-        private void UpdateUserInfo()
+        private bool UpdateUserInfo()
         {
             try
             {
@@ -164,10 +185,20 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     new LogTrace(ELogTrace.ERROR_EDIT_USER, userData);
                 }
+
+                return isOk;
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_EDIT_USER, ex);
+
+                return false;
             }
         }
     }

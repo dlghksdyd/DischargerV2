@@ -57,16 +57,27 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadDischargerModelList()
         {
-            List<TableDischargerModel> tableDischargerModel = SqliteDischargerModel.GetData();
-
-            ObservableCollection<TableDischargerModel> content = new ObservableCollection<TableDischargerModel>();
-
-            for (int index = 0; index < tableDischargerModel.Count; index++)
+            try
             {
-                content.Add(tableDischargerModel[index]);
-            }
+                List<TableDischargerModel> tableDischargerModel = SqliteDischargerModel.GetData();
 
-            Model.Content = content;
+                ObservableCollection<TableDischargerModel> content = new ObservableCollection<TableDischargerModel>();
+
+                for (int index = 0; index < tableDischargerModel.Count; index++)
+                {
+                    content.Add(tableDischargerModel[index]);
+                }
+
+                Model.Content = content;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                   $"Error 발생\n\n" +
+                   $"ClassName: {this.GetType().Name}\n" +
+                   $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                   $"Exception: {ex.Message}");
+            }
         }
     }
 }
