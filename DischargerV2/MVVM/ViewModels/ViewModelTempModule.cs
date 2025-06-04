@@ -6,6 +6,7 @@ using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -108,10 +109,23 @@ namespace DischargerV2.MVVM.ViewModels
 
         public double GetTempData(string dischargerName)
         {
-            int tempModuleIndex = Model.TempModuleDictionary[dischargerName].ComportIndex;
-            int tempModuleChannel = Convert.ToInt32(Model.TempModuleDictionary[dischargerName].Channel);
+            try
+            {
+                int tempModuleIndex = Model.TempModuleDictionary[dischargerName].ComportIndex;
+                int tempModuleChannel = Convert.ToInt32(Model.TempModuleDictionary[dischargerName].Channel);
 
-            return Model.TempDatas[tempModuleIndex][tempModuleChannel];
+                return Model.TempDatas[tempModuleIndex][tempModuleChannel];
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
+                return 0;
+            }
         }
 
         public void ReconnectTempModule(string dischargerName)
@@ -146,6 +160,12 @@ namespace DischargerV2.MVVM.ViewModels
             catch (Exception ex)
             {
                 new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
+
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
 
@@ -212,6 +232,12 @@ namespace DischargerV2.MVVM.ViewModels
                 catch (Exception ex)
                 {
                     new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
+
+                    MessageBox.Show(
+                        $"Error 발생\n\n" +
+                        $"ClassName: {this.GetType().Name}\n" +
+                        $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                        $"Exception: {ex.Message}");
                 }
             }
 
