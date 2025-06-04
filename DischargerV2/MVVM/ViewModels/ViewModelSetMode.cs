@@ -7,6 +7,7 @@ using Prism.Mvvm;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
@@ -188,20 +189,28 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void Start()
         {
-            // 설정 값 적용
-            SetDischargerName(Model.DischargerName);
+            try
+            {
+                // 설정 값 적용
+                SetDischargerName(Model.DischargerName);
 
-            // 설정 값 확인
-            if (!CheckModeNTarget()) return;
-            if (!CheckNSetSafetyCondition()) return;
-            if (!CalculateTarget(out ModelStartDischarge model)) return;
+                // 설정 값 확인
+                if (!CheckModeNTarget()) return;
+                if (!CheckNSetSafetyCondition()) return;
+                if (!CalculateTarget(out ModelStartDischarge model)) return;
 
-            // 설정 값 적용
-            StartDischargeDictionary[Model.DischargerName].Model = model;
-            ViewModelMonitor_Step.Instance.UpdatePhaseData(Model.DischargerName);
+                // 설정 값 적용
+                StartDischargeDictionary[Model.DischargerName].Model = model;
+                ViewModelMonitor_Step.Instance.UpdatePhaseData(Model.DischargerName);
 
-            // 방전 로그 파일명 설정 및 확인
-            CheckLogFileName();
+                // 방전 로그 파일명 설정 및 확인
+                CheckLogFileName();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ViewModelSetMode.cs, Start()");
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -985,11 +994,28 @@ namespace DischargerV2.MVVM.ViewModels
                 List<PhaseData> phaseDataList = new List<PhaseData>();
                 foreach (var phaseData in modelStep.Content)
                 {
+                    double voltageInFor = 0;
+                    double currentInFor = 0;
+                    double cRateInFor = 0;
+
+                    try
+                    {
+                        voltageInFor = Convert.ToDouble(phaseData.Voltage);
+                        currentInFor = Convert.ToDouble(phaseData.Current);
+                        cRateInFor = Convert.ToDouble(phaseData.CRate);
+                    }
+                    catch
+                    {
+                        voltageInFor = 0;
+                        currentInFor = 0;
+                        cRateInFor = 0;
+                    }
+
                     phaseDataList.Add(new PhaseData()
                     {
-                        Voltage = Convert.ToDouble(phaseData.Voltage),
-                        Current = Convert.ToDouble(phaseData.Current),
-                        CRate = Convert.ToDouble(phaseData.CRate),
+                        Voltage = voltageInFor,
+                        Current = currentInFor,
+                        CRate = cRateInFor,
                     });
                 }
 
