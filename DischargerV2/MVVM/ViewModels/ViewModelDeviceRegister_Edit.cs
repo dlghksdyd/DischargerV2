@@ -108,60 +108,71 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void LoadModelInfoList()
         {
-            List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
+            try
+            {
+                List<TableDischargerModel> tableDischargerModelList = SqliteDischargerModel.GetData();
 
-            // DischargerModelList
-            string dischargerModel = Model.DischargerModel;
+                // DischargerModelList
+                string dischargerModel = Model.DischargerModel;
 
-            List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
-            modelList = modelList.Distinct().ToList();
+                List<string> modelList = tableDischargerModelList.Select(x => x.Model.ToString()).ToList();
+                modelList = modelList.Distinct().ToList();
 
-            Model.DischargerModelList = modelList;
-            Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
+                Model.DischargerModelList = modelList;
+                Model.DischargerModel = modelList.Contains(dischargerModel) ? dischargerModel : "";
 
-            // TypeList
-            string type = Model.Type;
+                // TypeList
+                string type = Model.Type;
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Model.ToString() == Model.DischargerModel);
 
-            List<string> typeList = tableDischargerModelList.Select(x => x.Type.ToString()).ToList();
-            typeList = typeList.Distinct().ToList();
+                List<string> typeList = tableDischargerModelList.Select(x => x.Type.ToString()).ToList();
+                typeList = typeList.Distinct().ToList();
 
-            Model.TypeList = typeList;
-            Model.Type = typeList.Contains(type) ? type : "";
+                Model.TypeList = typeList;
+                Model.Type = typeList.Contains(type) ? type : "";
 
-            // ChannelList
-            string channel = Model.Channel;
+                // ChannelList
+                string channel = Model.Channel;
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Type.ToString() == Model.Type);
 
-            List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
-            channelList = channelList.Distinct().ToList();
+                List<string> channelList = tableDischargerModelList.Select(x => x.Channel.ToString()).ToList();
+                channelList = channelList.Distinct().ToList();
 
-            Model.ChannelList = channelList;
-            Model.Channel = channelList.Contains(channel) ? channel : "";
+                Model.ChannelList = channelList;
+                Model.Channel = channelList.Contains(channel) ? channel : "";
 
-            // VoltSpecList
-            string voltSpec = Model.VoltSpec;
+                // VoltSpecList
+                string voltSpec = Model.VoltSpec;
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.Channel.ToString() == Model.Channel);
 
-            List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
-            voltSpecList = voltSpecList.Distinct().ToList();
+                List<string> voltSpecList = tableDischargerModelList.Select(x => x.SpecVoltage.ToString()).ToList();
+                voltSpecList = voltSpecList.Distinct().ToList();
 
-            Model.VoltSpecList = voltSpecList;
-            Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
+                Model.VoltSpecList = voltSpecList;
+                Model.VoltSpec = voltSpecList.Contains(voltSpec) ? voltSpec : "";
 
-            // CurrSpecList
-            string currSpec = Model.CurrSpec;
+                // CurrSpecList
+                string currSpec = Model.CurrSpec;
 
-            tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
+                tableDischargerModelList = tableDischargerModelList.FindAll(x => x.SpecVoltage.ToString() == Model.VoltSpec);
 
-            List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
-            currSpecList = currSpecList.Distinct().ToList();
+                List<string> currSpecList = tableDischargerModelList.Select(x => x.SpecCurrent.ToString()).ToList();
+                currSpecList = currSpecList.Distinct().ToList();
 
-            Model.CurrSpecList = currSpecList;
-            Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+                Model.CurrSpecList = currSpecList;
+                Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+            }
         }
 
         private void LoadModelInfoList(ModelDeviceRegister setModel)
@@ -223,9 +234,13 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.CurrSpecList = currSpecList;
                 Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("방전기 DB 정보를 불러오는데 실패하였습니다.");
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
 
@@ -297,9 +312,13 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 return 0;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("예상하지 못한 문제가 발생하였습니다.");
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
                 return -1;
             }
         }
@@ -362,6 +381,8 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
+                    MessageBox.Show("장비 정보 변경 실패");
+
                     new LogTrace(ELogTrace.ERROR_EDIT_DISCHARGER, deviceData);
                 }
 
@@ -369,8 +390,13 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_EDIT_DISCHARGER, ex);
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
 
+                new LogTrace(ELogTrace.ERROR_EDIT_DISCHARGER, ex);
                 return false;
             }
         }

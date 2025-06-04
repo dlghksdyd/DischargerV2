@@ -26,7 +26,7 @@ namespace DischargerV2.MVVM.Models
             Warning,
         }
 
-        private WindowState _windowState = WindowState.Normal;
+        private WindowState _windowState = WindowState.Maximized;
         public WindowState WindowState
         {
             get

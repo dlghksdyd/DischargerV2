@@ -149,9 +149,13 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.CurrSpecList = currSpecList;
                 Model.CurrSpec = currSpecList.Contains(currSpec) ? currSpec : "";
             }
-            catch
+            catch (Exception ex) 
             {
-                MessageBox.Show("방전기 DB 정보를 불러오는데 실패하였습니다.");
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
 
@@ -238,9 +242,13 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("예상하지 못한 문제가 발생하였습니다.");
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
                 return false;
             }
         }
@@ -303,6 +311,8 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
+                    MessageBox.Show("장비 정보 추가 실패");
+
                     new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, deviceData);
                 }
 
@@ -310,8 +320,13 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, ex);
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
 
+                new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, ex);
                 return false;
             }
         }

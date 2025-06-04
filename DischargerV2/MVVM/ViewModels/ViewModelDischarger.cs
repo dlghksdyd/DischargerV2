@@ -217,6 +217,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, ex);
             }
             
@@ -257,6 +263,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, ex);
             }
         }
@@ -322,6 +334,12 @@ namespace DischargerV2.MVVM.ViewModels
                         new LogTrace(ELogTrace.ERROR_RESTART_DISCHARGE, ex);
                     }
                 }
+
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
             }
         }
 
@@ -346,6 +364,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_STOP_DISCHARGE, ex);
             }
         }
@@ -371,6 +395,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_PAUSE_DISCHARGE, ex);
             }
         }
@@ -397,6 +427,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_SET_SAFETYCONDITION, ex);
             }
         }
@@ -423,6 +459,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_SET_STATE, ex);
             }
         }
@@ -614,6 +656,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, ex);
             }
         }
@@ -642,10 +690,7 @@ namespace DischargerV2.MVVM.ViewModels
                         }
                     }
                 }
-                catch
-                {
-                    // nothing to do.
-                }
+                catch { }
 
                 if (Model[i].DischargerState != EDischargerState.Discharging)
                 {
