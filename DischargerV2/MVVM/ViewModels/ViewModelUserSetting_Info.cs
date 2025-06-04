@@ -118,6 +118,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                   $"Error 발생\n\n" +
+                   $"ClassName: {this.GetType().Name}\n" +
+                   $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                   $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_DELETE_USER, ex);
             }
         }

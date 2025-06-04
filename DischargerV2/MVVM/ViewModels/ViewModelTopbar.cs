@@ -139,6 +139,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: ViewModelTopbar\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+
                 new LogTrace(ELogTrace.ERROR_PROGRAM_END, ex);
             }
         }
