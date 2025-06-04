@@ -132,34 +132,45 @@ namespace DischargerV2.MVVM.ViewModels
             // 현재 선택된 방전기의 PhaseIndex를 UI에 반영
             lock (_phaseDataLock)
             {
-                var selectedDischargerName = ViewModelSetMode.Instance.SelectedDischargerName;
-                var selectedStartDischarge = ViewModelSetMode.Instance.StartDischargeDictionary[selectedDischargerName];
-
-                if (selectedStartDischarge.PhaseIndex >= PhaseData.Count) return;
-
-                for (int i = 0; i < PhaseData.Count; i++)
+                try
                 {
-                    if (i == selectedStartDischarge.PhaseIndex)
+                    var selectedDischargerName = ViewModelSetMode.Instance.SelectedDischargerName;
+                    var selectedStartDischarge = ViewModelSetMode.Instance.StartDischargeDictionary[selectedDischargerName];
+
+                    if (selectedStartDischarge.PhaseIndex >= PhaseData.Count) return;
+
+                    for (int i = 0; i < PhaseData.Count; i++)
                     {
-                        PhaseData[i].Background = ResColor.table_selected;
+                        if (i == selectedStartDischarge.PhaseIndex)
+                        {
+                            PhaseData[i].Background = ResColor.table_selected;
+                        }
+                        else
+                        {
+                            PhaseData[i].Background = ResColor.transparent;
+                        }
                     }
-                    else
+
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        PhaseData[i].Background = ResColor.transparent;
-                    }
+                        if (selectedStartDischarge.PhaseIndex >= 3)
+                        {
+                            _scrollViewer.ScrollToVerticalOffset(((double)selectedStartDischarge.PhaseIndex - 2) * 52);
+                        }
+                        else
+                        {
+                            _scrollViewer.ScrollToVerticalOffset(0);
+                        }
+                    });
                 }
-
-                Application.Current.Dispatcher.Invoke(() =>
+                catch (Exception ex)
                 {
-                    if (selectedStartDischarge.PhaseIndex >= 3)
-                    {
-                        _scrollViewer.ScrollToVerticalOffset(((double)selectedStartDischarge.PhaseIndex - 2) * 52);
-                    }
-                    else
-                    {
-                        _scrollViewer.ScrollToVerticalOffset(0);
-                    }
-                });
+                    MessageBox.Show(
+                        $"Error 발생\n\n" +
+                        $"ClassName: {this.GetType().Name}\n" +
+                        $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                        $"Exception: {ex.Message}");
+                }
             }
         }
     }
