@@ -159,6 +159,8 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
+                    MessageBox.Show("장비 정보 삭제 실패");
+
                     new LogTrace(ELogTrace.ERROR_DELETE_DISCHARGER, deviceData);
                 }
 
@@ -168,6 +170,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex) 
             {
+                MessageBox.Show("장비 정보 삭제 실패");
+
                 new LogTrace(ELogTrace.ERROR_DELETE_DISCHARGER, ex);
             }
         }
