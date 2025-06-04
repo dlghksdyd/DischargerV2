@@ -97,13 +97,22 @@ namespace DischargerV2.MVVM.Views
             _viewModel.VoltageAxis.LabelFontName = "맑은 고딕";
             _viewModel.VoltageAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
+            _viewModel.DataReceiveSemaphore.WaitOne();
+
             DrawGraph();
+
+            _viewModel.DataReceiveSemaphore.Release();
         }
 
         private void _viewModel_DischargerChanged(object sender, System.EventArgs e)
         {
             UpdateUI();
+
+            _viewModel.DataReceiveSemaphore.WaitOne();
+
             DrawGraph();
+
+            _viewModel.DataReceiveSemaphore.Release();
         }
 
         private void _viewModel_DischargeModeChanged(object sender, System.EventArgs e)
@@ -118,7 +127,11 @@ namespace DischargerV2.MVVM.Views
 
         private void xCheckBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            _viewModel.DataReceiveSemaphore.WaitOne();
+
             DrawGraph();
+
+            _viewModel.DataReceiveSemaphore.Release();
         }
 
         private void UpdateUI()
@@ -132,111 +145,118 @@ namespace DischargerV2.MVVM.Views
 
         private void DrawGraph()
         {
-            // 데이터 초기화
-            xDataGraph.Plot.PlottableList.Clear();
-
-            // Voltage 
-            if (_viewModel.IsCheckedVoltage)
+            try
             {
-                // Y축 설정
-                _viewModel.VoltageAxis.IsVisible = true;
+                // 데이터 초기화
+                xDataGraph.Plot.PlottableList.Clear();
 
-                xDataGraph.Plot.Axes.Left.Min = _viewModel.VoltageAxis.Min;
-                xDataGraph.Plot.Axes.Left.Max = _viewModel.VoltageAxis.Max;
-
-                // Data 생성
-                Dispatcher.Invoke(() =>
+                // Voltage 
+                if (_viewModel.IsCheckedVoltage)
                 {
-                    _viewModel.VoltageScatter = xDataGraph.Plot.Add.Scatter(_viewModel.Model.DataNoList.ToArray(), _viewModel.Model.DataVoltageList.ToArray(), _viewModel.Model.GreenScottPlotColor);
-                    _viewModel.VoltageScatter.LineWidth = (float)1.5;
-                    _viewModel.VoltageScatter.MarkerSize = 5;
-                    _viewModel.VoltageScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-                    _viewModel.VoltageScatter.Axes.YAxis = _viewModel.VoltageAxis;
-                });
-            }
-            else
-            {
-                // Y축 설정
-                _viewModel.VoltageAxis.IsVisible = false;
-            }
+                    // Y축 설정
+                    _viewModel.VoltageAxis.IsVisible = true;
 
-            // Current 
-            if (_viewModel.IsCheckedCurrent)
-            {
-                // Y축 설정
-                _viewModel.CurrentAxis.IsVisible = true;
+                    xDataGraph.Plot.Axes.Left.Min = _viewModel.VoltageAxis.Min;
+                    xDataGraph.Plot.Axes.Left.Max = _viewModel.VoltageAxis.Max;
 
-                xDataGraph.Plot.Axes.Left.Min = _viewModel.CurrentAxis.Min;
-                xDataGraph.Plot.Axes.Left.Max = _viewModel.CurrentAxis.Max;
-
-                // Data 생성
-                Dispatcher.Invoke(() =>
+                    // Data 생성
+                    Dispatcher.Invoke(() =>
+                    {
+                        _viewModel.VoltageScatter = xDataGraph.Plot.Add.Scatter(_viewModel.Model.DataNoList.ToArray(), _viewModel.Model.DataVoltageList.ToArray(), _viewModel.Model.GreenScottPlotColor);
+                        _viewModel.VoltageScatter.LineWidth = (float)1.5;
+                        _viewModel.VoltageScatter.MarkerSize = 5;
+                        _viewModel.VoltageScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                        _viewModel.VoltageScatter.Axes.YAxis = _viewModel.VoltageAxis;
+                    });
+                }
+                else
                 {
-                    _viewModel.CurrentScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataCurrentArray, _viewModel.CurrentColor);
-                    _viewModel.CurrentScatter.LineWidth = (float)1.5;
-                    _viewModel.CurrentScatter.MarkerSize = 5;
-                    _viewModel.CurrentScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-                    _viewModel.CurrentScatter.Axes.YAxis = _viewModel.CurrentAxis;
-                });
-            }
-            else
-            {
-                // Y축 설정
-                _viewModel.CurrentAxis.IsVisible = false;
-            }
+                    // Y축 설정
+                    _viewModel.VoltageAxis.IsVisible = false;
+                }
 
-            // Temp 
-            if (_viewModel.IsCheckedTemp)
-            {
-                // Y축 설정
-                _viewModel.TempAxis.IsVisible = true;
-
-                xDataGraph.Plot.Axes.Left.Min = _viewModel.TempAxis.Min;
-                xDataGraph.Plot.Axes.Left.Max = _viewModel.TempAxis.Max;
-
-                // Data 생성
-                Dispatcher.Invoke(() =>
+                // Current 
+                if (_viewModel.IsCheckedCurrent)
                 {
-                    _viewModel.TempScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataTempArray, _viewModel.TempColor);
-                    _viewModel.TempScatter.LineWidth = (float)1.5;
-                    _viewModel.TempScatter.MarkerSize = 5;
-                    _viewModel.TempScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-                    _viewModel.TempScatter.Axes.YAxis = _viewModel.TempAxis;
-                });
-            }
-            else
-            {
-                // Y축 설정
-                _viewModel.TempAxis.IsVisible = false;
-            }
+                    // Y축 설정
+                    _viewModel.CurrentAxis.IsVisible = true;
 
-            // SoC 
-            if (_viewModel.IsCheckedSoc)
-            {
-                // Y축 설정
-                _viewModel.SocAxis.IsVisible = true;
+                    xDataGraph.Plot.Axes.Left.Min = _viewModel.CurrentAxis.Min;
+                    xDataGraph.Plot.Axes.Left.Max = _viewModel.CurrentAxis.Max;
 
-                xDataGraph.Plot.Axes.Left.Min = _viewModel.SocAxis.Min;
-                xDataGraph.Plot.Axes.Left.Max = _viewModel.SocAxis.Max;
-
-                // Data 생성
-                Dispatcher.Invoke(() =>
+                    // Data 생성
+                    Dispatcher.Invoke(() =>
+                    {
+                        _viewModel.CurrentScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataCurrentArray, _viewModel.CurrentColor);
+                        _viewModel.CurrentScatter.LineWidth = (float)1.5;
+                        _viewModel.CurrentScatter.MarkerSize = 5;
+                        _viewModel.CurrentScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                        _viewModel.CurrentScatter.Axes.YAxis = _viewModel.CurrentAxis;
+                    });
+                }
+                else
                 {
-                    _viewModel.SocScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataSocArray, _viewModel.SocColor);
-                    _viewModel.SocScatter.LineWidth = (float)1.5;
-                    _viewModel.SocScatter.MarkerSize = 5;
-                    _viewModel.SocScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
-                    _viewModel.SocScatter.Axes.YAxis = _viewModel.SocAxis;
-                });
-            }
-            else
-            {
-                // Y축 설정
-                _viewModel.SocAxis.IsVisible = false;
-            }
+                    // Y축 설정
+                    _viewModel.CurrentAxis.IsVisible = false;
+                }
 
-            xDataGraph.Refresh();
-            xDataGraph.Plot.Axes.AutoScale();
+                // Temp 
+                if (_viewModel.IsCheckedTemp)
+                {
+                    // Y축 설정
+                    _viewModel.TempAxis.IsVisible = true;
+
+                    xDataGraph.Plot.Axes.Left.Min = _viewModel.TempAxis.Min;
+                    xDataGraph.Plot.Axes.Left.Max = _viewModel.TempAxis.Max;
+
+                    // Data 생성
+                    Dispatcher.Invoke(() =>
+                    {
+                        _viewModel.TempScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataTempArray, _viewModel.TempColor);
+                        _viewModel.TempScatter.LineWidth = (float)1.5;
+                        _viewModel.TempScatter.MarkerSize = 5;
+                        _viewModel.TempScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                        _viewModel.TempScatter.Axes.YAxis = _viewModel.TempAxis;
+                    });
+                }
+                else
+                {
+                    // Y축 설정
+                    _viewModel.TempAxis.IsVisible = false;
+                }
+
+                // SoC 
+                if (_viewModel.IsCheckedSoc)
+                {
+                    // Y축 설정
+                    _viewModel.SocAxis.IsVisible = true;
+
+                    xDataGraph.Plot.Axes.Left.Min = _viewModel.SocAxis.Min;
+                    xDataGraph.Plot.Axes.Left.Max = _viewModel.SocAxis.Max;
+
+                    // Data 생성
+                    Dispatcher.Invoke(() =>
+                    {
+                        _viewModel.SocScatter = xDataGraph.Plot.Add.Scatter(_viewModel.DataNoArray, _viewModel.DataSocArray, _viewModel.SocColor);
+                        _viewModel.SocScatter.LineWidth = (float)1.5;
+                        _viewModel.SocScatter.MarkerSize = 5;
+                        _viewModel.SocScatter.Axes.XAxis = xDataGraph.Plot.Axes.Bottom;
+                        _viewModel.SocScatter.Axes.YAxis = _viewModel.SocAxis;
+                    });
+                }
+                else
+                {
+                    // Y축 설정
+                    _viewModel.SocAxis.IsVisible = false;
+                }
+
+                xDataGraph.Refresh();
+                xDataGraph.Plot.Axes.AutoScale();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -176,6 +177,8 @@ namespace DischargerV2.MVVM.ViewModels
         }
         #endregion
 
+        public Semaphore DataReceiveSemaphore { get; set; } = new Semaphore(1, 1);
+
         public ViewModelMonitor_Graph()
         {
             _instance = this;
@@ -266,6 +269,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
         {
+            DataReceiveSemaphore.WaitOne();
+
             try
             {
                 ModelDictionary[dischargerName].ReceiveCount += 1;
@@ -342,8 +347,6 @@ namespace DischargerV2.MVVM.ViewModels
                         ModelDictionary[dischargerName].DataNoList[i] = i + 1;
                     }
                 }
-
-                GetDataChanged?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {
@@ -353,6 +356,10 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
             }
+
+            DataReceiveSemaphore.Release();
+
+            GetDataChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
