@@ -189,30 +189,30 @@ namespace DischargerV2.MVVM.ViewModels
                     StopDischarge();
                 }
 
+                // 모델별 온도 받아오는 게 다름
+                if (isTempModule)
+                {
+                    double receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
+
+                    // 온도 안전 조건 확인하는 부분
+                    if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
+                    {
+                        viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
+                        return;
+                    }
+
+                    // Graph 데이터 전달
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData, receiveTemp);
+                }
+                else
+                {
+                    // Graph 데이터 전달
+                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData);
+                }
+
                 // 방전기 동작 설정 및 확인
                 if (Model.IsEnterLastPhase == false)
                 {
-                    // 모델별 온도 받아오는 게 다름
-                    if (isTempModule)
-                    {
-                        double receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
-
-                        // 온도 안전 조건 확인하는 부분
-                        if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
-                        {
-                            viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
-                            return;
-                        }
-
-                        // Graph 데이터 전달
-                        viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData, receiveTemp);
-                    }
-                    else
-                    {
-                        // Graph 데이터 전달
-                        viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData);
-                    }
-
                     // 타겟 전압에 도달했을 경우 Phase 상승
                     if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
                     {

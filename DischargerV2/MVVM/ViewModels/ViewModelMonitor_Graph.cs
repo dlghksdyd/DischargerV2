@@ -269,7 +269,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
         {
-            DataReceiveSemaphore.WaitOne();
+            //DataReceiveSemaphore.WaitOne();
 
             try
             {
@@ -357,9 +357,12 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Exception: {ex.Message}");
             }
 
-            DataReceiveSemaphore.Release();
+            //DataReceiveSemaphore.Release();
 
-            GetDataChanged?.Invoke(this, EventArgs.Empty);
+            if (ViewModelDischarger.Instance.SelectedDischargerName == dischargerName)
+            {
+                GetDataChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

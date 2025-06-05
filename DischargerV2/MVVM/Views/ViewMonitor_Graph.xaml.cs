@@ -97,11 +97,7 @@ namespace DischargerV2.MVVM.Views
             _viewModel.VoltageAxis.LabelFontName = "맑은 고딕";
             _viewModel.VoltageAxis.LabelFontSize = (float)ResFontSize.heading_6;
 
-            _viewModel.DataReceiveSemaphore.WaitOne();
-
             DrawGraph();
-
-            _viewModel.DataReceiveSemaphore.Release();
         }
 
         private void _viewModel_DischargerChanged(object sender, System.EventArgs e)
@@ -127,11 +123,11 @@ namespace DischargerV2.MVVM.Views
 
         private void xCheckBox_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _viewModel.DataReceiveSemaphore.WaitOne();
+            //_viewModel.DataReceiveSemaphore.WaitOne();
 
-            DrawGraph();
+            //DrawGraph();
 
-            _viewModel.DataReceiveSemaphore.Release();
+            //_viewModel.DataReceiveSemaphore.Release();
         }
 
         private void UpdateUI()
@@ -143,8 +139,11 @@ namespace DischargerV2.MVVM.Views
             xSocCheckBox.Visibility = _viewModel.VisibilitySoc;
         }
 
+        private Semaphore _drawGraphSemaphore = new Semaphore(1, 1); 
         private void DrawGraph()
         {
+            //_drawGraphSemaphore.WaitOne();
+
             try
             {
                 // 데이터 초기화
@@ -257,6 +256,8 @@ namespace DischargerV2.MVVM.Views
             {
 
             }
+
+            //_drawGraphSemaphore.Release();
         }
     }
 }
