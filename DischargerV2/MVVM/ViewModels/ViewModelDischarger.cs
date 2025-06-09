@@ -593,7 +593,7 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.IsTempModule = info.IsTempModule;
             dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
             dischargerInfo.EthernetPort = 10004;
-            dischargerInfo.TimeOutMs = 5000;
+            dischargerInfo.TimeOutMs = 2000;
             dischargerInfo.SpecVoltage = info.SpecVoltage;
             dischargerInfo.SpecCurrent = info.SpecCurrent;
             dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;

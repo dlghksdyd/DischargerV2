@@ -142,8 +142,6 @@ namespace Ethernet.Client.Basic
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-
-                    return EthernetClientBasicStatus.EN_ERROR_WRITE_FAIL;
                 }
 
                 return EthernetClientBasicStatus.EN_ERROR_OK;
@@ -169,22 +167,16 @@ namespace Ethernet.Client.Basic
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine(e.StackTrace);
                     Debug.WriteLine(e.ErrorCode);
-
-                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
                 }
                 catch (IOException e)
                 {
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine(e.StackTrace);
                     Debug.WriteLine(e.TargetSite);
-
-                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-
-                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
                 }
 
                 return EthernetClientBasicStatus.EN_ERROR_OK;
