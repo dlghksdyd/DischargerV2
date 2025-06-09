@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Discharger.MVVM.Repository;
 using DischargerV2.LOG;
 using Ethernet.Client.Common;
@@ -253,6 +254,9 @@ namespace Ethernet.Client.Discharger
         {
             Stop();
 
+            // 연결 안정화 시간 추가
+            Thread.Sleep(3000);
+
             return Start(_parameters);
         }
 
@@ -297,6 +301,8 @@ namespace Ethernet.Client.Discharger
                 ChangeDischargerState(EDischargerState.Disconnected);
                 return false;
             }
+
+            Thread.Sleep(500);
 
             /// 이전 에러 상태 초기화
             bool clearAlarmResult = SendCommand_ClearAlarm();

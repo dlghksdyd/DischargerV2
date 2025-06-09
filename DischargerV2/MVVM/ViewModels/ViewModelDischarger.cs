@@ -240,8 +240,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             try
             {
-                Thread thread = new Thread(
-                    delegate ()
+                Thread thread = new Thread(() => 
                     {
                         // 방전기 재 연결
                         bool isOk = _clients[dischargerName].Restart();
@@ -258,7 +257,7 @@ namespace DischargerV2.MVVM.ViewModels
                             new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, dischargerComm);
                         }
                     });
-
+                thread.IsBackground = true;
                 thread.Start();
             }
             catch (Exception ex)
@@ -594,7 +593,7 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.IsTempModule = info.IsTempModule;
             dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
             dischargerInfo.EthernetPort = 10004;
-            dischargerInfo.TimeOutMs = 1000;
+            dischargerInfo.TimeOutMs = 5000;
             dischargerInfo.SpecVoltage = info.SpecVoltage;
             dischargerInfo.SpecCurrent = info.SpecCurrent;
             dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;
