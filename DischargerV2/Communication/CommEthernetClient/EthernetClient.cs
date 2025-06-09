@@ -117,20 +117,25 @@ namespace Ethernet.Client.Common
                 bool writeResult = Parameters.WriteFunction.Invoke(Handle, _writeBuffer);
                 if (writeResult == false)
                 {
+                    EthernetClientBasic.FlushReceiveBuffer(Handle);
                     return false;
                 }
 
                 bool readResult = Parameters.ReadFunction.Invoke(Handle, out readBuffer);
                 if (readResult == false)
                 {
+                    EthernetClientBasic.FlushReceiveBuffer(Handle);
                     return false;
                 }
 
                 bool parseResult = Parameters.ParseFunction.Invoke(readBuffer);
                 if (parseResult == false)
                 {
+                    EthernetClientBasic.FlushReceiveBuffer(Handle);
                     return false;
                 }
+
+                EthernetClientBasic.FlushReceiveBuffer(Handle);
 
                 return true;
             }

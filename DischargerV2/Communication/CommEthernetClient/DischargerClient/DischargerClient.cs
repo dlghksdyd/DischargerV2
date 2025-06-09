@@ -302,7 +302,7 @@ namespace Ethernet.Client.Discharger
                 return false;
             }
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             /// 이전 에러 상태 초기화
             bool clearAlarmResult = SendCommand_ClearAlarm();
@@ -405,50 +405,54 @@ namespace Ethernet.Client.Discharger
             }
         }
 
+        private object _timerLock = new object();
         private void OneSecondTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!IsConnected())
+            lock (_timerLock)
             {
-                ChangeDischargerState(EDischargerState.Disconnected);
-                return;
-            }
-
-            if (_dischargerState == EDischargerState.SafetyOutOfRange ||
-                _dischargerState == EDischargerState.ReturnCodeError ||
-                _dischargerState == EDischargerState.ChStatusError ||
-                _dischargerState == EDischargerState.DeviceError)
-            {
-                if (IsLampBuzzerUsed)
+                if (!IsConnected())
                 {
-                    SendCommand_LampControl(EDioControl.TowerLampRed, true);
-                }
-                else
-                {
-                    SendCommand_LampControl(EDioControl.TowerLampRed, false);
+                    ChangeDischargerState(EDischargerState.Disconnected);
+                    return;
                 }
 
-                SendCommand_StopDischarge();
-                return;
-            }
-
-            SendCommand_RequestChannelInfo();
-
-            if (_dischargerState == EDischargerState.Discharging)
-            {
-                SendCommand_LampControl(EDioControl.TowerLampGreen, false);
-
-                if (_dischargerData.ReceiveBatteryVoltage < 1 && _dischargerData.ReceiveDischargeCurrent < 0.1)
+                if (_dischargerState == EDischargerState.SafetyOutOfRange ||
+                    _dischargerState == EDischargerState.ReturnCodeError ||
+                    _dischargerState == EDischargerState.ChStatusError ||
+                    _dischargerState == EDischargerState.DeviceError)
                 {
+                    if (IsLampBuzzerUsed)
+                    {
+                        SendCommand_LampControl(EDioControl.TowerLampRed, true);
+                    }
+                    else
+                    {
+                        SendCommand_LampControl(EDioControl.TowerLampRed, false);
+                    }
+
                     SendCommand_StopDischarge();
+                    return;
                 }
-            }
-            else if (_dischargerState == EDischargerState.Pause)
-            {
-                SendCommand_LampControl(EDioControl.TowerLampGreen, false);
-            }
-            else if (_dischargerState == EDischargerState.None || _dischargerState == EDischargerState.Ready)
-            {
-                SendCommand_LampControl(EDioControl.TowerLampYellow, false);
+
+                SendCommand_RequestChannelInfo();
+                
+                if (_dischargerState == EDischargerState.Discharging)
+                {
+                    SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+
+                    if (_dischargerData.ReceiveBatteryVoltage < 1 && _dischargerData.ReceiveDischargeCurrent < 0.1)
+                    {
+                        SendCommand_StopDischarge();
+                    }
+                }
+                else if (_dischargerState == EDischargerState.Pause)
+                {
+                    SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+                }
+                else if (_dischargerState == EDischargerState.None || _dischargerState == EDischargerState.Ready)
+                {
+                    SendCommand_LampControl(EDioControl.TowerLampYellow, false);
+                }
             }
         }
 
@@ -774,8 +778,6 @@ namespace Ethernet.Client.Discharger
                     {
                         dioValue |= (uint)EDioControl.TowerLampBuzzer;
                     }
-
-                    
 
                     byte[] writeBuffer = CreateLampControlCommand(dioValue);
 

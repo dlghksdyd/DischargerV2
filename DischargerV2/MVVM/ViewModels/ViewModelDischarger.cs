@@ -96,15 +96,11 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        private static ViewModelDischarger _instance = null;
+        private static ViewModelDischarger _instance = new ViewModelDischarger();
         public static ViewModelDischarger Instance
         {
             get
             {
-                if (_instance == null )
-                {
-                    _instance = new ViewModelDischarger();
-                }
                 return _instance;
             }
         }
@@ -115,7 +111,13 @@ namespace DischargerV2.MVVM.ViewModels
         {
             InitializeDischarger();
 
-            SelectDischarger(0);
+            Thread thread = new Thread(() =>
+            {
+                Thread.Sleep(200);
+                SelectDischarger(0);
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void SelectDischarger(int selectedIndex, bool IsSetDischargerName = true)
@@ -225,8 +227,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                 new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, ex);
             }
-            
-            ReconnectDischarger(dischargerName);
         }
 
         /// <summary>

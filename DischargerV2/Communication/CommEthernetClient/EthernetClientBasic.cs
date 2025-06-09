@@ -143,8 +143,6 @@ namespace Ethernet.Client.Basic
                 {
                     Debug.WriteLine(e.Message);
 
-                    Disconnect(handle);
-
                     return EthernetClientBasicStatus.EN_ERROR_WRITE_FAIL;
                 }
 
@@ -166,11 +164,25 @@ namespace Ethernet.Client.Basic
                     int readByte = ClientInstances[handle].Stream.Read(data, offset, dataLength);
                     data = data.ResizeArray(readByte);
                 }
+                catch (SocketException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine(e.StackTrace);
+                    Debug.WriteLine(e.ErrorCode);
+
+                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
+                }
+                catch (IOException e)
+                {
+                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine(e.StackTrace);
+                    Debug.WriteLine(e.TargetSite);
+
+                    return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
+                }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-
-                    Disconnect(handle);
 
                     return EthernetClientBasicStatus.EN_ERROR_READ_FAIL;
                 }
