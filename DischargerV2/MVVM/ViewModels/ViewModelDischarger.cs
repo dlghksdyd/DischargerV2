@@ -272,9 +272,10 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void StartDischarger(StartDischargerCommandParam param)
+        public bool StartDischarger(StartDischargerCommandParam param)
         {
             bool? isRestart = param.IsRestart;
+            bool returnValue = false;
 
             try
             {
@@ -304,6 +305,8 @@ namespace DischargerV2.MVVM.ViewModels
                             new LogTrace(ELogTrace.TRACE_RESTART_DISCHARGE, dischargerComm);
                         }
                     }
+
+                    returnValue = true;
                 }
                 else
                 {
@@ -319,6 +322,7 @@ namespace DischargerV2.MVVM.ViewModels
                         }
                     }
                 }
+                return returnValue;
             }
             catch (Exception ex)
             {
@@ -339,6 +343,8 @@ namespace DischargerV2.MVVM.ViewModels
                     $"ClassName: {this.GetType().Name}\n" +
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
+
+                return returnValue;
             }
         }
 

@@ -95,6 +95,21 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Thread.Sleep(3000);
 
+                // 최대 세번 retry
+                for (int i = 0; i < 3; i++)
+                {
+                    if (ViewModelDischarger.Instance.SelectedModel.DischargerState == EDischargerState.Discharging)
+                    {
+                        ViewModelDischarger.Instance.PauseDischarger(Model.DischargerName);
+
+                        Thread.Sleep(3000);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     ViewModelMain.Instance.OffPopup();
@@ -130,6 +145,29 @@ namespace DischargerV2.MVVM.ViewModels
                 });
 
                 Thread.Sleep(3000);
+
+                // 최대 세번 retry
+                for (int i = 0; i < 3; i++)
+                {
+                    if (ViewModelDischarger.Instance.SelectedModel.DischargerState == EDischargerState.Pause)
+                    {
+                        ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
+                        {
+                            DischargerName = Model.DischargerName,
+                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                            Current = -Model.PhaseDataList[PhaseIndex].Current,
+                            EDischargeTarget = Model.EDischargeTarget,
+                            LogFileName = _logFileName,
+                            IsRestart = true,
+                        });
+
+                        Thread.Sleep(3000);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -261,13 +299,26 @@ namespace DischargerV2.MVVM.ViewModels
 
                                 ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
 
-                                viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                bool isOk = false;
+
+                                // 최대 세번 전송
+                                for (int i = 0; i < 3; i++)
                                 {
-                                    DischargerName = Model.DischargerName,
-                                    Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
-                                    Current = -Model.PhaseDataList[PhaseIndex].Current,
-                                    LogFileName = _logFileName
-                                });
+                                    if (!isOk)
+                                    {
+                                        isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                        {
+                                            DischargerName = Model.DischargerName,
+                                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                            Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                            LogFileName = _logFileName
+                                        });
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -332,13 +383,26 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 PhaseIndex = 1;
 
-                                viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                bool isOk = false;
+
+                                // 최대 세번 전송
+                                for (int i = 0; i < 3; i++)
                                 {
-                                    DischargerName = Model.DischargerName,
-                                    Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
-                                    Current = -Model.PhaseDataList[PhaseIndex].Current,
-                                    LogFileName = _logFileName
-                                });
+                                    if (!isOk)
+                                    {
+                                        isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                        {
+                                            DischargerName = Model.DischargerName,
+                                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                            Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                            LogFileName = _logFileName
+                                        });
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
