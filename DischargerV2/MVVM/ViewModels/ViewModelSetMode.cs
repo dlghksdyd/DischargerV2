@@ -234,7 +234,7 @@ namespace DischargerV2.MVVM.ViewModels
                 viewModelMain.SetViewModelPopup_SetLogFileName(viewModelPopup_SetLogFileName);
                 viewModelMain.OpenPopup(ModelMain.EPopup.SetLogFileName);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 // System Trace Log 저장 - 방전 동작 로그 파일 생성 실패
                 new LogTrace(LogTrace.ELogTrace.ERROR_SAVE_LOG, ex);
@@ -498,7 +498,7 @@ namespace DischargerV2.MVVM.ViewModels
             double tempMin = Convert.ToDouble(modelSafetyCondition.TempMin);
             double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
 
-            ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName, 
+            ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName,
                 voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
             return true;
@@ -544,7 +544,7 @@ namespace DischargerV2.MVVM.ViewModels
                 // Target Voltage
                 else if (modelPreset.EDischargeTarget == EDischargeTarget.Voltage)
                 {
-                    int tagetVoltage = Convert.ToInt32(modelPreset.TargetVoltage);
+                    double tagetVoltage = Convert.ToDouble(modelPreset.TargetVoltage);
 
                     model.PhaseDataList.Add(new PhaseData()
                     {
@@ -613,7 +613,7 @@ namespace DischargerV2.MVVM.ViewModels
                     if (modelSimple.StandardVoltage == null || modelSimple.StandardVoltage == "")
                     {
                         // 용량 X
-                        if (modelSimple.StandardCapacity == null ||  modelSimple.StandardCapacity == "")
+                        if (modelSimple.StandardCapacity == null || modelSimple.StandardCapacity == "")
                         {
                             model.PhaseDataList.Add(new PhaseData()
                             {
@@ -639,11 +639,23 @@ namespace DischargerV2.MVVM.ViewModels
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = 0,
+                                    Current = 100
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
                                     Current = 33.4
                                 });
                             }
                             else
                             {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = 0,
+                                    Current = standardCapacity
+                                });
+
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = 0,
@@ -687,21 +699,21 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = 0,
                                     Current = 100
                                 });
 
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = 0,
-                                    Current = standardCapacity / 3
+                                    Current = 33.4
                                 });
                             }
                             else
                             {
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = 0,
                                     Current = standardCapacity
                                 });
 
@@ -754,7 +766,7 @@ namespace DischargerV2.MVVM.ViewModels
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = 0,
-                                    Current = standardCapacity / 3
+                                    Current = 33.4
                                 });
                             }
                             else
@@ -850,6 +862,12 @@ namespace DischargerV2.MVVM.ViewModels
                             model.PhaseDataList.Add(new PhaseData()
                             {
                                 Voltage = targetVoltage,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = targetVoltage,
                                 Current = 33.4
                             });
 
@@ -865,11 +883,23 @@ namespace DischargerV2.MVVM.ViewModels
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = targetVoltage,
+                                    Current = 100
+                                });
+
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
                                     Current = 33.4
                                 });
                             }
                             else
                             {
+                                model.PhaseDataList.Add(new PhaseData()
+                                {
+                                    Voltage = targetVoltage,
+                                    Current = standardCapacity
+                                });
+
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = targetVoltage,
@@ -892,6 +922,12 @@ namespace DischargerV2.MVVM.ViewModels
                             model.PhaseDataList.Add(new PhaseData()
                             {
                                 Voltage = targetVoltage,
+                                Current = 100
+                            });
+
+                            model.PhaseDataList.Add(new PhaseData()
+                            {
+                                Voltage = targetVoltage,
                                 Current = 33.4
                             });
 
@@ -908,12 +944,12 @@ namespace DischargerV2.MVVM.ViewModels
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = targetVoltage,
-                                    Current = 33.4
+                                    Current = 100
                                 });
 
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = targetVoltage,
                                     Current = 33.4
                                 });
                             }
@@ -922,12 +958,12 @@ namespace DischargerV2.MVVM.ViewModels
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
                                     Voltage = targetVoltage,
-                                    Current = standardCapacity / 3
+                                    Current = standardCapacity
                                 });
 
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = targetVoltage,
                                     Current = standardCapacity / 3
                                 });
                             }

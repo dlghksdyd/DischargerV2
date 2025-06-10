@@ -5,10 +5,12 @@ using Prism.Mvvm;
 using ScottPlot.Panels;
 using Sqlite.Common;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -36,6 +38,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         private string _logFileName = string.Empty;
 
+        private DateTime _startedTime;
+        private DateTime _receiveTime;
+        private double _receiveVoltage = double.NaN;
+        private List<double> _dvdqList = new List<double>();
+
         public void SetLogFileName(string logFileName)
         {
             _logFileName = logFileName;
@@ -44,6 +51,9 @@ namespace DischargerV2.MVVM.ViewModels
         public void StartDischarge()
         {
             // 초기화
+            _startedTime = DateTime.Now;
+            _dvdqList.Clear();
+
             PhaseIndex = 0;
             Model.IsEnterLastPhase = false;
             ViewModelMonitor_Graph.Instance.ClearReceiveData(Model.DischargerName);
@@ -151,7 +161,7 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargeTimer = null;
 
                 Thread.Sleep(3000);
-                
+
                 // 최대 세번 retry
                 for (int i = 0; i < 3; i++)
                 {
@@ -227,34 +237,109 @@ namespace DischargerV2.MVVM.ViewModels
                 // 방전기 동작 설정 및 확인
                 if (Model.IsEnterLastPhase == false)
                 {
-                    // 타겟 전압에 도달했을 경우 Phase 상승
-                    if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
+                    if (Model.Mode == Enums.EDischargeMode.Preset ||
+                        Model.Mode == Enums.EDischargeMode.Step)
                     {
-                        // 모든 Phase 끝났을 때
-                        if (PhaseIndex == Model.PhaseDataList.Count - 1)
+                        // 타겟 전압에 도달했을 경우 Phase 상승
+                        if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
                         {
-                            if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                            // 모든 Phase 끝났을 때
+                            if (PhaseIndex == Model.PhaseDataList.Count - 1)
                             {
-                                Model.IsEnterLastPhase = true;
+                                if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                                {
+                                    Model.IsEnterLastPhase = true;
+                                }
+                                else
+                                {
+                                    StopDischarge();
+                                }
                             }
                             else
                             {
-                                StopDischarge();
+                                PhaseIndex += 1;
+
+                                ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
+
+                                viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                {
+                                    DischargerName = Model.DischargerName,
+                                    Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                    Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                    LogFileName = _logFileName
+                                });
                             }
                         }
-                        else
+                    }
+                    else if (Model.Mode == Enums.EDischargeMode.Simple)
+                    {
+                        if (double.IsNaN(_receiveVoltage))
                         {
-                            PhaseIndex += 1;
+                            _receiveTime = DateTime.Now;
+                            _receiveVoltage = receiveVoltage;
+                            return;
+                        }
 
-                            ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
+                        DateTime currentTime = DateTime.Now;
 
-                            viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                        TimeSpan startedTimeSpan = currentTime - _startedTime;
+
+                        TimeSpan receiveTimeSpan = currentTime - _receiveTime;
+                        int receiveTimeGap = (int)receiveTimeSpan.TotalMilliseconds;
+
+                        float dq = (float)(receiveCurrent * (receiveTimeGap / 1000.0f) / 3600.0f);
+                        float dv = (float)(_receiveVoltage - receiveVoltage);
+
+                        float dvdq = Math.Abs(dv / dq);
+
+                        _dvdqList.Add(dvdq);
+
+                        Debug.WriteLine(dvdq);
+
+                        if (_dvdqList.Count > 10)
+                        {
+                            _dvdqList.RemoveAt(0);
+                        }
+
+                        double dvdqAvg = 0;
+
+                        if (_dvdqList.Count == 10)
+                        {
+                            dvdqAvg = CalcDvdqAvg(_dvdqList);
+                        }
+
+                        _receiveTime = DateTime.Now;
+                        _receiveVoltage = receiveVoltage;
+
+                        // 방전 시작 후 30초 이상 방전 진행 필요
+                        if (startedTimeSpan.TotalSeconds > 30)
+                        {
+                            // 모든 Phase 끝났을 때
+                            if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage && PhaseIndex == 1)
                             {
-                                DischargerName = Model.DischargerName,
-                                Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
-                                Current = -Model.PhaseDataList[PhaseIndex].Current,
-                                LogFileName = _logFileName
-                            });
+                                if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                                {
+                                    Model.IsEnterLastPhase = true;
+                                }
+                                else
+                                {
+                                    StopDischarge();
+                                }
+                            }
+
+                            // 비가역구간 진입 예측 기울기 확인하여 다음 Phase로
+                            if (Model.Dvdq < dvdqAvg)
+                            {
+                                PhaseIndex = 1;
+
+                                viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                {
+                                    DischargerName = Model.DischargerName,
+                                    Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                    Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                    LogFileName = _logFileName
+                                });
+                            }
                         }
                     }
                 }
@@ -278,6 +363,18 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
             }
+        }
+
+        private double CalcDvdqAvg(List<double> dvdqList)
+        {
+            List<double> temp = dvdqList.ToList();
+
+            temp.Remove(temp.Min());
+            temp.Remove(temp.Min());
+            temp.Remove(temp.Min());
+            temp.Remove(temp.Max());
+
+            return temp.Average();
         }
     }
 }

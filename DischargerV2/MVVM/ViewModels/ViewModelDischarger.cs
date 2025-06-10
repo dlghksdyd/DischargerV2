@@ -697,8 +697,8 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 else
                 {
-                    // 만약 전압이 1V 미만이고, 전류가 10A 미만이면 short available 아이콘 표시
-                    if (Model[i].DischargerData.ReceiveBatteryVoltage <= 1.0 && Model[i].DischargerData.ReceiveDischargeCurrent >= -10.0)
+                    // 만약 전압이 1V 이하이고, 전류가 10A 이하이면 short available 아이콘 표시
+                    if (Model[i].DischargerData.ReceiveBatteryVoltage <= 1.0 && Model[i].DischargerData.ReceiveDischargeCurrent <= 10.0)
                     {
                         Model[i].ShortAvailableVisibility = Visibility.Visible;
                     }
