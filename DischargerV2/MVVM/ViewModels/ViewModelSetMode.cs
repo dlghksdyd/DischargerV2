@@ -293,7 +293,7 @@ namespace DischargerV2.MVVM.ViewModels
                         Thread.Sleep(100);
 
                         // 5초가 지나면 방전 시작 실패로 간주
-                        if (DateTime.Now - startTime > TimeSpan.FromSeconds(5))
+                        if (DateTime.Now - startTime > TimeSpan.FromSeconds(10))
                         {
                             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {

@@ -151,6 +151,20 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargeTimer = null;
 
                 Thread.Sleep(3000);
+                
+                // 최대 세번 retry
+                for (int i = 0; i < 3; i++)
+                {
+                    if (ViewModelDischarger.Instance.SelectedModel.DischargerState == EDischargerState.Discharging)
+                    {
+                        ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
+                        Thread.Sleep(3000);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
