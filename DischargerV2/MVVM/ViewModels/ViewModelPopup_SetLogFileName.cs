@@ -104,7 +104,6 @@ namespace DischargerV2.MVVM.ViewModels
         private void Exit()
         {
             CallBackDelegate();
-            Close();
         }
 
         private void Close()
