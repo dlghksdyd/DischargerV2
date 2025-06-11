@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using DischargerV2.MVVM.Enums;
+using System.Diagnostics;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -113,7 +114,7 @@ namespace DischargerV2.MVVM.ViewModels
 
             Thread thread = new Thread(() =>
             {
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
                 SelectDischarger(0);
             });
             thread.IsBackground = true;
@@ -534,29 +535,33 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        private object _channelStateLock = new object();
         private void UpdateChannelState(ModelDischarger modelDischarger)
         {
-            ConnectedChannelCount = 0;
-            FaultChannelCount = 0;
-
-            foreach (var model in Model)
+            lock (_channelStateLock)
             {
-                AllChannelCount = Model.Count;
+                ConnectedChannelCount = 0;
+                FaultChannelCount = 0;
 
-                if (model.DischargerState == EDischargerState.Ready || 
-                    model.DischargerState == EDischargerState.Discharging ||
-                    model.DischargerState == EDischargerState.Pause)
+                foreach (var model in Model)
                 {
-                    if (model == modelDischarger)
+                    AllChannelCount = Model.Count;
+
+                    if (model.DischargerState == EDischargerState.Ready ||
+                        model.DischargerState == EDischargerState.Discharging ||
+                        model.DischargerState == EDischargerState.Pause)
                     {
-                        ViewModelSetMode_Preset.Instance.GetCurrentSoc(model);
-                    }
+                        if (model == modelDischarger)
+                        {
+                            ViewModelSetMode_Preset.Instance.GetCurrentSoc(model);
+                        }
 
-                    ConnectedChannelCount += 1;
-                }
-                else
-                {
-                    FaultChannelCount += 1;
+                        ConnectedChannelCount += 1;
+                    }
+                    else
+                    {
+                        FaultChannelCount += 1;
+                    }
                 }
             }
         }

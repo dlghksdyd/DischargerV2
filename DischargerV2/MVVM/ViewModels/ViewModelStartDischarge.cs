@@ -178,6 +178,7 @@ namespace DischargerV2.MVVM.ViewModels
                     ViewModelMain.Instance.OffPopup();
                 });
 
+                _startedTime = DateTime.Now;
                 _isEnterPause = false;
             });
             thread.IsBackground = true;
