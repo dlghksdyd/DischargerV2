@@ -53,6 +53,7 @@ namespace DischargerV2.MVVM.ViewModels
             // 초기화
             _startedTime = DateTime.Now;
             _dvdqList.Clear();
+            _isEnterPause = false;
 
             PhaseIndex = 0;
             Model.IsEnterLastPhase = false;
@@ -76,8 +77,11 @@ namespace DischargerV2.MVVM.ViewModels
             DischargeTimer.Start();
         }
 
+        private bool _isEnterPause = false;
         public void PauseDischarge()
         {
+            _isEnterPause = true;
+
             Thread thread = new Thread(() =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -173,6 +177,8 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     ViewModelMain.Instance.OffPopup();
                 });
+
+                _isEnterPause = false;
             });
             thread.IsBackground = true;
             thread.Start();
@@ -273,148 +279,151 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // 방전기 동작 설정 및 확인
-                if (Model.IsEnterLastPhase == false)
+                if (!_isEnterPause)
                 {
-                    if (Model.Mode == Enums.EDischargeMode.Preset ||
-                        Model.Mode == Enums.EDischargeMode.Step)
+                    if (Model.IsEnterLastPhase == false)
                     {
-                        // 타겟 전압에 도달했을 경우 Phase 상승
-                        if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
+                        if (Model.Mode == Enums.EDischargeMode.Preset ||
+                            Model.Mode == Enums.EDischargeMode.Step)
                         {
-                            // 모든 Phase 끝났을 때
-                            if (PhaseIndex == Model.PhaseDataList.Count - 1)
+                            // 타겟 전압에 도달했을 경우 Phase 상승
+                            if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
                             {
-                                if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                                // 모든 Phase 끝났을 때
+                                if (PhaseIndex == Model.PhaseDataList.Count - 1)
                                 {
-                                    Model.IsEnterLastPhase = true;
-                                }
-                                else
-                                {
-                                    StopDischarge();
-                                }
-                            }
-                            else
-                            {
-                                PhaseIndex += 1;
-
-                                ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
-
-                                bool isOk = false;
-
-                                // 최대 세번 전송
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    if (!isOk)
+                                    if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
                                     {
-                                        isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
-                                        {
-                                            DischargerName = Model.DischargerName,
-                                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
-                                            Current = -Model.PhaseDataList[PhaseIndex].Current,
-                                            LogFileName = _logFileName
-                                        });
+                                        Model.IsEnterLastPhase = true;
                                     }
                                     else
                                     {
-                                        break;
+                                        StopDischarge();
+                                    }
+                                }
+                                else
+                                {
+                                    PhaseIndex += 1;
+
+                                    ViewModelMonitor_Step.Instance.UpdatePhaseIndex();
+
+                                    bool isOk = false;
+
+                                    // 최대 세번 전송
+                                    for (int i = 0; i < 3; i++)
+                                    {
+                                        if (!isOk)
+                                        {
+                                            isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                            {
+                                                DischargerName = Model.DischargerName,
+                                                Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                                Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                                LogFileName = _logFileName
+                                            });
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    else if (Model.Mode == Enums.EDischargeMode.Simple)
-                    {
-                        if (double.IsNaN(_receiveVoltage))
+                        else if (Model.Mode == Enums.EDischargeMode.Simple)
                         {
+                            if (double.IsNaN(_receiveVoltage))
+                            {
+                                _receiveTime = DateTime.Now;
+                                _receiveVoltage = receiveVoltage;
+                                return;
+                            }
+
+                            DateTime currentTime = DateTime.Now;
+
+                            TimeSpan startedTimeSpan = currentTime - _startedTime;
+
+                            TimeSpan receiveTimeSpan = currentTime - _receiveTime;
+                            int receiveTimeGap = (int)receiveTimeSpan.TotalMilliseconds;
+
+                            float dq = (float)(receiveCurrent * (receiveTimeGap / 1000.0f) / 3600.0f);
+                            float dv = (float)(_receiveVoltage - receiveVoltage);
+
+                            float dvdq = Math.Abs(dv / dq);
+
+                            _dvdqList.Add(dvdq);
+
+                            Debug.WriteLine(dvdq);
+
+                            if (_dvdqList.Count > 10)
+                            {
+                                _dvdqList.RemoveAt(0);
+                            }
+
+                            double dvdqAvg = 0;
+
+                            if (_dvdqList.Count == 10)
+                            {
+                                dvdqAvg = CalcDvdqAvg(_dvdqList);
+                            }
+
                             _receiveTime = DateTime.Now;
                             _receiveVoltage = receiveVoltage;
-                            return;
-                        }
 
-                        DateTime currentTime = DateTime.Now;
-
-                        TimeSpan startedTimeSpan = currentTime - _startedTime;
-
-                        TimeSpan receiveTimeSpan = currentTime - _receiveTime;
-                        int receiveTimeGap = (int)receiveTimeSpan.TotalMilliseconds;
-
-                        float dq = (float)(receiveCurrent * (receiveTimeGap / 1000.0f) / 3600.0f);
-                        float dv = (float)(_receiveVoltage - receiveVoltage);
-
-                        float dvdq = Math.Abs(dv / dq);
-
-                        _dvdqList.Add(dvdq);
-
-                        Debug.WriteLine(dvdq);
-
-                        if (_dvdqList.Count > 10)
-                        {
-                            _dvdqList.RemoveAt(0);
-                        }
-
-                        double dvdqAvg = 0;
-
-                        if (_dvdqList.Count == 10)
-                        {
-                            dvdqAvg = CalcDvdqAvg(_dvdqList);
-                        }
-
-                        _receiveTime = DateTime.Now;
-                        _receiveVoltage = receiveVoltage;
-
-                        // 방전 시작 후 30초 이상 방전 진행 필요
-                        if (startedTimeSpan.TotalSeconds > 30)
-                        {
-                            // 모든 Phase 끝났을 때
-                            if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage && PhaseIndex == 1)
+                            // 방전 시작 후 30초 이상 방전 진행 필요
+                            if (startedTimeSpan.TotalSeconds > 30)
                             {
-                                if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
+                                // Phase target voltage 값 도달했을 때
+                                if (receiveVoltage <= Model.PhaseDataList[PhaseIndex].Voltage)
                                 {
-                                    Model.IsEnterLastPhase = true;
-                                }
-                                else
-                                {
-                                    StopDischarge();
-                                }
-                            }
-
-                            // 비가역구간 진입 예측 기울기 확인하여 다음 Phase로
-                            if (Model.Dvdq < dvdqAvg)
-                            {
-                                PhaseIndex = 1;
-
-                                bool isOk = false;
-
-                                // 최대 세번 전송
-                                for (int i = 0; i < 3; i++)
-                                {
-                                    if (!isOk)
+                                    if (Model.EDischargeTarget == Enums.EDischargeTarget.Full)
                                     {
-                                        isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
-                                        {
-                                            DischargerName = Model.DischargerName,
-                                            Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
-                                            Current = -Model.PhaseDataList[PhaseIndex].Current,
-                                            LogFileName = _logFileName
-                                        });
+                                        Model.IsEnterLastPhase = true;
                                     }
                                     else
                                     {
-                                        break;
+                                        StopDischarge();
+                                    }
+                                }
+
+                                // 비가역구간 진입 예측 기울기 확인하여 다음 Phase로
+                                if (PhaseIndex == 0 && Model.Dvdq < dvdqAvg)
+                                {
+                                    PhaseIndex = 1;
+
+                                    bool isOk = false;
+
+                                    // 최대 세번 전송
+                                    for (int i = 0; i < 3; i++)
+                                    {
+                                        if (!isOk)
+                                        {
+                                            isOk = viewModelDischarger.StartDischarger(new StartDischargerCommandParam()
+                                            {
+                                                DischargerName = Model.DischargerName,
+                                                Voltage = Model.PhaseDataList[PhaseIndex].Voltage,
+                                                Current = -Model.PhaseDataList[PhaseIndex].Current,
+                                                LogFileName = _logFileName
+                                            });
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
-                    // 0.1A 미만이면 방전 자동 중지
-                    if (receiveState == EDischargerState.Discharging)
+                    else
                     {
-                        if (receiveCurrent <= 0.1)
+                        // 0.1A 미만이면 방전 자동 중지
+                        if (receiveState == EDischargerState.Discharging)
                         {
-                            StopDischarge();
+                            if (receiveCurrent <= 0.1)
+                            {
+                                StopDischarge();
+                            }
                         }
                     }
                 }

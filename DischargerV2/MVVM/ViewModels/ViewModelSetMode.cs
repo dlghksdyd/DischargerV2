@@ -820,7 +820,7 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = 0,
                                     Current = 100
                                 });
 
@@ -834,7 +834,7 @@ namespace DischargerV2.MVVM.ViewModels
                             {
                                 model.PhaseDataList.Add(new PhaseData()
                                 {
-                                    Voltage = standardVoltage,
+                                    Voltage = 0,
                                     Current = standardCapacity
                                 });
 
