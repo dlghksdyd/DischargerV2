@@ -26,6 +26,7 @@
             <Mex:MexCheckBox x:Name="xVoltCheckBox"
                              Text="Voltage"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding IsCheckedVoltage, 
                                                  Mode=TwoWay,
@@ -35,6 +36,7 @@
             <Mex:MexCheckBox x:Name="xCurrent"
                              Text="Current"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding IsCheckedCurrent, 
                                                  Mode=TwoWay,
@@ -44,6 +46,7 @@
             <Mex:MexCheckBox x:Name="xTempCheckBox"
                              Text="Temp."
                              Foreground="{StaticResource Mex/ResColor/text_body}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding IsCheckedTemp, 
                                                  Mode=TwoWay,
@@ -53,6 +56,7 @@
             <Mex:MexCheckBox x:Name="xSocCheckBox"
                              Text="SoC"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
+                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
                              IsChecked="{Binding IsCheckedSoc, 
                                                  Mode=TwoWay,

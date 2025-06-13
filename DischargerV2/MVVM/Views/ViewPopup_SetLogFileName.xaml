@@ -56,7 +56,8 @@
         </Grid>
         <StackPanel Orientation="Vertical" Grid.Row="2">
             <Mex:MexTextBox WaterMark="Enter LogFileName" 
-                            TextPadding="12 8 12 8"
+                            Padding="12,8,12,8"
+                            CornerRadius="8"
                             Text="{Binding Model.Comment, 
                                            Mode=TwoWay}"
                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
