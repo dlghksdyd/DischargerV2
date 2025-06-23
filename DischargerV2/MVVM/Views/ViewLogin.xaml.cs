@@ -29,6 +29,13 @@ namespace DischargerV2.MVVM.Views
             InitializeComponent();
 
             this.DataContext = _viewModel;
+
+            this.Loaded += ViewLogin_Loaded;
+        }
+
+        private void ViewLogin_Loaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Initialize();
         }
 
         private void xPasswordBox_KeyDown(object sender, KeyEventArgs e)

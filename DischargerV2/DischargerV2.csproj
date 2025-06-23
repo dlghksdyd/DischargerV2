@@ -197,6 +197,7 @@
     <Compile Include="Communication\CommSerialClient\SerialClientBasic.cs" />
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
+    <Compile Include="Communication\CommSqlite\SqliteServer.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
     <Compile Include="Ini\Ini.cs" />
     <Compile Include="Ini\IniDischarge.cs" />

@@ -7,13 +7,20 @@ namespace DischargerV2.Ini
 {
     partial class IniDischarge : Ini
     {
-        public enum EIniData { Sound, MaxSampleNum }
+        public enum EIniData 
+        { 
+            IsLocalDb, ServerIp, ServerPort, ServerName, 
+            Sound, MaxSampleNum 
+        }
 
         public enum ESound { On, Off }
 
         public static Dictionary<EIniData, IniData> DicIniData = new Dictionary<EIniData, IniData>()
         {
-            // 사용자 정보
+            { EIniData.IsLocalDb, new IniData { Section = "IsLocalDb", Key = "Value", Value = "True" } },
+            { EIniData.ServerIp, new IniData { Section = "ServerIp", Key = "Value", Value = "127.0.0.1" } },
+            { EIniData.ServerPort, new IniData { Section = "ServerPort", Key = "Value", Value = "1433" } },
+            { EIniData.ServerName, new IniData { Section = "ServerName", Key = "Value", Value = "MINDIMS" } },
             { EIniData.Sound, new IniData { Section = "Sound", Key = "Value", Value = "On" } },
             { EIniData.MaxSampleNum, new IniData { Section = "Graph", Key = "MaxSampleNum", Value = "1600" } },
         };
@@ -21,6 +28,7 @@ namespace DischargerV2.Ini
         public static void InitializeIniFile()
         {
             FileInfo fileInfo = new FileInfo(Ini.Path);
+
             if (!fileInfo.Exists)
             {
                 foreach (var iniData in DicIniData)

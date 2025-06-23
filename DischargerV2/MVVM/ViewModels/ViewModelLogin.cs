@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static DischargerV2.Ini.IniDischarge;
 using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -43,6 +44,11 @@ namespace DischargerV2.MVVM.ViewModels
             _instance = this;
 
             LoginCommand = new DelegateCommand(Login);
+        }
+
+        public void Initialize()
+        {
+            var isLocalDb = GetIniData<bool>(EIniData.IsLocalDb);
         }
 
         public void Login()
