@@ -72,14 +72,8 @@
                            Text="Log In"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
-                           IsShadow="True">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding LoginCommand}"
-                                               PassEventArgsToCommand="False"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-            </Mex:MexButton>
+                           IsShadow="True"
+                           Click="xLoginButton_Click"/>
             <Grid Height="120"/>
             <Mex:MexLabel Text="v2.0.0"
                           HorizontalContentAlignment="Center"

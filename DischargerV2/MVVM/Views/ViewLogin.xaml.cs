@@ -45,5 +45,10 @@ namespace DischargerV2.MVVM.Views
                 _viewModel.Login();
             }
         }
+
+        private void xLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Login();
+        }
     }
 }

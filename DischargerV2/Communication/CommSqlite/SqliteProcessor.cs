@@ -109,6 +109,13 @@ namespace Sqlite.Common
             }
         }
 
+        public static TableUserInfo FindUserInfo(string userId, string password)
+        {
+            var userInfoList = GetData();
+
+            return userInfoList.Find(x => x.UserId == userId && x.Password == password);
+        }
+
         public static List<TableUserInfo> GetData()
         {
             List<TableUserInfo> table = new List<TableUserInfo>();

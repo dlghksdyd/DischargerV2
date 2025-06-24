@@ -2,7 +2,6 @@
 using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
-using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,34 +47,64 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void Initialize()
         {
-            var isLocalDb = GetIniData<bool>(EIniData.IsLocalDb);
+            Model.IsLocalDb = GetIniData<bool>(EIniData.IsLocalDb);
+
+            // Server DB 사용 시, 해당 내용 불러오기
+            if (!Model.IsLocalDb)
+            {
+                Model.ServerIp = GetIniData<string>(EIniData.ServerIp);
+                Model.ServerPort = GetIniData<string>(EIniData.ServerPort);
+                Model.ServerName = GetIniData<string>(EIniData.DatabaseName);
+
+                Sqlite.Server.SqliteUserInfo.UpdateConnectionString(Model.ServerIp, Model.ServerPort, Model.ServerName);
+            }
         }
 
         public void Login()
         {
             try
             {
-                List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
-
-                TableUserInfo user = tableUserInfoList.Find(x =>
-                    x.UserId == Model.UserId && x.Password == Model.Password);
-
-                if (user != null)
+                if (Model.IsLocalDb)
                 {
-                    Model.UserName = user.UserName;
-                    Model.Initial = user.UserName.Substring(0, 1).ToUpper();
-                    Model.IsAdmin = user.IsAdmin;
-                    Model.Permission = user.IsAdmin? "Admin" : "User";
-                    Model.Visibility = Visibility.Collapsed;
+                    var user = Sqlite.Common.SqliteUserInfo.FindUserInfo(Model.UserId, Model.Password);
 
-                    new LogTrace(ELogTrace.TRACE_LOGIN, Model.UserId);
+                    if (user != null)
+                    {
+                        Model.UserName = user.UserName;
+                        Model.Initial = user.UserName.Substring(0, 1).ToUpper();
+                        Model.IsAdmin = user.IsAdmin;
+                        Model.Permission = user.IsAdmin ? "Admin" : "User";
+                        Model.Visibility = Visibility.Collapsed;
+
+                        new LogTrace(ELogTrace.TRACE_LOGIN, Model.UserId);
+                    }
+                    else
+                    {
+                        MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
+                            "아이디와 비밀번호를 정확히 입력해 주세요.");
+
+                        new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
-                        "아이디와 비밀번호를 정확히 입력해 주세요.");
+                    var user = Sqlite.Server.SqliteUserInfo.FindUserInfo(Model.UserId, Model.Password);
 
-                    new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
+                    if (user != null)
+                    {
+                        Model.UserName = user.USER_NM;
+                        Model.Initial = user.USER_NM.Substring(0, 1).ToUpper();
+                        Model.IsAdmin = (user.ADMIN_GROUP.ToUpper() == "ADMIN") ? true : false;
+                        Model.Permission = user.ADMIN_GROUP;
+                        Model.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
+                            "아이디와 비밀번호를 정확히 입력해 주세요.");
+
+                        new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
+                    }
                 }
             }
             catch (Exception ex)

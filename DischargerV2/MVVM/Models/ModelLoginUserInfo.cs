@@ -10,6 +10,58 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelLoginUserInfo : BindableBase
     {
+        private bool _isLocalDb;
+        public bool IsLocalDb
+        {
+            get
+            {
+                return _isLocalDb;
+            }
+            set
+            {
+                SetProperty(ref _isLocalDb, value);
+            }
+        }
+
+        private string _serverIp;
+        public string ServerIp
+        {
+            get
+            {
+                return _serverIp;
+            }
+            set
+            {
+                SetProperty(ref _serverIp, value);
+            }
+        }
+
+        private string _serverPort;
+        public string ServerPort
+        {
+            get
+            {
+                return _serverPort;
+            }
+            set
+            {
+                SetProperty(ref _serverPort, value);
+            }
+        }
+
+        private string _serverName;
+        public string ServerName
+        {
+            get
+            {
+                return _serverName;
+            }
+            set
+            {
+                SetProperty(ref _serverName, value);
+            }
+        }
+
         private Visibility _visibility;
         public Visibility Visibility
         {
