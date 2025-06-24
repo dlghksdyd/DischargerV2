@@ -46,7 +46,7 @@ namespace DischargerV2.MVVM.ViewModels
 
                     if (name == "xUserSettingLabel")
                     {
-                        if (ViewModelLogin.Instance.IsAdmin())
+                        if (ViewModelLogin.Instance.IsLocalDb() && ViewModelLogin.Instance.IsAdmin())
                         {
                             ViewModelMain viewModelMain = ViewModelMain.Instance;
                             viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);

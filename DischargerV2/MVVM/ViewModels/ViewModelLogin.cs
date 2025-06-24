@@ -3,10 +3,6 @@ using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using static DischargerV2.Ini.IniDischarge;
 using static DischargerV2.LOG.LogTrace;
@@ -94,8 +90,8 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         Model.UserName = user.USER_NM;
                         Model.Initial = user.USER_NM.Substring(0, 1).ToUpper();
-                        Model.IsAdmin = (user.ADMIN_GROUP.ToUpper() == "ADMIN") ? true : false;
-                        Model.Permission = user.ADMIN_GROUP;
+                        Model.IsAdmin = (user.ADMIN_GROUP == "Y") ? true : false;
+                        Model.Permission = (user.ADMIN_GROUP == "Y") ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
                     }
                     else
@@ -117,6 +113,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 new LogTrace(ELogTrace.ERROR_LOGIN, ex);
             }
+        }
+
+        public bool IsLocalDb()
+        {
+            return Model.IsLocalDb;
         }
 
         public bool IsAdmin()
