@@ -47,7 +47,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 List<TableUserInfo> tableUserInfoList = SqliteUserInfo.GetData();
 
-                ObservableCollection<TableUserInfo> content = new ObservableCollection<TableUserInfo>();
+                ObservableCollection<object> content = new ObservableCollection<object>();
 
                 for (int index = 0; index < tableUserInfoList.Count; index++)
                 {

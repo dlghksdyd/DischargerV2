@@ -14,6 +14,19 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelDeviceRegister : BindableBase
     {
+        private string _machineCode = string.Empty;
+        public string MachineCode
+        {
+            get
+            {
+                return _machineCode;
+            }
+            set
+            {
+                SetProperty(ref _machineCode, value);
+            }
+        }
+
         private string _name;
         public string Name
         {

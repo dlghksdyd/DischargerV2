@@ -52,7 +52,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.ServerPort = GetIniData<string>(EIniData.ServerPort);
                 Model.ServerName = GetIniData<string>(EIniData.DatabaseName);
 
-                Sqlite.Server.SqliteUserInfo.UpdateConnectionString(Model.ServerIp, Model.ServerPort, Model.ServerName);
+                SqlClient.Server.SqlClient.UpdateConnectionString(Model.ServerIp, Model.ServerPort, Model.ServerName);
             }
         }
 
@@ -60,6 +60,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
+                // Local DB 사용
                 if (Model.IsLocalDb)
                 {
                     var user = Sqlite.Common.SqliteUserInfo.FindUserInfo(Model.UserId, Model.Password);
@@ -82,9 +83,10 @@ namespace DischargerV2.MVVM.ViewModels
                         new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
                     }
                 }
+                // Server DB 사용 (통합 관제 연동)
                 else
                 {
-                    var user = Sqlite.Server.SqliteUserInfo.FindUserInfo(Model.UserId, Model.Password);
+                    var user = SqlClient.Server.SqlClientUserInfo.FindUserInfo(Model.UserId, Model.Password);
 
                     if (user != null)
                     {

@@ -47,7 +47,6 @@
                               VerticalContentAlignment="Top"/>
                 <Grid Height="16"/>
                 <Mex:MexItemBox x:Name="xBatteryTypeItemBox" 
-                                MouseLeftButtonUp="xBatteryTypeItemBox_MouseLeftButtonUp"
                                 Width="{Binding ElementName=xBatteryTypeStackPanel, Path=ActualWidth}" 
                                 IsParent="False"
                                 BorderThickness="1"
@@ -58,7 +57,8 @@
                                 ItemSourcePadding="16,12,16,12"
                                 SelectedItem="{Binding Model.SelectedBatteryType, Mode=TwoWay, FallbackValue=null}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                                ColorSet="{StaticResource Mex/ResColorSet_ItemBox/Primary}">
+                                ColorSet="{StaticResource Mex/ResColorSet_ItemBox/Primary}"
+                                MouseLeftButtonUp="xBatteryTypeItemBox_MouseLeftButtonUp">
                     <Mex:MexScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Vertical">
                             <Mex:MexTextBlock Text="EV6 Long Range Pack 1"/>

@@ -21,11 +21,6 @@ namespace DischargerV2.MVVM.ViewModels
 {
     public class ViewModelPopup_DeviceRegister : BindableBase
     {
-        #region Command
-        public DelegateCommand OpenNewDataCommand { get; set; }
-        public DelegateCommand CloseCommand { get; set; }
-        #endregion
-
         #region Model
         public ModelPopup_DeviceRegister Model { get; set; } = new ModelPopup_DeviceRegister();
 
@@ -38,18 +33,15 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelPopup_DeviceRegister()
         {
-            OpenNewDataCommand = new DelegateCommand(OpenNewData);
-            CloseCommand = new DelegateCommand(Close);
-
             LoadDischargerInfoList();
         }
 
-        private void OpenNewData()
+        public void OpenNewData()
         {
             Model.NewDeviceVisibility = Visibility.Visible;
         }
 
-        private void Close()
+        public void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.UpdateDischargerInfoTable();
@@ -60,12 +52,36 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
-                List<TableDischargerInfo> tableDischargerInfo = SqliteDischargerInfo.GetData();
                 ObservableCollection<TableDischargerInfo> content = new ObservableCollection<TableDischargerInfo>();
 
-                for (int index = 0; index < tableDischargerInfo.Count; index++)
+                List<TableDischargerInfo> tableDischargerInfoList = SqliteDischargerInfo.GetData();
+
+                for (int index = 0; index < tableDischargerInfoList.Count; index++)
                 {
-                    content.Add(tableDischargerInfo[index]);
+                    // Server DB 사용 (통합 관제 연동)
+                    if (!ViewModelLogin.Instance.IsLocalDb())
+                    {
+                        var dischargerName = tableDischargerInfoList[index].DischargerName;
+                        var tableMstMachine = SqlClient.Server.SqlClientDischargerInfo.FindDischargerInfo(dischargerName);
+
+                        if (tableMstMachine != null)
+                        {
+                            tableDischargerInfoList[index].MC_CD = tableMstMachine.MC_CD;
+                            tableDischargerInfoList[index].IpAddress = tableMstMachine.MC_IP;
+
+                            ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Hidden;
+                        }
+                    }
+                    else
+                    {
+                        ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Hidden;
+                    }
+
+                    content.Add(tableDischargerInfoList[index]);
                 }
 
                 Model.Content = content;

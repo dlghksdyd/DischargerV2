@@ -17,8 +17,8 @@ namespace DischargerV2.MVVM.Models
 {
     public class ModelPopup_UserSetting : BindableBase
     {
-        private ObservableCollection<TableUserInfo> _content = new ObservableCollection<TableUserInfo>();
-        public ObservableCollection<TableUserInfo> Content
+        private ObservableCollection<object> _content = new ObservableCollection<object>();
+        public ObservableCollection<object> Content
         {
             get
             {

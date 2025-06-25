@@ -198,8 +198,8 @@
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
-    <Compile Include="Communication\ServSqlite\ServProcessor.cs" />
-    <Compile Include="Communication\ServSqlite\ServStructure.cs" />
+    <Compile Include="Communication\CommSqlClient\ServProcessor.cs" />
+    <Compile Include="Communication\CommSqlClient\ServStructure.cs" />
     <Compile Include="Ini\Ini.cs" />
     <Compile Include="Ini\IniDischarge.cs" />
     <Compile Include="LOG\Log.cs" />

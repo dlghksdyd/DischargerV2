@@ -56,7 +56,7 @@ namespace DischargerV2.MVVM.Views
 
             for (int index = 0; index < _viewModel.Model.Content.Count; index++)
             {
-                TableUserInfo tableUserInfo = _viewModel.Model.Content[index];
+                TableUserInfo tableUserInfo = _viewModel.Model.Content[index] as TableUserInfo;
 
                 xContentPanel.Children.Add(new ViewUserSetting_Info()
                 {

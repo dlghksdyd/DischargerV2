@@ -28,6 +28,16 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private SolidColorBrush _foreground = ResColor.text_body;
+        public SolidColorBrush Foreground
+        {
+            get { return _foreground; }
+            set
+            {
+                SetProperty(ref _foreground, value);
+            }
+        }
+
         private SolidColorBrush _background = ResColor.surface_primary;
         public SolidColorBrush Background
         {
@@ -145,6 +155,16 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _errorVisibility, value);
+            }
+        }
+
+        private Visibility _serverVisibility = Visibility.Hidden;
+        public Visibility SeverVisibility
+        {
+            get { return _serverVisibility; }
+            set
+            {
+                SetProperty(ref _serverVisibility, value);
             }
         }
 

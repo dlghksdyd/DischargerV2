@@ -884,6 +884,38 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
+
+    public class IsStringEmptyToVisibilityConverter : IValueConverter
+    {
+        public Visibility NotEmpty { get; set; } = Visibility.Visible;
+        public Visibility Empty { get; set; } = Visibility.Collapsed;
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+            {
+                return Empty;
+            }
+
+            if (value is string stringValue)
+            {
+                if (stringValue != string.Empty)
+                {
+                    return NotEmpty;
+                }
+                else
+                {
+                    return Empty;
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     #endregion
 }
 

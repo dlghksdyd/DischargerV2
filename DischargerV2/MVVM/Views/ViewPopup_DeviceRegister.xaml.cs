@@ -19,6 +19,7 @@ using MExpress.Example;
 using System.Runtime.Remoting.Channels;
 using static System.Net.Mime.MediaTypeNames;
 using DischargerV2.MVVM.Models;
+using System.Collections.ObjectModel;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -38,6 +39,16 @@ namespace DischargerV2.MVVM.Views
             this.DataContextChanged += ViewPopup_DeviceRegister_DataContextChanged;
         }
 
+        private void xAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.OpenNewData();
+        }
+
+        private void xCloseImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.Close();
+        }
+
         private void ViewPopup_DeviceRegister_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             _viewModel = e.NewValue as ViewModelPopup_DeviceRegister;
@@ -49,6 +60,8 @@ namespace DischargerV2.MVVM.Views
         {
             if (_viewModel.Model.Content.Count > 0)
             {
+                var getType = _viewModel.Model.Content.GetType();
+
                 xNoDataBorder.Visibility = Visibility.Collapsed;
                 xContentPanel.Visibility = Visibility.Visible;
 
@@ -79,6 +92,7 @@ namespace DischargerV2.MVVM.Views
                     {
                         ModelDeviceRegister modelDeviceRegister = new ModelDeviceRegister()
                         {
+                            MachineCode = tableDischargerInfo.MC_CD,
                             Name = tableDischargerInfo.DischargerName,
                             Ip = tableDischargerInfo.IpAddress,
                             DischargerModel = tableDischargerInfo.Model.ToString(),
@@ -102,6 +116,7 @@ namespace DischargerV2.MVVM.Views
                         {
                             DataContext = new ViewModelDeviceRegister_Info()
                             {
+                                MachineCode = tableDischargerInfo.MC_CD,
                                 Name = tableDischargerInfo.DischargerName,
                                 Ip = tableDischargerInfo.IpAddress,
                                 DischargerModel = tableDischargerInfo.Model.ToString(),
