@@ -4,6 +4,8 @@ using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using Prism.Commands;
 using Prism.Mvvm;
+using ScottPlot.Colormaps;
+using SqlClient.Server;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ using Utility.Common;
 using static DischargerV2.LOG.LogDischarge;
 using static DischargerV2.LOG.LogTrace;
 using static DischargerV2.MVVM.Models.ModelStartDischarge;
+using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace DischargerV2.MVVM.ViewModels
@@ -257,6 +260,25 @@ namespace DischargerV2.MVVM.ViewModels
             };
             new LogTrace(LogTrace.ELogTrace.TRACE_SAVE_LOG, dischargerData);
 
+            // Server DB 사용 (통합 관제 연동)
+            if (!ViewModelLogin.Instance.IsLocalDb())
+            {
+                var tableMstMachine = SqlClientDischargerInfo.FindDischargerInfo(Model.DischargerName);
+
+                if (tableMstMachine != null)
+                {
+                    // UpdateData SetMode Data 
+                    var updateData = new TABLE_SYS_STS_SDC();
+                    updateData.MC_CD = tableMstMachine.MC_CD;
+                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.DischargeMode = Model.Mode.ToString();
+                    updateData.DischargeTarget = Model.TargetDetail;
+                    updateData.LogFileName = Model.LogFileName;
+
+                    SqlClientStatus.UpdateData_Set(updateData);
+                }
+            }
+            
             StartDischarge();
         }
 
@@ -542,17 +564,21 @@ namespace DischargerV2.MVVM.ViewModels
                         Voltage = 0,
                         Current = OCV_Table.getCapcity(batteryType) / 3
                     });
+
+                    Model.TargetDetail = $"{modelPreset.EDischargeTarget}";
                 }
                 // Target Voltage
                 else if (modelPreset.EDischargeTarget == EDischargeTarget.Voltage)
                 {
-                    double tagetVoltage = Convert.ToDouble(modelPreset.TargetVoltage);
+                    double targetVoltage = Convert.ToDouble(modelPreset.TargetVoltage);
 
                     model.PhaseDataList.Add(new PhaseData()
                     {
-                        Voltage = tagetVoltage,
+                        Voltage = targetVoltage,
                         Current = OCV_Table.getCapcity(batteryType) / 3
                     });
+
+                    Model.TargetDetail = $"{modelPreset.EDischargeTarget} ({targetVoltage}V)";
                 }
                 // Target SoC
                 else if (modelPreset.EDischargeTarget == EDischargeTarget.SoC)
@@ -564,6 +590,8 @@ namespace DischargerV2.MVVM.ViewModels
                         Voltage = OCV_Table.getTargetVolt(batteryType, targetSoC),
                         Current = OCV_Table.getCapcity(batteryType) / 3
                     });
+
+                    Model.TargetDetail = $"{modelPreset.EDischargeTarget} ({targetSoC}%)";
                 }
             }
             // Step Mode
@@ -596,10 +624,14 @@ namespace DischargerV2.MVVM.ViewModels
                         Current = Convert.ToDouble(modelStep.Content.Last().Current),
                         CRate = Convert.ToDouble(modelStep.Content.Last().CRate),
                     });
+
+                    Model.TargetDetail = $"{model.EDischargeTarget}";
                 }
                 else
                 {
                     model.EDischargeTarget = EDischargeTarget.Voltage;
+
+                    Model.TargetDetail = $"{model.EDischargeTarget} ({model.PhaseDataList.Last().Voltage}V)";
                 }
             }
             // Simple Mode
@@ -729,6 +761,8 @@ namespace DischargerV2.MVVM.ViewModels
                             model.Dvdq = 3 * standardVoltage / standardCapacity;
                         }
                     }
+
+                    Model.TargetDetail = $"{model.EDischargeTarget}";
                 }
                 else if (modelSimple.EDischargeTarget == EDischargeTarget.Zero)
                 {
@@ -850,6 +884,8 @@ namespace DischargerV2.MVVM.ViewModels
                             model.Dvdq = 3 * standardVoltage / standardCapacity;
                         }
                     }
+
+                    Model.TargetDetail = $"{model.EDischargeTarget}";
                 }
                 else if (modelSimple.EDischargeTarget == EDischargeTarget.Voltage)
                 {
@@ -973,6 +1009,8 @@ namespace DischargerV2.MVVM.ViewModels
                             model.Dvdq = 3 * standardVoltage / standardCapacity;
                         }
                     }
+
+                    Model.TargetDetail = $"{modelSimple.EDischargeTarget} ({targetVoltage}V)";
                 }
             }
             return true;
