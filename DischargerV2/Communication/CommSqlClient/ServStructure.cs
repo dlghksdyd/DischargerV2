@@ -24,23 +24,26 @@ namespace SqlClient.Server
         public string LIST_ORDER { get; set; }
         public string USE_YN { get; set; }
         public string REG_ID { get; set; }
+
         public DateTime REG_DTM { get; set; }
     }
 
     public class TABLE_SYS_STS_SDC
     {
-        public string MD_CD { get; set; }
+        public string MC_CD { get; set; }
         public string MC_NM { get; set; }
         public string USER_NM { get; set; }
-        public string DischargeMode { get; set; }
-        public string DischargeTarget { get; set; }
+
         public string DischargerState { get; set; }
-        public string LogFileName { get; set; }
         public string DischargerVoltage { get; set; }
         public string DischargerCurrent { get; set; }
         public string DischargerTemp { get; set; }
-        public long RunningTime { get; set; }
-        public long TotalTime { get; set; }
+
+        public string DischargeMode { get; set; }
+        public string DischargeTarget { get; set; }
+        public string LogFileName { get; set; }
+        public long ProgressTime { get; set; }
+
         public DateTime MC_DTM { get; set; }
     }
 }

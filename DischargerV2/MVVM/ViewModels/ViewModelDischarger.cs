@@ -20,6 +20,8 @@ using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using DischargerV2.MVVM.Enums;
 using System.Diagnostics;
+using SqlClient.Server;
+using ScottPlot.Colormaps;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -501,14 +503,15 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 var model = new ModelDischarger();
 
-                model.DischargerIndex = index;
-                model.No = (index + 1).ToString();
-                model.DischargerName = infos[index].DischargerName;
-
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
                 model.DischargerInfo = dischargerInfo;
 
                 InitializeDischargerClients(dischargerInfo);
+
+                model.DischargerIndex = index;
+                model.No = (index + 1).ToString();
+                model.DischargerName = infos[index].DischargerName;
+                model.MachineCode = dischargerInfo.MachineCode;
 
                 model.PropertyChanged += Model_PropertyChanged;
 
@@ -614,6 +617,26 @@ namespace DischargerV2.MVVM.ViewModels
             dischargerInfo.SafetyTempMax = model.SafetyTempMax;
             dischargerInfo.SafetyTempMin = model.SafetyTempMin;
 
+            // Server DB 사용 (통합 관제 연동)
+            if (!ViewModelLogin.Instance.IsLocalDb())
+            {
+                var tableMstMachine = SqlClientDischargerInfo.FindDischargerInfo(name);
+
+                if (tableMstMachine != null)
+                {
+                    // Server 등록 되어있는 MC_CD 받아오기
+                    dischargerInfo.MachineCode = tableMstMachine.MC_CD;
+                    dischargerInfo.IpAddress = IPAddress.Parse(tableMstMachine.MC_IP);
+
+                    // Insert Init Data 
+                    var insertData = new TABLE_SYS_STS_SDC();
+                    insertData.MC_CD = tableMstMachine.MC_CD;
+                    insertData.MC_NM = name;
+
+                    SqlClientStatus.InsertData_Init(insertData);
+                }
+            }
+
             return dischargerInfo;
         }
 
@@ -702,6 +725,20 @@ namespace DischargerV2.MVVM.ViewModels
                 }
                 catch { }
 
+                // Server DB 사용 (통합 관제 연동)
+                if (Model[i].MachineCode != null && Model[i].MachineCode != string.Empty)
+                {
+                    // UpdateData Data 
+                    var updateData = new TABLE_SYS_STS_SDC();
+                    updateData.MC_CD = Model[i].MachineCode;
+                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
+                    updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
+                    updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
+
+                    SqlClientStatus.UpdateData(updateData);
+                }
+
                 if (Model[i].DischargerState != EDischargerState.Discharging)
                 {
                     Model[i].ShortAvailableVisibility = Visibility.Hidden;
@@ -756,15 +793,29 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 var state = Model[index].DischargerState;
                 var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
+                TimeSpan diff = new TimeSpan(0);
 
                 if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
                 {
-                    TimeSpan diff = (DateTime.Now - dischargingStartTime);
+                    diff = (DateTime.Now - dischargingStartTime);
                     string diffString =
                         diff.Hours.ToString("D2") + ":" +
                         diff.Minutes.ToString("D2") + ":" +
                         diff.Seconds.ToString("D2");
                     Model[index].ProgressTime = diffString;
+                }
+
+                // Server DB 사용 (통합 관제 연동)
+                if (Model[index].MachineCode != null && Model[index].MachineCode != string.Empty)
+                {
+                    // UpdateData StateNTime Data 
+                    var updateData = new TABLE_SYS_STS_SDC();
+                    updateData.MC_CD = Model[index].MachineCode;
+                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.DischargerState = state.ToString();
+                    updateData.ProgressTime = diff.Ticks;
+
+                    SqlClientStatus.UpdateData_StateNTime(updateData);
                 }
             }
         }

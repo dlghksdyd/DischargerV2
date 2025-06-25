@@ -66,8 +66,10 @@ namespace DischargerV2.MVVM.ViewModels
 
                         if (tableMstMachine != null)
                         {
-                            tableDischargerInfoList[index].MC_CD = tableMstMachine.MC_CD;
+                            tableDischargerInfoList[index].MachineCode = tableMstMachine.MC_CD;
                             tableDischargerInfoList[index].IpAddress = tableMstMachine.MC_IP;
+
+                            // IP Address Local <-> Server 상이할 경우 어떻게 처리 ?
 
                             ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Visible;
                         }

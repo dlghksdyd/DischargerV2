@@ -162,6 +162,7 @@ namespace DischargerV2.MVVM.ViewModels
             viewModelMain.OffPopup();
 
             ViewModelLogin viewModelLogin = ViewModelLogin.Instance;
+            viewModelLogin.Model.UserName = string.Empty;
             viewModelLogin.Model.UserId = string.Empty;
             viewModelLogin.Model.Password = string.Empty;
             viewModelLogin.Model.Visibility = Visibility.Visible;

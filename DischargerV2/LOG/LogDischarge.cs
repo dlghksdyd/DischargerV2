@@ -57,6 +57,9 @@ namespace DischargerV2.LOG
 
         public class DischargeConfig
         {
+            // Server DB 연동
+            public string MachineCode { get; set; }
+
             // Discharger
             public string DischargerName { get; set; }
             public EDischargerModel DischargerModel { get; set; }

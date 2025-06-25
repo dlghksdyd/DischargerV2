@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Windows.Documents;
+using System.Xml.Linq;
 
 namespace SqlClient.Server
 {
@@ -99,6 +101,134 @@ namespace SqlClient.Server
             }
 
             return table;
+        }
+    }
+
+    public static class SqlClientStatus
+    {
+        private static readonly string ClassName = "dbo.SYS_STS_SDC";
+
+        public static bool InsertData_Init(TABLE_SYS_STS_SDC data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $@"
+                            IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}')
+                                BEGIN
+                                    UPDATE {ClassName} SET
+                                    MC_CD='{data.MC_CD}',
+                                    MC_NM='{data.MC_NM}',
+                                    MC_DTM=GETDATE()
+                                    WHERE MC_CD='{data.MC_CD}'
+                                END 
+                            ELSE 
+                                BEGIN
+                                   INSERT INTO {ClassName}
+                                   (MC_CD,MC_NM,MC_DTM)
+                                   VALUES('{data.MC_CD}','{data.MC_NM}',GETDATE())
+                                END";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UpdateData(TABLE_SYS_STS_SDC data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"UPDATE {ClassName} SET " +
+                        $"USER_NM='{data.USER_NM}'," +
+                        $"DischargerVoltage='{data.DischargerVoltage}'," +
+                        $"DischargerCurrent='{data.DischargerCurrent}'," +
+                        $"DischargerTemp='{data.DischargerTemp}'," +
+                        $"MC_DTM=GETDATE() " +
+                        $"WHERE MC_CD='{data.MC_CD}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UpdateData_StateNTime(TABLE_SYS_STS_SDC data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"UPDATE {ClassName} SET " +
+                        $"USER_NM='{data.USER_NM}'," +
+                        $"DischargerState='{data.DischargerState}'," +
+                        $"ProgressTime='{data.ProgressTime}'," +
+                        $"MC_DTM=GETDATE() " +
+                        $"WHERE MC_CD='{data.MC_CD}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UpdateData_Set(TABLE_SYS_STS_SDC data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"UPDATE {ClassName} SET " +
+                        $"USER_NM='{data.USER_NM}'," +
+                        $"DischargeMode='{data.DischargeMode}'," +
+                        $"DischargeTarget='{data.DischargeTarget}'," +
+                        $"LogFileName='{data.LogFileName}'," +
+                        $"MC_DTM=GETDATE() " +
+                        $"WHERE MC_CD='{data.MC_CD}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

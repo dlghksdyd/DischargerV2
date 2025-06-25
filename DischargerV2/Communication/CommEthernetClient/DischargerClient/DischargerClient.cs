@@ -87,6 +87,8 @@ namespace Ethernet.Client.Discharger
 
     public class DischargerInfo
     {
+        public string MachineCode { get; set; } = string.Empty;
+
         /// <summary>
         /// 방전기 정보
         /// </summary>

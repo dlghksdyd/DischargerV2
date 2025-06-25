@@ -9,9 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Windows;
+using System.Xml.Linq;
 using Utility.Common;
 using static DischargerV2.LOG.LogDischarge;
 using static DischargerV2.LOG.LogTrace;
@@ -993,6 +995,18 @@ namespace DischargerV2.MVVM.ViewModels
             dischargeConfig.TempModuleComport = tableDischargerInfo.TempModuleComPort;
             dischargeConfig.TempModuleChannel = tableDischargerInfo.TempModuleChannel;
             dischargeConfig.Tempchannel = tableDischargerInfo.TempChannel;
+
+            // Server DB 사용 (통합 관제 연동)
+            if (!ViewModelLogin.Instance.IsLocalDb())
+            {
+                var tableMstMachine = SqlClient.Server.SqlClientDischargerInfo.FindDischargerInfo(tableDischargerInfo.DischargerName);
+
+                if (tableMstMachine != null)
+                {
+                    dischargeConfig.MachineCode = tableMstMachine.MC_CD;
+                    dischargeConfig.IPAddress = tableMstMachine.MC_IP;
+                }
+            }
 
             // Discharge Mode
             dischargeConfig.EDischargeMode = Model.Mode;

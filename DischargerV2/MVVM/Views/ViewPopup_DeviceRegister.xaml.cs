@@ -92,7 +92,7 @@ namespace DischargerV2.MVVM.Views
                     {
                         ModelDeviceRegister modelDeviceRegister = new ModelDeviceRegister()
                         {
-                            MachineCode = tableDischargerInfo.MC_CD,
+                            MachineCode = tableDischargerInfo.MachineCode,
                             Name = tableDischargerInfo.DischargerName,
                             Ip = tableDischargerInfo.IpAddress,
                             DischargerModel = tableDischargerInfo.Model.ToString(),
@@ -116,7 +116,7 @@ namespace DischargerV2.MVVM.Views
                         {
                             DataContext = new ViewModelDeviceRegister_Info()
                             {
-                                MachineCode = tableDischargerInfo.MC_CD,
+                                MachineCode = tableDischargerInfo.MachineCode,
                                 Name = tableDischargerInfo.DischargerName,
                                 Ip = tableDischargerInfo.IpAddress,
                                 DischargerModel = tableDischargerInfo.Model.ToString(),

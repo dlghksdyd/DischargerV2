@@ -139,6 +139,7 @@ namespace DischargerV2.MVVM.Views
                 oneRow.Background = ResColor.surface_primary;
             }
             _viewModelDischarger.Model[0].Background = ResColor.table_selected;
+            _viewModelDischarger.Model[0].Foreground = ResColor.text_headings;
         }
 
         private void Border_MouseEnter(object sender, MouseEventArgs e)

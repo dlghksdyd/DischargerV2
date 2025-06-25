@@ -101,7 +101,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _userName = "mintech";
+        private string _userName = string.Empty;
         public string UserName
         {
             get
@@ -114,7 +114,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private string _initial = "M";
+        private string _initial = string.Empty;
         public string Initial
         {
             get
