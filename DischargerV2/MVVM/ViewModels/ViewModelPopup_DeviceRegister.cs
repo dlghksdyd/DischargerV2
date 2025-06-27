@@ -44,7 +44,7 @@ namespace DischargerV2.MVVM.ViewModels
         public void Close()
         {
             ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.UpdateDischargerInfoTable();
+            viewModelMain.UpdateDischarger();
             viewModelMain.OffPopup();
         }
 

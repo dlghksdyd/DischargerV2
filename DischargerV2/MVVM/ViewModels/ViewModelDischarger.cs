@@ -113,6 +113,11 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDischarger()
         {
+            Initialize();
+        }
+
+        public void Initialize()
+        {
             InitializeDischarger();
 
             Thread thread = new Thread(() =>

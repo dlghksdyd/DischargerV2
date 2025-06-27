@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Xml.Linq;
 
 namespace SqlClient.Server
@@ -172,6 +173,30 @@ namespace SqlClient.Server
                         $"LogFileName='{data.LogFileName}'," +
                         $"MC_DTM=GETDATE() " +
                         $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool DeleteData(string machineCode)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"DELETE {ClassName} " +
+                        $"WHERE MC_CD='{machineCode}'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {

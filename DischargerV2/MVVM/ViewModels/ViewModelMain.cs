@@ -4,6 +4,7 @@ using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
 using Prism.Mvvm;
+using SqlClient.Server;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -66,8 +67,15 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void UpdateDischargerInfoTable()
+        public void UpdateDischarger()
         {
+            string machineCode = ViewModelLogin.Instance.Model.MachineCode;
+            SqlClientStatus.DeleteData(machineCode);
+
+            // 방전기 연결
+            ViewModelDischarger.Instance.Initialize();
+
+            // 방전기 테이블 갱신
             UpdateDischargerInfoTableEvent?.Invoke(this, EventArgs.Empty);
         }
 
