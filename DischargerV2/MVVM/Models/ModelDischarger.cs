@@ -168,16 +168,6 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
-        private Visibility _serverVisibility = Visibility.Hidden;
-        public Visibility SeverVisibility
-        {
-            get { return _serverVisibility; }
-            set
-            {
-                SetProperty(ref _serverVisibility, value);
-            }
-        }
-
         /// 모니터링 프로퍼티
         private Visibility _resumeButtonVisibility = Visibility.Hidden;
         public Visibility ResumeButtonVisibility

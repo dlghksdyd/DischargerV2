@@ -60,7 +60,6 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetModelData(ModelDeviceRegister setModel)
         {
-            Model.MachineCode = setModel.MachineCode;
             Model.Name = setModel.Name;
             Model.Ip = setModel.Ip;
             SetModel.DischargerModel = setModel.DischargerModel;

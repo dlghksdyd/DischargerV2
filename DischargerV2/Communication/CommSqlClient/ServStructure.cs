@@ -15,22 +15,10 @@ namespace SqlClient.Server
         public string USE_YN { get; set; }
     }
 
-    public class TABLE_MST_MACHINE
-    {
-        public string MC_CD { get; set; }
-        public string MTYPE { get; set; }
-        public string MC_NM { get; set; }
-        public string MC_IP { get; set; }
-        public string LIST_ORDER { get; set; }
-        public string USE_YN { get; set; }
-        public string REG_ID { get; set; }
-
-        public DateTime REG_DTM { get; set; }
-    }
-
     public class TABLE_SYS_STS_SDC
     {
         public string MC_CD { get; set; }
+        public int MC_CH { get; set; }
         public string MC_NM { get; set; }
         public string USER_NM { get; set; }
 

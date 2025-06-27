@@ -62,6 +62,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private string _machineCode;
+        public string MachineCode
+        {
+            get
+            {
+                return _machineCode;
+            }
+            set
+            {
+                SetProperty(ref _machineCode, value);
+            }
+        }
+
         private Visibility _visibility;
         public Visibility Visibility
         {

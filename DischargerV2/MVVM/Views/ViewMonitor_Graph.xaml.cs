@@ -252,10 +252,7 @@ namespace DischargerV2.MVVM.Views
                 xDataGraph.Refresh();
                 xDataGraph.Plot.Axes.AutoScale();
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch { }
 
             //_drawGraphSemaphore.Release();
         }

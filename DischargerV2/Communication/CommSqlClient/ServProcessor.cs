@@ -60,50 +60,6 @@ namespace SqlClient.Server
         }
     }
 
-    public static class SqlClientDischargerInfo
-    {
-        private static readonly string ClassName = "dbo.MST_MACHINE";
-
-        public static TABLE_MST_MACHINE FindDischargerInfo(string dischargerName)
-        {
-            var dischargerInfoList = GetData();
-
-            return dischargerInfoList.Find(x => x.MC_NM == dischargerName);
-        }
-
-        public static List<TABLE_MST_MACHINE> GetData()
-        {
-            List<TABLE_MST_MACHINE> table = new List<TABLE_MST_MACHINE>();
-
-            using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
-            {
-                connection.Open();
-
-                string query = @"SELECT * FROM " + ClassName;
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        TABLE_MST_MACHINE tableMstMachine = new TABLE_MST_MACHINE
-                        {
-                            MC_CD = reader["MC_CD"].ToString().Trim(),
-                            MC_IP = reader["MC_IP"].ToString().Trim(),
-                            MC_NM = reader["MC_NM"].ToString().Trim(),
-                            USE_YN = reader["USE_YN"].ToString().Trim(),
-                        };
-
-                        table.Add(tableMstMachine);
-                    }
-                }
-            }
-
-            return table;
-        }
-    }
-
     public static class SqlClientStatus
     {
         private static readonly string ClassName = "dbo.SYS_STS_SDC";
@@ -117,19 +73,18 @@ namespace SqlClient.Server
                     connection.Open();
 
                     string query = $@"
-                            IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}')
+                            IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}')
                                 BEGIN
                                     UPDATE {ClassName} SET
-                                    MC_CD='{data.MC_CD}',
                                     MC_NM='{data.MC_NM}',
                                     MC_DTM=GETDATE()
-                                    WHERE MC_CD='{data.MC_CD}'
+                                    WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'
                                 END 
                             ELSE 
                                 BEGIN
                                    INSERT INTO {ClassName}
-                                   (MC_CD,MC_NM,MC_DTM)
-                                   VALUES('{data.MC_CD}','{data.MC_NM}',GETDATE())
+                                   (MC_CD,MC_CH,MC_NM,MC_DTM)
+                                   VALUES('{data.MC_CD}','{data.MC_CH}','{data.MC_NM}',GETDATE())
                                 END";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -159,7 +114,7 @@ namespace SqlClient.Server
                         $"DischargerCurrent='{data.DischargerCurrent}'," +
                         $"DischargerTemp='{data.DischargerTemp}'," +
                         $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}'";
+                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -187,7 +142,7 @@ namespace SqlClient.Server
                         $"DischargerState='{data.DischargerState}'," +
                         $"ProgressTime='{data.ProgressTime}'," +
                         $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}'";
+                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -216,7 +171,7 @@ namespace SqlClient.Server
                         $"DischargeTarget='{data.DischargeTarget}'," +
                         $"LogFileName='{data.LogFileName}'," +
                         $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}'";
+                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {

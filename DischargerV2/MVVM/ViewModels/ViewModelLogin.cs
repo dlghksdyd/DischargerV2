@@ -51,6 +51,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Model.ServerIp = GetIniData<string>(EIniData.ServerIp);
                 Model.ServerPort = GetIniData<string>(EIniData.ServerPort);
                 Model.ServerName = GetIniData<string>(EIniData.DatabaseName);
+                Model.MachineCode = GetIniData<string>(EIniData.MachineCode);
 
                 SqlClient.Server.SqlClient.UpdateConnectionString(Model.ServerIp, Model.ServerPort, Model.ServerName);
             }

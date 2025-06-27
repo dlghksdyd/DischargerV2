@@ -27,8 +27,6 @@ namespace Sqlite.Common
 
     public class TableDischargerInfo
     {
-        public string MachineCode;
-
         public string DischargerName;
         public EDischargerModel Model;
         public EDischargeType Type;

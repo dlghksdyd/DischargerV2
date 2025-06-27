@@ -58,31 +58,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                 for (int index = 0; index < tableDischargerInfoList.Count; index++)
                 {
-                    // Server DB 사용 (통합 관제 연동)
-                    if (!ViewModelLogin.Instance.IsLocalDb())
-                    {
-                        var dischargerName = tableDischargerInfoList[index].DischargerName;
-                        var tableMstMachine = SqlClient.Server.SqlClientDischargerInfo.FindDischargerInfo(dischargerName);
-
-                        if (tableMstMachine != null)
-                        {
-                            tableDischargerInfoList[index].MachineCode = tableMstMachine.MC_CD;
-                            tableDischargerInfoList[index].IpAddress = tableMstMachine.MC_IP;
-
-                            // IP Address Local <-> Server 상이할 경우 어떻게 처리 ?
-
-                            ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Visible;
-                        }
-                        else
-                        {
-                            ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Hidden;
-                        }
-                    }
-                    else
-                    {
-                        ViewModelDischarger.Instance.Model[index].SeverVisibility = Visibility.Hidden;
-                    }
-
                     content.Add(tableDischargerInfoList[index]);
                 }
 

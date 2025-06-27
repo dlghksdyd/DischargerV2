@@ -9,7 +9,7 @@ namespace DischargerV2.Ini
     {
         public enum EIniData 
         { 
-            IsLocalDb, ServerIp, ServerPort, DatabaseName, 
+            IsLocalDb, ServerIp, ServerPort, DatabaseName, MachineCode,
             Sound, MaxSampleNum 
         }
 
@@ -21,6 +21,7 @@ namespace DischargerV2.Ini
             { EIniData.ServerIp, new IniData { Section = "ServerIp", Key = "Value", Value = "127.0.0.1" } },
             { EIniData.ServerPort, new IniData { Section = "ServerPort", Key = "Value", Value = "1433" } },
             { EIniData.DatabaseName, new IniData { Section = "DatabaseName", Key = "Value", Value = "MINDIMS" } },
+            { EIniData.MachineCode, new IniData { Section = "MachineCode", Key = "Value", Value = "SDC01"} },
             { EIniData.Sound, new IniData { Section = "Sound", Key = "Value", Value = "On" } },
             { EIniData.MaxSampleNum, new IniData { Section = "Graph", Key = "MaxSampleNum", Value = "1600" } },
         };

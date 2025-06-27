@@ -22,6 +22,7 @@ using DischargerV2.MVVM.Enums;
 using System.Diagnostics;
 using SqlClient.Server;
 using ScottPlot.Colormaps;
+using static DischargerV2.Ini.IniDischarge;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -620,21 +621,19 @@ namespace DischargerV2.MVVM.ViewModels
             // Server DB 사용 (통합 관제 연동)
             if (!ViewModelLogin.Instance.IsLocalDb())
             {
-                var tableMstMachine = SqlClientDischargerInfo.FindDischargerInfo(name);
+                string machineCode = GetIniData<string>(EIniData.MachineCode);
+                int channel = infoTable.FindIndex(x => x.DischargerName == name) + 1;
 
-                if (tableMstMachine != null)
-                {
-                    // Server 등록 되어있는 MC_CD 받아오기
-                    dischargerInfo.MachineCode = tableMstMachine.MC_CD;
-                    dischargerInfo.IpAddress = IPAddress.Parse(tableMstMachine.MC_IP);
+                // MC_CD 받아오기
+                dischargerInfo.MachineCode = machineCode;
 
-                    // Insert Init Data 
-                    var insertData = new TABLE_SYS_STS_SDC();
-                    insertData.MC_CD = tableMstMachine.MC_CD;
-                    insertData.MC_NM = name;
+                // Insert Init Data 
+                var insertData = new TABLE_SYS_STS_SDC();
+                insertData.MC_CD = machineCode;
+                insertData.MC_CH = channel;
+                insertData.MC_NM = name;
 
-                    SqlClientStatus.InsertData_Init(insertData);
-                }
+                SqlClientStatus.InsertData_Init(insertData);
             }
 
             return dischargerInfo;
@@ -731,6 +730,7 @@ namespace DischargerV2.MVVM.ViewModels
                     // UpdateData Data 
                     var updateData = new TABLE_SYS_STS_SDC();
                     updateData.MC_CD = Model[i].MachineCode;
+                    updateData.MC_CH = Model[i].DischargerIndex + 1;
                     updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
                     updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
                     updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
@@ -811,6 +811,7 @@ namespace DischargerV2.MVVM.ViewModels
                     // UpdateData StateNTime Data 
                     var updateData = new TABLE_SYS_STS_SDC();
                     updateData.MC_CD = Model[index].MachineCode;
+                    updateData.MC_CH = Model[index].DischargerIndex + 1;
                     updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
                     updateData.DischargerState = state.ToString();
                     updateData.ProgressTime = diff.Ticks;

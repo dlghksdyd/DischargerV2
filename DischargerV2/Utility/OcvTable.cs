@@ -77,7 +77,7 @@ namespace Utility.Common
             {
                 sr = new StreamReader(fileName);
             }
-            catch (Exception e)
+            catch
             {
                 return;
             }

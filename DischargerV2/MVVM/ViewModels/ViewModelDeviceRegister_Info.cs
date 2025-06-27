@@ -31,12 +31,6 @@ namespace DischargerV2.MVVM.ViewModels
         #region Model
         public ModelDeviceRegister Model { get; set; } = new ModelDeviceRegister();
 
-        public string MachineCode
-        {
-            get => Model.MachineCode;
-            set => Model.MachineCode = value;
-        }
-
         public string Name
         {
             get => Model.Name;

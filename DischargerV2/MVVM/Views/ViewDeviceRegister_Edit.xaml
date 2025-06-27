@@ -47,17 +47,9 @@
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <Mex:MexTextBlock Text="Name" IsTabStop="False"
-                                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                            <Image Width="24" Height="24" Margin="8 0 0 0"
-                                   Source="{Binding Source={StaticResource Mex/ResImage/link}, 
-                                                    Converter={StaticResource ImageColorConverter}, 
-                                                    ConverterParameter={StaticResource Mex/ResColor/icon_success}}"
-                                   Visibility="{Binding Model.MachineCode,
-                                                        Converter={StaticResource IsStringEmptyToVisibilityConverter}}"/>
-                        </StackPanel>
+                        <Mex:MexTextBlock Text="Name" IsTabStop="False"
+                                          Foreground="{StaticResource Mex/ResColor/text_body}"
+                                          FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xDeciveNameTextBox" TabIndex="0"
                                         Padding="12,8,12,8"

@@ -65,8 +65,7 @@ namespace DischargerV2.MVVM.Views
         {
             StackPanel stackPanel = sender as StackPanel;
             Grid grid = stackPanel.Parent as Grid;
-            StackPanel dischargerNameStackPanel = grid.Children[1] as StackPanel;
-            MexTextBlock dischargerNameTextBlock = dischargerNameStackPanel.Children[0] as MexTextBlock;
+            MexTextBlock dischargerNameTextBlock = grid.Children[1] as MexTextBlock;
 
             string dischargerName = dischargerNameTextBlock.Text;
 
@@ -77,8 +76,7 @@ namespace DischargerV2.MVVM.Views
         {
             StackPanel stackPanel = sender as StackPanel;
             Grid grid = stackPanel.Parent as Grid;
-            StackPanel dischargerNameStackPanel = grid.Children[1] as StackPanel;
-            MexTextBlock dischargerNameTextBlock = dischargerNameStackPanel.Children[0] as MexTextBlock;
+            MexTextBlock dischargerNameTextBlock = grid.Children[1] as MexTextBlock;
 
             string dischargerName = dischargerNameTextBlock.Text;
 
@@ -90,8 +88,7 @@ namespace DischargerV2.MVVM.Views
             Border border = sender as Border;
             Grid grid = border.Child as Grid;
             MexTextBlock dischargerNoTextBlock = grid.Children[0] as MexTextBlock;
-            StackPanel dischargerNameStackPanel = grid.Children[1] as StackPanel;
-            MexTextBlock dischargerNameTextBlock = dischargerNameStackPanel.Children[0] as MexTextBlock;
+            MexTextBlock dischargerNameTextBlock = grid.Children[1] as MexTextBlock;
 
             string dischargerName = dischargerNameTextBlock.Text;
 
@@ -147,8 +144,7 @@ namespace DischargerV2.MVVM.Views
             Border border = sender as Border;
             Grid grid = border.Child as Grid;
             MexTextBlock dischargerNoTextBlock = grid.Children[0] as MexTextBlock;
-            StackPanel dischargerNameStackPanel = grid.Children[1] as StackPanel;
-            MexTextBlock dischargerNameTextBlock = dischargerNameStackPanel.Children[0] as MexTextBlock;
+            MexTextBlock dischargerNameTextBlock = grid.Children[1] as MexTextBlock;
 
             string dischargerName = dischargerNameTextBlock.Text;
 
@@ -165,8 +161,7 @@ namespace DischargerV2.MVVM.Views
             Border border = sender as Border;
             Grid grid = border.Child as Grid;
             MexTextBlock dischargerNoTextBlock = grid.Children[0] as MexTextBlock;
-            StackPanel dischargerNameStackPanel = grid.Children[1] as StackPanel;
-            MexTextBlock dischargerNameTextBlock = dischargerNameStackPanel.Children[0] as MexTextBlock;
+            MexTextBlock dischargerNameTextBlock = grid.Children[1] as MexTextBlock;
 
             string dischargerName = dischargerNameTextBlock.Text;
 

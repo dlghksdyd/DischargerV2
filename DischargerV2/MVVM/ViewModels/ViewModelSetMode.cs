@@ -263,20 +263,16 @@ namespace DischargerV2.MVVM.ViewModels
             // Server DB 사용 (통합 관제 연동)
             if (!ViewModelLogin.Instance.IsLocalDb())
             {
-                var tableMstMachine = SqlClientDischargerInfo.FindDischargerInfo(Model.DischargerName);
+                // UpdateData SetMode Data 
+                var updateData = new TABLE_SYS_STS_SDC();
+                updateData.MC_CD = ViewModelLogin.Instance.Model.MachineCode;
+                updateData.MC_CH = Model.DischargerIndex + 1;
+                updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                updateData.DischargeMode = Model.Mode.ToString();
+                updateData.DischargeTarget = Model.TargetDetail;
+                updateData.LogFileName = Model.LogFileName;
 
-                if (tableMstMachine != null)
-                {
-                    // UpdateData SetMode Data 
-                    var updateData = new TABLE_SYS_STS_SDC();
-                    updateData.MC_CD = tableMstMachine.MC_CD;
-                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
-                    updateData.DischargeMode = Model.Mode.ToString();
-                    updateData.DischargeTarget = Model.TargetDetail;
-                    updateData.LogFileName = Model.LogFileName;
-
-                    SqlClientStatus.UpdateData_Set(updateData);
-                }
+                SqlClientStatus.UpdateData_Set(updateData);
             }
             
             StartDischarge();
@@ -1037,13 +1033,7 @@ namespace DischargerV2.MVVM.ViewModels
             // Server DB 사용 (통합 관제 연동)
             if (!ViewModelLogin.Instance.IsLocalDb())
             {
-                var tableMstMachine = SqlClient.Server.SqlClientDischargerInfo.FindDischargerInfo(tableDischargerInfo.DischargerName);
-
-                if (tableMstMachine != null)
-                {
-                    dischargeConfig.MachineCode = tableMstMachine.MC_CD;
-                    dischargeConfig.IPAddress = tableMstMachine.MC_IP;
-                }
+                dischargeConfig.MachineCode = ViewModelLogin.Instance.Model.MachineCode;
             }
 
             // Discharge Mode
