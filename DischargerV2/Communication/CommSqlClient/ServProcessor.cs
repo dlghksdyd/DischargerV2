@@ -77,7 +77,7 @@ namespace SqlClient.Server
                             IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}')
                                 BEGIN
                                     UPDATE {ClassName} SET
-                                    MC_NM='{data.MC_NM}',
+                                    MC_NM='{data.DischargerName}',
                                     MC_DTM=GETDATE()
                                     WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'
                                 END 
@@ -85,7 +85,7 @@ namespace SqlClient.Server
                                 BEGIN
                                    INSERT INTO {ClassName}
                                    (MC_CD,MC_CH,MC_NM,MC_DTM)
-                                   VALUES('{data.MC_CD}','{data.MC_CH}','{data.MC_NM}',GETDATE())
+                                   VALUES('{data.MC_CD}','{data.MC_CH}','{data.DischargerName}',GETDATE())
                                 END";
 
                     using (SqlCommand command = new SqlCommand(query, connection))

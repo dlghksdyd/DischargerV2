@@ -4,6 +4,7 @@ using Ethernet.Client.Discharger;
 using Prism.Commands;
 using Prism.Mvvm;
 using ScottPlot;
+using SqlClient.Server;
 using Sqlite.Common;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,23 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
+                // Server DB 사용 (통합 관제 연동)
+                if (!ViewModelLogin.Instance.IsLocalDb())
+                {
+                    string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
+
+                    // UpdateData SetMode Data 
+                    var updateData = new TABLE_SYS_STS_SDC();
+                    updateData.MC_CD = ViewModelLogin.Instance.Model.MachineCode;
+                    updateData.MC_CH = ViewModelSetMode.Instance.Model.DischargerIndex + 1;
+                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.DischargeMode = string.Empty;
+                    updateData.DischargeTarget = string.Empty;
+                    updateData.LogFileName = string.Empty;
+
+                    SqlClientStatus.UpdateData_Set(updateData);
+                }
+
                 // 방전 모드 설정 돌아가기
                 ViewModelMain.Instance.SetIsStartedArray(false);
 

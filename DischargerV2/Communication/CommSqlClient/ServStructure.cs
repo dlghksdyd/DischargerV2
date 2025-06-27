@@ -19,9 +19,9 @@ namespace SqlClient.Server
     {
         public string MC_CD { get; set; }
         public int MC_CH { get; set; }
-        public string MC_NM { get; set; }
         public string USER_NM { get; set; }
 
+        public string DischargerName { get; set; }
         public string DischargerState { get; set; }
         public string DischargerVoltage { get; set; }
         public string DischargerCurrent { get; set; }

@@ -636,7 +636,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var insertData = new TABLE_SYS_STS_SDC();
                 insertData.MC_CD = machineCode;
                 insertData.MC_CH = channel;
-                insertData.MC_NM = name;
+                insertData.DischargerName = name;
 
                 SqlClientStatus.InsertData_Init(insertData);
             }
