@@ -8,11 +8,11 @@ namespace SqlClient.Server
 {
     public class SqlClient
     {
-        public static string ConnectionString = "Data Source=127.0.0.1,1433;Initial Catalog=MINDIMS;User ID=sa;Password=mintech1234;";
+        public static string ConnectionString = "Data Source=192.168.20.7,1433;Initial Catalog=MINDIMS_GNTP;User ID=mindims;Password=mindims;";
 
         public static void UpdateConnectionString(string serverIp, string serverPort, string databaseName)
         {
-            ConnectionString = $@"Data Source={serverIp},{serverPort};Initial Catalog={databaseName};User ID=sa;Password=mintech1234;";
+            ConnectionString = $@"Data Source={serverIp},{serverPort};Initial Catalog={databaseName};User ID=mindims;Password=mindims;";
         }
     }
 
@@ -77,14 +77,14 @@ namespace SqlClient.Server
                             IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}')
                                 BEGIN
                                     UPDATE {ClassName} SET
-                                    MC_NM='{data.DischargerName}',
+                                    DischargerName='{data.DischargerName}',
                                     MC_DTM=GETDATE()
                                     WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'
                                 END 
                             ELSE 
                                 BEGIN
                                    INSERT INTO {ClassName}
-                                   (MC_CD,MC_CH,MC_NM,MC_DTM)
+                                   (MC_CD,MC_CH,DischargerName,MC_DTM)
                                    VALUES('{data.MC_CD}','{data.MC_CH}','{data.DischargerName}',GETDATE())
                                 END";
 
@@ -110,7 +110,7 @@ namespace SqlClient.Server
                     connection.Open();
 
                     string query = $"UPDATE {ClassName} SET " +
-                        $"USER_NM='{data.USER_NM}'," +
+                        $"USER_ID='{data.USER_ID}'," +
                         $"DischargerVoltage='{data.DischargerVoltage}'," +
                         $"DischargerCurrent='{data.DischargerCurrent}'," +
                         $"DischargerTemp='{data.DischargerTemp}'," +
@@ -139,7 +139,7 @@ namespace SqlClient.Server
                     connection.Open();
 
                     string query = $"UPDATE {ClassName} SET " +
-                        $"USER_NM='{data.USER_NM}'," +
+                        $"USER_ID='{data.USER_ID}'," +
                         $"DischargerState='{data.DischargerState}'," +
                         $"ProgressTime='{data.ProgressTime}'," +
                         $"MC_DTM=GETDATE() " +
@@ -167,7 +167,7 @@ namespace SqlClient.Server
                     connection.Open();
 
                     string query = $"UPDATE {ClassName} SET " +
-                        $"USER_NM='{data.USER_NM}'," +
+                        $"USER_ID='{data.USER_ID}'," +
                         $"DischargeMode='{data.DischargeMode}'," +
                         $"DischargeTarget='{data.DischargeTarget}'," +
                         $"LogFileName='{data.LogFileName}'," +

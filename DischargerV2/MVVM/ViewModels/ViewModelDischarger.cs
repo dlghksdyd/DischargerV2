@@ -736,7 +736,7 @@ namespace DischargerV2.MVVM.ViewModels
                     var updateData = new TABLE_SYS_STS_SDC();
                     updateData.MC_CD = Model[i].MachineCode;
                     updateData.MC_CH = Model[i].DischargerIndex + 1;
-                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
                     updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
                     updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
                     updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
@@ -817,7 +817,7 @@ namespace DischargerV2.MVVM.ViewModels
                     var updateData = new TABLE_SYS_STS_SDC();
                     updateData.MC_CD = Model[index].MachineCode;
                     updateData.MC_CH = Model[index].DischargerIndex + 1;
-                    updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                    updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
                     updateData.DischargerState = state.ToString();
                     updateData.ProgressTime = diff.Ticks;
 

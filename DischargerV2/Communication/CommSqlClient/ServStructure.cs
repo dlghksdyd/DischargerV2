@@ -19,7 +19,7 @@ namespace SqlClient.Server
     {
         public string MC_CD { get; set; }
         public int MC_CH { get; set; }
-        public string USER_NM { get; set; }
+        public string USER_ID { get; set; }
 
         public string DischargerName { get; set; }
         public string DischargerState { get; set; }

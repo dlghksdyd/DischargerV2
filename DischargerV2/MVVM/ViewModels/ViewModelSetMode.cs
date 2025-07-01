@@ -267,7 +267,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var updateData = new TABLE_SYS_STS_SDC();
                 updateData.MC_CD = ViewModelLogin.Instance.Model.MachineCode;
                 updateData.MC_CH = Model.DischargerIndex + 1;
-                updateData.USER_NM = ViewModelLogin.Instance.Model.UserName;
+                updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
                 updateData.DischargeMode = Model.Mode.ToString();
                 updateData.DischargeTarget = Model.TargetDetail;
                 updateData.LogFileName = Model.LogFileName;
