@@ -279,6 +279,12 @@ namespace DischargerV2.MVVM.ViewModels
                     viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData);
                 }
 
+                // 0V, 0.1A 미만이면 방전 자동 중지
+                if (receiveVoltage <= 0 && receiveCurrent < 0.1)
+                {
+                    StopDischarge();
+                }
+
                 // 방전기 동작 설정 및 확인
                 if (!_isEnterPause)
                 {

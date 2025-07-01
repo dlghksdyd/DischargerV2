@@ -50,6 +50,9 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ObservableCollection<ModelDischarger> Model { get; set; } = new ObservableCollection<ModelDischarger>();
 
+        public static double SafetyMarginVoltage = 15;
+        public static double SafetyMarginCurrent = 2;
+
         private ModelDischarger _selectedModel = new ModelDischarger();
         public ModelDischarger SelectedModel
         {
@@ -510,6 +513,13 @@ namespace DischargerV2.MVVM.ViewModels
                 var model = new ModelDischarger();
 
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
+
+                // 전압 및 전류 Margin 값 적용
+                dischargerInfo.SafetyVoltageMin -= SafetyMarginVoltage;
+                dischargerInfo.SafetyVoltageMax += SafetyMarginVoltage;
+                dischargerInfo.SafetyCurrentMin -= SafetyMarginCurrent;
+                dischargerInfo.SafetyCurrentMax += SafetyMarginCurrent;
+
                 model.DischargerInfo = dischargerInfo;
 
                 InitializeDischargerClients(dischargerInfo);

@@ -144,8 +144,8 @@ namespace Ethernet.Client.Discharger
 
         private string _logFileName = string.Empty;
 
-        public static double SafetyMarginVoltage = 15;
-        public static double SafetyMarginCurrent = 2;
+        public static double SafetyMarginVoltage = 0;
+        public static double SafetyMarginCurrent = 0;
 
         public static bool IsLampBuzzerUsed = true;
 
