@@ -361,13 +361,13 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_EDIT_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_EDIT_MODEL, modelData);
                 }
                 else
                 {
                     MessageBox.Show("모델 정보 변경 실패");
 
-                    new LogTrace(ELogTrace.ERROR_EDIT_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_EDIT_MODEL, modelData);
                 }
 
                 return isOk;
@@ -380,7 +380,7 @@ namespace DischargerV2.MVVM.ViewModels
                   $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                   $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_EDIT_MODEL, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_EDIT_MODEL, ex);
                 return false;
             }
         }

@@ -74,14 +74,14 @@ namespace DischargerV2.MVVM.ViewModels
                         Model.Permission = user.IsAdmin ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
 
-                        new LogTrace(ELogTrace.TRACE_LOGIN, Model.UserId);
+                        new LogTrace(ELogTrace.SYSTEM_OK_LOGIN, Model.UserId);
                     }
                     else
                     {
                         MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
                             "아이디와 비밀번호를 정확히 입력해 주세요.");
 
-                        new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, Model.UserId);
                     }
                 }
                 // Server DB 사용 (통합 관제 연동)
@@ -102,7 +102,7 @@ namespace DischargerV2.MVVM.ViewModels
                         MessageBox.Show("아이디 또는 비밀번호가 잘못 되었습니다.\n" +
                             "아이디와 비밀번호를 정확히 입력해 주세요.");
 
-                        new LogTrace(ELogTrace.ERROR_LOGIN, Model.UserId);
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, Model.UserId);
                     }
                 }
             }
@@ -114,7 +114,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_LOGIN, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, ex);
             }
         }
 

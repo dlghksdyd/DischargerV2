@@ -294,11 +294,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_ADD_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_ADD_MODEL, modelData);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_ADD_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_MODEL, modelData);
                 }
 
                 return isOk;
@@ -311,7 +311,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_ADD_MODEL, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_MODEL, ex);
                 return false;
             }
         }

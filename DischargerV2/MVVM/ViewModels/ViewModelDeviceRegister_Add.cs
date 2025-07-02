@@ -307,13 +307,13 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_ADD_DISCHARGER, deviceData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_ADD_DISCHARGER, deviceData);
                 }
                 else
                 {
                     MessageBox.Show("장비 정보 추가 실패");
 
-                    new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, deviceData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_DISCHARGER, deviceData);
                 }
 
                 return isOk;
@@ -326,7 +326,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_ADD_DISCHARGER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_DISCHARGER, ex);
                 return false;
             }
         }

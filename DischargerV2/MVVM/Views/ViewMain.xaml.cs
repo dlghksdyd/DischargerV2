@@ -14,7 +14,7 @@ namespace DischargerV2.MVVM.Views
     {
         public static ViewMain Instance;
 
-        private LogTrace LogTraceProgramStart = new LogTrace(ELogTrace.TRACE_PROGRAM_START);
+        private LogTrace LogTraceProgramStart = new LogTrace(ELogTrace.SYSTEM_OK_PROGRAM_START);
         private ViewModelMain _viewModel = new ViewModelMain();
 
         public ViewMain()
@@ -33,7 +33,7 @@ namespace DischargerV2.MVVM.Views
             }
             catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_PROGRAM_START, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_PROGRAM_START, ex);
             }
         }
 

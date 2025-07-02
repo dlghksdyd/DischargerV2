@@ -147,11 +147,11 @@ namespace DischargerV2.MVVM.ViewModels
                     // 온도 모듈 재 연결 Trace Log 저장
                     if (isOk == ETempModuleClientError.Ok)
                     {
-                        new LogTrace(ELogTrace.TRACE_RECONNECT_TEMPMODULE, _logParameter[comport]);
+                        new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_TEMPMODULE, _logParameter[comport]);
                     }
                     else
                     {
-                        new LogTrace(ELogTrace.ERROR_RECONNECT_TEMPMODULE, _logParameter[comport]);
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_TEMPMODULE, _logParameter[comport]);
                     }
                 });
 
@@ -159,7 +159,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_TEMPMODULE, ex);
 
                 MessageBox.Show(
                     $"Error 발생\n\n" +
@@ -221,17 +221,17 @@ namespace DischargerV2.MVVM.ViewModels
                         // 온도 모듈 연결 Trace Log 저장
                         if (isOk == ETempModuleClientError.Ok)
                         {
-                            new LogTrace(ELogTrace.TRACE_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
+                            new LogTrace(ELogTrace.SYSTEM_OK_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
                         }
                         else
                         {
-                            new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_TEMPMODULE, _logParameter[info.TempModuleComPort]);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    new LogTrace(ELogTrace.ERROR_CONNECT_TEMPMODULE, ex);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_TEMPMODULE, ex);
 
                     MessageBox.Show(
                         $"Error 발생\n\n" +

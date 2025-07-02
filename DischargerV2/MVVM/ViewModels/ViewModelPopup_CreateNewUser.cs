@@ -126,13 +126,13 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_ADD_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_ADD_USER, userData);
                 }
                 else
                 {
                     MessageBox.Show("사용자 정보 추가 실패");
 
-                    new LogTrace(ELogTrace.ERROR_ADD_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_USER, userData);
                 }
             }
             catch (Exception ex)
@@ -143,7 +143,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
          
-                new LogTrace(ELogTrace.ERROR_ADD_USER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_ADD_USER, ex);
             }
         }
     }

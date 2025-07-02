@@ -131,7 +131,7 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
-                new LogTrace(ELogTrace.TRACE_PROGRAM_END);
+                new LogTrace(ELogTrace.SYSTEM_OK_PROGRAM_END);
 
                 ViewModelDischarger.Instance.FinalizeDischarger();
 
@@ -145,7 +145,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_PROGRAM_END, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_PROGRAM_END, ex);
             }
         }
     }

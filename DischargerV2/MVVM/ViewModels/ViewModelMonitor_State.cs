@@ -102,11 +102,11 @@ namespace DischargerV2.MVVM.ViewModels
                 DischargerData dischargerComm = new DischargerData();
                 dischargerComm.Name = ViewModelSetMode.Instance.Model.DischargerName;
 
-                new LogTrace(ELogTrace.TRACE_RETURN_SETMODE, dischargerComm);
+                new LogTrace(ELogTrace.SYSTEM_OK_RETURN_SETMODE, dischargerComm);
             }
             catch (Exception ex)
             {
-                new LogTrace(ELogTrace.ERROR_RETURN_SETMODE, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_RETURN_SETMODE, ex);
 
                 MessageBox.Show(
                     $"Error 발생\n\n" +

@@ -114,6 +114,9 @@ namespace SqlClient.Server
                         $"DischargerVoltage='{data.DischargerVoltage}'," +
                         $"DischargerCurrent='{data.DischargerCurrent}'," +
                         $"DischargerTemp='{data.DischargerTemp}'," +
+                        $"DischargeCapacity_Ah='{data.DischargeCapacity_Ah}'," +
+                        $"DischargeCapacity_kWh='{data.DischargeCapacity_kWh}'," +
+                        $"DischargePhase='{data.DischargePhase}'," +
                         $"MC_DTM=GETDATE() " +
                         $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
 

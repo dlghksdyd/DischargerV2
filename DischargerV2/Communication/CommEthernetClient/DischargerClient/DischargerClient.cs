@@ -142,8 +142,6 @@ namespace Ethernet.Client.Discharger
         private EDischargerState _dischargerState = EDischargerState.None;
         private uint _dioValue = uint.MaxValue;
 
-        private string _logFileName = string.Empty;
-
         public static double SafetyMarginVoltage = 15;
         public static double SafetyMarginCurrent = 2;
 
@@ -169,11 +167,6 @@ namespace Ethernet.Client.Discharger
             return dischargerData;
         }
 
-        public void SetLogFileName(string logFileName)
-        {
-            _logFileName = logFileName;
-        }
-
         public bool IsConnected()
         {
             if (_dischargerClient == null)
@@ -188,24 +181,34 @@ namespace Ethernet.Client.Discharger
         {
             try
             {
+                bool isError = false;
+
                 if (dischargerState == EDischargerState.SafetyOutOfRange)
                 {
                     _dischargerData.ErrorCode = 0xF0000001;
+
+                    isError = true;
                 }
                 else if (dischargerState == EDischargerState.ReturnCodeError)
                 {
                     _dischargerData.ErrorCode = 0xF0000002;
+
+                    isError = true;
                 }
                 else if (dischargerState == EDischargerState.ChStatusError)
                 {
                     _dischargerData.ErrorCode = 0xF0000003;
+
+                    isError = true;
                 }
 
-                if (_dischargerState != dischargerState)
+                if (isError && _dischargerState != dischargerState)
                 {
                     // 방전 Trace Log 저장 - 상태 변경
-                    var dischargerData = new LogDischarge.DischargerData()
+                    var dischargerData = new LogTrace.DischargerData()
                     {
+                        Name = _parameters.DischargerName,
+
                         ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
                         ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
                         ReceiveDischargeTemp = _dischargerData.ReceiveDischargeTemp.ToString("F1"),
@@ -214,7 +217,7 @@ namespace Ethernet.Client.Discharger
                         EReturnCode = _dischargerData.ReturnCode,
                         EDischargerState = dischargerState,
                     };
-                    new LogDischarge(ELogDischarge.TRACE_SET_STATE, _logFileName, dischargerData);
+                    new LogTrace(ELogDischarge.COMM_OK_SET_STATE, dischargerData);
                 }
 
                 _dischargerState = dischargerState;
@@ -224,7 +227,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex) 
             {
                 // 방전 Trace Log 저장 - 상태 변경 실패
-                new LogDischarge(ELogDischarge.ERROR_SET_STATE, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_SET_STATE, ex);
 
                 return false;
             }
@@ -464,7 +467,7 @@ namespace Ethernet.Client.Discharger
             {
                 lock (_packetLock)
                 {
-                    var dischargerData = new LogDischarge.DischargerData();
+                    var dischargerData = new LogTrace.DischargerData();
 
                     if (_dischargerState == EDischargerState.Discharging ||
                         _dischargerState == EDischargerState.Ready ||
@@ -484,27 +487,31 @@ namespace Ethernet.Client.Discharger
                             }
 
                             // 방전 Trace Log 저장 - 동작 시작
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 EWorkMode = workMode,
                                 SetValue_Voltage = setValue,
                                 LimitingValue_Current = limitingValue
                             };
-                            new LogDischarge(ELogDischarge.TRACE_START, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_OK_START, dischargerData);
 
                             return EDischargerClientError.Ok;
                         }
                         else
                         {
                             // 방전 Trace Log 저장 - 동작 시작 실패
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 EDischargerClientError = EDischargerClientError.FailProcessPacket,
                                 EWorkMode = workMode,
                                 SetValue_Voltage = setValue,
                                 LimitingValue_Current = limitingValue
                             };
-                            new LogDischarge(ELogDischarge.ERROR_START, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_ERROR_START, dischargerData);
 
                             return EDischargerClientError.FailProcessPacket;
                         }
@@ -512,14 +519,16 @@ namespace Ethernet.Client.Discharger
                     else
                     {
                         // 방전 Trace Log 저장 - 동작 시작 실패
-                        dischargerData = new LogDischarge.DischargerData()
+                        dischargerData = new LogTrace.DischargerData()
                         {
+                            Name = _parameters.DischargerName,
+
                             EDischargerClientError = EDischargerClientError.InvalidDischargerState,
                             EWorkMode = workMode,
                             SetValue_Voltage = setValue,
                             LimitingValue_Current = limitingValue
                         };
-                        new LogDischarge(ELogDischarge.ERROR_START, _logFileName, dischargerData);
+                        new LogTrace(ELogDischarge.COMM_ERROR_START, dischargerData);
 
                         return EDischargerClientError.InvalidDischargerState;
                     }
@@ -528,7 +537,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 동작 시작 실패
-                new LogDischarge(ELogDischarge.ERROR_START, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_START, ex);
 
                 return EDischargerClientError.Exception;
             }
@@ -540,7 +549,7 @@ namespace Ethernet.Client.Discharger
             {
                 lock (_packetLock)
                 {
-                    var dischargerData = new LogDischarge.DischargerData();
+                    var dischargerData = new LogTrace.DischargerData();
 
                     LogArgument logArgument = new LogArgument("Set Safety Condition.");
                     logArgument.Parameters["VoltMax"] = voltageMax;
@@ -568,8 +577,10 @@ namespace Ethernet.Client.Discharger
                         _dischargerData.SafetyTempMin = tempMin;
 
                         // 방전 Trace Log 저장 - 안전 조건 설정
-                        dischargerData = new LogDischarge.DischargerData()
+                        dischargerData = new LogTrace.DischargerData()
                         {
+                            Name = _parameters.DischargerName,
+
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
@@ -577,15 +588,17 @@ namespace Ethernet.Client.Discharger
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
-                        new LogDischarge(ELogDischarge.TRACE_SET_SAFETYCONDITION, _logFileName, dischargerData);
+                        new LogTrace(ELogDischarge.COMM_OK_SET_SAFETYCONDITION, dischargerData);
                         
                         return true;
                     }
                     else
                     {
                         // 방전 Trace Log 저장 - 안전 조건 설정 실패
-                        dischargerData = new LogDischarge.DischargerData()
+                        dischargerData = new LogTrace.DischargerData()
                         {
+                            Name = _parameters.DischargerName,
+
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
@@ -593,7 +606,7 @@ namespace Ethernet.Client.Discharger
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
-                        new LogDischarge(ELogDischarge.ERROR_SET_SAFETYCONDITION, _logFileName, dischargerData);
+                        new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, dischargerData);
                         
                         return false;
                     }
@@ -602,7 +615,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 안전 조건 설정 실패
-                new LogDischarge(ELogDischarge.ERROR_SET_SAFETYCONDITION, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, ex);
                 return false;
             }
         }
@@ -613,7 +626,7 @@ namespace Ethernet.Client.Discharger
             {
                 lock (_packetLock)
                 {
-                    var dischargerData = new LogDischarge.DischargerData();
+                    var dischargerData = new LogTrace.DischargerData();
 
                     if (_dischargerState == EDischargerState.Discharging ||
                         _dischargerState == EDischargerState.Pause ||
@@ -635,18 +648,20 @@ namespace Ethernet.Client.Discharger
                             }
 
                             // 방전 Trace Log 저장 - 동작 정지
-                            new LogDischarge(ELogDischarge.TRACE_STOP, _logFileName);
+                            new LogTrace(ELogDischarge.COMM_OK_STOP);
                             
                             return EDischargerClientError.Ok;
                         }
                         else
                         {
                             // 방전 Trace Log 저장 - 동작 정지 실패
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 EDischargerClientError = EDischargerClientError.FailProcessPacket,
                             };
-                            new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_ERROR_STOP, dischargerData);
 
                             return EDischargerClientError.FailProcessPacket;
                         }
@@ -654,11 +669,13 @@ namespace Ethernet.Client.Discharger
                     else
                     {
                         // 방전 Trace Log 저장 - 동작 정지 실패
-                        dischargerData = new LogDischarge.DischargerData()
+                        dischargerData = new LogTrace.DischargerData()
                         {
+                            Name = _parameters.DischargerName,
+
                             EDischargerClientError = EDischargerClientError.InvalidDischargerState,
                         };
-                        new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, dischargerData);
+                        new LogTrace(ELogDischarge.COMM_ERROR_STOP, dischargerData);
 
                         return EDischargerClientError.InvalidDischargerState;
                     }
@@ -667,7 +684,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 동작 정지 실패
-                new LogDischarge(ELogDischarge.ERROR_STOP, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_STOP, ex);
 
                 return EDischargerClientError.Exception;
             }
@@ -679,7 +696,7 @@ namespace Ethernet.Client.Discharger
             {
                 lock (_packetLock)
                 {
-                    var dischargerData = new LogDischarge.DischargerData();
+                    var dischargerData = new LogTrace.DischargerData();
 
                     if (_dischargerState == EDischargerState.Discharging)
                     {
@@ -692,18 +709,20 @@ namespace Ethernet.Client.Discharger
                             ChangeDischargerState(EDischargerState.Pause);
 
                             // 방전 Trace Log 저장 - 동작 일시 정지
-                            new LogDischarge(ELogDischarge.TRACE_PAUSE, _logFileName);
+                            new LogTrace(ELogDischarge.COMM_OK_PAUSE);
 
                             return EDischargerClientError.Ok;
                         }
                         else
                         {
                             // 방전 Trace Log 저장 - 동작 일시 정지 실패
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 EDischargerClientError = EDischargerClientError.FailProcessPacket,
                             };
-                            new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_ERROR_PAUSE, dischargerData);
 
                             return EDischargerClientError.FailProcessPacket;
                         }
@@ -711,11 +730,13 @@ namespace Ethernet.Client.Discharger
                     else
                     {
                         // 방전 Trace Log 저장 - 동작 일시 정지 실패
-                        dischargerData = new LogDischarge.DischargerData()
+                        dischargerData = new LogTrace.DischargerData()
                         {
+                            Name = _parameters.DischargerName,
+
                             EDischargerClientError = EDischargerClientError.InvalidDischargerState,
                         };
-                        new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, dischargerData);
+                        new LogTrace(ELogDischarge.COMM_ERROR_PAUSE, dischargerData);
 
                         return EDischargerClientError.InvalidDischargerState;
                     }
@@ -724,7 +745,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 동작 일시 정지 실패
-                new LogDischarge(ELogDischarge.ERROR_PAUSE, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_PAUSE, ex);
 
                 return EDischargerClientError.Exception;
             }
@@ -744,14 +765,14 @@ namespace Ethernet.Client.Discharger
                     if (isOk)
                     {
                         // 방전 Trace Log 저장 - 에러 해제
-                        new LogDischarge(ELogDischarge.TRACE_CLEAR_ALARM, _logFileName);
+                        new LogTrace(ELogDischarge.COMM_OK_CLEAR_ALARM);
 
                         return true;
                     }
                     else
                     {
                         // 방전 Trace Log 저장 - 에러 해제 실패
-                        new LogDischarge(ELogDischarge.ERROR_CLEAR_ALARM, _logFileName);
+                        new LogTrace(ELogDischarge.COMM_ERROR_CLEAR_ALARM);
 
                         return false;
                     }
@@ -761,7 +782,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 에러 해제 실패
-                new LogDischarge(ELogDischarge.ERROR_CLEAR_ALARM, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_CLEAR_ALARM, ex);
 
                 return false;
             }
@@ -773,7 +794,7 @@ namespace Ethernet.Client.Discharger
             {
                 lock (_packetLock)
                 {
-                    var dischargerData = new LogDischarge.DischargerData();
+                    var dischargerData = new LogTrace.DischargerData();
 
                     uint dioValue = (uint)dioControl;
                     if (isBuzzer)
@@ -791,11 +812,13 @@ namespace Ethernet.Client.Discharger
                         if (_dioValue != dioValue)
                         {
                             // 방전 Trace Log 저장 - 경광등 제어
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 LampDioValue = dioValue,
                             };
-                            new LogDischarge(ELogDischarge.TRACE_CONTROL_LAMP, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_OK_CONTROL_LAMP, dischargerData);
                         }
 
                         _dioValue = dioValue;
@@ -807,11 +830,13 @@ namespace Ethernet.Client.Discharger
                         if (_dioValue != dioValue)
                         {
                             // 방전 Trace Log 저장 - 경광등 제어 실패
-                            dischargerData = new LogDischarge.DischargerData()
+                            dischargerData = new LogTrace.DischargerData()
                             {
+                                Name = _parameters.DischargerName,
+
                                 LampDioValue = dioValue,
                             };
-                            new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, dischargerData);
+                            new LogTrace(ELogDischarge.COMM_ERROR_CONTROL_LAMP, dischargerData);
                         }
 
                         _dioValue = dioValue;
@@ -823,7 +848,7 @@ namespace Ethernet.Client.Discharger
             catch (Exception ex)
             {
                 // 방전 Trace Log 저장 - 경광등 제어 실패
-                new LogDischarge(ELogDischarge.ERROR_CONTROL_LAMP, _logFileName, ex);
+                new LogTrace(ELogDischarge.COMM_ERROR_CONTROL_LAMP, ex);
 
                 return false;
             }
@@ -959,30 +984,13 @@ namespace Ethernet.Client.Discharger
                         ChangeDischargerState(EDischargerState.Discharging);
                     }
                 }
-
-                if (_dischargerState == EDischargerState.Discharging ||
-                    _dischargerState == EDischargerState.Pause)
-                {
-                    // 방전 Trace Log 저장 - 데이터 수신
-                    var dischargerData = new LogDischarge.DischargerData()
-                    {
-                        ReceiveBatteryVoltage = _dischargerData.ReceiveBatteryVoltage.ToString("F1"),
-                        ReceiveDischargeCurrent = _dischargerData.ReceiveDischargeCurrent.ToString("F1"),
-                        ReceiveDischargeTemp = _dischargerData.ReceiveDischargeTemp.ToString("F1"),
-
-                        ErrorCode = _dischargerData.ErrorCode,
-                        EReturnCode = _dischargerData.ReturnCode,
-                        EChannelStatus = _dischargerData.ChannelStatus,
-                    };
-                    new LogDischarge(ELogDischarge.TRACE_GET_DATA, _logFileName, dischargerData);
-                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
 
                 // 방전 Trace Log 저장 - 데이터 수신 실패
-                new LogDischarge(ELogDischarge.ERROR_GET_DATA, _logFileName, readBuffer.GetRawDataHexString());
+                new LogTrace(ELogDischarge.COMM_ERROR_GET_DATA, readBuffer.GetRawDataHexString());
 
                 return false;
             }

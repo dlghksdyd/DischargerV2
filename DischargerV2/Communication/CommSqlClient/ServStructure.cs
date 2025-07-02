@@ -27,6 +27,10 @@ namespace SqlClient.Server
         public string DischargerCurrent { get; set; }
         public string DischargerTemp { get; set; }
 
+        public string DischargeCapacity_Ah { get; set; }
+        public string DischargeCapacity_kWh { get; set; }
+        public string DischargePhase { get; set; }
+
         public string DischargeMode { get; set; }
         public string DischargeTarget { get; set; }
         public string LogFileName { get; set; }

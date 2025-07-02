@@ -105,11 +105,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_DELETE_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_DELETE_USER, userData);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_DELETE_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_DELETE_USER, userData);
                 }
 
                 // 사용자 정보 등록 화면 표시
@@ -124,7 +124,7 @@ namespace DischargerV2.MVVM.ViewModels
                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                    $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_DELETE_USER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_DELETE_USER, ex);
             }
         }
     }

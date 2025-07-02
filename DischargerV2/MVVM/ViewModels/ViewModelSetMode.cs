@@ -242,7 +242,7 @@ namespace DischargerV2.MVVM.ViewModels
             catch (Exception ex)
             {
                 // System Trace Log 저장 - 방전 동작 로그 파일 생성 실패
-                new LogTrace(LogTrace.ELogTrace.ERROR_SAVE_LOG, ex);
+                new LogTrace(LogTrace.ELogTrace.SYSTEM_ERROR_SAVE_LOG, ex);
             }
         }
 
@@ -258,7 +258,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Name = Model.DischargerName,
                 FileName = Model.LogFileName
             };
-            new LogTrace(LogTrace.ELogTrace.TRACE_SAVE_LOG, dischargerData);
+            new LogTrace(LogTrace.ELogTrace.SYSTEM_OK_SAVE_LOG, dischargerData);
 
             // Server DB 사용 (통합 관제 연동)
             if (!ViewModelLogin.Instance.IsLocalDb())

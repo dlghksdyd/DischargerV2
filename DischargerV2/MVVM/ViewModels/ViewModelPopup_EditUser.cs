@@ -179,11 +179,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_EDIT_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_EDIT_USER, userData);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_EDIT_USER, userData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_EDIT_USER, userData);
                 }
 
                 return isOk;
@@ -196,7 +196,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_EDIT_USER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_EDIT_USER, ex);
 
                 return false;
             }

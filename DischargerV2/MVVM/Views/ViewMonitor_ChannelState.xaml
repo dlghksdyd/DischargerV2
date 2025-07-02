@@ -27,12 +27,13 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>
                 <Mex:MexTextBlock x:Name="xAllTextBlock"
-                                  Width="32" Padding="10,0,10,0"
+                                  Width="32" Height="32"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}"
                                   Background="{StaticResource Mex/ResColor/surface_action}"
                                   Text="{Binding AllChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
+                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
+                                  HorizontalContentAlignment="Center"/>
             </StackPanel>
         </Border>
         <Grid Width="16"/>
@@ -45,12 +46,13 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>
                 <Mex:MexTextBlock x:Name="xConnectedTextBlock"
-                                  Width="32" Padding="10,0,10,0"
+                                  Width="32" Height="32"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/surface_action}"
                                   Text="{Binding ConnectedChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
+                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
+                                  HorizontalContentAlignment="Center"/>
             </StackPanel>
         </Border>
         <Grid Width="16"/>
@@ -63,12 +65,13 @@
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>
                 <Mex:MexTextBlock x:Name="xFaultTextBlock"
-                                  Width="32" Padding="10,0,10,0"
+                                  Width="32" Height="32"
                                   CornerRadius="{StaticResource Mex/ResCornerRadius/radius_mdx2}" 
                                   Background="{StaticResource Mex/ResColor/icon_error}"
                                   Text="{Binding FaultChannelCount}"
                                   Foreground="{StaticResource Mex/ResColor/text_on_action}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
+                                  FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
+                                  HorizontalContentAlignment="Center"/>
             </StackPanel>
         </Border>
         <Grid Width="16"/>

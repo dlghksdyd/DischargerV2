@@ -47,8 +47,10 @@ namespace DischargerV2.MVVM.ViewModels
         /// Key: discharger name
         /// </summary>
         private Dictionary<string, EthernetClientDischarger> _clients = new Dictionary<string, EthernetClientDischarger>();
+        private List<TableDischargerInfo> _dischargerInfos = null;
 
         public ObservableCollection<ModelDischarger> Model { get; set; } = new ObservableCollection<ModelDischarger>();
+        public string MachineCode = string.Empty;
 
         private ModelDischarger _selectedModel = new ModelDischarger();
         public ModelDischarger SelectedModel
@@ -108,8 +110,6 @@ namespace DischargerV2.MVVM.ViewModels
                 return _instance;
             }
         }
-
-        private List<TableDischargerInfo> _dischargerInfos = null;
 
         public ViewModelDischarger()
         {
@@ -219,11 +219,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_CLEAR_ALARM, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_OK_CLEAR_ALARM, dischargerComm);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_CLEAR_ALARM, dischargerComm);
                 }
             }
             catch (Exception ex)
@@ -234,7 +234,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_CLEAR_ALARM, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_CLEAR_ALARM, ex);
             }
         }
 
@@ -259,11 +259,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                         if (isOk)
                         {
-                            new LogTrace(ELogTrace.TRACE_RECONNECT_DISCHARGER, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_DISCHARGER, dischargerComm);
                         }
                         else
                         {
-                            new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, dischargerComm);
                         }
                     });
                 thread.IsBackground = true;
@@ -277,7 +277,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_RECONNECT_DISCHARGER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, ex);
             }
         }
 
@@ -288,9 +288,6 @@ namespace DischargerV2.MVVM.ViewModels
 
             try
             {
-                // 방전 동작 로그 파일명 설정
-                _clients[param.DischargerName].SetLogFileName(param.LogFileName);
-
                 // 방전 동작 시작
                 var isOk = _clients[param.DischargerName].SendCommand_StartDischarge(
                     EWorkMode.CcCvMode, param.Voltage, param.Current);
@@ -307,11 +304,11 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         if (isRestart == false)
                         {
-                            new LogTrace(ELogTrace.TRACE_START_DISCHARGE, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_OK_START_DISCHARGE, dischargerComm);
                         }
                         else
                         {
-                            new LogTrace(ELogTrace.TRACE_RESTART_DISCHARGE, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_OK_RESTART_DISCHARGE, dischargerComm);
                         }
                     }
 
@@ -323,11 +320,11 @@ namespace DischargerV2.MVVM.ViewModels
                     {
                         if (isRestart == false)
                         {
-                            new LogTrace(ELogTrace.ERROR_START_DISCHARGE, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_START_DISCHARGE, dischargerComm);
                         }
                         else
                         {
-                            new LogTrace(ELogTrace.ERROR_RESTART_DISCHARGE, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_RESTART_DISCHARGE, dischargerComm);
                         }
                     }
                 }
@@ -339,11 +336,11 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     if (isRestart == false)
                     {
-                        new LogTrace(ELogTrace.ERROR_START_DISCHARGE, ex);
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_START_DISCHARGE, ex);
                     }
                     else
                     {
-                        new LogTrace(ELogTrace.ERROR_RESTART_DISCHARGE, ex);
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_RESTART_DISCHARGE, ex);
                     }
                 }
 
@@ -369,11 +366,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk == EDischargerClientError.Ok)
                 {
-                    new LogTrace(ELogTrace.TRACE_STOP_DISCHARGE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_OK_STOP_DISCHARGE, dischargerComm);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_STOP_DISCHARGE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_STOP_DISCHARGE, dischargerComm);
                 }
             }
             catch (Exception ex)
@@ -384,7 +381,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_STOP_DISCHARGE, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_STOP_DISCHARGE, ex);
             }
         }
 
@@ -400,11 +397,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk == EDischargerClientError.Ok)
                 {
-                    new LogTrace(ELogTrace.TRACE_PAUSE_DISCHARGE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_OK_PAUSE_DISCHARGE, dischargerComm);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_PAUSE_DISCHARGE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_PAUSE_DISCHARGE, dischargerComm);
                 }
             }
             catch (Exception ex)
@@ -415,7 +412,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_PAUSE_DISCHARGE, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_PAUSE_DISCHARGE, ex);
             }
         }
 
@@ -432,11 +429,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_SET_SAFETYCONDITION, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_OK_SET_SAFETYCONDITION, dischargerComm);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_SET_SAFETYCONDITION, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_SET_SAFETYCONDITION, dischargerComm);
                 }
             }
             catch (Exception ex)
@@ -447,7 +444,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_SET_SAFETYCONDITION, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_SET_SAFETYCONDITION, ex);
             }
         }
 
@@ -464,11 +461,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_SET_STATE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_OK_SET_STATE, dischargerComm);
                 }
                 else
                 {
-                    new LogTrace(ELogTrace.ERROR_SET_STATE, dischargerComm);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_SET_STATE, dischargerComm);
                 }
             }
             catch (Exception ex)
@@ -479,7 +476,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_SET_STATE, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_SET_STATE, ex);
             }
         }
 
@@ -522,7 +519,6 @@ namespace DischargerV2.MVVM.ViewModels
                 model.DischargerIndex = index;
                 model.No = (index + 1).ToString();
                 model.DischargerName = infos[index].DischargerName;
-                model.MachineCode = dischargerInfo.MachineCode;
 
                 model.PropertyChanged += Model_PropertyChanged;
 
@@ -635,7 +631,7 @@ namespace DischargerV2.MVVM.ViewModels
                 int channel = infoTable.FindIndex(x => x.DischargerName == name) + 1;
 
                 // MC_CD 받아오기
-                dischargerInfo.MachineCode = machineCode;
+                MachineCode = machineCode;
 
                 // Insert Init Data 
                 var insertData = new TABLE_SYS_STS_SDC();
@@ -686,11 +682,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                         if (isOk)
                         {
-                            new LogTrace(ELogTrace.TRACE_CONNECT_DISCHARGER, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_OK_CONNECT_DISCHARGER, dischargerComm);
                         }
                         else
                         {
-                            new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, dischargerComm);
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, dischargerComm);
                         }
                     });
                 thread.IsBackground = true;
@@ -704,7 +700,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_CONNECT_DISCHARGER, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, ex);
             }
         }
 
@@ -735,18 +731,23 @@ namespace DischargerV2.MVVM.ViewModels
                 catch { }
 
                 // Server DB 사용 (통합 관제 연동)
-                if (Model[i].MachineCode != null && Model[i].MachineCode != string.Empty)
+                if (MachineCode != null && MachineCode != string.Empty)
                 {
-                    // UpdateData Data 
-                    var updateData = new TABLE_SYS_STS_SDC();
-                    updateData.MC_CD = Model[i].MachineCode;
-                    updateData.MC_CH = Model[i].DischargerIndex + 1;
-                    updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
-                    updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
-                    updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
-                    updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
+                    // 방전 동작 시, ViewModelStartDischarge에서 DB에 업데이트 진행
+                    if (Model[i].DischargerState != EDischargerState.Discharging &&
+                        Model[i].DischargerState != EDischargerState.Pause)
+                    {
+                        // UpdateData Data 
+                        var updateData = new TABLE_SYS_STS_SDC();
+                        updateData.MC_CD = MachineCode;
+                        updateData.MC_CH = Model[i].DischargerIndex + 1;
+                        updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
+                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
+                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
+                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
 
-                    SqlClientStatus.UpdateData(updateData);
+                        SqlClientStatus.UpdateData(updateData);
+                    }
                 }
 
                 if (Model[i].DischargerState != EDischargerState.Discharging)
@@ -816,11 +817,11 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // Server DB 사용 (통합 관제 연동)
-                if (Model[index].MachineCode != null && Model[index].MachineCode != string.Empty)
+                if (MachineCode != null && MachineCode != string.Empty)
                 {
                     // UpdateData StateNTime Data 
                     var updateData = new TABLE_SYS_STS_SDC();
-                    updateData.MC_CD = Model[index].MachineCode;
+                    updateData.MC_CD = MachineCode;
                     updateData.MC_CH = Model[index].DischargerIndex + 1;
                     updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
                     updateData.DischargerState = state.ToString();

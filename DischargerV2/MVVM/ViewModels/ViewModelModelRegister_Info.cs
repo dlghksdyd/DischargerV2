@@ -162,13 +162,13 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    new LogTrace(ELogTrace.TRACE_DELETE_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_OK_DELETE_MODEL, modelData);
                 }
                 else
                 {
                     MessageBox.Show("모델 정보 삭제 실패");
 
-                    new LogTrace(ELogTrace.ERROR_DELETE_MODEL, modelData);
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_DELETE_MODEL, modelData);
                 }
 
                 // 모델 정보 등록 화면 표시
@@ -183,7 +183,7 @@ namespace DischargerV2.MVVM.ViewModels
                     $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
                     $"Exception: {ex.Message}");
 
-                new LogTrace(ELogTrace.ERROR_DELETE_MODEL, ex);
+                new LogTrace(ELogTrace.SYSTEM_ERROR_DELETE_MODEL, ex);
             }
         }
     }
