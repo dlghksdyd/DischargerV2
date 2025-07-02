@@ -380,11 +380,11 @@ namespace Utility.Common
                     }
                     else if (eDischargerData == EDischargerData.SafetyCurrentMin)
                     {
-                        return (-dischargerData.SafetyCurrentMax).ToString("F1");
+                        return (-dischargerData.SafetyCurrentMax + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
                     }
                     else if (eDischargerData == EDischargerData.SafetyCurrentMax)
                     {
-                        return (-dischargerData.SafetyCurrentMin).ToString("F1");
+                        return (-dischargerData.SafetyCurrentMin - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
                     }
                     else if (eDischargerData == EDischargerData.SafetyTempMin)
                     {

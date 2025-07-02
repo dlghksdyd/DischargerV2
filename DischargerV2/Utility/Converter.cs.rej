@@ -1,0 +1,15 @@
+diff a/DischargerV2/Utility/Converter.cs b/DischargerV2/Utility/Converter.cs	(rejected hunks)
+@@ -380,11 +380,11 @@
+                     }
+                     else if (eDischargerData == EDischargerData.SafetyCurrentMin)
+                     {
+-                        return (-dischargerData.SafetyCurrentMax + EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
++                        return (-dischargerData.SafetyCurrentMax).ToString("F1");
+                     }
+                     else if (eDischargerData == EDischargerData.SafetyCurrentMax)
+                     {
+-                        return (-dischargerData.SafetyCurrentMin - EthernetClientDischarger.SafetyMarginCurrent).ToString("F1");
++                        return (-dischargerData.SafetyCurrentMin).ToString("F1");
+                     }
+                     else if (eDischargerData == EDischargerData.SafetyTempMin)
+                     {

@@ -144,8 +144,8 @@ namespace Ethernet.Client.Discharger
 
         private string _logFileName = string.Empty;
 
-        public static double SafetyMarginVoltage = 0;
-        public static double SafetyMarginCurrent = 0;
+        public static double SafetyMarginVoltage = 15;
+        public static double SafetyMarginCurrent = 2;
 
         public static bool IsLampBuzzerUsed = true;
 
@@ -552,7 +552,7 @@ namespace Ethernet.Client.Discharger
 
                     byte[] writeBuffer = CreateSetSafetyConditionCommand(
                         _parameters.DischargerChannel,
-                        voltageMax + SafetyMarginVoltage, voltageMin - SafetyMarginVoltage,
+                        voltageMax, voltageMin,
                         currentMax, currentMin);
 
                     // 안전 조건 설정
@@ -560,8 +560,8 @@ namespace Ethernet.Client.Discharger
 
                     if (isOk)
                     {
-                        _dischargerData.SafetyVoltageMax = voltageMax + SafetyMarginVoltage;
-                        _dischargerData.SafetyVoltageMin = voltageMin - SafetyMarginVoltage;
+                        _dischargerData.SafetyVoltageMax = voltageMax;
+                        _dischargerData.SafetyVoltageMin = voltageMin;
                         _dischargerData.SafetyCurrentMax = currentMax + SafetyMarginCurrent;
                         _dischargerData.SafetyCurrentMin = currentMin - SafetyMarginCurrent;
                         _dischargerData.SafetyTempMax = tempMax;
