@@ -250,22 +250,22 @@ namespace DischargerV2.MVVM.ViewModels
             try
             {
                 Thread thread = new Thread(() => 
+                {
+                    // 방전기 재 연결
+                    bool isOk = _clients[dischargerName].Restart();
+
+                    // 방전기 재 연결 Trace Log 저장
+                    DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+
+                    if (isOk)
                     {
-                        // 방전기 재 연결
-                        bool isOk = _clients[dischargerName].Restart();
-
-                        // 방전기 재 연결 Trace Log 저장
-                        DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
-
-                        if (isOk)
-                        {
-                            new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_DISCHARGER, dischargerComm);
-                        }
-                        else
-                        {
-                            new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, dischargerComm);
-                        }
-                    });
+                        new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_DISCHARGER, dischargerComm);
+                    }
+                    else
+                    {
+                        new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, dischargerComm);
+                    }
+                });
                 thread.IsBackground = true;
                 thread.Start();
             }

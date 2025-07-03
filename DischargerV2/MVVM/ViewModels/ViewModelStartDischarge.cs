@@ -340,8 +340,6 @@ namespace DischargerV2.MVVM.ViewModels
 
                         _dvdqList.Add(_dvdq);
 
-                        Debug.WriteLine(_dvdq);
-
                         if (_dvdqList.Count > 10)
                         {
                             _dvdqList.RemoveAt(0);

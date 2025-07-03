@@ -85,8 +85,16 @@ namespace DischargerV2.LOG
             public string phase { set; get; } = string.Empty;
         }
 
+        public class LogData
+        {
+            public string FileName { set; get; } = string.Empty;
+            public List<string> Datas { set; get; } = new List<string>();
+        }
+
         public static string Path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\LOG\\Discharge";
-        
+
+        public static ConcurrentQueue<LogData> LogDataQueue = new ConcurrentQueue<LogData>();
+
         public static ConcurrentQueue<List<string>> LogQueue = new ConcurrentQueue<List<string>>();
         private static readonly object WriteLock = new object();
 
@@ -231,31 +239,35 @@ namespace DischargerV2.LOG
         {
             try
             {
-                LogQueue.Enqueue(new List<string>()
+                LogDataQueue.Enqueue(new LogData()
                 {
-                    dischargeRawData.Time,
-                    dischargeRawData.Current,
-                    dischargeRawData.Voltage,
-                    dischargeRawData.Capacity,
-                    dischargeRawData.dv,
-                    dischargeRawData.dq,
-                    dischargeRawData.dvdq,
-                    dischargeRawData.destDvdq,
-                    dischargeRawData.phase2,
-                    dischargeRawData.dvdqAvg,
-                    dischargeRawData.Temp,
-                    dischargeRawData.phase,
+                    FileName = fileName, 
+                    Datas = new List<string>()
+                    {
+                        dischargeRawData.Time,
+                        dischargeRawData.Current,
+                        dischargeRawData.Voltage,
+                        dischargeRawData.Capacity,
+                        dischargeRawData.dv,
+                        dischargeRawData.dq,
+                        dischargeRawData.dvdq,
+                        dischargeRawData.destDvdq,
+                        dischargeRawData.phase2,
+                        dischargeRawData.dvdqAvg,
+                        dischargeRawData.Temp,
+                        dischargeRawData.phase,
+                    }
                 });
 
                 lock (WriteLock)
                 {
-                    while (LogQueue.Count > 0)
+                    while (LogDataQueue.Count > 0)
                     {
-                        if (LogQueue.TryDequeue(out List<string> listContent))
+                        if (LogDataQueue.TryDequeue(out LogData logData))
                         {
-                            if (listContent == null) continue;
+                            if (logData == null) continue;
 
-                            SaveFile_Discharge(listContent, Path, fileName);
+                            SaveFile_Discharge(logData.Datas, Path, logData.FileName);
                         }
                     }
                 }

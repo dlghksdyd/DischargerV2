@@ -181,28 +181,20 @@ namespace Ethernet.Client.Discharger
         {
             try
             {
-                bool isError = false;
-
                 if (dischargerState == EDischargerState.SafetyOutOfRange)
                 {
                     _dischargerData.ErrorCode = 0xF0000001;
-
-                    isError = true;
                 }
                 else if (dischargerState == EDischargerState.ReturnCodeError)
                 {
                     _dischargerData.ErrorCode = 0xF0000002;
-
-                    isError = true;
                 }
                 else if (dischargerState == EDischargerState.ChStatusError)
                 {
                     _dischargerData.ErrorCode = 0xF0000003;
-
-                    isError = true;
                 }
 
-                if (isError && _dischargerState != dischargerState)
+                if (_dischargerState != dischargerState)
                 {
                     // 방전 Trace Log 저장 - 상태 변경
                     var dischargerData = new LogTrace.DischargerData()
@@ -421,6 +413,8 @@ namespace Ethernet.Client.Discharger
                     return;
                 }
 
+                SendCommand_RequestChannelInfo();
+
                 if (_dischargerState == EDischargerState.SafetyOutOfRange ||
                     _dischargerState == EDischargerState.ReturnCodeError ||
                     _dischargerState == EDischargerState.ChStatusError ||
@@ -438,8 +432,6 @@ namespace Ethernet.Client.Discharger
                     SendCommand_StopDischarge();
                     return;
                 }
-
-                SendCommand_RequestChannelInfo();
                 
                 if (_dischargerState == EDischargerState.Discharging)
                 {
