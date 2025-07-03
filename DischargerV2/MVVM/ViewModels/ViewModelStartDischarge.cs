@@ -295,10 +295,18 @@ namespace DischargerV2.MVVM.ViewModels
                     StopDischarge();
                 }
 
-                // 0V, 0.1A 미만이면 방전 자동 중지
+                // 0V 이하 및 0.1A 미만이면 방전 자동 중지 
                 if (receiveVoltage <= 0 && receiveCurrent < 0.1)
                 {
                     StopDischarge();
+                    return;
+                }
+
+                // -1V 이하 및 1A 이하이면 배터리 시료 해체 상태로 판단 → 방전 자동 중지
+                if (receiveVoltage <= -1 && receiveCurrent <= 1)
+                {
+                    StopDischarge();
+                    return;
                 }
 
                 // 방전기 동작 설정 및 확인
