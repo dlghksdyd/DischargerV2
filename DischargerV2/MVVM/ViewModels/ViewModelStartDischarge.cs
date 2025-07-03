@@ -293,6 +293,7 @@ namespace DischargerV2.MVVM.ViewModels
                     receiveState == EDischargerState.DeviceError)
                 {
                     StopDischarge();
+                    return;
                 }
 
                 // 0V 이하 및 0.1A 미만이면 방전 자동 중지 
