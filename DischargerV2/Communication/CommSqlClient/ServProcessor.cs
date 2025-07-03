@@ -8,7 +8,7 @@ namespace SqlClient.Server
 {
     public class SqlClient
     {
-        public static string ConnectionString = "Data Source=192.168.20.7,1433;Initial Catalog=MINDIMS_GNTP;User ID=mindims;Password=mindims;";
+        public static string ConnectionString = "Data Source=192.168.20.7,1433;Initial Catalog=MINDIMS_MOE;User ID=mindims;Password=mindims;";
 
         public static void UpdateConnectionString(string serverIp, string serverPort, string databaseName)
         {

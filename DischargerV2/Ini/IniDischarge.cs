@@ -17,10 +17,11 @@ namespace DischargerV2.Ini
 
         public static Dictionary<EIniData, IniData> DicIniData = new Dictionary<EIniData, IniData>()
         {
-            { EIniData.IsLocalDb, new IniData { Section = "IsLocalDb", Key = "Value", Value = "True" } },
+            //{ EIniData.IsLocalDb, new IniData { Section = "IsLocalDb", Key = "Value", Value = "True" } },
+            { EIniData.IsLocalDb, new IniData { Section = "IsLocalDb", Key = "Value", Value = "False" } },
             { EIniData.ServerIp, new IniData { Section = "ServerIp", Key = "Value", Value = "192.168.20.7" } },
             { EIniData.ServerPort, new IniData { Section = "ServerPort", Key = "Value", Value = "1433" } },
-            { EIniData.DatabaseName, new IniData { Section = "DatabaseName", Key = "Value", Value = "MINDIMS_GNTP" } },
+            { EIniData.DatabaseName, new IniData { Section = "DatabaseName", Key = "Value", Value = "MINDIMS_MOE" } },
             { EIniData.MachineCode, new IniData { Section = "MachineCode", Key = "Value", Value = "SDC01"} },
             { EIniData.Sound, new IniData { Section = "Sound", Key = "Value", Value = "On" } },
             { EIniData.MaxSampleNum, new IniData { Section = "Graph", Key = "MaxSampleNum", Value = "1600" } },
