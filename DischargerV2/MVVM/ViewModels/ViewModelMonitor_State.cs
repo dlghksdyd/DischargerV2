@@ -96,7 +96,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ViewModelMain.Instance.SetIsStartedArray(false);
 
                 // PhaseNo 초기화
-                ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseIndex = 0;
+                ViewModelSetMode.Instance.StartDischargeDictionary[ViewModelSetMode.Instance.Model.DischargerName].PhaseIndex = -1;
 
                 // 방전 모드 설정 돌아가기 Trace Log 저장
                 DischargerData dischargerComm = new DischargerData();
