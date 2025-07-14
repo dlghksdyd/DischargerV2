@@ -174,6 +174,23 @@ namespace DischargerV2.MVVM.ViewModels
                 "알 수 없음",
                 "알 수 없음");
             }
+            // 접점부 에러 발생 시, DIO 상태 값 표시 추가
+            else if (tableDischargerErrorCode.Code == 0xA00000FF)
+            {
+                title = tableDischargerErrorCode.Title;
+                comment = string.Format(
+                "{0} (Channel: {1})\n\n" +
+                "{2} 오류입니다.\n" +
+                "(Error Code: 0x{3} (0x{4}))\n\n" +
+                "원인: \n{5}\n\n" +
+                "해결 방법: \n{6}",
+                dischargerName, Model[index].DischargerInfo.Channel,
+                tableDischargerErrorCode.Description,
+                tableDischargerErrorCode.Code.ToString("X"),
+                Model[index].DischargerData.DiModuleInfo.ToString("X2"),
+                tableDischargerErrorCode.Cause,
+                tableDischargerErrorCode.Action);
+            }
             else
             {
                 title = tableDischargerErrorCode.Title;
@@ -731,7 +748,7 @@ namespace DischargerV2.MVVM.ViewModels
                 catch { }
 
                 // Server DB 사용 (통합 관제 연동)
-                if (MachineCode != null && MachineCode != string.Empty)
+                if (!ViewModelLogin.Instance.IsLocalDb())
                 {
                     // 방전 동작 시, ViewModelStartDischarge에서 DB에 업데이트 진행
                     if (Model[i].DischargerState != EDischargerState.Discharging &&
@@ -817,7 +834,7 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // Server DB 사용 (통합 관제 연동)
-                if (MachineCode != null && MachineCode != string.Empty)
+                if (!ViewModelLogin.Instance.IsLocalDb())
                 {
                     // UpdateData StateNTime Data 
                     var updateData = new TABLE_SYS_STS_SDC();

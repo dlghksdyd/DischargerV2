@@ -315,6 +315,9 @@ namespace DischargerV2.MVVM.ViewModels
                         // 일정시간이 지나면 방전 시작 실패로 간주
                         if (DateTime.Now - startTime > TimeSpan.FromSeconds(20))
                         {
+                            // 일정 시간이 지난 후 방전 명령이 수행될 수 있음에 따름
+                            StartDischargeDictionary[Model.DischargerName].StopDischarge();
+
                             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
                                 Title = "Warning",

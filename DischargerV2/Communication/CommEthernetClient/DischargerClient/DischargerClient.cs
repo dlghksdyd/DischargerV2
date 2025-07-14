@@ -63,6 +63,7 @@ namespace Ethernet.Client.Discharger
         /// 수신 받은 데이터
         /// </summary>
         public uint ErrorCode { get; set; } = 0;
+        public byte DiModuleInfo { get; set; } = 0x00;
         public EReturnCode ReturnCode { get; set; } = EReturnCode.Success;
         public EChannelStatus ChannelStatus { get; set; } = EChannelStatus.Standby0;
         public double ReceiveBatteryVoltage { get; set; } = 0;
@@ -360,6 +361,7 @@ namespace Ethernet.Client.Discharger
             {
                 /// receive data
                 temp.ErrorCode = _dischargerData.ErrorCode;
+                temp.DiModuleInfo = _dischargerData.DiModuleInfo;
                 temp.ChannelStatus = _dischargerData.ChannelStatus;
                 temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
                 temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F1"));
@@ -922,6 +924,7 @@ namespace Ethernet.Client.Discharger
 
                     /// 채널 상태 업데이트
                     _dischargerData.ErrorCode = channelInfo.ErrorCode;
+                    _dischargerData.DiModuleInfo = channelInfo.DIModuleInfo;
                     _dischargerData.ReturnCode = channelInfo.ReturnCode;
                     _dischargerData.ChannelStatus = channelInfo.ChannelStatus;
 

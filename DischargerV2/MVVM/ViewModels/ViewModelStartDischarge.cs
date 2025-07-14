@@ -373,7 +373,7 @@ namespace DischargerV2.MVVM.ViewModels
                         new LogDischarge(_logFileName, dischargeRawData);
 
                         // Server DB 사용(통합 관제 연동)
-                        if (ViewModelDischarger.Instance.MachineCode != null && ViewModelDischarger.Instance.MachineCode != string.Empty)
+                        if (!ViewModelLogin.Instance.IsLocalDb())
                         {
                             // UpdateData Data 
                             var updateData = new TABLE_SYS_STS_SDC();
