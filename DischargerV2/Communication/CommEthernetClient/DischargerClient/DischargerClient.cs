@@ -363,8 +363,8 @@ namespace Ethernet.Client.Discharger
                 temp.ErrorCode = _dischargerData.ErrorCode;
                 temp.DiModuleInfo = _dischargerData.DiModuleInfo;
                 temp.ChannelStatus = _dischargerData.ChannelStatus;
-                temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F1"));
-                temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F1"));
+                temp.ReceiveBatteryVoltage = double.Parse(_dischargerData.ReceiveBatteryVoltage.ToString("F3"));
+                temp.ReceiveDischargeCurrent = double.Parse(_dischargerData.ReceiveDischargeCurrent.ToString("F3"));
                 temp.ReceiveDischargeTemp = double.Parse(_dischargerData.ReceiveDischargeTemp.ToString("F1"));
 
                 /// safety

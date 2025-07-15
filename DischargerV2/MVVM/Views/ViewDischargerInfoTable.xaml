@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Util:IntToStringConverter x:Key="IntToStringConverter"/>
+            <Util:DecimalPointConverter x:Key="DecimalPointConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -81,8 +82,8 @@
                                             <Ellipse Width="12" Height="12" Fill="{Binding StateColor}"/>
                                             <Mex:MexTextBlock Text="{Binding DischargerState}" Grid.Column="1" Foreground="{Binding Foreground}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}" Padding="8,0,0,0"/>
                                         </StackPanel>
-                                        <Mex:MexTextBlock Grid.Column="5" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveBatteryVoltage}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
-                                        <Mex:MexTextBlock Grid.Column="6" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveDischargeCurrent}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="5" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveBatteryVoltage, Converter={StaticResource DecimalPointConverter}, ConverterParameter=F1}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
+                                        <Mex:MexTextBlock Grid.Column="6" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveDischargeCurrent, Converter={StaticResource DecimalPointConverter}, ConverterParameter=F1}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <StackPanel Grid.Column="7" Orientation="Horizontal">
                                             <Mex:MexTextBlock Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveDischargeTemp}" Margin="0 0 4 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                             <Image MouseLeftButtonUp="xTempReconnectImage_MouseLeftButtonUp" Visibility="{Binding TempReconnectVisibility}" Width="24" Height="24" Margin="8 0 32 0" Cursor="Hand" Source="{Binding Source={StaticResource Mex/ResImage/refresh}, Converter={StaticResource ImageColorConverter}, ConverterParameter={StaticResource Mex/ResColor/icon_infomation}}"></Image>
