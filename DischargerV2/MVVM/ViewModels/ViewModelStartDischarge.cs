@@ -266,6 +266,12 @@ namespace DischargerV2.MVVM.ViewModels
                 double safetyTempMin = modelDischarger.DischargerData.SafetyTempMin;
                 double safetyTempMax = modelDischarger.DischargerData.SafetyTempMax;
 
+                if (PhaseIndex < 0)
+                {
+                    StopDischarge();
+                    return;
+                }
+
                 // 모델별 온도 받아오는 게 다름
                 if (isTempModule)
                 {

@@ -311,11 +311,14 @@ namespace Ethernet.Client.Discharger
             }
 
             /// 경광등 초기화
-            bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
-            if (lampControlResult == false)
+            if (_parameters.DischargerModel == EDischargerModel.MBDC)
             {
-                ChangeDischargerState(EDischargerState.Disconnected);
-                return false;
+                bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
+                if (lampControlResult == false)
+                {
+                    ChangeDischargerState(EDischargerState.Disconnected);
+                    return false;
+                }
             }
 
             /// Safety Condition 설정

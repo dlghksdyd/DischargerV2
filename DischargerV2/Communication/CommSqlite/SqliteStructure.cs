@@ -8,7 +8,7 @@ namespace Sqlite.Common
 {
     public enum EDischargerModel
     {
-        MBDC
+        MBDC, MBDC_S
     }
 
     public enum EDischargeType
