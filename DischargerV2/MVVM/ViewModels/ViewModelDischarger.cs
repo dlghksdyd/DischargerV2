@@ -1,28 +1,21 @@
-﻿using DischargerV2.LOG;
+﻿using static DischargerV2.LOG.LogTrace;
+using static DischargerV2.Ini.IniDischarge;
+using MExpress.Mex;
+using DischargerV2.LOG;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
-using MExpress.Mex;
-using Prism.Commands;
-using Prism.Mvvm;
 using Sqlite.Common;
+using SqlClient.Server;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows;
-using System.Windows.Data;
-using static DischargerV2.LOG.LogTrace;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xml.Linq;
-using DischargerV2.MVVM.Enums;
 using System.Diagnostics;
-using SqlClient.Server;
-using ScottPlot.Colormaps;
-using static DischargerV2.Ini.IniDischarge;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -723,172 +716,174 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void CopyDataFromDischargerClientToModel(object sender, System.Timers.ElapsedEventArgs e)
         {
-            for (int i = 0; i < Model.Count; i++)
+            try
             {
-                Model[i].DischargerData = _clients[Model[i].DischargerName].GetDatas();
-                Model[i].DischargerState = _clients[Model[i].DischargerName].GetState();
-
-                // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
-                try
+                for (int i = 0; i < Model.Count; i++)
                 {
-                    var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == Model[i].DischargerName);
-                    if (dischargerInfo.IsTempModule)
-                    {
-                        int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
-                        if (index >= 0)
-                        {
-                            var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
-                            var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+                    EDischargerState state = EDischargerState.None;
+                    TimeSpan diff = new TimeSpan(0);
 
-                            Model[i].DischargerData.ReceiveDischargeTemp = temp;
-                            _clients[Model[i].DischargerName].SetReceiveTemp(temp);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        // 방전기로 수신받은 데이터 가져오기
+                        Model[i].DischargerData = _clients[Model[i].DischargerName].GetDatas();
+                        Model[i].DischargerState = _clients[Model[i].DischargerName].GetState();
+
+                        // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
+                        var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == Model[i].DischargerName);
+                        if (dischargerInfo != null && dischargerInfo.IsTempModule)
+                        {
+                            int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
+                            if (index >= 0)
+                            {
+                                var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
+                                var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+
+                                Model[i].DischargerData.ReceiveDischargeTemp = temp;
+                                _clients[Model[i].DischargerName].SetReceiveTemp(temp);
+                            }
+                        }
+
+                        state = Model[i].DischargerState;
+
+                        // 방전 상태별 색상 설정
+                        SetStateColor(i);
+
+                        // 방전 동작 시, 경과 시간 설정
+                        SetProgressTime(i, out diff);
+
+                        // Reconnect, ErrorAlarm, ShortAvailable 표시 설정
+                        SetVisibility(i);
+                    });
+
+                    // Server DB 사용 (통합 관제 연동)
+                    if (!ViewModelLogin.Instance.IsLocalDb())
+                    {
+                        // 방전 동작 시, ViewModelStartDischarge에서 DB에 업데이트 진행
+                        if (Model[i].DischargerState == EDischargerState.Discharging ||
+                            Model[i].DischargerState == EDischargerState.Pause)
+                        {
+                            // UpdateData Data 
+                            var updateData = new TABLE_SYS_STS_SDC();
+                            updateData.MC_CD = MachineCode;
+                            updateData.MC_CH = Model[i].DischargerIndex + 1;
+                            updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
+                            updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
+                            updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
+                            updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
+                            updateData.DischargerState = state.ToString();
+                            updateData.ProgressTime = diff.Ticks;
+
+                            SqlClientStatus.UpdateData(updateData);
+                            SqlClientStatus.UpdateData_StateNTime(updateData);
                         }
                     }
                 }
-                catch { }
-
-                // Server DB 사용 (통합 관제 연동)
-                if (!ViewModelLogin.Instance.IsLocalDb())
-                {
-                    // 방전 동작 시, ViewModelStartDischarge에서 DB에 업데이트 진행
-                    if (Model[i].DischargerState != EDischargerState.Discharging &&
-                        Model[i].DischargerState != EDischargerState.Pause)
-                    {
-                        // UpdateData Data 
-                        var updateData = new TABLE_SYS_STS_SDC();
-                        updateData.MC_CD = MachineCode;
-                        updateData.MC_CH = Model[i].DischargerIndex + 1;
-                        updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
-                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
-                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
-                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
-
-                        SqlClientStatus.UpdateData(updateData);
-                    }
-                }
-
-                if (Model[i].DischargerState != EDischargerState.Discharging)
-                {
-                    Model[i].ShortAvailableVisibility = Visibility.Hidden;
-                }
-                else
-                {
-                    // 만약 전압이 1V 이하이고, 전류가 10A 이하이면 short available 아이콘 표시
-                    if (Model[i].DischargerData.ReceiveBatteryVoltage <= 1.0 && Model[i].DischargerData.ReceiveDischargeCurrent <= 10.0)
-                    {
-                        Model[i].ShortAvailableVisibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        Model[i].ShortAvailableVisibility = Visibility.Hidden;
-                    }
-                }
             }
-
-            SetStateColor();
-            SetProgressTime();
-            SetVisibility();
-        }
-
-        private void SetStateColor()
-        {
-            for (int index = 0; index < Model.Count; index++) 
+            catch (Exception ex)
             {
-                var state = Model[index].DischargerState;
-
-                if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
-                {
-                    Model[index].StateColor = ResColor.icon_disabled;
-                }
-                else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
-                {
-                    Model[index].StateColor = ResColor.icon_success;
-                }
-                else if (state == EDischargerState.Pause)
-                {
-                    Model[index].StateColor = ResColor.icon_primary;
-                }
-                else
-                {
-                    Model[index].StateColor = ResColor.icon_error;
-                }
+                Debug.WriteLine(ex.ToString());
             }
         }
 
-        private void SetProgressTime()
+        private void SetStateColor(int index)
         {
-            for (int index = 0; index < Model.Count; index++)
+            var state = Model[index].DischargerState;
+
+            if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
             {
-                var state = Model[index].DischargerState;
-                var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
-                TimeSpan diff = new TimeSpan(0);
-
-                if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
-                {
-                    diff = (DateTime.Now - dischargingStartTime);
-                    string diffString =
-                        diff.Hours.ToString("D2") + ":" +
-                        diff.Minutes.ToString("D2") + ":" +
-                        diff.Seconds.ToString("D2");
-                    Model[index].ProgressTime = diffString;
-                }
-
-                // Server DB 사용 (통합 관제 연동)
-                if (!ViewModelLogin.Instance.IsLocalDb())
-                {
-                    // UpdateData StateNTime Data 
-                    var updateData = new TABLE_SYS_STS_SDC();
-                    updateData.MC_CD = MachineCode;
-                    updateData.MC_CH = Model[index].DischargerIndex + 1;
-                    updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
-                    updateData.DischargerState = state.ToString();
-                    updateData.ProgressTime = diff.Ticks;
-
-                    SqlClientStatus.UpdateData_StateNTime(updateData);
-                }
+                Model[index].StateColor = ResColor.icon_disabled;
+            }
+            else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
+            {
+                Model[index].StateColor = ResColor.icon_success;
+            }
+            else if (state == EDischargerState.Pause)
+            {
+                Model[index].StateColor = ResColor.icon_primary;
+            }
+            else
+            {
+                Model[index].StateColor = ResColor.icon_error;
             }
         }
 
-        private void SetVisibility()
+        private void SetProgressTime(int index, out TimeSpan diff)
         {
-            for (int index = 0; index < Model.Count; index++)
-            {
-                var state = Model[index].DischargerState;
+            diff = new TimeSpan(0);
 
-                if (state == EDischargerState.Disconnected)
+            var state = Model[index].DischargerState;
+            var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
+            
+            if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+            {
+                diff = DateTime.Now - dischargingStartTime;
+
+                var hours = diff.Hours.ToString("D2");
+                var mins = diff.Minutes.ToString("D2");
+                var seconds = diff.Seconds.ToString("D2");
+
+                Model[index].ProgressTime = $"{hours}:{mins}:{seconds}";
+            }
+        }
+
+        private void SetVisibility(int index)
+        {
+            var state = Model[index].DischargerState;
+
+            // ShortAvailable 표시 설정
+            if (state != EDischargerState.Discharging)
+            {
+                Model[index].ShortAvailableVisibility = Visibility.Hidden;
+            }
+            else
+            {
+                // 만약 전압이 1V 이하이고, 전류가 10A 이하이면 short available 아이콘 표시
+                if (Model[index].DischargerData.ReceiveBatteryVoltage <= 1.0 &&
+                    Model[index].DischargerData.ReceiveDischargeCurrent <= 10.0)
                 {
-                    Model[index].ReconnectVisibility = Visibility.Visible;
-                    Model[index].ErrorVisibility = Visibility.Collapsed;
-                }
-                else if (state == EDischargerState.SafetyOutOfRange ||
-                    state == EDischargerState.ReturnCodeError ||
-                    state == EDischargerState.ChStatusError ||
-                    state == EDischargerState.DeviceError)
-                {
-                    Model[index].ReconnectVisibility = Visibility.Collapsed;
-                    Model[index].ErrorVisibility = Visibility.Visible;
+                    Model[index].ShortAvailableVisibility = Visibility.Visible;
                 }
                 else
                 {
-                    Model[index].ReconnectVisibility = Visibility.Collapsed;
-                    Model[index].ErrorVisibility = Visibility.Collapsed;
+                    Model[index].ShortAvailableVisibility = Visibility.Hidden;
                 }
+            }
 
-                // 온도 모듈 새로 고침 visibility 설정
-                if (!ViewModelTempModule.Instance.IsTempModuleUsed(Model[index].DischargerName))
+            // Reconnect, ErrorAlarm 표시 설정
+            if (state == EDischargerState.Disconnected)
+            {
+                Model[index].ReconnectVisibility = Visibility.Visible;
+                Model[index].ErrorVisibility = Visibility.Collapsed;
+            }
+            else if (state == EDischargerState.SafetyOutOfRange ||
+                state == EDischargerState.ReturnCodeError ||
+                state == EDischargerState.ChStatusError ||
+                state == EDischargerState.DeviceError)
+            {
+                Model[index].ReconnectVisibility = Visibility.Collapsed;
+                Model[index].ErrorVisibility = Visibility.Visible;
+            }
+            else
+            {
+                Model[index].ReconnectVisibility = Visibility.Collapsed;
+                Model[index].ErrorVisibility = Visibility.Collapsed;
+            }
+
+            // 온도 모듈 Reconnect 표시 설정
+            if (!ViewModelTempModule.Instance.IsTempModuleUsed(Model[index].DischargerName))
+            {
+                Model[index].TempReconnectVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                if (!ViewModelTempModule.Instance.IsConnected(Model[index].DischargerName))
+                {
+                    Model[index].TempReconnectVisibility = Visibility.Visible;
+                }
+                else
                 {
                     Model[index].TempReconnectVisibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    if (!ViewModelTempModule.Instance.IsConnected(Model[index].DischargerName))
-                    {
-                        Model[index].TempReconnectVisibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        Model[index].TempReconnectVisibility = Visibility.Collapsed;
-                    }
                 }
             }
         }
