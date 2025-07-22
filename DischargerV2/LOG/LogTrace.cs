@@ -178,8 +178,8 @@ namespace DischargerV2.LOG
             public EDischargerClientError EDischargerClientError { get; set; }
 
             public string Name { get; set; } = string.Empty;
-            public EDischargerModel EDischargerModel { get; set; }
             public short Channel { get; set; } = short.MaxValue;
+            public EDischargerModel EDischargerModel { get; set; }
             public IPAddress IpAddress { get; set; }
 
             public double SafetyVoltageMax { set; get; } = double.MaxValue;
@@ -578,32 +578,70 @@ namespace DischargerV2.LOG
                 {
                     case ELogDischarge.COMM_OK_START:
                         logParameter = string.Format(
-                            "\"Name:{0}," +
-                            "Workmode:{1}, SetValue:{2}, LimitingValue:{3}\"",
+                            "\"Name:{0},Channel:{1}," +
+                            "Workmode:{2}, SetValue:{3}, LimitingValue:{4}\"",
                             dischargerData.Name,
+                            dischargerData.Channel,
                             dischargerData.EWorkMode,
                             dischargerData.SetValue_Voltage,
                             dischargerData.LimitingValue_Current);
                         break;
                     case ELogDischarge.COMM_ERROR_START:
                         logParameter = string.Format(
-                            "\"Name:{0}," +
-                            "Workmode:{1}, SetValue:{2}, LimitingValue:{3}, " +
-                            "DischargerClientError:{4}\"",
+                            "\"Name:{0},Channel:{1}," +
+                            "Workmode:{2}, SetValue:{3}, LimitingValue:{4}, " +
+                            "DischargerClientError:{5}\"",
                             dischargerData.Name,
+                            dischargerData.Channel,
                             dischargerData.EWorkMode,
                             dischargerData.SetValue_Voltage,
                             dischargerData.LimitingValue_Current,
                             dischargerData.EDischargerClientError);
                         break;
+                    case ELogDischarge.COMM_OK_STOP:
+                        logParameter = string.Format(
+                            "\"Name:{0},Channel:{1}\"",
+                            dischargerData.Name,
+                            dischargerData.Channel);
+                        break;
+                    case ELogDischarge.COMM_ERROR_STOP:
+                        logParameter = string.Format(
+                            "\"Name:{0},Channel:{1}," +
+                            "DischargerClientError:{2}\"",
+                            dischargerData.Name,
+                            dischargerData.Channel,
+                            dischargerData.EDischargerClientError);
+                        break;
+                    case ELogDischarge.COMM_OK_PAUSE:
+                        logParameter = string.Format(
+                            "\"Name:{0},Channel:{1}\"",
+                            dischargerData.Name,
+                            dischargerData.Channel);
+                        break;
+                    case ELogDischarge.COMM_ERROR_PAUSE:
+                        logParameter = string.Format(
+                            "\"Name:{0},Channel:{1}," +
+                            "DischargerClientError:{2}\"",
+                            dischargerData.Name,
+                            dischargerData.Channel,
+                            dischargerData.EDischargerClientError);
+                        break;
+                    case ELogDischarge.COMM_OK_CLEAR_ALARM:
+                    case ELogDischarge.COMM_ERROR_CLEAR_ALARM:
+                        logParameter = string.Format(
+                            "\"Name:{0},Channel:{1}\"",
+                            dischargerData.Name,
+                            dischargerData.Channel);
+                        break;
                     case ELogDischarge.COMM_OK_SET_SAFETYCONDITION:
                     case ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION:
                         logParameter = string.Format(
-                            "\"Name:{0}," +
-                            "SafetyVoltageMax:{1}, SafetyVoltageMin:{2}, " +
-                            "SafetyCurrentMax:{3}, SafetyCurrentMin:{4}, " +
-                            "SafetyTempMax:{5}, SafetyTempMin:{6}\"",
+                            "\"Name:{0},Channel:{1}," +
+                            "SafetyVoltageMax:{2}, SafetyVoltageMin:{3}, " +
+                            "SafetyCurrentMax:{4}, SafetyCurrentMin:{5}, " +
+                            "SafetyTempMax:{6}, SafetyTempMin:{7}\"",
                             dischargerData.Name,
+                            dischargerData.Channel,
                             dischargerData.SafetyVoltageMax,
                             dischargerData.SafetyVoltageMin,
                             dischargerData.SafetyCurrentMax,
@@ -614,12 +652,13 @@ namespace DischargerV2.LOG
                     case ELogDischarge.COMM_OK_SET_STATE:
                     case ELogDischarge.COMM_ERROR_SET_STATE:
                         logParameter = string.Format(
-                            "\"Name:{0}," +
-                            "ReceiveBatteryVoltage:{1}, " +
-                            "ReceiveDischargeCurrent:{2}, " +
-                            "ReceiveDischargeTemp:{3}, " +
-                            "ErrorCode:{4}, ReturnCode:{5}, DischargerState:{6}\"",
+                            "\"Name:{0},Channel:{1}," +
+                            "ReceiveBatteryVoltage:{2}, " +
+                            "ReceiveDischargeCurrent:{3}, " +
+                            "ReceiveDischargeTemp:{4}, " +
+                            "ErrorCode:{5}, ReturnCode:{6}, DischargerState:{7}\"",
                             dischargerData.Name,
+                            dischargerData.Channel,
                             dischargerData.ReceiveBatteryVoltage,
                             dischargerData.ReceiveDischargeCurrent,
                             dischargerData.ReceiveDischargeTemp,

@@ -41,12 +41,14 @@ namespace DischargerV2.MVVM.Views
 
         public void UpdateUi()
         {
-            InitializeDischargerSelection();
+            //InitializeDischargerSelection();
 
             ViewModelMain.Instance.InitializeModel();
             ViewModelSetMode.Instance.InitializeModelDictionary();
             ViewModelSetMode.Instance.InitializeViewModelDictionary();
             ViewModelMonitor_Graph.Instance.InitializeModelDictionary();
+
+            InitializeDischargerSelection();
         }
 
         private void xTempReconnectImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

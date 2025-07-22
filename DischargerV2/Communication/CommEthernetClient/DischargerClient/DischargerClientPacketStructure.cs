@@ -52,6 +52,7 @@ namespace Ethernet.Client.Discharger
 
     public enum ECommandCode : short
     {
+        None = 0x0,
         RequestCommand = 0x3001,
         ChannelInfo = 0x3012,
     }
@@ -84,7 +85,7 @@ namespace Ethernet.Client.Discharger
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class DCCPacketHeader
+    public class PacketHeader
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private byte[] StartIdentifier = new byte[8] { 0xef, 0xef, 0xef, 0xef, 0xef, 0xef, 0xef, 0xef };
@@ -93,13 +94,32 @@ namespace Ethernet.Client.Discharger
         public byte SerialNumber = 0;
         private byte TotalPacketNum = 1;
         private byte CurrentPacketNum = 1;
+
+        public byte[] ToByteArray()
+        {
+            List<byte> bytes = new List<byte>();
+
+            bytes.AddRange(StartIdentifier);                // 8 bytes
+            bytes.AddRange(BitConverter.GetBytes(Length));  // 2 bytes (short)
+            bytes.Add(VersionNumber);                       // 1 byte
+            bytes.Add(SerialNumber);                        // 1 byte
+            bytes.Add(TotalPacketNum);                      // 1 byte
+            bytes.Add(CurrentPacketNum);                    // 1 byte
+
+            return bytes.ToArray(); // 총 14 bytes
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class DCCPacketTail
+    public class PacketTail
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         private byte[] Tail = new byte[2] { 0xee, 0xee };
+
+        public byte[] ToByteArray()
+        {
+            return Tail;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
@@ -287,6 +307,117 @@ namespace Ethernet.Client.Discharger
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
+        }
+    }
+
+    public class DischargerPacketGenerator
+    {
+        private PacketHeader _header;
+        private ECommandCode _command;
+        private short _numberOfChannels;
+        private List<short> _channels;
+        private Dictionary<EParameterIndex, double> _parameters;
+        private PacketTail _tail;
+
+        private void Initialize()
+        {
+            _header = new PacketHeader();
+            _command = ECommandCode.None;
+            _numberOfChannels = 0;
+            _channels = new List<short>();
+            _parameters = new Dictionary<EParameterIndex, double>();
+            _tail = new PacketTail();
+        }
+
+        public void Command(ECommandCode command, byte serialNumber)
+        {
+            Initialize();
+
+            _header.SerialNumber = serialNumber;
+            _command = command;
+        }
+
+        public void Channel(params short[] channels)
+        {
+            _numberOfChannels = (short)channels.Length;
+
+            foreach (var channel in channels)
+            {
+                _channels.Add(channel);
+            }
+        }
+
+        public void Parameter(EParameterIndex index, double value)
+        {
+            _parameters[index] = value;
+        }
+
+        public byte[] GeneratePacket()
+        {
+            if (_command == ECommandCode.None)
+                throw new InvalidOperationException("Command must be set before generating a packet.");
+            if (_numberOfChannels == 0)
+                throw new ArgumentException("At least one channel must be specified.");
+
+            _header.Length = CalculateLengthOfHeader();
+
+            List<byte> packet = new List<byte>();
+
+            // 1. Header
+            packet.AddRange(_header.ToByteArray());
+
+            // 2. Command (2 bytes)
+            packet.AddRange(BitConverter.GetBytes((short)_command));
+
+            // 3. Channel Count (2 bytes)
+            packet.AddRange(BitConverter.GetBytes(_numberOfChannels));
+
+            // 4. Channels (2 bytes each)
+            foreach (var ch in _channels)
+                packet.AddRange(BitConverter.GetBytes(ch));
+
+            if (_command == ECommandCode.RequestCommand)
+            {
+                if (_parameters.Count == 0)
+                    throw new ArgumentException("At least one parameter must be specified.");
+
+                // 5. Number of parameters (2 bytes)
+                packet.AddRange(BitConverter.GetBytes((short)_parameters.Count));
+
+                // 6. Parameters: index(2) + value(8) → 10 bytes each
+                foreach (var kvp in _parameters)
+                {
+                    packet.AddRange(BitConverter.GetBytes((short)kvp.Key));       // 2 bytes
+                    packet.AddRange(BitConverter.GetBytes(kvp.Value));            // 8 bytes
+                }
+            }
+
+            // 7. Tail
+            packet.AddRange(_tail.ToByteArray());
+
+            return packet.ToArray();
+        }
+
+        private short CalculateLengthOfHeader()
+        {
+            const int HeaderSize = 4;                   // Fixed: Length (2) + Version (1) + Serial (1)
+            const int CommandCodeSize = 2;              // short
+            const int ChannelCountSize = 2;             // short
+            const int ChannelEntrySize = 2;             // short per channel
+            const int ParameterCountSize = 2;           // short
+            const int ParameterEntrySize = 10;          // short (2) + double (8)
+            const int TailSize = 2;                     // fixed end marker (0xEEEE)
+
+            int totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + (_numberOfChannels * ChannelEntrySize);
+
+            if (_command == ECommandCode.RequestCommand)
+            {
+                totalLength += ParameterCountSize + (_parameters.Count * ParameterEntrySize);
+            }
+
+            totalLength += TailSize;
+
+            return (short)totalLength;
         }
     }
 }

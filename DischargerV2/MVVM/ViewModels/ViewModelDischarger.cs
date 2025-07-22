@@ -216,16 +216,21 @@ namespace DischargerV2.MVVM.ViewModels
         /// <summary>
         /// 방전기 에러 해제 
         /// </summary>
-        /// <param name="dischargerName"></param>
-        private void ResetError(string dischargerName)
+        /// <param name="getDischargerName"></param>
+        private void ResetError(string getDischargerName)
         {
             try
             {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ? 
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전기 에러 해제
-                bool isOk = _clients[dischargerName].SendCommand_ClearAlarm();
+                bool isOk = _clients[dischargerName].SendCommand_ClearAlarm(channel);
 
                 // 방전기 에러 해제 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk)
                 {
@@ -251,21 +256,26 @@ namespace DischargerV2.MVVM.ViewModels
         /// <summary>
         /// 방전기 재 연결
         /// </summary>
-        /// <param name="dischargerName"></param>
-        public void ReconnectDischarger(string dischargerName)
+        /// <param name="getDischargerName"></param>
+        public void ReconnectDischarger(string getDischargerName)
         {
-            int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
-            Model[index].ReconnectVisibility = Visibility.Collapsed;
-
             try
             {
+                int index = Model.ToList().FindIndex(x => x.DischargerName == getDischargerName);
+                Model[index].ReconnectVisibility = Visibility.Collapsed;
+
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 Thread thread = new Thread(() => 
                 {
                     // 방전기 재 연결
                     bool isOk = _clients[dischargerName].Restart();
 
                     // 방전기 재 연결 Trace Log 저장
-                    LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                    LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                     if (isOk)
                     {
@@ -298,12 +308,17 @@ namespace DischargerV2.MVVM.ViewModels
 
             try
             {
+                string[] discharger = param.DischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전 동작 시작
-                var isOk = _clients[param.DischargerName].SendCommand_StartDischarge(
-                    EWorkMode.CcCvMode, param.Voltage, param.Current);
+                var isOk = _clients[dischargerName].SendCommand_StartDischarge(
+                    channel, EWorkMode.CcCvMode, param.Voltage, param.Current);
 
                 // 방전 동작 시작 Trace Log 저장
-                var dischargerComm = _clients[param.DischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
                 dischargerComm.EWorkMode = EWorkMode.CcCvMode;
                 dischargerComm.SetValue_Voltage = param.Voltage;
                 dischargerComm.LimitingValue_Current = param.Current;
@@ -364,15 +379,20 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void StopDischarger(string dischargerName)
+        public void StopDischarger(string getDischargerName)
         {
             try
             {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전 동작 정지
-                var isOk = _clients[dischargerName].SendCommand_StopDischarge();
+                var isOk = _clients[dischargerName].SendCommand_StopDischarge(channel);
 
                 // 방전 동작 정지 Trace Log 저장
-                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -395,15 +415,20 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void PauseDischarger(string dischargerName)
+        public void PauseDischarger(string getDischargerName)
         {
             try
             {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전 동작 일시 정지
-                var isOk = _clients[dischargerName].SendCommand_PauseDischarge();
+                var isOk = _clients[dischargerName].SendCommand_PauseDischarge(channel);
 
                 // 방전 동작 일시 정지 Trace Log 저장
-                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -426,16 +451,21 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void SetSafetyCondition(string dischargerName, 
+        public void SetSafetyCondition(string getDischargerName, 
             double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
             try
             {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전 안전 조건 설정
-                bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
+                bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(channel, voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
                 // 방전기 안전 조건 설정 Trace Log 저장
-                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk)
                 {
@@ -458,15 +488,20 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void SetDischargerState(string dischargerName, EDischargerState eDischargerState)
+        public void SetDischargerState(string getDischargerName, EDischargerState eDischargerState)
         {
             try
             {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
                 // 방전기 상태 설정
-                bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState);
+                bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState, channel);
 
                 // 방전기 상태 설정 Trace Log 저장
-                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
                 dischargerComm.EDischargerState = eDischargerState;
 
                 if (isOk)
@@ -676,20 +711,41 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
+                short channel = info.Channel;
+
+                short[] channelArray = new short[channel];
+                double[] safetyVoltageMaxArray = new double[channel];
+                double[] safetyVoltageMinArray = new double[channel];
+                double[] safetyCurrentMaxArray = new double[channel];
+                double[] safetyCurrentMinArray = new double[channel];
+                double[] safetyTempMaxArray = new double[channel];
+                double[] safetyTempMinArray = new double[channel];
+
+                for (int i = 0; i < info.Channel; i++)
+                {
+                    channelArray[i] = (short)(i + 1);
+                    safetyVoltageMaxArray[i] = info.SafetyVoltageMax;
+                    safetyVoltageMinArray[i] = info.SafetyVoltageMin;
+                    safetyCurrentMaxArray[i] = info.SafetyCurrentMax;
+                    safetyCurrentMinArray[i] = info.SafetyCurrentMin;
+                    safetyTempMaxArray[i] = info.SafetyTempMax;
+                    safetyTempMinArray[i] = info.SafetyTempMin;
+                }
+
                 EthernetClientDischargerStart parameters = new EthernetClientDischargerStart();
                 parameters.DischargerModel = info.Model;
                 parameters.DischargerName = info.Name;
-                parameters.DischargerChannel = info.Channel;
+                parameters.DischargerChannel = channelArray;
                 parameters.DischargerIsTempModule = info.IsTempModule;
                 parameters.IpAddress = info.IpAddress;
                 parameters.EthernetPort = info.EthernetPort;
                 parameters.TimeOutMs = info.TimeOutMs;
-                parameters.SafetyVoltageMax = info.SafetyVoltageMax;
-                parameters.SafetyVoltageMin = info.SafetyVoltageMin;
-                parameters.SafetyCurrentMax = info.SafetyCurrentMax;
-                parameters.SafetyCurrentMin = info.SafetyCurrentMin;
-                parameters.SafetyTempMax = info.SafetyTempMax;
-                parameters.SafetyTempMin = info.SafetyTempMin;
+                parameters.SafetyVoltageMax = safetyVoltageMaxArray;
+                parameters.SafetyVoltageMin = safetyVoltageMinArray;
+                parameters.SafetyCurrentMax = safetyCurrentMaxArray;
+                parameters.SafetyCurrentMin = safetyCurrentMinArray;
+                parameters.SafetyTempMax = safetyTempMaxArray;
+                parameters.SafetyTempMin = safetyTempMinArray;
                 _clients[info.Name] = new EthernetClientDischarger();
 
                 Thread thread = new Thread(
@@ -744,12 +800,12 @@ namespace DischargerV2.MVVM.ViewModels
                     if (dischargerNameSplit.Length > 1)
                     {
                         dischargerName = dischargerNameSplit[0];
-                        dischargerChannel = Convert.ToInt32(dischargerNameSplit[1]) - 1;
+                        dischargerChannel = Convert.ToInt32(dischargerNameSplit[1]);
                     }
                     else
                     {
                         dischargerName = dischargerNameSplit[0];
-                        dischargerChannel = 0;
+                        dischargerChannel = 1;
                     }
 
                     EDischargerState state = EDischargerState.None;
@@ -758,8 +814,8 @@ namespace DischargerV2.MVVM.ViewModels
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         // 방전기로 수신받은 데이터 가져오기
-                        Model[i].DischargerData = _clients[dischargerName].GetDatas();
-                        Model[i].DischargerState = _clients[dischargerName].GetState();
+                        Model[i].DischargerData = _clients[dischargerName].GetDatas(dischargerChannel);
+                        Model[i].DischargerState = _clients[dischargerName].GetState(dischargerChannel);
 
                         // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
                         var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
