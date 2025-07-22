@@ -1034,8 +1034,23 @@ namespace DischargerV2.MVVM.ViewModels
         {
             DischargeConfig dischargeConfig = new DischargeConfig();
 
+            string dischargerName;
+            int dischargerChannel;
+
+            var dischargerNameListSplit = Model.DischargerName.Split('_');
+            if (dischargerNameListSplit.Length > 1)
+            {
+                dischargerName = dischargerNameListSplit[0];
+                dischargerChannel = Convert.ToInt32(dischargerNameListSplit[1]);
+            }
+            else
+            {
+                dischargerName = dischargerNameListSplit[0];
+                dischargerChannel = 1;
+            }
+
             // Discharger
-            TableDischargerInfo tableDischargerInfo = SqliteDischargerInfo.GetData(Model.DischargerName);
+            TableDischargerInfo tableDischargerInfo = SqliteDischargerInfo.GetData(dischargerName);
             dischargeConfig.DischargerName = tableDischargerInfo.DischargerName;
             dischargeConfig.DischargerModel = tableDischargerInfo.Model;
             dischargeConfig.DischargeType = tableDischargerInfo.Type;

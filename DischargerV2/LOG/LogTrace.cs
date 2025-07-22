@@ -578,7 +578,7 @@ namespace DischargerV2.LOG
                 {
                     case ELogDischarge.COMM_OK_START:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "Workmode:{2}, SetValue:{3}, LimitingValue:{4}\"",
                             dischargerData.Name,
                             dischargerData.Channel,
@@ -588,7 +588,7 @@ namespace DischargerV2.LOG
                         break;
                     case ELogDischarge.COMM_ERROR_START:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "Workmode:{2}, SetValue:{3}, LimitingValue:{4}, " +
                             "DischargerClientError:{5}\"",
                             dischargerData.Name,
@@ -600,13 +600,13 @@ namespace DischargerV2.LOG
                         break;
                     case ELogDischarge.COMM_OK_STOP:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}\"",
+                            "\"Name:{0}, Channel:{1}\"",
                             dischargerData.Name,
                             dischargerData.Channel);
                         break;
                     case ELogDischarge.COMM_ERROR_STOP:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "DischargerClientError:{2}\"",
                             dischargerData.Name,
                             dischargerData.Channel,
@@ -614,13 +614,13 @@ namespace DischargerV2.LOG
                         break;
                     case ELogDischarge.COMM_OK_PAUSE:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}\"",
+                            "\"Name:{0}, Channel:{1}\"",
                             dischargerData.Name,
                             dischargerData.Channel);
                         break;
                     case ELogDischarge.COMM_ERROR_PAUSE:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "DischargerClientError:{2}\"",
                             dischargerData.Name,
                             dischargerData.Channel,
@@ -629,14 +629,14 @@ namespace DischargerV2.LOG
                     case ELogDischarge.COMM_OK_CLEAR_ALARM:
                     case ELogDischarge.COMM_ERROR_CLEAR_ALARM:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}\"",
+                            "\"Name:{0}, Channel:{1}\"",
                             dischargerData.Name,
                             dischargerData.Channel);
                         break;
                     case ELogDischarge.COMM_OK_SET_SAFETYCONDITION:
                     case ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "SafetyVoltageMax:{2}, SafetyVoltageMin:{3}, " +
                             "SafetyCurrentMax:{4}, SafetyCurrentMin:{5}, " +
                             "SafetyTempMax:{6}, SafetyTempMin:{7}\"",
@@ -652,7 +652,7 @@ namespace DischargerV2.LOG
                     case ELogDischarge.COMM_OK_SET_STATE:
                     case ELogDischarge.COMM_ERROR_SET_STATE:
                         logParameter = string.Format(
-                            "\"Name:{0},Channel:{1}," +
+                            "\"Name:{0}, Channel:{1}, " +
                             "ReceiveBatteryVoltage:{2}, " +
                             "ReceiveDischargeCurrent:{3}, " +
                             "ReceiveDischargeTemp:{4}, " +
@@ -669,7 +669,7 @@ namespace DischargerV2.LOG
                     case ELogDischarge.COMM_OK_CONTROL_LAMP:
                     case ELogDischarge.COMM_ERROR_CONTROL_LAMP:
                         logParameter = string.Format(
-                            "\"Name:{0}," +
+                            "\"Name:{0}, " +
                             "LampDioValue:{1}\"",
                             dischargerData.Name,
                             dischargerData.LampDioValue);

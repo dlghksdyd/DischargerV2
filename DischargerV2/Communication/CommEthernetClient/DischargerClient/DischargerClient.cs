@@ -471,6 +471,8 @@ namespace Ethernet.Client.Discharger
 
                 SendCommand_RequestChannelInfo();
 
+                EDioControl eDioControl = EDioControl.TowerLampGreen;
+
                 // 다채널 방전기 경광등 제어 동작 확인 후 반영 필요
                 for (int i = 0; i < _parameters.DischargerChannel.Length; i++)
                 {
@@ -482,37 +484,67 @@ namespace Ethernet.Client.Discharger
                         _dischargerState[index] == EDischargerState.ChStatusError ||
                         _dischargerState[index] == EDischargerState.DeviceError)
                     {
-                        if (IsLampBuzzerUsed)
+                        if (eDioControl > EDioControl.TowerLampRed)
                         {
-                            SendCommand_LampControl(EDioControl.TowerLampRed, true);
-                        }
-                        else
-                        {
-                            SendCommand_LampControl(EDioControl.TowerLampRed, false);
-                        }
+                            eDioControl = EDioControl.TowerLampRed;
 
-                        SendCommand_StopDischarge(channel);
-                        return;
-                    }
 
-                    if (_dischargerState[index] == EDischargerState.Discharging)
-                    {
-                        SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+                            //if (IsLampBuzzerUsed)
+                            //{
+                            //    SendCommand_LampControl(EDioControl.TowerLampRed, true);
+                            //}
+                            //else
+                            //{
+                            //    SendCommand_LampControl(EDioControl.TowerLampRed, false);
+                            //}
 
-                        if (_dischargerDataArray[index].ReceiveBatteryVoltage < 1 &&
-                            _dischargerDataArray[index].ReceiveDischargeCurrent < 0.1)
-                        {
                             SendCommand_StopDischarge(channel);
+                            return;
+                        }
+
+                        if (_dischargerState[index] == EDischargerState.Discharging)
+                        {
+                            if (eDioControl > EDioControl.TowerLampGreen)
+                            {
+                                eDioControl = EDioControl.TowerLampGreen;
+                            }
+
+                            //SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+
+                            if (_dischargerDataArray[index].ReceiveBatteryVoltage < 1 &&
+                                _dischargerDataArray[index].ReceiveDischargeCurrent < 0.1)
+                            {
+                                SendCommand_StopDischarge(channel);
+                            }
+                        }
+                        else if (_dischargerState[index] == EDischargerState.Pause)
+                        {
+                            if (eDioControl > EDioControl.TowerLampGreen)
+                            {
+                                eDioControl = EDioControl.TowerLampGreen;
+                            }
+
+                            //SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+                        }
+                        else if (_dischargerState[index] == EDischargerState.None ||
+                                 _dischargerState[index] == EDischargerState.Ready)
+                        {
+                            if (eDioControl > EDioControl.TowerLampYellow)
+                            {
+                                eDioControl = EDioControl.TowerLampYellow;
+                            }
+
+                            //SendCommand_LampControl(EDioControl.TowerLampYellow, false);
                         }
                     }
-                    else if (_dischargerState[index] == EDischargerState.Pause)
+
+                    if (IsLampBuzzerUsed)
                     {
-                        SendCommand_LampControl(EDioControl.TowerLampGreen, false);
+                        SendCommand_LampControl(eDioControl, true);
                     }
-                    else if (_dischargerState[index] == EDischargerState.None || 
-                             _dischargerState[index] == EDischargerState.Ready)
+                    else
                     {
-                        SendCommand_LampControl(EDioControl.TowerLampYellow, false);
+                        SendCommand_LampControl(eDioControl, false);
                     }
                 }
             }
