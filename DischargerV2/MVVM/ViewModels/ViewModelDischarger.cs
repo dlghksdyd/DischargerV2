@@ -265,7 +265,7 @@ namespace DischargerV2.MVVM.ViewModels
                     bool isOk = _clients[dischargerName].Restart();
 
                     // 방전기 재 연결 Trace Log 저장
-                    DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                    LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                     if (isOk)
                     {
@@ -372,7 +372,7 @@ namespace DischargerV2.MVVM.ViewModels
                 var isOk = _clients[dischargerName].SendCommand_StopDischarge();
 
                 // 방전 동작 정지 Trace Log 저장
-                DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
+                LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData();
 
                 if (isOk == EDischargerClientError.Ok)
                 {
@@ -505,6 +505,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void InitializeDischarger()
         {
+            int variance = 1;
+
             FinalizeDischarger();
 
             _dischargerInfos = SqliteDischargerInfo.GetData();
@@ -514,25 +516,40 @@ namespace DischargerV2.MVVM.ViewModels
 
             for (int index = 0; index < infos.Count; index++) 
             {
-                var model = new ModelDischarger();
-
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
 
                 // 전압 및 전류 Margin 값 적용
                 dischargerInfo.SafetyVoltageMin -= EthernetClientDischarger.SafetyMarginVoltage;
                 dischargerInfo.SafetyVoltageMax += EthernetClientDischarger.SafetyMarginVoltage;
 
-                model.DischargerInfo = dischargerInfo;
+                int channel = dischargerInfo.Channel;
+
+                for (int i = 0; i < channel; i++)
+                {
+                    var model = new ModelDischarger();
+
+                    model.DischargerInfo = dischargerInfo;
+                    model.DischargerIndex = index;
+                    model.No = (index + variance).ToString();
+
+                    if (channel > 1)
+                    {
+                        variance++;
+                        model.DischargerInfo.Channel = (short)(i + 1);
+                        model.DischargerName = $"{infos[index].DischargerName}_{i + 1}";
+                    }
+                    else
+                    {
+                        model.DischargerName = $"{infos[index].DischargerName}";
+                    }
+
+                    model.DischargerChannel = i + 1;
+                    model.PropertyChanged += Model_PropertyChanged;
+
+                    Model.Add(model);
+                }
 
                 InitializeDischargerClients(dischargerInfo);
-
-                model.DischargerIndex = index;
-                model.No = (index + 1).ToString();
-                model.DischargerName = infos[index].DischargerName;
-
-                model.PropertyChanged += Model_PropertyChanged;
-
-                Model.Add(model);
             }
 
             ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
@@ -720,17 +737,32 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 for (int i = 0; i < Model.Count; i++)
                 {
+                    string dischargerName;
+                    int dischargerChannel;
+
+                    var dischargerNameSplit = Model[i].DischargerName.Split('_');
+                    if (dischargerNameSplit.Length > 1)
+                    {
+                        dischargerName = dischargerNameSplit[0];
+                        dischargerChannel = Convert.ToInt32(dischargerNameSplit[1]) - 1;
+                    }
+                    else
+                    {
+                        dischargerName = dischargerNameSplit[0];
+                        dischargerChannel = 0;
+                    }
+
                     EDischargerState state = EDischargerState.None;
                     TimeSpan diff = new TimeSpan(0);
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         // 방전기로 수신받은 데이터 가져오기
-                        Model[i].DischargerData = _clients[Model[i].DischargerName].GetDatas();
-                        Model[i].DischargerState = _clients[Model[i].DischargerName].GetState();
+                        Model[i].DischargerData = _clients[dischargerName].GetDatas();
+                        Model[i].DischargerState = _clients[dischargerName].GetState();
 
                         // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
-                        var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == Model[i].DischargerName);
+                        var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
                         if (dischargerInfo != null && dischargerInfo.IsTempModule)
                         {
                             int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
@@ -740,7 +772,7 @@ namespace DischargerV2.MVVM.ViewModels
                                 var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
 
                                 Model[i].DischargerData.ReceiveDischargeTemp = temp;
-                                _clients[Model[i].DischargerName].SetReceiveTemp(temp);
+                                _clients[dischargerName].SetReceiveTemp(temp);
                             }
                         }
 
@@ -766,14 +798,14 @@ namespace DischargerV2.MVVM.ViewModels
                             // UpdateData Data 
                             var updateData = new TABLE_SYS_STS_SDC();
                             updateData.MC_CD = MachineCode;
-                            updateData.MC_CH = Model[i].DischargerIndex + 1;
+                            updateData.MC_CH = Model[i].DischargerChannel;
                             updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
                             updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
                             updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
                             updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
                             updateData.DischargerState = state.ToString();
-                            updateData.ProgressTime = diff.Ticks;
-
+                            updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
+                            
                             SqlClientStatus.UpdateData(updateData);
                             SqlClientStatus.UpdateData_StateNTime(updateData);
                         }

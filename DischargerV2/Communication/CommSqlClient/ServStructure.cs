@@ -34,7 +34,7 @@ namespace SqlClient.Server
         public string DischargeMode { get; set; }
         public string DischargeTarget { get; set; }
         public string LogFileName { get; set; }
-        public long ProgressTime { get; set; }
+        public string ProgressTime { get; set; }
 
         public DateTime MC_DTM { get; set; }
     }

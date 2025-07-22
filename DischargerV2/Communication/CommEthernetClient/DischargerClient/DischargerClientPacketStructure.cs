@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Ethernet.Client.Discharger.ChannelInfo;
 
 namespace Ethernet.Client.Discharger
 {
@@ -141,10 +142,28 @@ namespace Ethernet.Client.Discharger
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply
+        public class Reply_Channel1
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+            public Reply[] ReplyArray = new Reply[1];
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public class Reply_Channel2 
+        {
+            public ECommandCode CommandCode;
+            public EReturnCode ReturnCode;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+            public Reply[] ReplyArray = new Reply[2];
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public struct Reply
+        {
             public short NumberOfChannels;
             public short ChannelNumber;
             public uint ErrorCode;

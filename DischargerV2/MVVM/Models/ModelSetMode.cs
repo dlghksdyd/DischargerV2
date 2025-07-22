@@ -31,6 +31,19 @@ namespace DischargerV2.MVVM.Models
             }
         }
 
+        private int _dischargerChannel;
+        public int DischargerChannel
+        {
+            get
+            {
+                return _dischargerChannel;
+            }
+            set
+            {
+                SetProperty(ref _dischargerChannel, value);
+            }
+        }
+
         private string _dischargerName;
         public string DischargerName
         {

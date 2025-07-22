@@ -269,8 +269,6 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
         {
-            //DataReceiveSemaphore.WaitOne();
-
             try
             {
                 ModelDictionary[dischargerName].ReceiveCount += 1;
