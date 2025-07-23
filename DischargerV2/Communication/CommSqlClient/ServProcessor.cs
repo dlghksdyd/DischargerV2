@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Xml.Linq;
@@ -10,10 +11,12 @@ namespace SqlClient.Server
     public class SqlClient
     {
         public static string ConnectionString = "Data Source=192.168.20.7,1433;Initial Catalog=MINDIMS_MOE;User ID=mindims;Password=mindims;";
+        //public static string ConnectionString = "Data Source=127.0.0.1,1433;Initial Catalog=MINDIMS_MOE;User ID=sa;Password=mintech1234;";
 
         public static void UpdateConnectionString(string serverIp, string serverPort, string databaseName)
         {
             ConnectionString = $@"Data Source={serverIp},{serverPort};Initial Catalog={databaseName};User ID=mindims;Password=mindims;";
+            //ConnectionString = $@"Data Source={serverIp},{serverPort};Initial Catalog={databaseName};User ID=sa;Password=mintech1234;";
         }
     }
 

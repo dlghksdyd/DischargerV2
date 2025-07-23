@@ -74,6 +74,8 @@ namespace DischargerV2.MVVM.ViewModels
                         Model.Permission = user.IsAdmin ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
 
+                        ViewModelDischarger.Instance.InitializeDischarger();
+
                         new LogTrace(ELogTrace.SYSTEM_OK_LOGIN, Model.UserId);
                     }
                     else
@@ -96,6 +98,10 @@ namespace DischargerV2.MVVM.ViewModels
                         Model.IsAdmin = (user.ADMIN_GROUP == "Y") ? true : false;
                         Model.Permission = (user.ADMIN_GROUP == "Y") ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
+
+                        ViewModelDischarger.Instance.InitializeDischarger();
+
+                        new LogTrace(ELogTrace.SYSTEM_OK_LOGIN, Model.UserId);
                     }
                     else
                     {
