@@ -689,19 +689,20 @@ namespace DischargerV2.MVVM.ViewModels
             // Server DB 사용 (통합 관제 연동)
             if (!ViewModelLogin.Instance.IsLocalDb())
             {
-                string machineCode = GetIniData<string>(EIniData.MachineCode);
-                int channel = infoTable.FindIndex(x => x.DischargerName == name) + 1;
-
                 // MC_CD 받아오기
+                string machineCode = GetIniData<string>(EIniData.MachineCode);
                 MachineCode = machineCode;
 
                 // Insert Init Data 
-                var insertData = new TABLE_SYS_STS_SDC();
-                insertData.MC_CD = machineCode;
-                insertData.MC_CH = channel;
-                insertData.DischargerName = name;
+                for (int i = 0; i < info.DischargerChannel; i++)
+                {
+                    var insertData = new TABLE_SYS_STS_SDC();
+                    insertData.MC_CD = machineCode;
+                    insertData.MC_CH = i + 1;
+                    insertData.DischargerName = $"{name}_{i + 1}";
 
-                SqlClientStatus.InsertData_Init(insertData);
+                    SqlClientStatus.InsertData_Init(insertData);
+                }
             }
 
             return dischargerInfo;
@@ -847,23 +848,36 @@ namespace DischargerV2.MVVM.ViewModels
                     // Server DB 사용 (통합 관제 연동)
                     if (!ViewModelLogin.Instance.IsLocalDb())
                     {
-                        // 방전 동작 시, ViewModelStartDischarge에서 DB에 업데이트 진행
-                        if (Model[i].DischargerState == EDischargerState.Discharging ||
-                            Model[i].DischargerState == EDischargerState.Pause)
+                        var updateData = new TABLE_SYS_STS_SDC();
+                        updateData.MC_CD = MachineCode;
+                        updateData.MC_CH = Model[i].DischargerChannel;
+                        updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
+
+                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
+                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
+                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
+
+                        updateData.DischargerState = state.ToString();
+                        updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
+
+                        SqlClientStatus.UpdateData_Monitoring(updateData);
+                        SqlClientStatus.UpdateData_StateNTime(updateData);
+
+                        if (state == EDischargerState.SafetyOutOfRange ||
+                            state == EDischargerState.ReturnCodeError ||
+                            state == EDischargerState.ChStatusError ||
+                            state == EDischargerState.DeviceError)
                         {
-                            // UpdateData Data 
-                            var updateData = new TABLE_SYS_STS_SDC();
-                            updateData.MC_CD = MachineCode;
-                            updateData.MC_CH = Model[i].DischargerChannel;
-                            updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
-                            updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
-                            updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
-                            updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
-                            updateData.DischargerState = state.ToString();
-                            updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
-                            
-                            SqlClientStatus.UpdateData(updateData);
-                            SqlClientStatus.UpdateData_StateNTime(updateData);
+                            TableDischargerErrorCode tableDischargerErrorCode = SqliteDischargerErrorCode.GetData().Find(x => x.Code == Model[i].DischargerData.ErrorCode);
+
+                            var alarmData = new TABLE_QLT_HISTORY_ALARM();
+                            alarmData.MC_CD = MachineCode;
+                            alarmData.CH_NO = Model[i].DischargerChannel;
+                            alarmData.Alarm_Time = DateTime.Now;
+                            alarmData.Alarm_Code = (int)Model[i].DischargerData.ErrorCode;
+                            alarmData.Alarm_Desc = (tableDischargerErrorCode != null) ? tableDischargerErrorCode.Description : string.Empty;
+
+                            SqlClientStatus.UpdateData_Alarm(alarmData);
                         }
                     }
                 }
@@ -945,9 +959,9 @@ namespace DischargerV2.MVVM.ViewModels
                 Model[index].ErrorVisibility = Visibility.Collapsed;
             }
             else if (state == EDischargerState.SafetyOutOfRange ||
-                state == EDischargerState.ReturnCodeError ||
-                state == EDischargerState.ChStatusError ||
-                state == EDischargerState.DeviceError)
+                     state == EDischargerState.ReturnCodeError ||
+                     state == EDischargerState.ChStatusError ||
+                     state == EDischargerState.DeviceError)
             {
                 Model[index].ReconnectVisibility = Visibility.Collapsed;
                 Model[index].ErrorVisibility = Visibility.Visible;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -101,7 +102,7 @@ namespace SqlClient.Server
             }
         }
 
-        public static bool UpdateData(TABLE_SYS_STS_SDC data)
+        public static bool UpdateData_Monitoring(TABLE_SYS_STS_SDC data)
         {
             try
             {
@@ -114,9 +115,6 @@ namespace SqlClient.Server
                         $"DischargerVoltage='{data.DischargerVoltage}'," +
                         $"DischargerCurrent='{data.DischargerCurrent}'," +
                         $"DischargerTemp='{data.DischargerTemp}'," +
-                        $"DischargeCapacity_Ah='{data.DischargeCapacity_Ah}'," +
-                        $"DischargeCapacity_kWh='{data.DischargeCapacity_kWh}'," +
-                        $"DischargePhase='{data.DischargePhase}'," +
                         $"MC_DTM=GETDATE() " +
                         $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
 
@@ -179,6 +177,74 @@ namespace SqlClient.Server
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UpdateData_Discharging(TABLE_SYS_STS_SDC data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    string query = $"UPDATE {ClassName} SET " +
+                        $"USER_ID='{data.USER_ID}'," +
+                        $"DischargeCapacity_Ah='{data.DischargeCapacity_Ah}'," +
+                        $"DischargeCapacity_kWh='{data.DischargeCapacity_kWh}'," +
+                        $"DischargePhase='{data.DischargePhase}'," +
+                        $"MC_DTM=GETDATE() " +
+                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool UpdateData_Alarm(TABLE_QLT_HISTORY_ALARM data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand())
+                    {
+                        command.Connection = connection;
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.CommandText = "dbo.IFT_HISTORY_ALARM";
+
+                        command.Parameters.Add("@MTYPE", SqlDbType.VarChar, 50);
+                        command.Parameters.Add("@MC_CD", SqlDbType.VarChar, 7);
+                        command.Parameters.Add("@CH_NO", SqlDbType.Int);
+                        command.Parameters.Add("@Alarm_Time", SqlDbType.DateTime2);
+                        command.Parameters.Add("@Alarm_Code", SqlDbType.Int);
+                        command.Parameters.Add("@Alarm_Desc", SqlDbType.VarChar, 80);
+
+                        command.Parameters["@MTYPE"].Value = "SDC";
+                        command.Parameters["@MC_CD"].Value = data.MC_CD;
+                        command.Parameters["@CH_NO"].Value = data.CH_NO;
+                        command.Parameters["@Alarm_Time"].Value = data.Alarm_Time;
+                        command.Parameters["@Alarm_Code"].Value = data.Alarm_Code;
+                        command.Parameters["@Alarm_Desc"].Value = data.Alarm_Desc;
+
                         command.ExecuteNonQuery();
                     }
                 }

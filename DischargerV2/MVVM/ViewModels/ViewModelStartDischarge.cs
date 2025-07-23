@@ -387,15 +387,11 @@ namespace DischargerV2.MVVM.ViewModels
                             updateData.MC_CH = Model.DischargerIndex + 1;
                             updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
 
-                            updateData.DischargerVoltage = receiveVoltage.ToString("F1");
-                            updateData.DischargerCurrent = receiveCurrent.ToString("F1");
-                            updateData.DischargerTemp = receiveTemp.ToString("F1");
-
                             updateData.DischargeCapacity_Ah = _capacity_Ah.ToString("F3");
                             updateData.DischargeCapacity_kWh = _capacity_kWh.ToString("F3");
                             updateData.DischargePhase = $"{PhaseIndex + 1}, {Model.PhaseDataList.Count}";
 
-                            SqlClientStatus.UpdateData(updateData);
+                            SqlClientStatus.UpdateData_Discharging(updateData);
                         }
 
                         if (Model.Mode == Enums.EDischargeMode.Preset ||

@@ -4,6 +4,7 @@ using Ethernet.Client.Discharger;
 using Prism.Commands;
 using Prism.Mvvm;
 using ScottPlot;
+using ScottPlot.Colormaps;
 using SqlClient.Server;
 using Sqlite.Common;
 using System;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using static DischargerV2.LOG.LogTrace;
+using static System.Windows.Forms.AxHost;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -80,16 +82,22 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     string dischargerName = ViewModelSetMode.Instance.Model.DischargerName;
 
-                    // UpdateData SetMode Data 
+                    // UpdateData Data 
                     var updateData = new TABLE_SYS_STS_SDC();
                     updateData.MC_CD = ViewModelLogin.Instance.Model.MachineCode;
                     updateData.MC_CH = ViewModelSetMode.Instance.Model.DischargerIndex + 1;
                     updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
+
+                    updateData.DischargeCapacity_Ah = string.Empty;
+                    updateData.DischargeCapacity_kWh = string.Empty;
+                    updateData.DischargePhase = string.Empty;
+
                     updateData.DischargeMode = string.Empty;
                     updateData.DischargeTarget = string.Empty;
                     updateData.LogFileName = string.Empty;
 
                     SqlClientStatus.UpdateData_Set(updateData);
+                    SqlClientStatus.UpdateData_Discharging(updateData);
                 }
 
                 // 방전 모드 설정 돌아가기

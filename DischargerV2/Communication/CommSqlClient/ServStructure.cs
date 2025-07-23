@@ -38,4 +38,16 @@ namespace SqlClient.Server
 
         public DateTime MC_DTM { get; set; }
     }
+
+    public class TABLE_QLT_HISTORY_ALARM
+    {
+        public string MTYPE { get; set; }
+        public string MC_CD { get; set; }
+        public int CH_NO { get; set; }
+        public int Alarm_Treat { get; set; }
+        public DateTime Alarm_Time { get; set; }
+        public int Alarm_Code { get; set; }
+        public string Alarm_Desc { get; set; }
+        public string Alarm_NewInserted { get; set; }
+    }
 }

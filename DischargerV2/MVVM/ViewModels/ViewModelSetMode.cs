@@ -283,6 +283,7 @@ namespace DischargerV2.MVVM.ViewModels
                 updateData.MC_CD = ViewModelLogin.Instance.Model.MachineCode;
                 updateData.MC_CH = Model.DischargerIndex + 1;
                 updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
+
                 updateData.DischargeMode = Model.Mode.ToString();
                 updateData.DischargeTarget = Model.TargetDetail;
                 updateData.LogFileName = Model.LogFileName;

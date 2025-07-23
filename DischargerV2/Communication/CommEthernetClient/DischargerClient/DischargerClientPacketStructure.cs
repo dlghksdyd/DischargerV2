@@ -8,7 +8,7 @@ using static Ethernet.Client.Discharger.ChannelInfo;
 
 namespace Ethernet.Client.Discharger
 {
-    public class DCCPacketConstant
+    public class PacketConstant
     {
         public const int PACKET_HEADER_SIZE = 14;
     }

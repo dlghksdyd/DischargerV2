@@ -488,7 +488,6 @@ namespace Ethernet.Client.Discharger
                         {
                             eDioControl = EDioControl.TowerLampRed;
 
-
                             //if (IsLampBuzzerUsed)
                             //{
                             //    SendCommand_LampControl(EDioControl.TowerLampRed, true);
@@ -1054,7 +1053,7 @@ namespace Ethernet.Client.Discharger
                 }
 
                 /// 커맨드 코드 가져오기
-                byte[] dataByteArray = readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, 6);
+                byte[] dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, 6);
                 SetSafetyCondition.Reply reply = dataByteArray.FromByteArrayToPacket<SetSafetyCondition.Reply>();
 
                 if (reply.CommandCode == ECommandCode.RequestCommand)
@@ -1073,7 +1072,7 @@ namespace Ethernet.Client.Discharger
                             (short)Marshal.SizeOf(typeof(ChannelInfo.Reply_Channel1)) :
                             (short)Marshal.SizeOf(typeof(ChannelInfo.Reply_Channel2));
 
-                    dataByteArray = readBuffer.ExtractSubArray(DCCPacketConstant.PACKET_HEADER_SIZE, length);
+                    dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
 
                     if (isSingle)
                     {
