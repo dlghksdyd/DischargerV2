@@ -18,6 +18,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>게시\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,7 +33,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -191,10 +191,6 @@
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientUtility.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />
-    <Compile Include="Communication\CommEthernetClient\EthernetClient.cs" />
-    <Compile Include="Communication\CommEthernetClient\EthernetClientBasic.cs" />
-    <Compile Include="Communication\CommSerialClient\SerialClient.cs" />
-    <Compile Include="Communication\CommSerialClient\SerialClientBasic.cs" />
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
@@ -202,6 +198,22 @@
     <Compile Include="Communication\CommSqlClient\ServStructure.cs" />
     <Compile Include="Ini\Ini.cs" />
     <Compile Include="Ini\IniDischarge.cs" />
+    <Compile Include="Languages\Strings\DynamicString.cs" />
+    <Compile Include="Languages\Strings\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Strings\Strings.en-US.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\Strings\Strings.ko-KR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.ko-KR.resx</DependentUpon>
+    </Compile>
     <Compile Include="LOG\Log.cs" />
     <Compile Include="LOG\LogDischarge.cs" />
     <Compile Include="LOG\LogTrace.cs" />
@@ -384,7 +396,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utility\OcvTable.cs" />
     <Compile Include="Utility\Converter.cs" />
-    <Compile Include="Utility\CommonUtility.cs" />
     <Compile Include="Utility\LogCsvFile.cs" />
     <Compile Include="MVVM\ViewModels\ViewModelLogin.cs" />
     <Compile Include="MVVM\Views\ViewLogin.xaml.cs">
@@ -569,8 +580,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Languages\Strings\Strings.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Strings\Strings.ko-KR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.ko-KR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Strings\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -591,6 +614,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\mcommunication\MCommunication\MCommunication.csproj">
+      <Project>{9e40c67a-9533-4a1f-8d4b-e47ab693b146}</Project>
+      <Name>MCommunication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\mexpress\MExpress\MExpress.csproj">
       <Project>{677acf60-8cdb-44ae-bbce-6dd0ecefcf25}</Project>
       <Name>MExpress</Name>
@@ -609,6 +636,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\en-US.png" />
+    <Resource Include="Images\ko-KR.png" />
     <Content Include="Scripts\update_msi_file_name.py" />
     <Content Include="Scripts\update_msi_version_info.py" />
     <Resource Include="icon_discharger.ico" />

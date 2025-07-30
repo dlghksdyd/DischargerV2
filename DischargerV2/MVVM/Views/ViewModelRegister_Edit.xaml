@@ -48,13 +48,14 @@
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Model" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Model]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xModelComboBox" 
                                          Width="220" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Selecet]}"
                                          ItemSource="{Binding Model.DischargerModelList, 
                                                             Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                             Mode=TwoWay}"
@@ -119,13 +120,14 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Type" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Type]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xTypeComboBox" 
                                          Width="112" Padding="12,8,12,8" 
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.TypeList, 
                                                                 Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                                 Mode=TwoWay}"
@@ -143,13 +145,14 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Channel" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Channel]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xChannelTextBox" TabIndex="0"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.Channel, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -163,13 +166,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltSpec (V)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltSpec]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xVoltSpecTextBox" TabIndex="1"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.VoltSpec, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -183,13 +187,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrSpec (A)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrSpec]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrSpecTextBox" TabIndex="2"
                                         Padding="12,8,12,8" 
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.CurrSpec, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -203,13 +208,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltMax (V)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltMax]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xColtMaxTextBox" TabIndex="3"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.VoltMax, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -223,13 +229,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltMin (V)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltMin]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xVoltMinTextBox" TabIndex="4"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.VoltMin, 
                                                         Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                         Mode=TwoWay}"
@@ -243,13 +250,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrMax (A)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrMax]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrMaxTextBox" TabIndex="5"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.CurrMax, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -263,13 +271,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrMin (A)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrMin]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xCurrMinTextBox" TabIndex="6"
                                         Padding="12,8,12,8" 
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.CurrMin, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -283,13 +292,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="TempMax (℃)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[TempMax]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xTempMaxTextBox" TabIndex="7"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TempMax, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"
@@ -303,13 +313,14 @@
                         BorderThickness="1,0,0,0">
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="TempMin (℃)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[TempMin]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xTempMinTextBox" TabIndex="8"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TempMin, 
                                                        Source={x:Static vm:ViewModelModelRegister_Edit.Instance}, 
                                                        Mode=TwoWay}"

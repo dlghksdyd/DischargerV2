@@ -1,20 +1,12 @@
 ﻿using DischargerV2.Ini;
 using DischargerV2.MVVM.Models;
-using DischargerV2.MVVM.Views;
-using MExpress.Mex;
-using Prism.Commands;
 using Prism.Mvvm;
 using SqlClient.Server;
-using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using static DischargerV2.MVVM.Models.ModelMain;
 
 namespace DischargerV2.MVVM.ViewModels

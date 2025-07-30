@@ -7,7 +7,6 @@
              xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
              xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
              xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              DataContext="{x:Static vm:ViewModelLogin.Instance}"
              d:DesignHeight="1080" d:DesignWidth="1920"
@@ -28,7 +27,7 @@
                    Source="{StaticResource Mex/ResImage/mintech_logo}"/>
             <Grid Height="80"/>
             <StackPanel>
-                <Mex:MexLabel Text="ID"
+                <Mex:MexLabel Text="{Binding Source={StaticResource DynamicString}, Path=[Id]}"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               HorizontalAlignment="Left"/>
@@ -36,7 +35,7 @@
                 <Mex:MexTextBox x:Name="xIdTextBox" TabIndex="0"
                                 Padding="12,8,12,8" 
                                 CornerRadius="8"
-                                WaterMark="Enter ID"
+                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Id]}"
                                 Text="{Binding Model.UserId, Mode=TwoWay}"
                                 Foreground="{StaticResource Mex/ResColor/text_body}"
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
@@ -45,7 +44,7 @@
             </StackPanel>
             <Grid Height="40"/>
             <StackPanel>
-                <Mex:MexLabel Text="Password"
+                <Mex:MexLabel Text="{Binding Source={StaticResource DynamicString}, Path=[Password]}"
                               Focusable="False"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
@@ -54,7 +53,7 @@
                 <Mex:MexPasswordBox x:Name="xPasswordBox" TabIndex="1"
                                     Padding="12,8,12,8" 
                                     CornerRadius="8"
-                                    WaterMark="Enter Password"
+                                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Password]}"
                                     Text="{Binding Model.Password, Mode=TwoWay}"
                                     Foreground="{StaticResource Mex/ResColor/text_body}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
@@ -69,7 +68,7 @@
             <Mex:MexButton x:Name="xLoginButton" Grid.Row="3" TabIndex="2"
                            Padding="24,16,24,16" HorizontalAlignment="Stretch"
                            CornerRadius="8"
-                           Text="Log In"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Log_In]}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            IsShadow="True"
@@ -79,6 +78,53 @@
                           HorizontalContentAlignment="Center"
                           Foreground="{StaticResource Mex/ResColor/text_body}"
                           FontSet="{StaticResource Mex/ResFontSet/body_lg_regular}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="40"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <StackPanel x:Name="xEnglishStackPanel" 
+                        Orientation="Vertical" Cursor="Hand"
+                        MouseLeftButtonUp="xEnglishStackPanel_MouseLeftButtonUp">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0"
+                           x:Name="xLanguageEnglish" 
+                           Width="50" Height="50" 
+                           Source="/Images/en-US.png"/>
+                    <Ellipse Grid.Row="0"
+                             Stroke="{StaticResource Mex/ResColor/border_primary}"
+                             StrokeThickness="1"/>
+                    <Mex:MexTextBlock Grid.Row="1"
+                                      Text="English" Padding="0 8 0 0" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                </Grid>
+            </StackPanel>
+            <Grid Width="32"/>
+            <StackPanel x:Name="xKoreanStackPanel" 
+                        Orientation="Vertical" Cursor="Hand"
+                        MouseLeftButtonUp="xKoreanStackPanel_MouseLeftButtonUp">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0"
+                           x:Name="xLanguageKorean" 
+                           Width="50" Height="50" 
+                           Source="/Images/ko-KR.png"/>
+                    <Ellipse Grid.Row="0"
+                             Stroke="{StaticResource Mex/ResColor/border_primary}"
+                             StrokeThickness="1"/>
+                    <Mex:MexTextBlock Grid.Row="1"
+                                      Text=" 한국어" Padding="0 8 0 0" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                </Grid>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

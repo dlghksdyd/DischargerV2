@@ -50,5 +50,15 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel.Login();
         }
+
+        private void xEnglishStackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.ChangeLanguage(Enums.ELanguage.English);
+        }
+
+        private void xKoreanStackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.ChangeLanguage(Enums.ELanguage.Korean);
+        }
     }
 }

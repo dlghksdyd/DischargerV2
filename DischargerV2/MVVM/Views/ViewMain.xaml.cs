@@ -1,4 +1,5 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.ViewModels;
 using Sqlite.Common;
 using System;

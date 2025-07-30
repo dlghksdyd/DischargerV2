@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.Properties;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

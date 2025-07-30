@@ -1043,7 +1043,7 @@ namespace Ethernet.Client.Discharger
             return true;
         }
 
-        private bool ParseData(byte[] readBuffer)
+        private bool ParseData(byte[] readBuffer, byte[] writeBuffer = null)
         {
             try
             {

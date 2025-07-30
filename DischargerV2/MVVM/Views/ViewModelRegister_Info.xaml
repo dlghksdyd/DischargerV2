@@ -40,7 +40,7 @@
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Model"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Model]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -102,7 +102,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Type"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Type]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -121,7 +121,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Channel"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Channel]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -140,7 +140,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltSpec (V)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltSpec]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -159,7 +159,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrSpec (A)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrSpec]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -178,7 +178,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltMax (V)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltMax]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -197,7 +197,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltMin (V)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltMin]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -216,7 +216,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0" 
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrMax (A)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrMax]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -235,7 +235,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0"  
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrMin (A)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrMin]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -254,7 +254,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0"  
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="TempMax (℃)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[TempMax]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -273,7 +273,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="20,0,20,0"  
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="TempMin (℃)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[TempMin]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>

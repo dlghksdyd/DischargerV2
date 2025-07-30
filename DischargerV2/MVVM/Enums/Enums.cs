@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DischargerV2.MVVM.Enums
 {
+    public enum ELanguage
+    {
+        [Description ("es-US")]
+        English,
+        [Description("ko-KR")]
+        Korean
+    }
+
     public enum EDischargeMode
     {
         Preset, Step, Simple

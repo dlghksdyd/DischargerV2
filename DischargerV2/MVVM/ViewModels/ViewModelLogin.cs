@@ -1,11 +1,18 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
+using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using Utility.Common;
 using System;
 using System.Windows;
 using static DischargerV2.Ini.IniDischarge;
 using static DischargerV2.LOG.LogTrace;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Windows.Markup;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -122,6 +129,12 @@ namespace DischargerV2.MVVM.ViewModels
 
                 new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, ex);
             }
+        }
+
+        public void ChangeLanguage(ELanguage eLanguage)
+        {
+            var _dynamicString = Application.Current.Resources["DynamicString"] as DynamicString;
+            _dynamicString.ChangeLanguage(eLanguage.ToDescription());
         }
 
         public bool IsLocalDb()

@@ -49,7 +49,8 @@
                     <StackPanel Grid.Column="0"
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Name" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Name]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -57,7 +58,7 @@
                                         Padding="12,8,12,8"
                                         CornerRadius="8"
                                         BorderThickness="1"
-                                        WaterMark="Enter Name"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Name]}"
                                         Text="{Binding Model.Name, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"
@@ -68,7 +69,8 @@
                     <StackPanel Grid.Column="2" 
                                 Orientation="Vertical"
                                 VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="IP" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Ip]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
@@ -76,7 +78,7 @@
                                         Padding="12,8,12,8"
                                         CornerRadius="8"
                                         BorderThickness="1"
-                                        WaterMark="Enter IP"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Ip]}"
                                         Text="{Binding Model.Ip, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"
@@ -124,7 +126,7 @@
                     <ColumnDefinition Width="569"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBlock Grid.Column="0" IsTabStop="False"
-                                  Text="Discharger"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Discharger]}"
                                   BorderBrush="{StaticResource Mex/ResColor/border_primary}"
                                   BorderThickness="0,0,1,0"
                                   Foreground="{StaticResource Mex/ResColor/text_headings}"
@@ -137,7 +139,7 @@
                                      IsChecked="{Binding Model.IsTempModule, 
                                                          Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                          Mode=TwoWay}"
-                                     Text="Temperature Module"
+                                     Text="{Binding Source={StaticResource DynamicString}, Path=[TempModule]}"
                                      Foreground="{StaticResource Mex/ResColor/text_headings}"
                                      FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                      ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"/>
@@ -160,13 +162,14 @@
                         BorderThickness="0,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Model" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Model]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xModelComboBox" 
                                          Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.DischargerModelList, 
                                                               Mode=TwoWay,
                                                               Source={x:Static vm:ViewModelDeviceRegister_Add.Instance}}"
@@ -192,13 +195,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Type" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Type]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xTypeComboBox" 
                                          Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.TypeList, 
                                                               Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                               Mode=TwoWay}"
@@ -224,13 +228,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Channel" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Channel]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xChannelComboBox" 
                                          Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.ChannelList, 
                                                               Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                               Mode=TwoWay}"
@@ -256,13 +261,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="VoltSpec(V)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[VoltSpec]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xVoltSpecComboBox" 
                                          Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.VoltSpecList, 
                                                               Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                               Mode=TwoWay}"
@@ -288,13 +294,14 @@
                           BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="CurrSpec(A)" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrSpec]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexComboBox x:Name="xCurrSpecComboBox" 
                                          Width="150" Padding="12,8,12,8"
-                                         WaterMark="Select"
+                                         WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Select]}"
                                          ItemSource="{Binding Model.CurrSpecList, 
                                                               Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                               Mode=TwoWay}"
@@ -320,13 +327,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="Comport" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Comport]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xComportTextBox" TabIndex="2"
                                         Width="150" Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.Comport, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"
@@ -340,13 +348,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="ModuleChannel" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[ModuleChannel]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xModuleChannelTextBox" TabIndex="3"
                                         Width="150" Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.ModuleChannel, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"
@@ -360,13 +369,14 @@
                         BorderThickness="1,1,0,0">
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Mex:MexTextBlock Text="TempChannel" IsTabStop="False"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[TempChannel]}" 
+                                          IsTabStop="False"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xTempChannelTextBox" TabIndex="4"
                                         Width="150" Padding="12,8,12,8"
-                                        WaterMark="Enter"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TempChannel, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"

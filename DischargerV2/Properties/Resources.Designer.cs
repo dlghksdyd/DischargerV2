@@ -22,7 +22,7 @@ namespace DischargerV2.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace DischargerV2.Properties {
         ///   이 클래스에서 사용하는 캐시된 ResourceManager 인스턴스를 반환합니다.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DischargerV2.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,38 @@ namespace DischargerV2.Properties {
         ///   재정의합니다.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;root&gt;
+        ///  &lt;!-- 
+        ///		Microsoft ResX Schema
+        ///
+        ///		Version 1.3
+        ///
+        ///		The primary goals of this format is to allow a simple XML format 
+        ///		that is mostly human readable. The generation and parsing of the 
+        ///		various data types are done through the TypeConverter classes 
+        ///		associated with the data types.
+        ///
+        ///		Example:
+        ///
+        ///		... ado.net/XML headers &amp; schema ...
+        ///		&lt;resheader name=&quot;resmimetype&quot;&gt;text/microsoft-resx&lt;/resheader&gt;
+        ///		&lt;resheader name=&quot;version&quot;&gt;1.3&lt;/resheader&gt;
+        ///		&lt;res[나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Strings {
+            get {
+                return ResourceManager.GetString("Strings", resourceCulture);
             }
         }
     }
