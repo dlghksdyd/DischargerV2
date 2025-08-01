@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -16,15 +17,24 @@ namespace Ethernet.Client.Discharger
     {
         None = 0x0,
 
+        [Description("연결 끊김")]
         Disconnected = 0x10,
+        [Description("연결 중")]
         Connecting = 0x11,
+        [Description("대기 중")]
         Ready = 0x12,
+        [Description("방전 중")]
         Discharging = 0x13,
+        [Description("일시 정지")]
         Pause = 0x14,
 
+        [Description("안전 조건 범위 초과 오류 발생")]
         SafetyOutOfRange = 0x20,
+        [Description("반환 코드 오류 발생")]
         ReturnCodeError = 0x21,
+        [Description("채널 상태 오류 발생")]
         ChStatusError = 0x22,
+        [Description("장비 오류 발생")]
         DeviceError = 0x23,
     }
 

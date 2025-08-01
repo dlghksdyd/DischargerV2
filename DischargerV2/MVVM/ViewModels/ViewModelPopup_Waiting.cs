@@ -36,6 +36,7 @@ namespace DischargerV2.MVVM.ViewModels
             get => _comment;
             set
             {
+                value = value.Replace("?", "?\r\n").Replace(".", ".\r\n");
                 SetProperty(ref _comment, value);
             }
         }

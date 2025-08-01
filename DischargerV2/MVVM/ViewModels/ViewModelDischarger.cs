@@ -16,6 +16,7 @@ using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Diagnostics;
+using DischargerV2.Languages.Strings;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -725,52 +726,51 @@ namespace DischargerV2.MVVM.ViewModels
 
             string title = string.Empty;
             string comment = string.Empty;
+
+            string _channel = new DynamicString().GetDynamicString("Channel");
+            string _unknownError = new DynamicString().GetDynamicString("PopupError_Comment_UnknownError");
+            string _description = new DynamicString().GetDynamicString("PopupError_Comment_Description");
+            string _errorCode = new DynamicString().GetDynamicString("PopupError_Comment_ErrorCode");
+            string _cause = new DynamicString().GetDynamicString("PopupError_Comment_Cause");
+            string _solution = new DynamicString().GetDynamicString("PopupError_Comment_Solution");
+            string _unknown = new DynamicString().GetDynamicString("PopupError_Comment_Unknown");
+
             if (tableDischargerErrorCode == null)
             {
-                title = "Unknown error.";
-                comment = string.Format(
-                "{0} (Channel: {1})\n\n" +
-                "{2} 오류입니다.\n" +
-                "(Error Code: 0x{3})\n\n" +
-                "원인: \n{4}\n\n" +
-                "해결 방법: \n{5}",
-                dischargerName, Model[index].DischargerInfo.Channel,
-                "알 수 없는",
-                errorCode.ToString("X"),
-                "알 수 없음",
-                "알 수 없음");
+                title = new DynamicString().GetDynamicString("PopupError_Title_Unknown");
+                comment = 
+                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                    $"{_unknownError}\n" +
+                    $"({_errorCode}: 0x{errorCode.ToString("X")})\n\n" +
+                    $"{_cause}: \n" +
+                    $"{_unknown}\n\n" +
+                    $"{_solution}: \n" +
+                    $"{_unknown}";
             }
             // 접점부 에러 발생 시, DIO 상태 값 표시 추가
             else if (tableDischargerErrorCode.Code == 0xA00000FF)
             {
                 title = tableDischargerErrorCode.Title;
-                comment = string.Format(
-                "{0} (Channel: {1})\n\n" +
-                "{2} 오류입니다.\n" +
-                "(Error Code: 0x{3} (0x{4}))\n\n" +
-                "원인: \n{5}\n\n" +
-                "해결 방법: \n{6}",
-                dischargerName, Model[index].DischargerInfo.Channel,
-                tableDischargerErrorCode.Description,
-                tableDischargerErrorCode.Code.ToString("X"),
-                Model[index].DischargerData.DiModuleInfo.ToString("X2"),
-                tableDischargerErrorCode.Cause,
-                tableDischargerErrorCode.Action);
+                comment = 
+                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                    $"{tableDischargerErrorCode.Description} {_description}\n" +
+                    $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")} (0x{Model[index].DischargerData.DiModuleInfo.ToString("X2")}))\n\n" +
+                    $"{_cause}: \n" +
+                    $"{tableDischargerErrorCode.Cause}\n\n" +
+                    $"{_solution}: \n" +
+                    $"{tableDischargerErrorCode.Action}";
             }
             else
             {
                 title = tableDischargerErrorCode.Title;
-                comment = string.Format(
-                "{0} (Channel: {1})\n\n" +
-                "{2} 오류입니다.\n" +
-                "(Error Code: 0x{3})\n\n" +
-                "원인: \n{4}\n\n" +
-                "해결 방법: \n{5}",
-                dischargerName, Model[index].DischargerInfo.Channel,
-                tableDischargerErrorCode.Description,
-                tableDischargerErrorCode.Code.ToString("X"),
-                tableDischargerErrorCode.Cause,
-                tableDischargerErrorCode.Action);
+                comment =
+                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                    $"{tableDischargerErrorCode.Description} {_description}\n" +
+                    $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")})\n\n" +
+                    $"{_cause}: \n" +
+                    $"{tableDischargerErrorCode.Cause}\n\n" +
+                    $"{_solution}: \n" +
+                    $"{tableDischargerErrorCode.Action}";
             }
 
             ViewModelPopup_Error viewModelPopup_Error = new ViewModelPopup_Error()

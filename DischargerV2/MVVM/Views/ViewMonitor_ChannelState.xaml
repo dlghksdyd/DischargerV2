@@ -22,7 +22,7 @@
                 CornerRadius="{StaticResource Mex/ResCornerRadius/radius_lg}" 
                 Background="{StaticResource Mex/ResColor/surface_disabled}">
             <StackPanel Orientation="Horizontal">
-                <Mex:MexTextBlock Text="All Channel"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[AllChannel]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>
@@ -41,7 +41,7 @@
                 CornerRadius="{StaticResource Mex/ResCornerRadius/radius_lg}" 
                 Background="{StaticResource Mex/ResColor/surface_disabled}">
             <StackPanel Orientation="Horizontal">
-                <Mex:MexTextBlock Text="Connected Channel"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[ConnectedChannel]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>
@@ -60,7 +60,7 @@
                 CornerRadius="{StaticResource Mex/ResCornerRadius/radius_lg}" 
                 Background="{StaticResource Mex/ResColor/surface_error}">
             <StackPanel Orientation="Horizontal">
-                <Mex:MexTextBlock Text="Fault Channel"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[FaultChannel]}"
                                   Foreground="{StaticResource Mex/ResColor/text_error}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"/>
                 <Grid Width="8"/>

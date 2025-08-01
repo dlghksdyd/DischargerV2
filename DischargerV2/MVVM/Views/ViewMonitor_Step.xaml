@@ -30,10 +30,22 @@
                         <ColumnDefinition Width="150" SharedSizeGroup="Group2"></ColumnDefinition>
                         <ColumnDefinition Width="140" SharedSizeGroup="Group3"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Mex:MexTextBlock Grid.Column="0" Margin="24 0 0 0" Text="No" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                    <Mex:MexTextBlock Grid.Column="1" Margin="0" Text="Mode" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                    <Mex:MexTextBlock Grid.Column="2" Margin="0" Text="Voltage (V)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                    <Mex:MexTextBlock Grid.Column="3" Margin="0" Text="Current (A)" Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    <Mex:MexTextBlock Grid.Column="0" Margin="24 0 0 0" 
+                                      Text="{Binding Source={StaticResource DynamicString}, Path=[No]}" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    <Mex:MexTextBlock Grid.Column="1" Margin="0" 
+                                      Text="{Binding Source={StaticResource DynamicString}, Path=[Mode]}" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    <Mex:MexTextBlock Grid.Column="2" Margin="0" 
+                                      Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
+                    <Mex:MexTextBlock Grid.Column="3" Margin="0" 
+                                      Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}" 
+                                      Foreground="{StaticResource Mex/ResColor/text_headings}" 
+                                      FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 </Grid>
             </Border>
             <Grid Grid.Row="1" Background="{StaticResource Mex/ResColor/surface_primary}">

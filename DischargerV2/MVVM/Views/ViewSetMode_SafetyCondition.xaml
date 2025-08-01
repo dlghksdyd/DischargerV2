@@ -25,7 +25,7 @@
             BorderThickness="1"
             Background="{StaticResource Mex/ResColor/surface_page}">
         <StackPanel Orientation="Vertical" Margin="24">
-            <Mex:MexTextBlock Text="Safety Condition"
+            <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[SafetyCondition]}"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
             <Grid Height="16"/>
@@ -35,7 +35,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBlock Grid.Column="0" IsTabStop="False" 
-                                  Text="Voltage (V)"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
@@ -72,7 +72,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBlock Grid.Column="0" IsTabStop="False"
-                                  Text="Current (A)"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
@@ -109,7 +109,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBlock Grid.Column="0" IsTabStop="False"
-                                  Text="Temperature (℃)"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Temperature]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"/>

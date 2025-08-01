@@ -44,7 +44,7 @@
                       Background="{StaticResource Mex/ResColor/surface_primary}">
                     <StackPanel x:Name="xModeSelectStackPanel" 
                                 Orientation="Vertical" Margin="1,20,0,20">
-                        <Mex:MexTextBlock Text="Pre-set Mode"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[PreSetMode]}"
                                           Foreground="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToForegroundConverter},
@@ -72,7 +72,7 @@
                             </b:Interaction.Triggers>
                         </Mex:MexTextBlock>
                         <Mex:MexTextBlock x:Name="xStepTextBlock"
-                                          Text="Step Mode"
+                                          Text="{Binding Source={StaticResource DynamicString}, Path=[StepMode]}"
                                           Foreground="{Binding Model.Mode,
                                                                Mode=TwoWay,
                                                                Converter={StaticResource EModeToForegroundConverter},
@@ -100,7 +100,7 @@
                             </b:Interaction.Triggers>
                         </Mex:MexTextBlock>
                         <Mex:MexTextBlock x:Name="xSimpleTextBlock"
-                                          Text="Simple Mode"
+                                          Text="{Binding Source={StaticResource DynamicString}, Path=[SimpleMode]}"
                                           Foreground="{Binding Model.Mode, 
                                                                Mode=TwoWay, 
                                                                Converter={StaticResource EModeToForegroundConverter},
@@ -162,15 +162,18 @@
             <view:ViewSetMode_SafetyCondition Grid.Row="0"/>
             <Mex:MexButton x:Name="xStartButton" Grid.Row="2"
                            Padding="24,16,24,16"
-                           Text="Start Discharge"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[StartDischarge]}"
                            TextPadding="12,0,0,0"
                            FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            ImageWidth="28" ImageHeight="28"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/StartButtonTertiary}"
                            HorizontalAlignment="Stretch"
-                           Click="xStartButton_Click"
-                           IsEnabled="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, Path=SelectedModel.DischargerState, Converter={StaticResource EDischargerStateToBoolConverter}, ConverterParameter=Ready}">
+                           IsEnabled="{Binding Source={x:Static vm:ViewModelDischarger.Instance}, 
+                                               Path=SelectedModel.DischargerState, 
+                                               Converter={StaticResource EDischargerStateToBoolConverter}, 
+                                               ConverterParameter=Ready}"
+                           Click="xStartButton_Click">
             </Mex:MexButton>
         </Grid>
     </Grid>

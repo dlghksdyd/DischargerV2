@@ -25,7 +25,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Mex:MexTextBlock Text="Model Register"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[ModelRegister]}"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 <Image x:Name="xCloseImage" 
@@ -50,7 +50,7 @@
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
                                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddDeviceButtonOutline}"
-                               Text="New Data"
+                               Text="{Binding Source={StaticResource DynamicString}, Path=[AddNewModel]}"
                                TextPadding="12,0,0,0"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
@@ -78,7 +78,7 @@
                                     <Image Width="60" Height="81"
                                            Source="{StaticResource Mex/ResImage/Inbox}"/>
                                     <Grid Height="7"/>
-                                    <Mex:MexTextBlock Text="No Data"
+                                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[NoData]}"
                                                       Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                                       FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                                 </StackPanel>

@@ -63,7 +63,7 @@
             <Mex:MexButton x:Name="xResetButton"
                            Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Reset"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Reset]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Error}"
                            Cursor="Hand">
@@ -77,7 +77,7 @@
             <Grid Width="12"/>
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Cancel"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Cancel]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
                            Cursor="Hand">

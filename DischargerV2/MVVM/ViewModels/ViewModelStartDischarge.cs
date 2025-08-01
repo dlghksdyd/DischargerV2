@@ -1,4 +1,5 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
 using MExpress.Mex;
@@ -102,12 +103,16 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Pause");
+                    var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
+
+                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait to pause",
-                        Comment = $"Discharger Name: {Model.DischargerName}",
+                        Title = title,
+                        Comment = $"{comment}: {Model.DischargerName}",
                     };
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
                 });
 
@@ -145,12 +150,16 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Resume");
+                    var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
+
+                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait to resume",
-                        Comment = $"Discharger Name: {Model.DischargerName}",
+                        Title = title,
+                        Comment = $"{comment}: {Model.DischargerName}",
                     };
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                    
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
                 });
 
@@ -207,12 +216,16 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelPopup_Waiting popupWaiting = new ViewModelPopup_Waiting()
+                    var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Stop");
+                    var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
+
+                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait to stop",
-                        Comment = $"Discharger Name: {Model.DischargerName}",
+                        Title = title,
+                        Comment = $"{comment}: {Model.DischargerName}",
                     };
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(popupWaiting);
+                    
+                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
                     ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
                 });
 

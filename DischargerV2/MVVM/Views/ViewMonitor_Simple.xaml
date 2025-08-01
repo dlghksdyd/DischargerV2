@@ -31,7 +31,7 @@
                 CornerRadius="8"
                 Background="{StaticResource Mex/ResColor/surface_primary}">
             <StackPanel Orientation="Vertical" Margin="12">
-                <Mex:MexTextBlock Text="Discharger Target"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[DischargeTarget]}"
                                   Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="8"/>
@@ -61,7 +61,7 @@
                     CornerRadius="8"
                     Background="{StaticResource Mex/ResColor/surface_primary}">
                 <StackPanel Orientation="Vertical" Margin="12">
-                    <Mex:MexTextBlock Text="Standard Capacity (Ah)"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Capacity]}"
                                       Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     <Grid Height="8"/>
@@ -78,7 +78,7 @@
                     CornerRadius="8"
                     Background="{StaticResource Mex/ResColor/surface_primary}">
                 <StackPanel Orientation="Vertical" Margin="12">
-                    <Mex:MexTextBlock Text="Standard Voltage (V)"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[NominalVoltage]}"
                                       Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                     <Grid Height="8"/>

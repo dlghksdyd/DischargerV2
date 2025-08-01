@@ -34,7 +34,7 @@
             <Mex:MexButton x:Name="xSettingButton" Grid.Column="4" 
                            Padding="24,9,24,9"
                            CornerRadius="4"
-                           Text="Settings"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Settings]}"
                            TextPadding="12,0,0,0"
                            Foreground="{StaticResource Mex/ResColor/text_on_action}"
                            FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"

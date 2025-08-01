@@ -1,4 +1,5 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
@@ -62,12 +63,16 @@ namespace DischargerV2.MVVM.ViewModels
                         var viewModelDischarger = ViewModelDischarger.Instance;
                         if (viewModelDischarger.IsDischarging())
                         {
+                            var title = new DynamicString().GetDynamicString("PopupWarning_Title");
+                            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_CloseProgram");
+
                             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
-                                Title = "Warning",
-                                Comment = "Please stop discharging before opening this popup.",
-                                CancelButtonVisibility = Visibility.Hidden,
+                                Title = title,
+                                Comment = comment,
+                                CancelButtonVisibility = Visibility.Hidden
                             };
+
                             viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
                             viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
                             return;

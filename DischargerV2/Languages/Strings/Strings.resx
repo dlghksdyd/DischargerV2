@@ -103,13 +103,13 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Enter_Id" xml:space="preserve">
+  <data name="EnterId" xml:space="preserve">
     <value>Enter ID</value>
   </data>
-  <data name="Enter_Password" xml:space="preserve">
+  <data name="EnterPassword" xml:space="preserve">
     <value>Enter Password</value>
   </data>
-  <data name="Log_In" xml:space="preserve">
+  <data name="Login" xml:space="preserve">
     <value>Log In</value>
   </data>
   <data name="Name" xml:space="preserve">
@@ -118,10 +118,10 @@
   <data name="Ip" xml:space="preserve">
     <value>IP</value>
   </data>
-  <data name="Enter_Name" xml:space="preserve">
+  <data name="EnterName" xml:space="preserve">
     <value>Enter Name</value>
   </data>
-  <data name="Enter_Ip" xml:space="preserve">
+  <data name="EnterIp" xml:space="preserve">
     <value>Enter IP</value>
   </data>
   <data name="Model" xml:space="preserve">
@@ -173,9 +173,9 @@
     <value>Voltage (V)</value>
   </data>
   <data name="Current" xml:space="preserve">
-    <value>Current (C)</value>
+    <value>Current (A)</value>
   </data>
-  <data name="Temp" xml:space="preserve">
+  <data name="Temperature" xml:space="preserve">
     <value>Temperature (℃)</value>
   </data>
   <data name="ProgressTime" xml:space="preserve">
@@ -210,5 +210,278 @@
   </data>
   <data name="TempMin" xml:space="preserve">
     <value>TempMin (℃)</value>
+  </data>
+  <data name="AllChannel" xml:space="preserve">
+    <value>All Channel</value>
+  </data>
+  <data name="ConnectedChannel" xml:space="preserve">
+    <value>Connected Channel</value>
+  </data>
+  <data name="FaultChannel" xml:space="preserve">
+    <value>Fault Channel</value>
+  </data>
+  <data name="Voltage_NoUnits" xml:space="preserve">
+    <value>Voltage</value>
+  </data>
+  <data name="Current_NoUnits" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Temp_NoUnits" xml:space="preserve">
+    <value>Temp.</value>
+  </data>
+  <data name="Soc_NoUnits" xml:space="preserve">
+    <value>SoC</value>
+  </data>
+  <data name="DischargeTarget" xml:space="preserve">
+    <value>Discharge Target</value>
+  </data>
+  <data name="BatteryType" xml:space="preserve">
+    <value>Battery Type</value>
+  </data>
+  <data name="MonitorValues" xml:space="preserve">
+    <value>Monitor Values</value>
+  </data>
+  <data name="Temp" xml:space="preserve">
+    <value>Temp. (℃)</value>
+  </data>
+  <data name="Soc" xml:space="preserve">
+    <value>SoC (%)</value>
+  </data>
+  <data name="SafetyCondition" xml:space="preserve">
+    <value>Safety Condition</value>
+  </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>Capacity (Ah)</value>
+  </data>
+  <data name="NominalVoltage" xml:space="preserve">
+    <value>Nominal Voltage (V)</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>Create New User</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="ReEnterPassword" xml:space="preserve">
+    <value>Re-enter Password</value>
+  </data>
+  <data name="EnterUserName" xml:space="preserve">
+    <value>Enter User Name</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="DeviceRegister" xml:space="preserve">
+    <value>Device Register</value>
+  </data>
+  <data name="AddNewDevice" xml:space="preserve">
+    <value>Add New Device</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>No Data</value>
+  </data>
+  <data name="UserSetting" xml:space="preserve">
+    <value>User Setting</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm New Password</value>
+  </data>
+  <data name="ReEnterNewPassword" xml:space="preserve">
+    <value>Re-enter New Password</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EnterCurrentPassword" xml:space="preserve">
+    <value>Enter Current Password</value>
+  </data>
+  <data name="EnterNewPassword" xml:space="preserve">
+    <value>Enter New Password</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ModelRegister" xml:space="preserve">
+    <value>Model Register</value>
+  </data>
+  <data name="AddNewModel" xml:space="preserve">
+    <value>Add New Model</value>
+  </data>
+  <data name="PleaseEnterLogFileName" xml:space="preserve">
+    <value>Please enter the LogFileName</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Log-out</value>
+  </data>
+  <data name="CurrentSoc" xml:space="preserve">
+    <value>Current SoC (%)</value>
+  </data>
+  <data name="FullDischarge" xml:space="preserve">
+    <value>Full Discharge</value>
+  </data>
+  <data name="0vDischarge" xml:space="preserve">
+    <value>0V Discharge</value>
+  </data>
+  <data name="TargetVoltage" xml:space="preserve">
+    <value>Target Voltage (V)</value>
+  </data>
+  <data name="TargetSoc" xml:space="preserve">
+    <value>Target SoC (%)</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Step 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Step 2</value>
+  </data>
+  <data name="InputVoltageNCapacity" xml:space="preserve">
+    <value>Input Voltage and Capacity</value>
+  </data>
+  <data name="SelectDischargeTarget" xml:space="preserve">
+    <value>Select Discharge Target</value>
+  </data>
+  <data name="CapacityOptional" xml:space="preserve">
+    <value>Capacity (Ah) [Optional]</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="AddStep" xml:space="preserve">
+    <value>Add Step</value>
+  </data>
+  <data name="PreSetMode" xml:space="preserve">
+    <value>Pre-set Mode</value>
+  </data>
+  <data name="StepMode" xml:space="preserve">
+    <value>Step Mode</value>
+  </data>
+  <data name="SimpleMode" xml:space="preserve">
+    <value>Simple Mode</value>
+  </data>
+  <data name="CRate" xml:space="preserve">
+    <value>C-Rate</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="AddNewUser" xml:space="preserve">
+    <value>Add New User</value>
+  </data>
+  <data name="StartDischarge" xml:space="preserve">
+    <value>Start Discharge</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteDevice" xml:space="preserve">
+    <value>Delete Device</value>
+  </data>
+  <data name="PopupWarning_Comment_Delete" xml:space="preserve">
+    <value>Are you sure you want to delete this data?Once you confirm, this data will be permanetly deleted.</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteModel" xml:space="preserve">
+    <value>Delete Model</value>
+  </data>
+  <data name="PopupWarning_Title" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="PopupWarning_Comment_FailStart" xml:space="preserve">
+    <value>Failed to start discharge.Please try again or contact an administrator.</value>
+  </data>
+  <data name="PopupWarning_Comment_CloseProgram" xml:space="preserve">
+    <value>Cannot close the program while discharging.Please stop the discharge first.</value>
+  </data>
+  <data name="PopupWarning_Comment_OpenPopup" xml:space="preserve">
+    <value>Cannot proceed with this operation while discharging.\r\nPlease stop the discharge first.</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteUser" xml:space="preserve">
+    <value>Delete User</value>
+  </data>
+  <data name="PopupWaiting_Title_Start" xml:space="preserve">
+    <value>Processing discharge start command.</value>
+  </data>
+  <data name="PopupWaiting_Comment" xml:space="preserve">
+    <value>Discharger Name</value>
+  </data>
+  <data name="PopupWaiting_Title_Pause" xml:space="preserve">
+    <value>Processing discharge pause command.</value>
+  </data>
+  <data name="PopupWaiting_Title_Resume" xml:space="preserve">
+    <value>Processing discharge Resume command.</value>
+  </data>
+  <data name="PopupWaiting_Title_Stop" xml:space="preserve">
+    <value>Processing discharge Stop command.</value>
+  </data>
+  <data name="PopupError_Title_Unknown" xml:space="preserve">
+    <value>Unknown error.</value>
+  </data>
+  <data name="PopupError_Comment_UnknownError" xml:space="preserve">
+    <value>Unknown error.</value>
+  </data>
+  <data name="PopupError_Comment_Cause" xml:space="preserve">
+    <value>Cause</value>
+  </data>
+  <data name="PopupError_Comment_Solution" xml:space="preserve">
+    <value>Solution</value>
+  </data>
+  <data name="PopupError_Comment_Description" xml:space="preserve">
+    <value>Error.</value>
+  </data>
+  <data name="PopupError_Comment_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="PopupError_Comment_ErrorCode" xml:space="preserve">
+    <value>Error Code</value>
+  </data>
+  <data name="PopupInfo_Title_Logout" xml:space="preserve">
+    <value>Confirm Log-out</value>
+  </data>
+  <data name="PopupInfo_Comment_Logout" xml:space="preserve">
+    <value>Are you sure you want to log out?</value>
+  </data>
+  <data name="PopupWarning_Title_NoPermission" xml:space="preserve">
+    <value>No permission</value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionDevice" xml:space="preserve">
+    <value>You don't have permission to view device registration information. </value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionModel" xml:space="preserve">
+    <value>You don't have permission to view model registration information. </value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionUser" xml:space="preserve">
+    <value>You don't have permission to view user registration information. </value>
   </data>
 </root>

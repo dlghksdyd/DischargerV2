@@ -55,7 +55,7 @@
             </Image>
         </Grid>
         <StackPanel Orientation="Vertical" Grid.Row="2">
-            <Mex:MexTextBox WaterMark="Enter LogFileName" 
+            <Mex:MexTextBox WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}" 
                             Padding="12,8,12,8"
                             CornerRadius="8"
                             Text="{Binding Model.Comment, 
@@ -74,7 +74,7 @@
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="{Binding Model.ConfirmText, FallbackValue=Confirm}"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Confirm]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Tertiary}"
                            IsEnabled="{Binding IsEnabledConfirm, 
@@ -90,7 +90,7 @@
             <Grid Width="12"/>
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Cancel"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Cancel]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"
                            Cursor="Hand">

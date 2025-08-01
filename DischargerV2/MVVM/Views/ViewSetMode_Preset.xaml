@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
             <StackPanel x:Name="xBatteryTypeStackPanel" Grid.Row="0" 
                         Orientation="Vertical">
-                <Mex:MexLabel Text="Battery Type" 
+                <Mex:MexLabel Text="{Binding Source={StaticResource DynamicString}, Path=[BatteryType]}" 
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               ImageWidth="6" ImageHeight="6"
@@ -71,7 +71,7 @@
                 </Mex:MexItemBox>
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Mex:MexTextBlock Text="Current SoC (%)"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrentSoc]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Grid Width="12"/>
@@ -81,7 +81,7 @@
                                 IsReadOnly="True"/>
             </StackPanel>
             <StackPanel Grid.Row="4" Orientation="Vertical">
-                <Mex:MexLabel Text="Discharge Target" 
+                <Mex:MexLabel Text="{Binding Source={StaticResource DynamicString}, Path=[DischargeTarget]}" 
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               ImageWidth="6" ImageHeight="6"
@@ -103,7 +103,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Mex:MexRadioButton GroupName="DischargeTarget" Grid.Column="0"
-                                        Text="Full Discharge"
+                                        Text="{Binding Source={StaticResource DynamicString}, Path=[FullDischarge]}"
                                         TextPadding="12" ButtonSize="24"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -114,7 +114,7 @@
                                                             Converter={StaticResource EDischargeTargetToBoolConverter},
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Full}}"/>
                     <Mex:MexRadioButton GroupName="DischargeTarget" Grid.Column="2"
-                                        Text="0V Discharge"
+                                        Text="{Binding Source={StaticResource DynamicString}, Path=[0vDischarge]}"
                                         TextPadding="12" ButtonSize="24"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -127,7 +127,7 @@
                     <StackPanel Orientation="Horizontal" Grid.Column="4">
                         <Mex:MexRadioButton GroupName="DischargeTarget"
                                             x:Name="xTargetVoltageRadioButton"
-                                            Text="Target Voltage (V)"
+                                            Text="{Binding Source={StaticResource DynamicString}, Path=[TargetVoltage]}"
                                             TextPadding="12,0,0,0" ButtonSize="24"
                                             Foreground="{StaticResource Mex/ResColor/text_body}"
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -140,7 +140,7 @@
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"
                                         Padding="12,8,12,8" Width="130"
-                                        WaterMark="Enter Voltage"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TargetVoltage, 
                                                        Mode=TwoWay, 
                                                        Converter={StaticResource IsDoubleConverter}}"
@@ -151,7 +151,7 @@
                     <StackPanel Orientation="Horizontal" Grid.Column="6">
                         <Mex:MexRadioButton GroupName="DischargeTarget"
                                             x:Name="xTargetSocRadioButton"
-                                            Text="Target SoC (%)"
+                                            Text="{Binding Source={StaticResource DynamicString}, Path=[TargetSoc]}"
                                             TextPadding="12,0,0,0" ButtonSize="24"
                                             Foreground="{StaticResource Mex/ResColor/text_body}"
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -164,7 +164,7 @@
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetSoCTextBox"
                                         Padding="12,8,12,8" Width="120"
-                                        WaterMark="Enter SoC"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TargetSoC, 
                                                        Mode=TwoWay, 
                                                        Converter={StaticResource IsInt32Converter}}"

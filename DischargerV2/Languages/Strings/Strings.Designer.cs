@@ -61,6 +61,105 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   0V Discharge과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string _0vDischarge {
+            get {
+                return ResourceManager.GetString("0vDischarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add New Device과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string AddNewDevice {
+            get {
+                return ResourceManager.GetString("AddNewDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add New Model과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string AddNewModel {
+            get {
+                return ResourceManager.GetString("AddNewModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add New User과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string AddNewUser {
+            get {
+                return ResourceManager.GetString("AddNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Add Step과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string AddStep {
+            get {
+                return ResourceManager.GetString("AddStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Admin과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Admin {
+            get {
+                return ResourceManager.GetString("Admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   All Channel과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string AllChannel {
+            get {
+                return ResourceManager.GetString("AllChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Battery Type과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string BatteryType {
+            get {
+                return ResourceManager.GetString("BatteryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cancel과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Capacity (Ah)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Capacity {
+            get {
+                return ResourceManager.GetString("Capacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Capacity (Ah) [Optional]과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CapacityOptional {
+            get {
+                return ResourceManager.GetString("CapacityOptional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Channel과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Channel {
@@ -79,11 +178,101 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
-        ///   Current (C)과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Confirm과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm New Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ConfirmNewPassword {
+            get {
+                return ResourceManager.GetString("ConfirmNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Connected Channel과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ConnectedChannel {
+            get {
+                return ResourceManager.GetString("ConnectedChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   C-Rate과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CRate {
+            get {
+                return ResourceManager.GetString("CRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Create과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Create New User과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CreateNewUser {
+            get {
+                return ResourceManager.GetString("CreateNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current (A)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Current {
             get {
                 return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Current_NoUnits {
+            get {
+                return ResourceManager.GetString("Current_NoUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CurrentPassword {
+            get {
+                return ResourceManager.GetString("CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current SoC (%)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string CurrentSoc {
+            get {
+                return ResourceManager.GetString("CurrentSoc", resourceCulture);
             }
         }
         
@@ -115,6 +304,15 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Device Register과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string DeviceRegister {
+            get {
+                return ResourceManager.GetString("DeviceRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Discharger과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Discharger {
@@ -133,6 +331,24 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Discharge Target과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string DischargeTarget {
+            get {
+                return ResourceManager.GetString("DischargeTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Edit과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Enter과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Enter {
@@ -142,38 +358,65 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Enter Current Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterCurrentPassword {
+            get {
+                return ResourceManager.GetString("EnterCurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Enter ID과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string Enter_Id {
+        public static string EnterId {
             get {
-                return ResourceManager.GetString("Enter_Id", resourceCulture);
+                return ResourceManager.GetString("EnterId", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Enter IP과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string Enter_Ip {
+        public static string EnterIp {
             get {
-                return ResourceManager.GetString("Enter_Ip", resourceCulture);
+                return ResourceManager.GetString("EnterIp", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Enter Name과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string Enter_Name {
+        public static string EnterName {
             get {
-                return ResourceManager.GetString("Enter_Name", resourceCulture);
+                return ResourceManager.GetString("EnterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enter New Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterNewPassword {
+            get {
+                return ResourceManager.GetString("EnterNewPassword", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Enter Password과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string Enter_Password {
+        public static string EnterPassword {
             get {
-                return ResourceManager.GetString("Enter_Password", resourceCulture);
+                return ResourceManager.GetString("EnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enter User Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterUserName {
+            get {
+                return ResourceManager.GetString("EnterUserName", resourceCulture);
             }
         }
         
@@ -183,6 +426,33 @@ namespace DischargerV2.Languages.Strings {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Fault Channel과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string FaultChannel {
+            get {
+                return ResourceManager.GetString("FaultChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Finish과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Finish {
+            get {
+                return ResourceManager.GetString("Finish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Full Discharge과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string FullDischarge {
+            get {
+                return ResourceManager.GetString("FullDischarge", resourceCulture);
             }
         }
         
@@ -205,6 +475,15 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Input Voltage and Capacity과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string InputVoltageNCapacity {
+            get {
+                return ResourceManager.GetString("InputVoltageNCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   IP과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Ip {
@@ -214,11 +493,38 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Load과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Load {
+            get {
+                return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Log In과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        public static string Log_In {
+        public static string Login {
             get {
-                return ResourceManager.GetString("Log_In", resourceCulture);
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Log-out과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Mode과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Mode {
+            get {
+                return ResourceManager.GetString("Mode", resourceCulture);
             }
         }
         
@@ -232,11 +538,29 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Model Register과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ModelRegister {
+            get {
+                return ResourceManager.GetString("ModelRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Module Channel과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string ModuleChannel {
             get {
                 return ResourceManager.GetString("ModuleChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Monitor Values과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string MonitorValues {
+            get {
+                return ResourceManager.GetString("MonitorValues", resourceCulture);
             }
         }
         
@@ -250,6 +574,15 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   New Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   No.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string No {
@@ -259,11 +592,290 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   No Data과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string NoData {
+            get {
+                return ResourceManager.GetString("NoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Nominal Voltage (V)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string NominalVoltage {
+            get {
+                return ResourceManager.GetString("NominalVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Password과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pause과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Please enter the LogFileName과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PleaseEnterLogFileName {
+            get {
+                return ResourceManager.GetString("PleaseEnterLogFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cause과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_Cause {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_Cause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Error.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_Description {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Error Code과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_ErrorCode {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_ErrorCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Solution과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_Solution {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_Solution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Unknown과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_Unknown {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Unknown error.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Comment_UnknownError {
+            get {
+                return ResourceManager.GetString("PopupError_Comment_UnknownError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Unknown error.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupError_Title_Unknown {
+            get {
+                return ResourceManager.GetString("PopupError_Title_Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Are you sure you want to log out?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Comment_Logout {
+            get {
+                return ResourceManager.GetString("PopupInfo_Comment_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm Log-out과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Title_Logout {
+            get {
+                return ResourceManager.GetString("PopupInfo_Title_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Discharger Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWaiting_Comment {
+            get {
+                return ResourceManager.GetString("PopupWaiting_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Processing discharge pause command.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWaiting_Title_Pause {
+            get {
+                return ResourceManager.GetString("PopupWaiting_Title_Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Processing discharge Resume command.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWaiting_Title_Resume {
+            get {
+                return ResourceManager.GetString("PopupWaiting_Title_Resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Processing discharge start command.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWaiting_Title_Start {
+            get {
+                return ResourceManager.GetString("PopupWaiting_Title_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Processing discharge Stop command.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWaiting_Title_Stop {
+            get {
+                return ResourceManager.GetString("PopupWaiting_Title_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cannot close the program while discharging.Please stop the discharge first.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_CloseProgram {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_CloseProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Are you sure you want to delete this data?Once you confirm, this data will be permanetly deleted.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_Delete {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Failed to start discharge.Please try again or contact an administrator.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_FailStart {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_FailStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You don&apos;t have permission to view device registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_NoPermissionDevice {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_NoPermissionDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You don&apos;t have permission to view model registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_NoPermissionModel {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_NoPermissionModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   You don&apos;t have permission to view user registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_NoPermissionUser {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_NoPermissionUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cannot proceed with this operation while discharging.\r\nPlease stop the discharge first.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Comment_OpenPopup {
+            get {
+                return ResourceManager.GetString("PopupWarning_Comment_OpenPopup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Warning과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Title {
+            get {
+                return ResourceManager.GetString("PopupWarning_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Delete Device과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Title_DeleteDevice {
+            get {
+                return ResourceManager.GetString("PopupWarning_Title_DeleteDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Delete Model과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Title_DeleteModel {
+            get {
+                return ResourceManager.GetString("PopupWarning_Title_DeleteModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Delete User과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Title_DeleteUser {
+            get {
+                return ResourceManager.GetString("PopupWarning_Title_DeleteUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No permission과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupWarning_Title_NoPermission {
+            get {
+                return ResourceManager.GetString("PopupWarning_Title_NoPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pre-set Mode과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PreSetMode {
+            get {
+                return ResourceManager.GetString("PreSetMode", resourceCulture);
             }
         }
         
@@ -286,11 +898,74 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Re-enter New Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ReEnterNewPassword {
+            get {
+                return ResourceManager.GetString("ReEnterNewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Re-enter Password과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string ReEnterPassword {
+            get {
+                return ResourceManager.GetString("ReEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reset과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Safety Condition과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string SafetyCondition {
+            get {
+                return ResourceManager.GetString("SafetyCondition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Save과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Select과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Select {
             get {
                 return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select Discharge Target과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string SelectDischargeTarget {
+            get {
+                return ResourceManager.GetString("SelectDischargeTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Settings과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
@@ -304,6 +979,42 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Simple Mode과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string SimpleMode {
+            get {
+                return ResourceManager.GetString("SimpleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SoC (%)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Soc {
+            get {
+                return ResourceManager.GetString("Soc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SoC과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Soc_NoUnits {
+            get {
+                return ResourceManager.GetString("Soc_NoUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Start Discharge과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string StartDischarge {
+            get {
+                return ResourceManager.GetString("StartDischarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Status과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Status {
@@ -313,11 +1024,74 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
-        ///   Temperature (℃)과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   Step 1과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Step1 {
+            get {
+                return ResourceManager.GetString("Step1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Step 2과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Step2 {
+            get {
+                return ResourceManager.GetString("Step2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Step Mode과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string StepMode {
+            get {
+                return ResourceManager.GetString("StepMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Stop과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Target SoC (%)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string TargetSoc {
+            get {
+                return ResourceManager.GetString("TargetSoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Target Voltage (V)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string TargetVoltage {
+            get {
+                return ResourceManager.GetString("TargetVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Temp. (℃)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Temp {
             get {
                 return ResourceManager.GetString("Temp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Temp.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Temp_NoUnits {
+            get {
+                return ResourceManager.GetString("Temp_NoUnits", resourceCulture);
             }
         }
         
@@ -327,6 +1101,15 @@ namespace DischargerV2.Languages.Strings {
         public static string TempChannel {
             get {
                 return ResourceManager.GetString("TempChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Temperature (℃)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Temperature {
+            get {
+                return ResourceManager.GetString("Temperature", resourceCulture);
             }
         }
         
@@ -367,11 +1150,47 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   User과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User Setting과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string UserSetting {
+            get {
+                return ResourceManager.GetString("UserSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Voltage (V)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string Voltage {
             get {
                 return ResourceManager.GetString("Voltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Voltage과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Voltage_NoUnits {
+            get {
+                return ResourceManager.GetString("Voltage_NoUnits", resourceCulture);
             }
         }
         

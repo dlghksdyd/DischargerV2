@@ -20,11 +20,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <ScottPlot:WpfPlot x:Name="xDataGraph" Grid.Row="0"/>
+        <Rectangle Fill="#01000000" Grid.Row="0"></Rectangle>
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
             <Mex:MexCheckBox x:Name="xVoltCheckBox"
-                             Text="Voltage"
+                             Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage_NoUnits]}"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
@@ -34,7 +35,7 @@
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xCurrent"
-                             Text="Current"
+                             Text="{Binding Source={StaticResource DynamicString}, Path=[Current_NoUnits]}"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
@@ -44,7 +45,7 @@
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xTempCheckBox"
-                             Text="Temp."
+                             Text="{Binding Source={StaticResource DynamicString}, Path=[Temp_NoUnits]}"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"
@@ -54,7 +55,7 @@
                              MouseLeftButtonUp="xCheckBox_MouseLeftButtonUp"/>
             <Grid Width="16"/>
             <Mex:MexCheckBox x:Name="xSocCheckBox"
-                             Text="SoC"
+                             Text="{Binding Source={StaticResource DynamicString}, Path=[Soc_NoUnits]}"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"

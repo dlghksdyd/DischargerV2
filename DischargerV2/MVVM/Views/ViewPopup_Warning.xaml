@@ -61,7 +61,7 @@
                     Orientation="Horizontal" FlowDirection="RightToLeft">
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Confirm"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Confirm]}"
                            Foreground="{StaticResource Mex/ResColor/text_on_action}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}"
@@ -76,7 +76,7 @@
             <Grid Width="12"/>
             <Mex:MexButton Padding="24,10,24,10"
                            CornerRadius="8"
-                           Text="Cancel"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Cancel]}"
                            Visibility="{Binding Model.CancelButtonVisibility}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}"

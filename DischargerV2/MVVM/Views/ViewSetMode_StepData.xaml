@@ -45,13 +45,14 @@
             <StackPanel Orientation="Vertical" Grid.Column="2"
                         Margin="20,0,20,0"
                         VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="Voltage (V)" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xVoltTextBox" TabIndex="0"
                                 Padding="12,8,12,8"
-                                WaterMark="Enter Voltage"
+                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                 Text="{Binding Model.Voltage, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
@@ -61,13 +62,14 @@
             <StackPanel Orientation="Vertical" Grid.Column="3"
                         Margin="20,0,20,0"
                         VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="Current (A)" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xCurrTextBox" TabIndex="1"
                                 Padding="12,8,12,8"
-                                WaterMark="Enter Current"
+                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                 Text="{Binding Model.Current, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
@@ -79,13 +81,14 @@
             <StackPanel Orientation="Vertical" Grid.Column="4"
                         Margin="20,0,20,0"
                         VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="C-Rate" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CRate]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexTextBox x:Name="xCRateTextBox" TabIndex="2"
                                 Padding="12,8,12,8"
-                                WaterMark="Enter C-Rate"
+                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                 Text="{Binding Model.CRate, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"

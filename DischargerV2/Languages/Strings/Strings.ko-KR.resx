@@ -103,13 +103,13 @@
   <data name="Password" xml:space="preserve">
     <value>비밀번호</value>
   </data>
-  <data name="Enter_Id" xml:space="preserve">
+  <data name="EnterId" xml:space="preserve">
     <value>아이디를 입력해주세요</value>
   </data>
-  <data name="Enter_Password" xml:space="preserve">
+  <data name="EnterPassword" xml:space="preserve">
     <value>비밀번호를 입력해주세요</value>
   </data>
-  <data name="Log_In" xml:space="preserve">
+  <data name="Login" xml:space="preserve">
     <value>로그인</value>
   </data>
   <data name="Name" xml:space="preserve">
@@ -118,10 +118,10 @@
   <data name="Ip" xml:space="preserve">
     <value>IP 주소</value>
   </data>
-  <data name="Enter_Name" xml:space="preserve">
+  <data name="EnterName" xml:space="preserve">
     <value>방전기명을 입력해주세요</value>
   </data>
-  <data name="Enter_Ip" xml:space="preserve">
+  <data name="EnterIp" xml:space="preserve">
     <value>IP 주소를 입력해주세요</value>
   </data>
   <data name="Enter" xml:space="preserve">
@@ -175,7 +175,7 @@
   <data name="Current" xml:space="preserve">
     <value>전류 (A)</value>
   </data>
-  <data name="Temp" xml:space="preserve">
+  <data name="Temperature" xml:space="preserve">
     <value>온도 (℃)</value>
   </data>
   <data name="ProgressTime" xml:space="preserve">
@@ -188,7 +188,7 @@
     <value>재 연결 요청</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>문제 발생</value>
+    <value>오류 발생</value>
   </data>
   <data name="ShortAvailable" xml:space="preserve">
     <value>단락 가능</value>
@@ -210,5 +210,278 @@
   </data>
   <data name="TempMin" xml:space="preserve">
     <value>최저 온도 (℃)</value>
+  </data>
+  <data name="AllChannel" xml:space="preserve">
+    <value>전체 채널</value>
+  </data>
+  <data name="ConnectedChannel" xml:space="preserve">
+    <value>정상 채널</value>
+  </data>
+  <data name="FaultChannel" xml:space="preserve">
+    <value>문제 발생 채널</value>
+  </data>
+  <data name="Voltage_NoUnits" xml:space="preserve">
+    <value>전압</value>
+  </data>
+  <data name="Current_NoUnits" xml:space="preserve">
+    <value>전류</value>
+  </data>
+  <data name="Temp_NoUnits" xml:space="preserve">
+    <value>온도</value>
+  </data>
+  <data name="Soc_NoUnits" xml:space="preserve">
+    <value>충전상태</value>
+  </data>
+  <data name="DischargeTarget" xml:space="preserve">
+    <value>방전 목표</value>
+  </data>
+  <data name="BatteryType" xml:space="preserve">
+    <value>배터리 타입</value>
+  </data>
+  <data name="MonitorValues" xml:space="preserve">
+    <value>모니터링 값</value>
+  </data>
+  <data name="Temp" xml:space="preserve">
+    <value>온도 (℃)</value>
+  </data>
+  <data name="Soc" xml:space="preserve">
+    <value>충전상태 (%)</value>
+  </data>
+  <data name="SafetyCondition" xml:space="preserve">
+    <value>안전 조건</value>
+  </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>용량 (Ah)</value>
+  </data>
+  <data name="NominalVoltage" xml:space="preserve">
+    <value>공칭 전압 (V)</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>일시 정지</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>중지</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>모드</value>
+  </data>
+  <data name="CreateNewUser" xml:space="preserve">
+    <value>신규 사용자 추가</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>사용자</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>관리자</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>비밀번호 확인</value>
+  </data>
+  <data name="ReEnterPassword" xml:space="preserve">
+    <value>비밀번호를 다시 입력해주세요</value>
+  </data>
+  <data name="EnterUserName" xml:space="preserve">
+    <value>사용자명을 입력해주세요</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>사용자명</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>생성</value>
+  </data>
+  <data name="DeviceRegister" xml:space="preserve">
+    <value>장비 등록</value>
+  </data>
+  <data name="AddNewDevice" xml:space="preserve">
+    <value>신규 장비 추가</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>데이터 없음</value>
+  </data>
+  <data name="UserSetting" xml:space="preserve">
+    <value>사용자 정보 변경</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>현재 비밀번호</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>신규 비밀번호</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>신규 비밀번호 확인</value>
+  </data>
+  <data name="ReEnterNewPassword" xml:space="preserve">
+    <value>신규 비밀번호를 다시 입력해주세요</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>수정</value>
+  </data>
+  <data name="EnterCurrentPassword" xml:space="preserve">
+    <value>현재 비밀번호를 입력해주세요</value>
+  </data>
+  <data name="EnterNewPassword" xml:space="preserve">
+    <value>신규 비밀번호를 입력해주세요</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="ModelRegister" xml:space="preserve">
+    <value>모델 등록</value>
+  </data>
+  <data name="AddNewModel" xml:space="preserve">
+    <value>신규 모델 추가</value>
+  </data>
+  <data name="PleaseEnterLogFileName" xml:space="preserve">
+    <value>로그 파일명을 입력해주세요</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>로그아웃</value>
+  </data>
+  <data name="CurrentSoc" xml:space="preserve">
+    <value>현재 충전상태 (%)</value>
+  </data>
+  <data name="FullDischarge" xml:space="preserve">
+    <value>완전 방전</value>
+  </data>
+  <data name="0vDischarge" xml:space="preserve">
+    <value>0V 방전</value>
+  </data>
+  <data name="TargetSoc" xml:space="preserve">
+    <value>목표 충전상태 (%)</value>
+  </data>
+  <data name="TargetVoltage" xml:space="preserve">
+    <value>목표 전압 (V)</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>1단계</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>2단계</value>
+  </data>
+  <data name="InputVoltageNCapacity" xml:space="preserve">
+    <value>전압 및 용량 입력</value>
+  </data>
+  <data name="SelectDischargeTarget" xml:space="preserve">
+    <value>방전 목표를 선택해주세요</value>
+  </data>
+  <data name="CapacityOptional" xml:space="preserve">
+    <value>용량 (Ah) [선택 사항]</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>불러오기</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>저장하기</value>
+  </data>
+  <data name="AddStep" xml:space="preserve">
+    <value>단계 추가</value>
+  </data>
+  <data name="PreSetMode" xml:space="preserve">
+    <value>Pre-set 모드</value>
+  </data>
+  <data name="StepMode" xml:space="preserve">
+    <value>Step 모드</value>
+  </data>
+  <data name="SimpleMode" xml:space="preserve">
+    <value>Simple 모드</value>
+  </data>
+  <data name="CRate" xml:space="preserve">
+    <value>방전 속도 (C-Rate)</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="AddNewUser" xml:space="preserve">
+    <value>신규 사용자 추가</value>
+  </data>
+  <data name="StartDischarge" xml:space="preserve">
+    <value>방전 시작</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteDevice" xml:space="preserve">
+    <value>장비를 삭제하시겠습니까?</value>
+  </data>
+  <data name="PopupWarning_Comment_Delete" xml:space="preserve">
+    <value>해당 데이터를 삭제하시겠습니까?확인하시면 이 데이터는 영구적으로 삭제됩니다.</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteModel" xml:space="preserve">
+    <value>모델을 삭제하시겠습니까?</value>
+  </data>
+  <data name="PopupWarning_Title" xml:space="preserve">
+    <value>경고</value>
+  </data>
+  <data name="PopupWarning_Comment_FailStart" xml:space="preserve">
+    <value>방전 시작에 실패했습니다.다시 시도하거나 관리자에게 문의해주세요.</value>
+  </data>
+  <data name="PopupWarning_Comment_CloseProgram" xml:space="preserve">
+    <value>방전 중에는 프로그램을 종료할 수 없습니다.방전을 먼저 중지해주세요.</value>
+  </data>
+  <data name="PopupWarning_Comment_OpenPopup" xml:space="preserve">
+    <value>방전 중에는 해당 작업을 진행할 수 없습니다.방전을 먼저 중지해주세요.</value>
+  </data>
+  <data name="PopupWarning_Title_DeleteUser" xml:space="preserve">
+    <value>사용자를 삭제하시겠습니까?</value>
+  </data>
+  <data name="PopupWaiting_Title_Start" xml:space="preserve">
+    <value>방전 시작 명령이 처리 중입니다.</value>
+  </data>
+  <data name="PopupWaiting_Comment" xml:space="preserve">
+    <value>방전기명</value>
+  </data>
+  <data name="PopupWaiting_Title_Pause" xml:space="preserve">
+    <value>방전 일시 정지 명령이 처리 중입니다.</value>
+  </data>
+  <data name="PopupWaiting_Title_Resume" xml:space="preserve">
+    <value>방전 재 시작 명령이 처리 중입니다.</value>
+  </data>
+  <data name="PopupWaiting_Title_Stop" xml:space="preserve">
+    <value>방전 중지 명령이 처리 중입니다.</value>
+  </data>
+  <data name="PopupError_Title_Unknown" xml:space="preserve">
+    <value>알 수 없는 오류.</value>
+  </data>
+  <data name="PopupError_Comment_UnknownError" xml:space="preserve">
+    <value>알 수 없는 오류입니다.</value>
+  </data>
+  <data name="PopupError_Comment_Cause" xml:space="preserve">
+    <value>원인</value>
+  </data>
+  <data name="PopupError_Comment_Solution" xml:space="preserve">
+    <value>해결 방법</value>
+  </data>
+  <data name="PopupError_Comment_Description" xml:space="preserve">
+    <value>오류입니다.</value>
+  </data>
+  <data name="PopupError_Comment_Unknown" xml:space="preserve">
+    <value>알 수 없음</value>
+  </data>
+  <data name="PopupError_Comment_ErrorCode" xml:space="preserve">
+    <value>에러 코드</value>
+  </data>
+  <data name="PopupInfo_Title_Logout" xml:space="preserve">
+    <value>로그아웃 확인</value>
+  </data>
+  <data name="PopupInfo_Comment_Logout" xml:space="preserve">
+    <value>정말 로그아웃하시겠습니까?</value>
+  </data>
+  <data name="PopupWarning_Title_NoPermission" xml:space="preserve">
+    <value>권한 없음</value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionDevice" xml:space="preserve">
+    <value>장비 등록 정보를 볼 수 있는 권한이 없습니다.</value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionModel" xml:space="preserve">
+    <value>모델 등록 정보를 볼 수 있는 권한이 없습니다.</value>
+  </data>
+  <data name="PopupWarning_Comment_NoPermissionUser" xml:space="preserve">
+    <value>사용자 등록 정보를 볼 수 있는 권한이 없습니다.</value>
   </data>
 </root>

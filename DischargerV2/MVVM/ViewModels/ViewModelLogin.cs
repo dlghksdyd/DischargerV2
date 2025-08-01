@@ -135,6 +135,8 @@ namespace DischargerV2.MVVM.ViewModels
         {
             var _dynamicString = Application.Current.Resources["DynamicString"] as DynamicString;
             _dynamicString.ChangeLanguage(eLanguage.ToDescription());
+
+            ViewModelMain.Instance.Model.Language = eLanguage;
         }
 
         public bool IsLocalDb()

@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
 using Sqlite.Common;
@@ -41,12 +42,16 @@ namespace DischargerV2.MVVM.ViewModels
             var viewModelDischarger = ViewModelDischarger.Instance;
             if (viewModelDischarger.IsDischarging())
             {
+                var title = new DynamicString().GetDynamicString("PopupWarning_Title");
+                var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_OpenPopup");
+
                 ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                 {
-                    Title = "Warning",
-                    Comment = "Please stop discharging before opening this popup.",
-                    CancelButtonVisibility = Visibility.Hidden,
+                    Title = title,
+                    Comment = comment,
+                    CancelButtonVisibility = Visibility.Hidden
                 };
+
                 ViewModelMain viewModelMain = ViewModelMain.Instance;
                 viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
                 viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);

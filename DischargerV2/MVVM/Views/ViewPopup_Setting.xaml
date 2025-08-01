@@ -61,7 +61,7 @@
                 <StackPanel Orientation="Vertical">
                     <Mex:MexLabel x:Name="xUserSettingLabel"
                                   Padding="20,12,20,12"
-                                  Text="User Setting"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[UserSetting]}"
                                   TextPadding="12,0,0,0"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -90,7 +90,7 @@
                     </Mex:MexLabel>
                     <Mex:MexLabel x:Name="xDeviceRegisterLabel"
                                   Padding="20,12,20,12"
-                                  Text="Device Register"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[DeviceRegister]}"
                                   TextPadding="12,0,0,0"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -119,7 +119,7 @@
                     </Mex:MexLabel>
                     <Mex:MexLabel x:Name="xModelRegisterLabel"
                                   Padding="20,12,20,12"
-                                  Text="Model Register"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[ModelRegister]}"
                                   TextPadding="12,0,0,0"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -148,7 +148,7 @@
                     </Mex:MexLabel>
                     <Mex:MexLabel x:Name="xLogoutLabel"
                                   Padding="20,12,20,12"
-                                  Text="Log-out"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Logout]}"
                                   TextPadding="12,0,0,0"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"

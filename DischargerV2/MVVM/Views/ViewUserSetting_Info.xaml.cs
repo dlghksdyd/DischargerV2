@@ -42,7 +42,7 @@ namespace DischargerV2.MVVM.Views
         {
             if (this.DataContext is ViewModelUserSetting_Info viewModelUserSetting)
             {
-                viewModelUserSetting.DeleteUserInfo();
+                viewModelUserSetting.OpenPopupDelete();
             }
         }
     }

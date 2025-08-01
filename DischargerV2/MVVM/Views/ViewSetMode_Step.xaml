@@ -41,12 +41,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Mex:MexTextBlock Grid.Column="0"
-                                  Text="Standard Capacity (Optional)"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[CapacityOptional]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Mex:MexTextBox x:Name="xStandardCapacityTextBox" Grid.Column="2"
                                 Padding="12,8,12,8" Width="260"
-                                WaterMark="Enter Standard Capacity"
+                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                 Text="{Binding Model.StandardCapacity, 
                                                Mode=TwoWay, 
                                                Converter={StaticResource IsDoubleConverter}}"
@@ -59,7 +59,7 @@
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
                                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/LoadButtonPrimary}"
-                               Text="Load"
+                               Text="{Binding Source={StaticResource DynamicString}, Path=[Load]}"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                TextPadding="12,0,0,0"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}">
@@ -75,7 +75,7 @@
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
                                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SaveButtonPrimary}"
-                               Text="Save"
+                               Text="{Binding Source={StaticResource DynamicString}, Path=[Save]}"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                TextPadding="12,0,0,0"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}">
@@ -102,7 +102,7 @@
             </Border>
             <Mex:MexCheckBox x:Name="xIsCompleteDischargeCheckBox" Grid.Row="4"
                              IsChecked="{Binding Model.IsCompleteDischarge, Mode=TwoWay}"
-                             Text="Full Discharge"
+                             Text="{Binding Source={StaticResource DynamicString}, Path=[FullDischarge]}"
                              Foreground="{StaticResource Mex/ResColor/text_body}"
                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                              ColorSet="{StaticResource Mex/ResColorSet_CheckBox/Primary}"/>
@@ -112,7 +112,7 @@
                            CornerRadius="8"
                            ImageWidth="20" ImageHeight="20"
                            ImageSetLeft="{StaticResource Mex/ResImageSet_Component/SettingsButtonOutline}"
-                           Text="Add Step"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[AddStep]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                            TextPadding="12,0,0,0"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"

@@ -31,7 +31,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Mex:MexTextBlock Text="User Setting"
+            <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[UserSetting]}"
                               Foreground="{StaticResource Mex/ResColor/text_headings}"
                               FontSet="{StaticResource Mex/ResFontSet/heading_h6}"
                               HorizontalAlignment="Left"/>
@@ -64,7 +64,8 @@
             </Grid.RowDefinitions>
             <!--ID-->
             <StackPanel Grid.Row="0" Orientation="Vertical">
-                <Mex:MexTextBlock Text="ID" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Id]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
@@ -79,14 +80,15 @@
             </StackPanel>
             <!--Current Password-->
             <StackPanel Grid.Row="2" Orientation="Vertical">
-                <Mex:MexTextBlock Text="Current Password" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CurrentPassword]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xCurrentPasswordBox" TabIndex="0"
                                     Padding="12,8,12,8"
                                     CornerRadius="8"
-                                    WaterMark="Enter Current Password"
+                                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[EnterCurrentPassword]}"
                                     Text="{Binding Model.CurrentPassword, Mode=TwoWay}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
@@ -94,14 +96,15 @@
             </StackPanel>
             <!--New Password-->
             <StackPanel Grid.Row="4" Orientation="Vertical">
-                <Mex:MexTextBlock Text="New Password" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[NewPassword]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xNewPasswordBox" TabIndex="1"
                                     Padding="12,8,12,8"
                                     CornerRadius="8"
-                                    WaterMark="Enter New Password"
+                                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[EnterNewPassword]}"
                                     Text="{Binding Model.NewPassword, Mode=TwoWay}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
@@ -109,14 +112,15 @@
             </StackPanel>
             <!--Confirm New Password-->
             <StackPanel Grid.Row="6" Orientation="Vertical">
-                <Mex:MexTextBlock Text="Confirm New Password" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[ConfirmNewPassword]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
                 <Mex:MexPasswordBox x:Name="xConfirmNewPasswordBox" TabIndex="2"
                                     Padding="12,8,12,8"
                                     CornerRadius="8"
-                                    WaterMark="Re-enter New Password"
+                                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[ReEnterNewPassword]}"
                                     Text="{Binding Model.ConfirmNewPassword, Mode=TwoWay}"
                                     FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                     ImageSetHidePassword="{StaticResource Mex/ResImageSet_Toggle/Visibility}"
@@ -124,7 +128,8 @@
             </StackPanel>
             <!--User Name-->
             <StackPanel Grid.Row="8" Orientation="Vertical">
-                <Mex:MexTextBlock Text="User Name" IsTabStop="False"
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[UserName]}" 
+                                  IsTabStop="False"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                 <Grid Height="4"/>
@@ -143,7 +148,7 @@
             <Mex:MexButton x:Name="xEditButton"
                            CornerRadius="8" 
                            Padding="24,10,24,10"
-                           Text="Edit"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Edit]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Primary}">
                 <b:Interaction.Triggers>
@@ -157,7 +162,7 @@
             <Mex:MexButton x:Name="xCancelButton"
                            CornerRadius="8" 
                            Padding="24,10,24,10"
-                           Text="Cancel"
+                           Text="{Binding Source={StaticResource DynamicString}, Path=[Cancel]}"
                            FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
                            ColorSet="{StaticResource Mex/ResColorSet_Button/Secondary}">
                 <b:Interaction.Triggers>

@@ -1,4 +1,5 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.Enums;
 using DischargerV2.MVVM.Models;
 using Ethernet.Client.Discharger;
@@ -243,11 +244,14 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
+                var title = new DynamicString().GetDynamicString("PleaseEnterLogFileName");
+                var confirmText = new DynamicString().GetDynamicString("Save");
+
                 ViewModelPopup_SetLogFileName viewModelPopup_SetLogFileName = new ViewModelPopup_SetLogFileName()
                 {
-                    Title = "Please enter the LogFileName",
+                    Title = title,
                     CallBackDelegate = SetLogFileNameNStartDischarge,
-                    ConfirmText = "Save"
+                    ConfirmText = confirmText
                 };
 
                 ViewModelMain viewModelMain = ViewModelMain.Instance;
@@ -310,10 +314,13 @@ namespace DischargerV2.MVVM.ViewModels
                 // 방전 시작
                 Thread thread = new Thread(() =>
                 {
+                    var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Start");
+                    var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
+
                     ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
-                        Title = "Wait to start",
-                        Comment = $"Discharger Name: {Model.DischargerName}",
+                        Title = title,
+                        Comment = $"{comment}: {Model.DischargerName}",
                     };
 
                     ViewModelMain viewModelMain = ViewModelMain.Instance;
@@ -334,10 +341,13 @@ namespace DischargerV2.MVVM.ViewModels
                             // 일정 시간이 지난 후 방전 명령이 수행될 수 있음에 따름
                             StartDischargeDictionary[Model.DischargerName].StopDischarge();
 
+                            title = new DynamicString().GetDynamicString("PopupWarning_Title");
+                            comment = new DynamicString().GetDynamicString("PopupWarning_Comment_FailStart");
+
                             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
-                                Title = "Warning",
-                                Comment = "Fail to start discharging.",
+                                Title = title,
+                                Comment = comment,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 

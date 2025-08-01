@@ -1,4 +1,5 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
@@ -117,11 +118,24 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void OpenPopupDelete()
         {
+            var title = new DynamicString().GetDynamicString("PopupWarning_Title_DeleteDevice");
+            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_Delete");
+            var language = ViewModelMain.Instance.Model.Language;
+
+            switch (language)
+            {
+                case Enums.ELanguage.English:
+                    title = $"{title} '{Name}'";
+                    break;
+                case Enums.ELanguage.Korean:
+                    title = $"'{Name}' {title}";
+                    break;
+            }
+
             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
             {
-                Title = string.Format("Delete Device '{0}'?", Name),
-                Comment = "Are you sure you want to delete this data?\r\n" +
-                          "Once you confirm, this data will be permanetly deleted.",
+                Title = title,
+                Comment = comment,
                 CallBackDelegate = DeleteDischargerInfo,
             };
 

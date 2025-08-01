@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DischargerV2.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
@@ -14,23 +15,33 @@ namespace DischargerV2.Languages.Strings
 {
     public class DynamicString : DynamicObject
     {
-        private readonly ResourceManager _resourceManager;
-        private CultureInfo _cultureInfo = new CultureInfo("");
+        private static ResourceManager _resourceManager;
+        private static CultureInfo _cultureInfo = new CultureInfo("");
 
         public DynamicString()
         {
             _resourceManager = new ResourceManager(typeof(Strings));
         }
 
-        public string this[string id]
+        public string GetDynamicString(string key)
+        {
+            string value = _resourceManager.GetString(key, _cultureInfo);
+            if (string.IsNullOrEmpty(value))
+            {
+                value = key;
+            }
+            return value;
+        }
+
+        public string this[string key]
         {
             get
             {
-                if (string.IsNullOrEmpty(id)) return null;
-                string value = _resourceManager.GetString(id, _cultureInfo);
+                if (string.IsNullOrEmpty(key)) return null;
+                string value = _resourceManager.GetString(key, _cultureInfo);
                 if (string.IsNullOrEmpty(value))
                 {
-                    value = id;
+                    value = key;
                 }
                 return value;
             }

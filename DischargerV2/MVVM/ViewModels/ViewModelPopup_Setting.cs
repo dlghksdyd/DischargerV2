@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.Models;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.MVVM.Models;
 using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Commands;
@@ -42,55 +43,90 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 if (e.Source is MexLabel mexLabel)
                 {
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
                     var name = mexLabel.Name;
 
                     if (name == "xUserSettingLabel")
                     {
                         if (ViewModelLogin.Instance.IsLocalDb() && ViewModelLogin.Instance.IsAdmin())
                         {
-                            ViewModelMain viewModelMain = ViewModelMain.Instance;
                             viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
                         }
                         else
                         {
-                            MessageBox.Show("사용자 등록 정보를 볼 권한이 없습니다.");
+                            var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
+                            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionUser");
+
+                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            {
+                                Title = title,
+                                Comment = comment,
+                                CancelButtonVisibility = Visibility.Hidden
+                            };
+
+                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
                         }
                     }
                     else if (name == "xDeviceRegisterLabel")
                     {
                         if (ViewModelLogin.Instance.IsAdmin())
                         {
-                            ViewModelMain viewModelMain = ViewModelMain.Instance;
+                            
                             viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
                         }
                         else
                         {
-                            MessageBox.Show("방전기 등록 정보를 볼 권한이 없습니다.");
+                            var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
+                            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionDevice");
+
+                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            {
+                                Title = title,
+                                Comment = comment,
+                                CancelButtonVisibility = Visibility.Hidden
+                            };
+
+                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
                         }
                     }
                     else if (name == "xModelRegisterLabel")
                     {
                         if (ViewModelLogin.Instance.IsMintech())
                         {
-                            ViewModelMain viewModelMain = ViewModelMain.Instance;
                             viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
                         }
                         else
                         {
-                            MessageBox.Show("모델 등록 정보를 볼 권한이 없습니다.");
+                            var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
+                            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionModel");
+
+                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            {
+                                Title = title,
+                                Comment = comment,
+                                CancelButtonVisibility = Visibility.Hidden
+                            };
+
+                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
+                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
                         }
                     }
                     else if (name == "xLogoutLabel")
                     {
+                        string title = new DynamicString().GetDynamicString("PopupInfo_Title_Logout");
+                        string comment = new DynamicString().GetDynamicString("PopupInfo_Comment_Logout");
+                        string confirmText = new DynamicString().GetDynamicString("Logout");
+
                         ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                         {
-                            Title = "Confirm Log-out",
-                            Comment = "Do you want to Log-out?",
+                            Title = title,
+                            Comment = comment,
                             CallBackDelegate = Logout,
-                            ConfirmText = "Logout"
+                            ConfirmText = confirmText
                         };
 
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
                         viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
                         viewModelMain.OpenPopup(ModelMain.EPopup.Info);
                     }

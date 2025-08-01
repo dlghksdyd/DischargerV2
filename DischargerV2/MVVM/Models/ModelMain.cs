@@ -1,4 +1,5 @@
-﻿using DischargerV2.MVVM.ViewModels;
+﻿using DischargerV2.MVVM.Enums;
+using DischargerV2.MVVM.ViewModels;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,19 @@ namespace DischargerV2.MVVM.Models
         {
             CreateNewUser, EditUser, 
             Warning,
+        }
+
+        private ELanguage _language = ELanguage.English;
+        public ELanguage Language
+        {
+            get
+            {
+                return _language;
+            }
+            set
+            {
+                SetProperty(ref _language, value);
+            }
         }
 
         private WindowState _windowState = WindowState.Maximized;

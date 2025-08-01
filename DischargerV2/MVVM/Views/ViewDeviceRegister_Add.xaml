@@ -58,7 +58,7 @@
                                         Padding="12,8,12,8"
                                         CornerRadius="8"
                                         BorderThickness="1"
-                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Name]}"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[EnterName]}"
                                         Text="{Binding Model.Name, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"
@@ -78,7 +78,7 @@
                                         Padding="12,8,12,8"
                                         CornerRadius="8"
                                         BorderThickness="1"
-                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter_Ip]}"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[EnterIp]}"
                                         Text="{Binding Model.Ip, 
                                                        Source={x:Static vm:ViewModelDeviceRegister_Add.Instance},
                                                        Mode=TwoWay}"

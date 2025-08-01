@@ -583,6 +583,7 @@
     <EmbeddedResource Include="Languages\Strings\Strings.en-US.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.en-US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\Strings\Strings.ko-KR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

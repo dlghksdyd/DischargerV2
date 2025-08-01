@@ -25,9 +25,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Mex:MexTextBlock Text="Device Register"
-                              Foreground="{StaticResource Mex/ResColor/text_headings}"
-                              FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
+                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[DeviceRegister]}"
+                                  Foreground="{StaticResource Mex/ResColor/text_headings}"
+                                  FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 <Image x:Name="xCloseImage" 
                        Width="28" Height="28"
                        Source="{Binding Source={StaticResource Mex/ResImage/close},
@@ -43,7 +43,7 @@
                                CornerRadius="8"
                                ImageWidth="20" ImageHeight="20"
                                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddDeviceButtonOutline}"
-                               Text="New Device"
+                               Text="{Binding Source={StaticResource DynamicString}, Path=[AddNewDevice]}"
                                TextPadding="12,0,0,0"
                                FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                                ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}"
@@ -65,7 +65,7 @@
                                     <Image Width="60" Height="81"
                                            Source="{StaticResource Mex/ResImage/Inbox}"/>
                                     <Grid Height="7"/>
-                                    <Mex:MexTextBlock Text="No Data"
+                                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[NoData]}"
                                                       Foreground="{StaticResource Mex/ResColor/text_placeholder}"
                                                       FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                                 </StackPanel>

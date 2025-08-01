@@ -41,8 +41,6 @@ namespace DischargerV2.MVVM.Views
 
         public void UpdateUi()
         {
-            //InitializeDischargerSelection();
-
             ViewModelMain.Instance.InitializeModel();
             ViewModelSetMode.Instance.InitializeModelDictionary();
             ViewModelSetMode.Instance.InitializeViewModelDictionary();

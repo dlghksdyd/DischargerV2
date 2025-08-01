@@ -32,24 +32,24 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
-                    <Mex:MexTextBlock Text="Step 1"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Step1]}"
                                       Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Grid Height="8"/>
-                    <Mex:MexTextBlock Text="Input Voltage and Capacity"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[InputVoltageNCapacity]}"
                                       Foreground="{StaticResource Mex/ResColor/text_headings}"
                                       FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 </StackPanel>
                 <Grid Height="20"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical" Width="280">
-                        <Mex:MexTextBlock Text="Standard Voltage (V)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[NominalVoltage]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xStandardVoltTextBox"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter Standard Voltage"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.StandardVoltage, 
                                                        Mode=TwoWay, 
                                                        Converter={StaticResource IsDoubleConverter}}"
@@ -58,13 +58,13 @@
                     </StackPanel>
                     <Grid Width="40"/>
                     <StackPanel Orientation="Vertical" Width="280">
-                        <Mex:MexTextBlock Text="Standard Capacity (A)"
+                        <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Capacity]}"
                                           Foreground="{StaticResource Mex/ResColor/text_body}"
                                           FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                         <Grid Height="4"/>
                         <Mex:MexTextBox x:Name="xStandardCapacityTextBox"
                                         Padding="12,8,12,8"
-                                        WaterMark="Enter Standard Capacity"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.StandardCapacity, 
                                                        Mode=TwoWay, 
                                                        Converter={StaticResource IsDoubleConverter}}"
@@ -75,18 +75,18 @@
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
-                    <Mex:MexTextBlock Text="Step 2"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Step2]}"
                                       Foreground="{StaticResource Mex/ResColor/text_infomation}"
                                       FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Grid Height="8"/>
-                    <Mex:MexTextBlock Text="Select Discharge Target"
+                    <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[SelectDischargeTarget]}"
                                       Foreground="{StaticResource Mex/ResColor/text_headings}"
                                       FontSet="{StaticResource Mex/ResFontSet/heading_h6}"/>
                 </StackPanel>
                 <Grid Height="20"/>
                 <StackPanel Orientation="Vertical">
                     <Mex:MexRadioButton x:Name="xFullDischargeRadioButton" GroupName="DischargeTarget"
-                                        Text="Full Discharge"
+                                        Text="{Binding Source={StaticResource DynamicString}, Path=[FullDischarge]}"
                                         TextPadding="12,0,0,0" ButtonSize="24"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -98,7 +98,7 @@
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Full}}"/>
                     <Grid Height="28"/>
                     <Mex:MexRadioButton x:Name="xCompleteDischargeRadioButton" GroupName="DischargeTarget"
-                                        Text="0V Discharge"
+                                        Text="{Binding Source={StaticResource DynamicString}, Path=[0vDischarge]}"
                                         TextPadding="12,0,0,0" ButtonSize="24"
                                         Foreground="{StaticResource Mex/ResColor/text_body}"
                                         FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -112,7 +112,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Mex:MexRadioButton GroupName="DischargeTarget"
                                             x:Name="xTargetVoltageRadioButton" 
-                                            Text="Target Voltage (V)"
+                                            Text="{Binding Source={StaticResource DynamicString}, Path=[TargetVoltage]}"
                                             TextPadding="12,0,0,0" ButtonSize="24"
                                             Foreground="{StaticResource Mex/ResColor/text_body}"
                                             FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
@@ -124,8 +124,8 @@
                                                             ConverterParameter={x:Static enum:EDischargeTarget.Voltage}}"/>
                         <Grid Width="12"/>
                         <Mex:MexTextBox x:Name="xTargetVoltTextBox"
-                                        Padding="12,8,12,8" Width="280"
-                                        WaterMark="Enter Target Voltage"
+                                        Padding="12,8,12,8" Width="150"
+                                        WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
                                         Text="{Binding Model.TargetVoltage, 
                                                        Mode=TwoWay, 
                                                        Converter={StaticResource IsDoubleConverter}}"

@@ -132,20 +132,31 @@ namespace Utility.Common
 
     public class BoolToAdminTextConverter : IValueConverter
     {
-        public string TrueValue { get; set; } = "Admin";
-        public string FalseValue { get; set; } = "User";
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var language = ViewModelMain.Instance.Model.Language;
+
             if (value is bool boolValue)
             {
                 if (boolValue)
                 {
-                    return TrueValue;
+                    switch (language)
+                    {
+                        case ELanguage.English:
+                            return "Admin";
+                        case ELanguage.Korean:
+                            return "관리자";
+                    }
                 }
                 else
                 {
-                    return FalseValue;
+                    switch (language)
+                    {
+                        case ELanguage.English:
+                            return "User";
+                        case ELanguage.Korean:
+                            return "사용자";
+                    }
                 }
             }
             return Binding.DoNothing;
@@ -455,11 +466,17 @@ namespace Utility.Common
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var language = ViewModelMain.Instance.Model.Language;
+
             if (value is EDischargerState dischargerStates)
             {
-                EDischargerState eDischargerState = dischargerStates;
-
-                return eDischargerState.ToString();
+                switch (language)
+                {
+                    case ELanguage.English:
+                        return dischargerStates.ToString();
+                    case ELanguage.Korean:
+                        return dischargerStates.ToDescription();
+                }
             }
 
             return Binding.DoNothing;
@@ -554,11 +571,19 @@ namespace Utility.Common
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            var language = ViewModelMain.Instance.Model.Language;
+
             if (value is DischargerDatas dischargerDatas)
             {
                 uint errorCode = dischargerDatas.ErrorCode;
 
-                return string.Format("Error Code: 0x{0}", errorCode.ToString("X"));
+                switch (language)
+                {
+                    case ELanguage.English:
+                        return string.Format("Error Code: 0x{0}", errorCode.ToString("X"));
+                    case ELanguage.Korean:
+                        return string.Format("에러 코드: 0x{0}", errorCode.ToString("X"));
+                }
             }
 
             return Binding.DoNothing;
@@ -834,36 +859,74 @@ namespace Utility.Common
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
+            var language = ViewModelMain.Instance.Model.Language;
+
             if (value[0] is EDischargeTarget mode)
             {
                 if (mode == EDischargeTarget.Full)
                 {
-                    return "Full Discharge";
+                    switch (language)
+                    {
+                        case ELanguage.English:
+                            return "Full Discharge";
+                        case ELanguage.Korean:
+                            return "완전 방전";
+                    }
                 }
                 else if (mode == EDischargeTarget.Zero)
                 {
-                    return "0V Discharge";
+                    switch (language)
+                    {
+                        case ELanguage.English:
+                            return "0V Discharge";
+                        case ELanguage.Korean:
+                            return "0V 방전";
+                    }
                 }
                 else if (mode == EDischargeTarget.Voltage)
                 {
                     if (value[1] is string target)
                     {
-                        return string.Format("Target Voltage ({0}V)", target);
+                        switch (language)
+                        {
+                            case ELanguage.English:
+                                return string.Format("Target Voltage ({0}V)", target);
+                            case ELanguage.Korean:
+                                return string.Format("목표 전압 방전 ({0}V)", target);
+                        }
                     }
                     else
                     {
-                        return "Target Voltage (V)";
+                        switch (language)
+                        {
+                            case ELanguage.English:
+                                return "Target Voltage (V)";
+                            case ELanguage.Korean:
+                                return "목표 전압 방전 (V)";
+                        }
                     }
                 }
                 else if (mode == EDischargeTarget.SoC)
                 {
                     if (value[2] is string target)
                     {
-                        return string.Format("Target SoC ({0}%)", target);
+                        switch (language)
+                        {
+                            case ELanguage.English:
+                                return string.Format("Target SoC ({0}%)", target);
+                            case ELanguage.Korean:
+                                return string.Format("목표 충전 상태 방전 ({0}%)", target);
+                        }
                     }
                     else
                     {
-                        return "Target SoC (%)";
+                        switch (language)
+                        {
+                            case ELanguage.English:
+                                return "Target SoC (%)";
+                            case ELanguage.Korean:
+                                return "목표 충전 상태 방전 (%)";
+                        }
                     }
                 }
                 return string.Empty;

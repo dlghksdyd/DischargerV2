@@ -35,7 +35,7 @@
                        CornerRadius="8"
                        ImageWidth="20" ImageHeight="20"
                        ImageSetLeft="{StaticResource Mex/ResImageSet_Component/AddUserButtonOutline}"
-                       Text="Add New User"
+                       Text="{Binding Source={StaticResource DynamicString}, Path=[AddNewUser]}"
                        TextPadding="12,0,0,0"
                        FontSet="{StaticResource Mex/ResFontSet/body_sm_medium}"
                        ColorSet="{StaticResource Mex/ResColorSet_Button/PrimaryOutline}">

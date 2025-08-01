@@ -43,7 +43,7 @@
             </Grid.RowDefinitions>
             <!--Monitor Value-->
             <Mex:MexTextBlock Grid.Column="0" Grid.Row="0" 
-                              Text="Monitor Values"
+                              Text="{Binding Source={StaticResource DynamicString}, Path=[MonitorValues]}"
                               Foreground="{StaticResource Mex/ResColor/text_infomation}"
                               FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
             <!--Monitor Value : Voltage-->
@@ -53,7 +53,8 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Text="Voltage (V)" Grid.Column="0"
+                <Mex:MexTextBlock Grid.Column="0"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}" 
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xVoltTextBox" Grid.Column="2" 
@@ -70,7 +71,8 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Text="Current (A)" Grid.Column="0"
+                <Mex:MexTextBlock Grid.Column="0"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xCurrentTextBox" Grid.Column="2"
@@ -87,7 +89,8 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Text="Temp. (℃)" Grid.Column="0"
+                <Mex:MexTextBlock Grid.Column="0"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Temp]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xTempTextBox" Grid.Column="2"
@@ -115,7 +118,8 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <Mex:MexTextBlock Text="SOC (%)" Grid.Column="0"
+                <Mex:MexTextBlock Grid.Column="0"
+                                  Text="{Binding Source={StaticResource DynamicString}, Path=[Soc]}"
                                   Foreground="{StaticResource Mex/ResColor/text_body}"
                                   FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                 <Mex:MexTextBox x:Name="xSocTextBox" Grid.Column="2"

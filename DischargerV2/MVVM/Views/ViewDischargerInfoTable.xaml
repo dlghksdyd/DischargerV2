@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <Util:IntToStringConverter x:Key="IntToStringConverter"/>
             <Util:DecimalPointConverter x:Key="DecimalPointConverter"/>
+            <Util:EDischargerStateToStringConverter x:Key="EDischargerStateToStringConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -65,7 +66,7 @@
                                       Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}" 
                                       Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="7" Margin="0 0 88 0" 
-                                      Text="{Binding Source={StaticResource DynamicString}, Path=[Temp]}" 
+                                      Text="{Binding Source={StaticResource DynamicString}, Path=[Temperature]}" 
                                       Foreground="{StaticResource Mex/ResColor/text_headings}" FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"/>
                     <Mex:MexTextBlock Grid.Column="8" Margin="0 0 88 0" 
                                       Text="{Binding Source={StaticResource DynamicString}, Path=[ProgressTime]}" 
@@ -112,7 +113,11 @@
                                         <Mex:MexTextBlock Grid.Column="3" Foreground="{Binding Foreground}" Text="{Binding DischargerChannel}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0 0 80 0">
                                             <Ellipse Width="12" Height="12" Fill="{Binding StateColor, FallbackValue={StaticResource Mex/ResColor/icon_disabled}}"/>
-                                            <Mex:MexTextBlock Text="{Binding DischargerState}" Grid.Column="1" Foreground="{Binding Foreground}" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}" Padding="8,0,0,0"/>
+                                            <Mex:MexTextBlock Grid.Column="1" Padding="8,0,0,0"
+                                                              Text="{Binding DischargerState,
+                                                                             Converter={StaticResource EDischargerStateToStringConverter}}" 
+                                                              Foreground="{Binding Foreground}" 
+                                                              FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
                                         </StackPanel>
                                         <Mex:MexTextBlock Grid.Column="5" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveBatteryVoltage, Converter={StaticResource DecimalPointConverter}, ConverterParameter=F1}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>
                                         <Mex:MexTextBlock Grid.Column="6" Foreground="{Binding Foreground}" Text="{Binding DischargerData.ReceiveDischargeCurrent, Converter={StaticResource DecimalPointConverter}, ConverterParameter=F1}" Margin="0 0 32 0" FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"></Mex:MexTextBlock>

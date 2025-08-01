@@ -66,7 +66,6 @@ namespace DischargerV2.MVVM.ViewModels
 
             // 방전기 연결
             ViewModelDischarger.Instance.Initialize();
-            ViewModelDischarger.Instance.InitializeDischarger();
 
             // 방전기 테이블 갱신
             UpdateDischargerInfoTableEvent?.Invoke(this, EventArgs.Empty);
