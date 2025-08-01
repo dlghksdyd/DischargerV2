@@ -197,6 +197,9 @@ namespace DischargerV2.MVVM.ViewModels
             ViewModelMain viewModelMain = ViewModelMain.Instance;
             viewModelMain.OffPopup();
 
+            ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
+            viewModelDischarger.FinalizeDischarger();
+
             ViewModelLogin viewModelLogin = ViewModelLogin.Instance;
             viewModelLogin.Model.UserName = string.Empty;
             viewModelLogin.Model.UserId = string.Empty;

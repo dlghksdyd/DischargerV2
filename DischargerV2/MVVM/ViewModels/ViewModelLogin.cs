@@ -81,8 +81,6 @@ namespace DischargerV2.MVVM.ViewModels
                         Model.Permission = user.IsAdmin ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
 
-                        ViewModelDischarger.Instance.InitializeDischarger();
-
                         new LogTrace(ELogTrace.SYSTEM_OK_LOGIN, Model.UserId);
                     }
                     else
@@ -91,6 +89,8 @@ namespace DischargerV2.MVVM.ViewModels
                             "아이디와 비밀번호를 정확히 입력해 주세요.");
 
                         new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, Model.UserId);
+
+                        return;
                     }
                 }
                 // Server DB 사용 (통합 관제 연동)
@@ -106,8 +106,6 @@ namespace DischargerV2.MVVM.ViewModels
                         Model.Permission = (user.ADMIN_GROUP == "Y") ? "Admin" : "User";
                         Model.Visibility = Visibility.Collapsed;
 
-                        ViewModelDischarger.Instance.InitializeDischarger();
-
                         new LogTrace(ELogTrace.SYSTEM_OK_LOGIN, Model.UserId);
                     }
                     else
@@ -116,8 +114,12 @@ namespace DischargerV2.MVVM.ViewModels
                             "아이디와 비밀번호를 정확히 입력해 주세요.");
 
                         new LogTrace(ELogTrace.SYSTEM_ERROR_LOGIN, Model.UserId);
+
+                        return;
                     }
                 }
+
+                ViewModelDischarger.Instance.Initialize();
             }
             catch (Exception ex)
             {
