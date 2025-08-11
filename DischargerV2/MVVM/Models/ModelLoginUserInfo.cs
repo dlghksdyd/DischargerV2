@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -163,6 +164,15 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _isAdmin, value);
+            }
+        }
+        
+        private string _version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        public string Version
+        {
+            get
+            {
+                return _version;
             }
         }
     }

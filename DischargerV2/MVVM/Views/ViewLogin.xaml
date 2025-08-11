@@ -74,7 +74,7 @@
                            IsShadow="True"
                            Click="xLoginButton_Click"/>
             <Grid Height="120"/>
-            <Mex:MexLabel Text="v2.0.0"
+            <Mex:MexLabel Text="{Binding Model.Version, FallbackValue=v2.0.0}"
                           HorizontalContentAlignment="Center"
                           Foreground="{StaticResource Mex/ResColor/text_body}"
                           FontSet="{StaticResource Mex/ResFontSet/body_lg_regular}"/>
