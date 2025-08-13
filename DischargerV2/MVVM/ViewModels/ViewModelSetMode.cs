@@ -1046,13 +1046,13 @@ namespace DischargerV2.MVVM.ViewModels
             DischargeConfig dischargeConfig = new DischargeConfig();
 
             string dischargerName;
-            int dischargerChannel;
+            short dischargerChannel;
 
             var dischargerNameListSplit = Model.DischargerName.Split('_');
             if (dischargerNameListSplit.Length > 1)
             {
                 dischargerName = dischargerNameListSplit[0];
-                dischargerChannel = Convert.ToInt32(dischargerNameListSplit[1]);
+                dischargerChannel = Convert.ToInt16(dischargerNameListSplit[1]);
             }
             else
             {
@@ -1065,7 +1065,7 @@ namespace DischargerV2.MVVM.ViewModels
             dischargeConfig.DischargerName = tableDischargerInfo.DischargerName;
             dischargeConfig.DischargerModel = tableDischargerInfo.Model;
             dischargeConfig.DischargeType = tableDischargerInfo.Type;
-            dischargeConfig.DischargeChannel = tableDischargerInfo.DischargerChannel;
+            dischargeConfig.DischargeChannel = dischargerChannel;
             dischargeConfig.SpecVoltage = tableDischargerInfo.SpecVoltage;
             dischargeConfig.SpecCurrent = tableDischargerInfo.SpecCurrent;
             dischargeConfig.IPAddress = tableDischargerInfo.IpAddress;

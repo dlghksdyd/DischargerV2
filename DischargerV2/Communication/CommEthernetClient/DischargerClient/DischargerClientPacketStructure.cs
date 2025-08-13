@@ -39,7 +39,7 @@ namespace Ethernet.Client.Discharger
         DioControl = 55,
     }
 
-    public enum EWorkMode
+    public enum EWorkMode 
     {
         Standby0 = 0,
         CvMode = 1,
@@ -154,18 +154,12 @@ namespace Ethernet.Client.Discharger
     public class ChannelInfo
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
-        {
-            private ECommandCode CommandCode = ECommandCode.ChannelInfo;
-            private short NumberOfChannels = 1;
-            public short ChannelNumber;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
         public class Reply_Channel1
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
+
+            public short NumberOfChannels;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
             public Reply[] ReplyArray = new Reply[1];
@@ -177,6 +171,8 @@ namespace Ethernet.Client.Discharger
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
 
+            public short NumberOfChannels;
+
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
             public Reply[] ReplyArray = new Reply[2];
         }
@@ -184,7 +180,7 @@ namespace Ethernet.Client.Discharger
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
         public struct Reply
         {
-            public short NumberOfChannels;
+            //public short NumberOfChannels;
             public short ChannelNumber;
             public uint ErrorCode;
             public EChannelStatus ChannelStatus;
@@ -198,8 +194,18 @@ namespace Ethernet.Client.Discharger
             public DischargeCapacity DischargeCapacity;
             public float AuxTemp3;
             public float AuxTemp4;
+            public double Reservation;
             public double ChargeEnergy;
             public double DischargeEnergy;
+
+            public double ChannelValue1;
+            public double ChannelValue2;
+            public double ChannelValue3;
+            public double ChannelValue4;
+            public double ChannelValue5;
+            public double ChannelValue6;
+            public double ChannelValue7;
+            public double ChannelValue8;
         }
     }
 
@@ -323,7 +329,7 @@ namespace Ethernet.Client.Discharger
         {
             _header = new PacketHeader();
             _command = ECommandCode.None;
-            _numberOfChannels = 0;
+            _numberOfChannels = 2;
             _channels = new List<short>();
             _parameters = new Dictionary<EParameterIndex, double>();
             _tail = new PacketTail();
@@ -339,7 +345,7 @@ namespace Ethernet.Client.Discharger
 
         public void Channel(params short[] channels)
         {
-            _numberOfChannels = (short)channels.Length;
+            //_numberOfChannels = (short)channels.Length;
 
             foreach (var channel in channels)
             {
@@ -359,7 +365,7 @@ namespace Ethernet.Client.Discharger
             if (_numberOfChannels == 0)
                 throw new ArgumentException("At least one channel must be specified.");
 
-            _header.Length = CalculateLengthOfHeader();
+            _header.Length = CalculateLengthOfHeader(_command);
 
             List<byte> packet = new List<byte>();
 
@@ -369,15 +375,27 @@ namespace Ethernet.Client.Discharger
             // 2. Command (2 bytes)
             packet.AddRange(BitConverter.GetBytes((short)_command));
 
-            // 3. Channel Count (2 bytes)
-            packet.AddRange(BitConverter.GetBytes(_numberOfChannels));
+            // 3. Number of channels (2 bytes)
+            packet.AddRange(BitConverter.GetBytes(_channels.Last()));
 
-            // 4. Channels (2 bytes each)
-            foreach (var ch in _channels)
-                packet.AddRange(BitConverter.GetBytes(ch));
-
-            if (_command == ECommandCode.RequestCommand)
+            if (_command == ECommandCode.ChannelInfo)
             {
+                // 4. Channel number (2 bytes each)
+                foreach (var ch in _channels)
+                    packet.AddRange(BitConverter.GetBytes(ch));
+            }
+            else if (_command == ECommandCode.RequestCommand)
+            {
+                // 4. Channel number (2 bytes each)
+                if (_parameters.ContainsKey(EParameterIndex.WorkModeClearAlarm))
+                {
+                    packet.AddRange(BitConverter.GetBytes(4));
+                }
+                else
+                {
+                    packet.AddRange(BitConverter.GetBytes(_channels.Last()));
+                }
+
                 if (_parameters.Count == 0)
                     throw new ArgumentException("At least one parameter must be specified.");
 
@@ -394,11 +412,11 @@ namespace Ethernet.Client.Discharger
 
             // 7. Tail
             packet.AddRange(_tail.ToByteArray());
-
+            
             return packet.ToArray();
         }
 
-        private short CalculateLengthOfHeader()
+        private short CalculateLengthOfHeader(ECommandCode eCommandCode)
         {
             const int HeaderSize = 4;                   // Fixed: Length (2) + Version (1) + Serial (1)
             const int CommandCodeSize = 2;              // short
@@ -408,7 +426,15 @@ namespace Ethernet.Client.Discharger
             const int ParameterEntrySize = 10;          // short (2) + double (8)
             const int TailSize = 2;                     // fixed end marker (0xEEEE)
 
-            int totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + (_numberOfChannels * ChannelEntrySize);
+            int totalLength;
+            if (_command == ECommandCode.ChannelInfo)
+            {
+                totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + (_numberOfChannels * ChannelEntrySize);
+            }
+            else 
+            {
+                totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + ChannelEntrySize;
+            }
 
             if (_command == ECommandCode.RequestCommand)
             {

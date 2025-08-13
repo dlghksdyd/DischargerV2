@@ -167,7 +167,7 @@ namespace DischargerV2.MVVM.Models
             }
         }
         
-        private string _version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        private string _version = $"v{Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion}";
         public string Version
         {
             get

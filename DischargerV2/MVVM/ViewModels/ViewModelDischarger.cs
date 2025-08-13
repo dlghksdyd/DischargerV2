@@ -118,7 +118,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         public void InitializeModel()
         {
-            int variance = 1;
+            int No = 1;
 
             FinalizeModel();
 
@@ -136,18 +136,18 @@ namespace DischargerV2.MVVM.ViewModels
                 dischargerInfo.SafetyVoltageMax += EthernetClientDischarger.SafetyMarginVoltage;
 
                 int channel = dischargerInfo.Channel;
-
+                
                 for (int i = 0; i < channel; i++)
                 {
                     var model = new ModelDischarger();
 
                     model.DischargerInfo = dischargerInfo;
                     model.DischargerIndex = index;
-                    model.No = (index + variance).ToString();
+                    model.No = No.ToString();
+                    No++;
 
                     if (channel > 1)
                     {
-                        variance++;
                         model.DischargerInfo.Channel = (short)(i + 1);
                         model.DischargerName = $"{infos[index].DischargerName}_{i + 1}";
                     }
