@@ -375,26 +375,22 @@ namespace Ethernet.Client.Discharger
             // 2. Command (2 bytes)
             packet.AddRange(BitConverter.GetBytes((short)_command));
 
-            // 3. Number of channels (2 bytes)
-            packet.AddRange(BitConverter.GetBytes(_channels.Last()));
-
             if (_command == ECommandCode.ChannelInfo)
             {
+                // 3. Number of channels (2 bytes)
+                packet.AddRange(BitConverter.GetBytes((short)2));
+
                 // 4. Channel number (2 bytes each)
                 foreach (var ch in _channels)
                     packet.AddRange(BitConverter.GetBytes(ch));
             }
             else if (_command == ECommandCode.RequestCommand)
             {
+                // 3. Number of channels (2 bytes)
+                packet.AddRange(BitConverter.GetBytes((short)1));
+
                 // 4. Channel number (2 bytes each)
-                if (_parameters.ContainsKey(EParameterIndex.WorkModeClearAlarm))
-                {
-                    packet.AddRange(BitConverter.GetBytes(4));
-                }
-                else
-                {
-                    packet.AddRange(BitConverter.GetBytes(_channels.Last()));
-                }
+                packet.AddRange(BitConverter.GetBytes(_channels.Last()));
 
                 if (_parameters.Count == 0)
                     throw new ArgumentException("At least one parameter must be specified.");
@@ -434,10 +430,6 @@ namespace Ethernet.Client.Discharger
             else 
             {
                 totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + ChannelEntrySize;
-            }
-
-            if (_command == ECommandCode.RequestCommand)
-            {
                 totalLength += ParameterCountSize + (_parameters.Count * ParameterEntrySize);
             }
 

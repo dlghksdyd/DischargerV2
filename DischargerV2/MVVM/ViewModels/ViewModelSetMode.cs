@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Windows;
 using System.Xml.Linq;
@@ -546,6 +547,8 @@ namespace DischargerV2.MVVM.ViewModels
             double currentMax = Convert.ToDouble(modelSafetyCondition.CurrentMax);
             double tempMin = Convert.ToDouble(modelSafetyCondition.TempMin);
             double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
+
+            ViewModelDischarger.Instance.ResetError(Model.DischargerName);
 
             ViewModelDischarger.Instance.SetSafetyCondition(Model.DischargerName,
                 voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);

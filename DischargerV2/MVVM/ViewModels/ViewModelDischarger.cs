@@ -239,9 +239,11 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
+                double voltage = (param.Voltage == 0) ? 0.001 : param.Voltage;
+
                 // 방전 동작 시작
                 var isOk = _clients[dischargerName].SendCommand_StartDischarge(
-                    channel, EWorkMode.CcCvMode, param.Voltage, param.Current);
+                    channel, EWorkMode.CcCvMode, voltage, param.Current);
 
                 // 방전 동작 시작 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
@@ -661,9 +663,9 @@ namespace DischargerV2.MVVM.ViewModels
                         updateData.MC_CH = Model[i].DischargerChannel;
                         updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
 
-                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F1");
-                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F1");
-                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F1");
+                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F3");
+                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F3");
+                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F3");
 
                         updateData.DischargerState = state.ToString();
                         updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
@@ -790,7 +792,7 @@ namespace DischargerV2.MVVM.ViewModels
         /// 방전기 에러 해제 
         /// </summary>
         /// <param name="getDischargerName"></param>
-        private void ResetError(string getDischargerName)
+        public void ResetError(string getDischargerName)
         {
             try
             {
