@@ -542,8 +542,8 @@ namespace DischargerV2.MVVM.ViewModels
             // 설정 값 적용
             double voltageMin = Convert.ToDouble(modelSafetyCondition.VoltageMin);
             double voltageMax = Convert.ToDouble(modelSafetyCondition.VoltageMax);
-            double currentMin = -Convert.ToDouble(modelSafetyCondition.CurrentMax);
-            double currentMax = -Convert.ToDouble(modelSafetyCondition.CurrentMin);
+            double currentMin = Convert.ToDouble(modelSafetyCondition.CurrentMin);
+            double currentMax = Convert.ToDouble(modelSafetyCondition.CurrentMax);
             double tempMin = Convert.ToDouble(modelSafetyCondition.TempMin);
             double tempMax = Convert.ToDouble(modelSafetyCondition.TempMax);
 

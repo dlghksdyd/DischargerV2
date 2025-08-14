@@ -170,7 +170,7 @@ namespace Ethernet.Client.Discharger
         private System.Timers.Timer ReadInfoTimer = null;
 
         public static double SafetyMarginVoltage = 15;
-        public static double SafetyMarginCurrent = 2;
+        public static double SafetyMarginCurrent = 20;
 
         public static bool IsLampBuzzerUsed = true;
 
@@ -355,24 +355,24 @@ namespace Ethernet.Client.Discharger
 
             Thread.Sleep(2000);
 
-            /// 이전 에러 상태 초기화
-            bool clearAlarmResult = SendCommand_ClearAlarm(_parameters.DischargerChannel);
-            if (clearAlarmResult == false)
-            {
-                ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
-                return false;
-            }
+            ///// 이전 에러 상태 초기화
+            //bool clearAlarmResult = SendCommand_ClearAlarm(_parameters.DischargerChannel);
+            //if (clearAlarmResult == false)
+            //{
+            //    ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
+            //    return false;
+            //}
 
-            /// 경광등 초기화
-            if (_parameters.DischargerModel == EDischargerModel.MBDC)
-            {
-                bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
-                if (lampControlResult == false)
-                {
-                    ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
-                    return false;
-                }
-            }
+            ///// 경광등 초기화
+            //if (_parameters.DischargerModel == EDischargerModel.MBDC)
+            //{
+            //    bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
+            //    if (lampControlResult == false)
+            //    {
+            //        ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
+            //        return false;
+            //    }
+            //}
 
             ///// Safety Condition 설정
             //for (int i = 0; i < channel; i++)
@@ -671,11 +671,13 @@ namespace Ethernet.Client.Discharger
 
                     packetGenerator.Parameter(EParameterIndex.VoltageUpperLimit, voltageMax);
                     packetGenerator.Parameter(EParameterIndex.VoltageLowerLimit, voltageMin);
-                    packetGenerator.Parameter(EParameterIndex.CurrentUpperLimit, -currentMin);
-                    packetGenerator.Parameter(EParameterIndex.CurrentLowerLimit, -currentMax - 30);
+                    packetGenerator.Parameter(EParameterIndex.CurrentUpperLimit, currentMax);
+                    packetGenerator.Parameter(EParameterIndex.CurrentLowerLimit, -currentMax);
                     packetGenerator.Parameter(EParameterIndex.Start, 1.0);
                     byte[] request = packetGenerator.GeneratePacket();
 
+                    Debug.WriteLine($"Curret Upper Limit : {currentMax}");
+                    Debug.WriteLine($"Curret Lower Limit : {-currentMax}");
                     Debug.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss:fff") + "] " + "safety : " + BitConverter.ToString(request));
 
                     bool isOk = _dischargerClient.ProcessPacket(request);
@@ -684,8 +686,8 @@ namespace Ethernet.Client.Discharger
                     {
                         _dischargerDataArray[index].SafetyVoltageMax = voltageMax;
                         _dischargerDataArray[index].SafetyVoltageMin = voltageMin;
-                        _dischargerDataArray[index].SafetyCurrentMax = -currentMin + SafetyMarginCurrent;// currentMax + 20 + SafetyMarginCurrent;
-                        _dischargerDataArray[index].SafetyCurrentMin = -currentMax - 30 - SafetyMarginCurrent;// currentMin - SafetyMarginCurrent;
+                        _dischargerDataArray[index].SafetyCurrentMax = currentMax;
+                        _dischargerDataArray[index].SafetyCurrentMin = -currentMax;
                         _dischargerDataArray[index].SafetyTempMax = tempMax;
                         _dischargerDataArray[index].SafetyTempMin = tempMin;
 
@@ -697,7 +699,7 @@ namespace Ethernet.Client.Discharger
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = currentMin,
+                            SafetyCurrentMin = -currentMax,
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
@@ -715,7 +717,7 @@ namespace Ethernet.Client.Discharger
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = currentMin,
+                            SafetyCurrentMin = -currentMax,
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
@@ -891,7 +893,6 @@ namespace Ethernet.Client.Discharger
         {
             try
             {
-                return true;
                 lock (_packetLock)
                 {
                     var dischargerData = new LogTrace.DischargerData();

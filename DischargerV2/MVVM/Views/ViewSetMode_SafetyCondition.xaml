@@ -79,7 +79,7 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Mex:MexTextBox x:Name="xCurrMinTextBox" TabIndex="2"
                                     Padding="12,8,12,8" Width="100" 
-                                    WaterMark="0.0"
+                                    Visibility="Collapsed"
                                     Text="{Binding Model.CurrentMin,
                                                    Mode=TwoWay,
                                                    Converter={StaticResource IsDoubleConverter}}"

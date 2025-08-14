@@ -197,15 +197,16 @@
                                 FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
                                 ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                IsEnabled="False"
                                 IsReadOnly="True">
-                    <Mex:MexTextBox.Text>
+                    <!--<Mex:MexTextBox.Text>
                         <MultiBinding Converter="{StaticResource EDischargerDataToStringConverter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="SelectedModel.DischargerData" Source="{x:Static vm:ViewModelDischarger.Instance}"/>
                                 <Binding Source="{x:Static enum:EDischargerData.SafetyCurrentMin}"/>
                             </MultiBinding.Bindings>
                         </MultiBinding>
-                    </Mex:MexTextBox.Text>
+                    </Mex:MexTextBox.Text>-->
                 </Mex:MexTextBox>
                 <Mex:MexTextBlock Text="~" Grid.Column="1"
                                   Margin="8"

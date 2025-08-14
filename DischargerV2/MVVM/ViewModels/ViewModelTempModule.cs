@@ -111,10 +111,17 @@ namespace DischargerV2.MVVM.ViewModels
         {
             try
             {
-                int tempModuleIndex = Model.TempModuleDictionary[dischargerName].ComportIndex;
-                int tempModuleChannel = Convert.ToInt32(Model.TempModuleDictionary[dischargerName].Channel);
+                if (Model.TempModuleDictionary.ContainsKey(dischargerName))
+                {
+                    int tempModuleIndex = Model.TempModuleDictionary[dischargerName].ComportIndex;
+                    int tempModuleChannel = Convert.ToInt32(Model.TempModuleDictionary[dischargerName].Channel);
 
-                return Model.TempDatas[tempModuleIndex][tempModuleChannel];
+                    return Model.TempDatas[tempModuleIndex][tempModuleChannel];
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {
