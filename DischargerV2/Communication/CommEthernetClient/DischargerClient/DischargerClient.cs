@@ -165,6 +165,7 @@ namespace Ethernet.Client.Discharger
         private EthernetClientDischargerStart _parameters = null;
         private DischargerDatas[] _dischargerDataArray = null;
         private EDischargerState[] _dischargerState = null;
+        private bool[] _isPaused = null;
         private uint _dioValue = uint.MaxValue;
 
         private System.Timers.Timer ReadInfoTimer = null;
@@ -204,6 +205,13 @@ namespace Ethernet.Client.Discharger
             }
 
             return _dischargerClient.IsConnected();
+        }
+
+        public void SetIsPaused(int channel, bool isPaused)
+        {
+            int index = channel - 1;
+
+            _isPaused[index] = isPaused;
         }
 
         public bool ChangeDischargerState(EDischargerState dischargerState, params short[] channel)
@@ -308,11 +316,13 @@ namespace Ethernet.Client.Discharger
             
             _dischargerDataArray = new DischargerDatas[channel];
             _dischargerState = new EDischargerState[channel];
+            _isPaused = new bool[channel];
 
             for (int i = 0; i < channel; i++)
             {
                 _dischargerDataArray[i] = new DischargerDatas();
                 _dischargerState[i] = EDischargerState.None;
+                _isPaused[i] = false;
             }
 
             ChangeDischargerState(EDischargerState.Connecting, _parameters.DischargerChannel);
@@ -392,7 +402,7 @@ namespace Ethernet.Client.Discharger
             ReadInfoTimer?.Stop();
             ReadInfoTimer = null;
             ReadInfoTimer = new System.Timers.Timer();
-            ReadInfoTimer.Interval = 100;
+            ReadInfoTimer.Interval = 500;
             ReadInfoTimer.Elapsed += OneSecondTimer_Elapsed;
             ReadInfoTimer.Start();
 
@@ -580,14 +590,10 @@ namespace Ethernet.Client.Discharger
                         packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
                         packetGenerator.Channel(channel);
                         packetGenerator.Parameter(EParameterIndex.WorkMode, (double)workMode);
-
-
                         packetGenerator.Parameter(EParameterIndex.SetValue, -setValue);
                         packetGenerator.Parameter(EParameterIndex.LimitingValues, limitingValue);
                         packetGenerator.Parameter(EParameterIndex.Start, 1);
                         byte[] request = packetGenerator.GeneratePacket();
-
-                        Debug.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss:fff") + "] " + "Start : " + BitConverter.ToString(request));
 
                         bool isOk = _dischargerClient.ProcessPacket(request);
 
@@ -763,10 +769,7 @@ namespace Ethernet.Client.Discharger
 
                         if (isOk)
                         {
-                            if (_dischargerState[index] == EDischargerState.Pause)
-                            {
-                                ChangeDischargerState(EDischargerState.Ready, channel);
-                            }
+                            _isPaused[index] = false;
 
                             // 방전 Trace Log 저장 - 동작 정지
                             dischargerData = new LogTrace.DischargerData()
@@ -840,6 +843,8 @@ namespace Ethernet.Client.Discharger
                         if (isOk)
                         {
                             ChangeDischargerState(EDischargerState.Pause, channel);
+
+                            _isPaused[index] = true;
 
                             // 방전 Trace Log 저장 - 동작 일시 정지
                             dischargerData = new LogTrace.DischargerData()
@@ -1143,25 +1148,6 @@ namespace Ethernet.Client.Discharger
                     _dischargerDataArray[i].ReceiveDischargeTemp = channelInfo.ReplyArray[i].AuxTemp1;
                 }
 
-                //if (_parameters.DischargerIsTempModule == true &&
-                //    (channelInfo.ReplyArray[i].BatteryVoltage < _dischargerDataArray[i].SafetyVoltageMin ||
-                //    channelInfo.ReplyArray[i].BatteryVoltage > _dischargerDataArray[i].SafetyVoltageMax ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent < _dischargerDataArray[i].SafetyCurrentMin ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent > _dischargerDataArray[i].SafetyCurrentMax))
-                //{
-                //    ChangeDischargerState(EDischargerState.SafetyOutOfRange, channel);
-                //}
-                //else if (_parameters.DischargerIsTempModule == false &&
-                //    (channelInfo.ReplyArray[i].BatteryVoltage < _dischargerDataArray[i].SafetyVoltageMin ||
-                //    channelInfo.ReplyArray[i].BatteryVoltage > _dischargerDataArray[i].SafetyVoltageMax ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent < _dischargerDataArray[i].SafetyCurrentMin ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent > _dischargerDataArray[i].SafetyCurrentMax ||
-                //    channelInfo.ReplyArray[i].AuxTemp1 < _dischargerDataArray[i].SafetyTempMin ||
-                //    channelInfo.ReplyArray[i].AuxTemp1 > _dischargerDataArray[i].SafetyTempMax))
-                //{
-                //    ChangeDischargerState(EDischargerState.SafetyOutOfRange, channel);
-                //}
-                //else
                 if (channelInfo.ReplyArray[i].ErrorCode != 0) /// 에러코드 검사
                 {
                     ChangeDischargerState(EDischargerState.DeviceError, channel);
@@ -1184,7 +1170,10 @@ namespace Ethernet.Client.Discharger
                 }
                 else
                 {
-                    ChangeDischargerState(EDischargerState.Discharging, channel);
+                    if (!_isPaused[i])
+                    {
+                        ChangeDischargerState(EDischargerState.Discharging, channel);
+                    }
                 }
             }
         }
@@ -1210,25 +1199,6 @@ namespace Ethernet.Client.Discharger
                     _dischargerDataArray[i].ReceiveDischargeTemp = channelInfo.ReplyArray[i].AuxTemp1;
                 }
 
-                //if (_parameters.DischargerIsTempModule == true &&
-                //    (channelInfo.ReplyArray[i].BatteryVoltage < _dischargerDataArray[i].SafetyVoltageMin ||
-                //    channelInfo.ReplyArray[i].BatteryVoltage > _dischargerDataArray[i].SafetyVoltageMax ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent < _dischargerDataArray[i].SafetyCurrentMin ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent > _dischargerDataArray[i].SafetyCurrentMax))
-                //{
-                //    ChangeDischargerState(EDischargerState.SafetyOutOfRange, channel);
-                //}
-                //else if (_parameters.DischargerIsTempModule == false &&
-                //    (channelInfo.ReplyArray[i].BatteryVoltage < _dischargerDataArray[i].SafetyVoltageMin ||
-                //    channelInfo.ReplyArray[i].BatteryVoltage > _dischargerDataArray[i].SafetyVoltageMax ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent < _dischargerDataArray[i].SafetyCurrentMin ||
-                //    channelInfo.ReplyArray[i].BatteryCurrent > _dischargerDataArray[i].SafetyCurrentMax ||
-                //    channelInfo.ReplyArray[i].AuxTemp1 < _dischargerDataArray[i].SafetyTempMin ||
-                //    channelInfo.ReplyArray[i].AuxTemp1 > _dischargerDataArray[i].SafetyTempMax))
-                //{
-                //    ChangeDischargerState(EDischargerState.SafetyOutOfRange, channel);
-                //}
-                //else 
                 if (channelInfo.ReplyArray[i].ErrorCode != 0) /// 에러코드 검사
                 {
                     ChangeDischargerState(EDischargerState.DeviceError, channel);
@@ -1251,7 +1221,10 @@ namespace Ethernet.Client.Discharger
                 }
                 else
                 {
-                    ChangeDischargerState(EDischargerState.Discharging, channel);
+                    if (!_isPaused[i])
+                    {
+                        ChangeDischargerState(EDischargerState.Discharging, channel);
+                    }
                 }
             }
         }

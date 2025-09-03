@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
@@ -178,7 +179,7 @@ namespace DischargerV2.MVVM.ViewModels
                 // 최대 세번 retry
                 for (int i = 0; i < 3; i++)
                 {
-                    if (ViewModelDischarger.Instance.SelectedModel.DischargerState == EDischargerState.Pause)
+                    if (ViewModelDischarger.Instance.SelectedModel.DischargerState != EDischargerState.Discharging)
                     {
                         ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
                         {
@@ -197,6 +198,10 @@ namespace DischargerV2.MVVM.ViewModels
                         break;
                     }
                 }
+
+                ViewModelDischarger.Instance.SetIsPaused(Model.DischargerName, false);
+
+                Thread.Sleep(1000);
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -274,8 +279,14 @@ namespace DischargerV2.MVVM.ViewModels
 
                 double receiveVoltage = modelDischarger.DischargerData.ReceiveBatteryVoltage;
                 double receiveCurrent = modelDischarger.DischargerData.ReceiveDischargeCurrent;
-                double receiveTemp = modelDischarger.DischargerData.ReceiveDischargeTemp;
+                double receiveTemp = isTempModule ?
+                    modelDischarger.DischargerData.ReceiveDischargeTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName) :
+                    modelDischarger.DischargerData.ReceiveDischargeTemp;
 
+                double safetyVoltageMin = modelDischarger.DischargerData.SafetyVoltageMin;
+                double safetyVoltageMax = modelDischarger.DischargerData.SafetyVoltageMax;
+                double safetyCurrentMin = modelDischarger.DischargerData.SafetyCurrentMin;
+                double safetyCurrentMax = modelDischarger.DischargerData.SafetyCurrentMax;
                 double safetyTempMin = modelDischarger.DischargerData.SafetyTempMin;
                 double safetyTempMax = modelDischarger.DischargerData.SafetyTempMax;
 
@@ -285,25 +296,22 @@ namespace DischargerV2.MVVM.ViewModels
                     return;
                 }
 
-                // 모델별 온도 받아오는 게 다름
-                if (isTempModule)
+                // 안전 조건 확인
+                if (receiveVoltage < safetyVoltageMin || receiveVoltage > safetyVoltageMax)
                 {
-                    receiveTemp = ViewModelTempModule.Instance.GetTempData(Model.DischargerName);
-
-                    // 온도 안전 조건 확인하는 부분
-                    if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
-                    {
-                        viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
-                    }
-
-                    // Graph 데이터 전달
-                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData, receiveTemp);
+                    viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
                 }
-                else
+                if (receiveCurrent < safetyCurrentMin || receiveCurrent > safetyCurrentMax)
                 {
-                    // Graph 데이터 전달
-                    viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData);
+                    viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
                 }
+                if (receiveTemp < safetyTempMin || receiveTemp > safetyTempMax)
+                {
+                    viewModelDischarger.SetDischargerState(Model.DischargerName, EDischargerState.SafetyOutOfRange);
+                }
+
+                // Graph 데이터 전달
+                viewModelMonitor_Graph.SetReceiveData(Model.DischargerName, modelDischarger.DischargerData);
 
                 // 방전기 동작 에러 발생 시, 중단
                 if (receiveState == EDischargerState.SafetyOutOfRange ||

@@ -180,7 +180,6 @@ namespace Ethernet.Client.Discharger
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
         public struct Reply
         {
-            //public short NumberOfChannels;
             public short ChannelNumber;
             public uint ErrorCode;
             public EChannelStatus ChannelStatus;
@@ -198,14 +197,14 @@ namespace Ethernet.Client.Discharger
             public double ChargeEnergy;
             public double DischargeEnergy;
 
-            public double ChannelValue1;
-            public double ChannelValue2;
-            public double ChannelValue3;
-            public double ChannelValue4;
-            public double ChannelValue5;
-            public double ChannelValue6;
-            public double ChannelValue7;
-            public double ChannelValue8;
+            //public double ChannelValue1;
+            //public double ChannelValue2;
+            //public double ChannelValue3;
+            //public double ChannelValue4;
+            //public double ChannelValue5;
+            //public double ChannelValue6;
+            //public double ChannelValue7;
+            //public double ChannelValue8;
         }
     }
 

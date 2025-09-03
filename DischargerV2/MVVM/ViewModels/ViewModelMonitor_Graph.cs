@@ -267,7 +267,7 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
-        public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas, double receiveTemp = double.MaxValue)
+        public void SetReceiveData(string dischargerName, DischargerDatas dischargerDatas)
         {
             try
             {
@@ -281,15 +281,7 @@ namespace DischargerV2.MVVM.ViewModels
                 ModelDictionary[dischargerName].DataNoList.Add(ModelDictionary[dischargerName].DataNoList.Count + 1);
                 ModelDictionary[dischargerName].DataVoltageList.Add(dischargerDatas.ReceiveBatteryVoltage);
                 ModelDictionary[dischargerName].DataCurrentList.Add(dischargerDatas.ReceiveDischargeCurrent);
-
-                if (receiveTemp == double.MaxValue)
-                {
-                    ModelDictionary[dischargerName].DataTempList.Add(dischargerDatas.ReceiveDischargeTemp);
-                }
-                else
-                {
-                    ModelDictionary[dischargerName].DataTempList.Add(receiveTemp);
-                }
+                ModelDictionary[dischargerName].DataTempList.Add(dischargerDatas.ReceiveDischargeTemp);
 
                 // Soc의 경우 Preset 모드에서만 표시
                 if (ModelDictionary[dischargerName].VisibilitySoc == Visibility.Visible)

@@ -45,8 +45,7 @@ namespace DischargerV2.MVVM.Views
 
             if (state == EDischargerState.Discharging.ToString())
             {
-                xPauseButton.IsEnabled = xResumeButton.IsEnabled = false;
-                //xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
                 xStopButton.IsEnabled = true;
                 xFinishButton.IsEnabled = false;
             }
@@ -58,8 +57,7 @@ namespace DischargerV2.MVVM.Views
             }
             else if (state == EDischargerState.Pause.ToString())
             {
-                xPauseButton.IsEnabled = xResumeButton.IsEnabled = false;
-                //xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
+                xPauseButton.IsEnabled = xResumeButton.IsEnabled = true;
                 xStopButton.IsEnabled = true;
                 xFinishButton.IsEnabled = false;
             }

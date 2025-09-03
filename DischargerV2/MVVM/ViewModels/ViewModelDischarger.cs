@@ -379,6 +379,27 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        public void SetIsPaused(string getDischargerName, bool isPaused)
+        {
+            try
+            {
+                string[] discharger = getDischargerName.Split('_');
+                string dischargerName = discharger[0];
+                short channel = (discharger.Length > 1) ?
+                    Convert.ToInt16(discharger[1]) : (short)1;
+
+                _clients[dischargerName].SetIsPaused(channel, isPaused);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error 발생\n\n" +
+                    $"ClassName: {this.GetType().Name}\n" +
+                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
+                    $"Exception: {ex.Message}");
+            }
+        }
+
         public void SetSafetyCondition(string getDischargerName, 
             double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
