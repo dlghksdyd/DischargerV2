@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using static Ethernet.Client.Discharger.ChannelInfo;
 
 namespace Ethernet.Client.Discharger
 {
@@ -154,31 +151,51 @@ namespace Ethernet.Client.Discharger
     public class ChannelInfo
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply_Channel1
+        public class Reply1
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
-
             public short NumberOfChannels;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-            public Reply[] ReplyArray = new Reply[1];
+            public Data[] DataArray = new Data[1];
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply_Channel2 
+        public class Reply2
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
-
             public short NumberOfChannels;
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public Reply[] ReplyArray = new Reply[2];
+            public Data[] DataArray = new Data[2];
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public struct Reply
+        public class Reply1_v34
+        {
+            public ECommandCode CommandCode;
+            public EReturnCode ReturnCode;
+            public short NumberOfChannels;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
+            public Data_v34[] DataArray = new Data_v34[1];
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public class Reply2_v34
+        {
+            public ECommandCode CommandCode;
+            public EReturnCode ReturnCode;
+            public short NumberOfChannels;
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+            public Data_v34[] DataArray = new Data_v34[2];
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public struct Data
         {
             public short ChannelNumber;
             public uint ErrorCode;
@@ -196,15 +213,36 @@ namespace Ethernet.Client.Discharger
             public double Reservation;
             public double ChargeEnergy;
             public double DischargeEnergy;
+        }
 
-            //public double ChannelValue1;
-            //public double ChannelValue2;
-            //public double ChannelValue3;
-            //public double ChannelValue4;
-            //public double ChannelValue5;
-            //public double ChannelValue6;
-            //public double ChannelValue7;
-            //public double ChannelValue8;
+        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public struct Data_v34 
+        {
+            public short ChannelNumber;
+            public uint ErrorCode;
+            public EChannelStatus ChannelStatus;
+            public double BatteryVoltage;
+            public double BatteryCurrent;
+            public double DCIR;
+            public float AuxTemp1;
+            public float AuxTemp2;
+            public byte DOModuleInfo;
+            public byte DIModuleInfo;
+            public DischargeCapacity DischargeCapacity;
+            public float AuxTemp3;
+            public float AuxTemp4;
+            public double Reservation;
+            public double ChargeEnergy;
+            public double DischargeEnergy;
+            // sinexcel protocol V3.4부터 추가
+            public double ChannelValue1;
+            public double ChannelValue2;
+            public double ChannelValue3;
+            public double ChannelValue4;
+            public double ChannelValue5;
+            public double ChannelValue6;
+            public double ChannelValue7;
+            public double ChannelValue8;
         }
     }
 
@@ -344,7 +382,7 @@ namespace Ethernet.Client.Discharger
 
         public void Channel(params short[] channels)
         {
-            //_numberOfChannels = (short)channels.Length;
+            _numberOfChannels = (short)channels.Length;
 
             foreach (var channel in channels)
             {

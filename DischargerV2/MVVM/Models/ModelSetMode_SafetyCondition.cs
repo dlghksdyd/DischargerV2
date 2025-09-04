@@ -1,6 +1,7 @@
 ﻿using DischargerV2.MVVM.Views;
 using MExpress.Mex;
 using Prism.Mvvm;
+using Sqlite.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,6 +27,19 @@ namespace DischargerV2.MVVM.Models
             set
             {
                 SetProperty(ref _dischargerName, value);
+            }
+        }
+
+        private EDischargerModel _dischargerModel = EDischargerModel.MBDC_A1;
+        public EDischargerModel DischargerModel
+        {
+            get
+            {
+                return _dischargerModel;
+            }
+            set
+            {
+                SetProperty(ref _dischargerModel, value);
             }
         }
 

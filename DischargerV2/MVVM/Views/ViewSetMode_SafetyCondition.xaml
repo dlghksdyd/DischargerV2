@@ -17,6 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <Mex:IsDoubleConverter x:Key="IsDoubleConverter"/>
+            <Util:SafetyCurrentMinVisibilityConverter x:Key="SafetyCurrentMinVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -79,7 +80,8 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Mex:MexTextBox x:Name="xCurrMinTextBox" TabIndex="2"
                                     Padding="12,8,12,8" Width="100" 
-                                    Visibility="Collapsed"
+                                    Visibility="{Binding Model.DischargerModel,
+                                                         Converter={StaticResource SafetyCurrentMinVisibilityConverter}}"
                                     Text="{Binding Model.CurrentMin,
                                                    Mode=TwoWay,
                                                    Converter={StaticResource IsDoubleConverter}}"

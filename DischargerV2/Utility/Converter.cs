@@ -998,6 +998,31 @@ namespace Utility.Common
             throw new NotImplementedException();
         }
     }
+
+    public class SafetyCurrentMinVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is EDischargerModel eDischargerModel)
+            {
+                if (eDischargerModel == EDischargerModel.MBDC_A1 ||
+                    eDischargerModel == EDischargerModel.MBDC_A2)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+            return Binding.DoNothing;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     #endregion
 }
 

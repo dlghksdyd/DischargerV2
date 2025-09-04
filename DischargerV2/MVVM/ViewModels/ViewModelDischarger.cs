@@ -131,7 +131,7 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
 
-                // 전압 및 전류 Margin 값 적용
+                // 자체 제작 방전기의 경우, Voltage 안전 조건 마진 적용 필요
                 dischargerInfo.SafetyVoltageMin -= EthernetClientDischarger.SafetyMarginVoltage;
                 dischargerInfo.SafetyVoltageMax += EthernetClientDischarger.SafetyMarginVoltage;
 
@@ -239,11 +239,9 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                double voltage = (param.Voltage == 0) ? 0.001 : param.Voltage;
-
                 // 방전 동작 시작
                 var isOk = _clients[dischargerName].SendCommand_StartDischarge(
-                    channel, EWorkMode.CcCvMode, voltage, param.Current);
+                    channel, EWorkMode.CcCvMode, param.Voltage, param.Current);
 
                 // 방전 동작 시작 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);

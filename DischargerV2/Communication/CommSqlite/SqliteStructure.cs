@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,14 @@ namespace Sqlite.Common
 {
     public enum EDischargerModel
     {
-        MBDC, MBDC_S
+        [Description("자체 제작 방전기_구버전")]
+        MBDC_A1,
+        [Description("자체 제작 방전기_신버전_경광등 제어 필요")]
+        MBDC_A2,
+        [Description("Sinexcel 방전기_구버전")]
+        MBDC_S1,
+        [Description("Sinexcel 방전기_신버전_Protocol V3.4 이상")]
+        MBDC_S2, 
     }
 
     public enum EDischargeType

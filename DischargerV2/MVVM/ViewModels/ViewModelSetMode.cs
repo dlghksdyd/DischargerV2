@@ -175,6 +175,7 @@ namespace DischargerV2.MVVM.ViewModels
 
                 ModelSetMode_SafetyCondition modelSetMode_SafetyCondition = new ModelSetMode_SafetyCondition();
                 modelSetMode_SafetyCondition.DischargerName = dischargerNameList[index];
+                modelSetMode_SafetyCondition.DischargerModel = tableTischargerInfo.Model;
                 modelSetMode_SafetyCondition.VoltageMin = dischargerInfo.SafetyVoltageMin.ToString();
                 modelSetMode_SafetyCondition.VoltageMax = dischargerInfo.SafetyVoltageMax.ToString();
                 modelSetMode_SafetyCondition.CurrentMin = (-dischargerInfo.SafetyCurrentMax).ToString();

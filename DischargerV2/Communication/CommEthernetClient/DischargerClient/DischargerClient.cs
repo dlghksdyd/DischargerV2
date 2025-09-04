@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Channels;
 using System.Threading;
 using DischargerV2.LOG;
 using Ethernet.Client.Common;
@@ -163,15 +162,18 @@ namespace Ethernet.Client.Discharger
 
         private EthernetClient _dischargerClient = null;
         private EthernetClientDischargerStart _parameters = null;
+
         private DischargerDatas[] _dischargerDataArray = null;
+
         private EDischargerState[] _dischargerState = null;
         private bool[] _isPaused = null;
+
         private uint _dioValue = uint.MaxValue;
 
         private System.Timers.Timer ReadInfoTimer = null;
 
         public static double SafetyMarginVoltage = 15;
-        public static double SafetyMarginCurrent = 20;
+        public static double SafetyMarginCurrent = 2;
 
         public static bool IsLampBuzzerUsed = true;
 
@@ -365,40 +367,6 @@ namespace Ethernet.Client.Discharger
 
             Thread.Sleep(2000);
 
-            ///// 이전 에러 상태 초기화
-            //bool clearAlarmResult = SendCommand_ClearAlarm(_parameters.DischargerChannel);
-            //if (clearAlarmResult == false)
-            //{
-            //    ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
-            //    return false;
-            //}
-
-            ///// 경광등 초기화
-            //if (_parameters.DischargerModel == EDischargerModel.MBDC)
-            //{
-            //    bool lampControlResult = SendCommand_LampControl(EDioControl.TowerLampYellow, false);
-            //    if (lampControlResult == false)
-            //    {
-            //        ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
-            //        return false;
-            //    }
-            //}
-
-            ///// Safety Condition 설정
-            //for (int i = 0; i < channel; i++)
-            //{
-            //    bool safetyConditionResult = SendCommand_SetSafetyCondition(
-            //        _parameters.DischargerChannel[i],
-            //        _parameters.SafetyVoltageMax[i], _parameters.SafetyVoltageMin[i],
-            //        _parameters.SafetyCurrentMax[i], _parameters.SafetyCurrentMin[i],
-            //        _parameters.SafetyTempMax[i], _parameters.SafetyTempMin[i]);
-            //    if (safetyConditionResult == false)
-            //    {
-            //        ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
-            //        return false;
-            //    }
-            //}
-
             ReadInfoTimer?.Stop();
             ReadInfoTimer = null;
             ReadInfoTimer = new System.Timers.Timer();
@@ -491,82 +459,53 @@ namespace Ethernet.Client.Discharger
 
                 SendCommand_RequestChannelInfo();
 
-                EDioControl eDioControl = EDioControl.TowerLampGreen;
-
-                // 다채널 방전기 경광등 제어 동작 확인 후 반영 필요
-                for (int i = 0; i < _parameters.DischargerChannel.Length; i++)
+                // 자체 제작 방전기 신규 버전의 경우, 경광등 제어 필요
+                if (_parameters.DischargerModel == EDischargerModel.MBDC_A2)
                 {
-                    short channel = _parameters.DischargerChannel[i];
-                    int index = channel - 1;
+                    EDioControl eDioControl = EDioControl.TowerLampGreen;
 
-                    if (_dischargerState[index] == EDischargerState.SafetyOutOfRange ||
-                        _dischargerState[index] == EDischargerState.ReturnCodeError ||
-                        _dischargerState[index] == EDischargerState.ChStatusError ||
-                        _dischargerState[index] == EDischargerState.DeviceError)
+                    // 다채널 방전기 경광등 제어 동작 확인 후 반영 필요
+                    for (int i = 0; i < _parameters.DischargerChannel.Length; i++)
                     {
-                        if (eDioControl > EDioControl.TowerLampRed)
+                        short channel = _parameters.DischargerChannel[i];
+                        int index = channel - 1;
+
+                        if (_dischargerState[index] == EDischargerState.SafetyOutOfRange ||
+                            _dischargerState[index] == EDischargerState.ReturnCodeError ||
+                            _dischargerState[index] == EDischargerState.ChStatusError ||
+                            _dischargerState[index] == EDischargerState.DeviceError)
                         {
-                            eDioControl = EDioControl.TowerLampRed;
-
-                            //if (IsLampBuzzerUsed)
-                            //{
-                            //    SendCommand_LampControl(EDioControl.TowerLampRed, true);
-                            //}
-                            //else
-                            //{
-                            //    SendCommand_LampControl(EDioControl.TowerLampRed, false);
-                            //}
-
-                            SendCommand_StopDischarge(channel);
-                            return;
-                        }
-
-                        if (_dischargerState[index] == EDischargerState.Discharging)
-                        {
-                            if (eDioControl > EDioControl.TowerLampGreen)
+                            if (eDioControl > EDioControl.TowerLampRed)
                             {
-                                eDioControl = EDioControl.TowerLampGreen;
+                                eDioControl = EDioControl.TowerLampRed;
                             }
-
-                            //SendCommand_LampControl(EDioControl.TowerLampGreen, false);
-
-                            if (_dischargerDataArray[index].ReceiveBatteryVoltage < 1 &&
-                                _dischargerDataArray[index].ReceiveDischargeCurrent < 0.1)
-                            {
-                                SendCommand_StopDischarge(channel);
-                            }
-                        }
-                        else if (_dischargerState[index] == EDischargerState.Pause)
-                        {
-                            if (eDioControl > EDioControl.TowerLampGreen)
-                            {
-                                eDioControl = EDioControl.TowerLampGreen;
-                            }
-
-                            //SendCommand_LampControl(EDioControl.TowerLampGreen, false);
-                        }
-                        else if (_dischargerState[index] == EDischargerState.None ||
-                                 _dischargerState[index] == EDischargerState.Ready)
-                        {
-                            if (eDioControl > EDioControl.TowerLampYellow)
-                            {
-                                eDioControl = EDioControl.TowerLampYellow;
-                            }
-
-                            //SendCommand_LampControl(EDioControl.TowerLampYellow, false);
-                        }
-                    }
-
-                    if (_parameters.DischargerModel == EDischargerModel.MBDC)
-                    {
-                        if (IsLampBuzzerUsed)
-                        {
-                            SendCommand_LampControl(eDioControl, true);
                         }
                         else
                         {
-                            SendCommand_LampControl(eDioControl, false);
+                            if (_dischargerState[index] == EDischargerState.Discharging)
+                            {
+                                if (eDioControl > EDioControl.TowerLampGreen)
+                                {
+                                    eDioControl = EDioControl.TowerLampGreen;
+                                }
+                            }
+                            else if (_dischargerState[index] == EDischargerState.Pause)
+                            {
+                                if (eDioControl > EDioControl.TowerLampGreen)
+                                {
+                                    eDioControl = EDioControl.TowerLampGreen;
+                                }
+                            }
+                            else if (_dischargerState[index] == EDischargerState.None ||
+                                     _dischargerState[index] == EDischargerState.Ready)
+                            {
+                                if (eDioControl > EDioControl.TowerLampYellow)
+                                {
+                                    eDioControl = EDioControl.TowerLampYellow;
+                                }
+                            }
                         }
+                        SendCommand_LampControl(eDioControl, IsLampBuzzerUsed);
                     }
                 }
             }
@@ -585,6 +524,16 @@ namespace Ethernet.Client.Discharger
                         _dischargerState[index] == EDischargerState.Ready ||
                         _dischargerState[index] == EDischargerState.Pause)
                     {
+                        // Sinexcel 방전기의 경우, SetValue(Voltage) 값이 0이어서는 안되고 음수로 들어가야 함
+                        if (_parameters.DischargerModel >= EDischargerModel.MBDC_S1)
+                        {
+                            if (setValue == 0)
+                            {
+                                setValue = 0.001;
+                            }
+                            setValue = -setValue;
+                        }
+
                         // 동작 시작
                         var packetGenerator = new DischargerPacketGenerator();
                         packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
@@ -670,30 +619,38 @@ namespace Ethernet.Client.Discharger
                     var dischargerData = new LogTrace.DischargerData();
                     int index = channel - 1;
 
+                    // Sinexcel 방전기의 경우, Current 안전 조건 Min 값은 -Max 값으로 들어가도록 함
+                    if (_parameters.DischargerModel >= EDischargerModel.MBDC_S1)
+                    {
+                        currentMin = -currentMax;
+                    }
+
                     // 안전 조건 설정
                     var packetGenerator = new DischargerPacketGenerator();
                     packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
                     packetGenerator.Channel(channel);
-
                     packetGenerator.Parameter(EParameterIndex.VoltageUpperLimit, voltageMax);
                     packetGenerator.Parameter(EParameterIndex.VoltageLowerLimit, voltageMin);
                     packetGenerator.Parameter(EParameterIndex.CurrentUpperLimit, currentMax);
-                    packetGenerator.Parameter(EParameterIndex.CurrentLowerLimit, -currentMax);
+                    packetGenerator.Parameter(EParameterIndex.CurrentLowerLimit, currentMin);
                     packetGenerator.Parameter(EParameterIndex.Start, 1.0);
                     byte[] request = packetGenerator.GeneratePacket();
-
-                    Debug.WriteLine($"Curret Upper Limit : {currentMax}");
-                    Debug.WriteLine($"Curret Lower Limit : {-currentMax}");
-                    Debug.WriteLine("[" + DateTime.Now.ToString("HH:mm:ss:fff") + "] " + "safety : " + BitConverter.ToString(request));
 
                     bool isOk = _dischargerClient.ProcessPacket(request);
 
                     if (isOk)
                     {
+                        // 자체 제작 방전기의 경우, Current 안전 조건 내부 마진 적용 필요
+                        if (_parameters.DischargerModel <= EDischargerModel.MBDC_A2)
+                        {
+                            currentMax += SafetyMarginCurrent;
+                            currentMin -= SafetyMarginCurrent;
+                        }
+                        
                         _dischargerDataArray[index].SafetyVoltageMax = voltageMax;
                         _dischargerDataArray[index].SafetyVoltageMin = voltageMin;
                         _dischargerDataArray[index].SafetyCurrentMax = currentMax;
-                        _dischargerDataArray[index].SafetyCurrentMin = -currentMax;
+                        _dischargerDataArray[index].SafetyCurrentMin = currentMin;
                         _dischargerDataArray[index].SafetyTempMax = tempMax;
                         _dischargerDataArray[index].SafetyTempMin = tempMin;
 
@@ -705,7 +662,7 @@ namespace Ethernet.Client.Discharger
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = -currentMax,
+                            SafetyCurrentMin = currentMin,
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
@@ -723,7 +680,7 @@ namespace Ethernet.Client.Discharger
                             SafetyVoltageMax = voltageMax,
                             SafetyVoltageMin = voltageMin,
                             SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = -currentMax,
+                            SafetyCurrentMin = currentMin,
                             SafetyTempMax = tempMax,
                             SafetyTempMin = tempMin,
                         };
@@ -894,7 +851,7 @@ namespace Ethernet.Client.Discharger
             }
         }
 
-        public bool SendCommand_ClearAlarm(params short[] channel)
+        public bool SendCommand_ClearAlarm(short channel)
         {
             try
             {
@@ -915,29 +872,23 @@ namespace Ethernet.Client.Discharger
                     if (isOk)
                     {
                         // 방전 Trace Log 저장 - 에러 해제
-                        for (int i = 0; i < channel.Length; i++)
+                        dischargerData = new LogTrace.DischargerData()
                         {
-                            dischargerData = new LogTrace.DischargerData()
-                            {
-                                Name = _parameters.DischargerName,
-                                Channel = channel[i],
-                            };
-                            new LogTrace(ELogDischarge.COMM_OK_CLEAR_ALARM, dischargerData);
-                        }
+                            Name = _parameters.DischargerName,
+                            Channel = channel,
+                        };
+                        new LogTrace(ELogDischarge.COMM_OK_CLEAR_ALARM, dischargerData);
                         return true;
                     }
                     else
                     {
                         // 방전 Trace Log 저장 - 에러 해제 실패
-                        for (int i = 0; i < channel.Length; i++)
+                        dischargerData = new LogTrace.DischargerData()
                         {
-                            dischargerData = new LogTrace.DischargerData()
-                            {
-                                Name = _parameters.DischargerName,
-                                Channel = channel[i],
-                            };
-                            new LogTrace(ELogDischarge.COMM_ERROR_CLEAR_ALARM, dischargerData);
-                        }
+                            Name = _parameters.DischargerName,
+                            Channel = channel,
+                        };
+                        new LogTrace(ELogDischarge.COMM_ERROR_CLEAR_ALARM, dischargerData);
                         return false;
                     }
                 }
@@ -1096,22 +1047,53 @@ namespace Ethernet.Client.Discharger
                 {
                     bool isSingle = (_parameters.DischargerChannel.Length == 1) ? true : false;
 
-                    short length = isSingle ?
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply_Channel1)) :
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply_Channel2));
-
-                    dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
-
-                    if (isSingle)
+                    if (_parameters.DischargerModel == EDischargerModel.MBDC_A1 ||
+                        _parameters.DischargerModel == EDischargerModel.MBDC_A2 ||
+                        _parameters.DischargerModel == EDischargerModel.MBDC_S1)
                     {
-                        var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply_Channel1>();
-                        UpdateChannelInfoData(packetData);
+                        //short test = isSingle ?
+                        //    (short)new ChannelInfo.Reply1().GetDataLength():
+                        //    (short)new ChannelInfo.Reply2().GetDataLength();
+
+                        short length = isSingle ?
+                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply1)) :
+                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply2));
+
+                        //Debug.WriteLine($"GetDataLength = {test}, MarcharSizeOg = {length}");
+
+                        dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
+
+                        if (isSingle)
+                        {
+                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply1>();
+                            UpdateChannelInfoData(packetData);
+                        }
+                        else
+                        {
+                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply2>();
+                            UpdateChannelInfoData(packetData);
+                        }
                     }
-                    else
+                    else // if (_parameters.DischargerModel == EDischargerModel.MBDC_S2)
                     {
-                        var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply_Channel2>();
-                        UpdateChannelInfoData(packetData);
+                        short length = isSingle ? 
+                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply1_v34)) :
+                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply2_v34));
+
+                        dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
+
+                        if (isSingle)
+                        {
+                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply1_v34>();
+                            UpdateChannelInfoData(packetData);
+                        }
+                        else
+                        {
+                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply2_v34>();
+                            UpdateChannelInfoData(packetData);
+                        }
                     }
+                        
                 }
             }
             catch (Exception ex)
@@ -1127,92 +1109,99 @@ namespace Ethernet.Client.Discharger
             return true;
         }
 
-        private void UpdateChannelInfoData(ChannelInfo.Reply_Channel1 channelInfo)
+        private void UpdateChannelInfoData(object channelInfo)
         {
-            for (int i = 0; i < _parameters.DischargerChannel.Length; i++)
+            int numberOfChannel = _parameters.DischargerChannel.Length;
+
+            object obj = null;
+            uint[] errorCodeArray = new uint[numberOfChannel];
+            byte[] dIModuleInfoArray = new byte[numberOfChannel];
+            EChannelStatus[] channelStatusArray = new EChannelStatus[numberOfChannel];
+            double[] batteryVoltageArray = new double[numberOfChannel];
+            double[] batteryCurrentArray = new double[numberOfChannel];
+            double[] auxTemp1Array = new double[numberOfChannel];
+            EReturnCode eReturnCode = EReturnCode.Success;
+
+            if (channelInfo is ChannelInfo.Reply1 reply1)
             {
-                short channel = _parameters.DischargerChannel[i];
+                obj = reply1.DataArray;
+                eReturnCode = reply1.ReturnCode;
+            }
+            else if (channelInfo is ChannelInfo.Reply2 reply2)
+            {
+                obj = reply2.DataArray;
+                eReturnCode = reply2.ReturnCode;
+            }
+            else if (channelInfo is ChannelInfo.Reply1_v34 reply1_v34)
+            {
+                obj = reply1_v34.DataArray;
+                eReturnCode = reply1_v34.ReturnCode;
+            }
+            else if (channelInfo is ChannelInfo.Reply2_v34 reply2_v34)
+            {
+                obj = reply2_v34.DataArray;
+                eReturnCode = reply2_v34.ReturnCode;
+            }
 
-                /// 채널 상태 업데이트
-                _dischargerDataArray[i].ErrorCode = channelInfo.ReplyArray[i].ErrorCode;
-                _dischargerDataArray[i].DiModuleInfo = channelInfo.ReplyArray[i].DIModuleInfo;
-                _dischargerDataArray[i].ReturnCode = channelInfo.ReturnCode;
-                _dischargerDataArray[i].ChannelStatus = channelInfo.ReplyArray[i].ChannelStatus;
-
-                /// 전압, 전류, 온도 값 업데이트
-                _dischargerDataArray[i].ReceiveBatteryVoltage = channelInfo.ReplyArray[i].BatteryVoltage;
-                _dischargerDataArray[i].ReceiveDischargeCurrent = -channelInfo.ReplyArray[i].BatteryCurrent;
-
-                if (!_parameters.DischargerIsTempModule)
+            if (obj == null) return;
+            else if (obj is ChannelInfo.Data[] dataArray)
+            {
+                for (int i = 0; i < numberOfChannel; i++)
                 {
-                    _dischargerDataArray[i].ReceiveDischargeTemp = channelInfo.ReplyArray[i].AuxTemp1;
-                }
-
-                if (channelInfo.ReplyArray[i].ErrorCode != 0) /// 에러코드 검사
-                {
-                    ChangeDischargerState(EDischargerState.DeviceError, channel);
-                }
-                else if (channelInfo.ReturnCode != EReturnCode.Success) /// 리턴 코드 검사
-                {
-                    ChangeDischargerState(EDischargerState.ReturnCodeError, channel);
-                }
-                else if (channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Error) /// 채널 상태 검사
-                {
-                    ChangeDischargerState(EDischargerState.ChStatusError, channel);
-                }
-                else if (channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Standby0 ||
-                         channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Standby5)
-                {
-                    if (_dischargerState[i] != EDischargerState.Pause)
-                    {
-                        ChangeDischargerState(EDischargerState.Ready, channel);
-                    }
-                }
-                else
-                {
-                    if (!_isPaused[i])
-                    {
-                        ChangeDischargerState(EDischargerState.Discharging, channel);
-                    }
+                    errorCodeArray[i] = dataArray[i].ErrorCode;
+                    dIModuleInfoArray[i] = dataArray[i].DIModuleInfo;
+                    channelStatusArray[i] = dataArray[i].ChannelStatus;
+                    batteryVoltageArray[i] = dataArray[i].BatteryVoltage;
+                    batteryCurrentArray[i] = dataArray[i].BatteryCurrent;
+                    auxTemp1Array[i] = dataArray[i].AuxTemp1;
                 }
             }
-        }
+            else if (obj is ChannelInfo.Data_v34[] dataArray_v34)
+            {
+                for (int i = 0; i < numberOfChannel; i++)
+                {
+                    errorCodeArray[i] = dataArray_v34[i].ErrorCode;
+                    dIModuleInfoArray[i] = dataArray_v34[i].DIModuleInfo;
+                    channelStatusArray[i] = dataArray_v34[i].ChannelStatus;
+                    batteryVoltageArray[i] = dataArray_v34[i].BatteryVoltage;
+                    batteryCurrentArray[i] = dataArray_v34[i].BatteryCurrent;
+                    auxTemp1Array[i] = dataArray_v34[i].AuxTemp1;
+                }
+            }
 
-        private void UpdateChannelInfoData(ChannelInfo.Reply_Channel2 channelInfo)
-        {
             for (int i = 0; i < _parameters.DischargerChannel.Length; i++)
             {
                 short channel = _parameters.DischargerChannel[i];
 
                 /// 채널 상태 업데이트
-                _dischargerDataArray[i].ErrorCode = channelInfo.ReplyArray[i].ErrorCode;
-                _dischargerDataArray[i].DiModuleInfo = channelInfo.ReplyArray[i].DIModuleInfo;
-                _dischargerDataArray[i].ReturnCode = channelInfo.ReturnCode;
-                _dischargerDataArray[i].ChannelStatus = channelInfo.ReplyArray[i].ChannelStatus;
+                _dischargerDataArray[i].ErrorCode = errorCodeArray[i];
+                _dischargerDataArray[i].DiModuleInfo = dIModuleInfoArray[i];
+                _dischargerDataArray[i].ReturnCode = eReturnCode;
+                _dischargerDataArray[i].ChannelStatus = channelStatusArray[i];
 
                 /// 전압, 전류, 온도 값 업데이트
-                _dischargerDataArray[i].ReceiveBatteryVoltage = channelInfo.ReplyArray[i].BatteryVoltage;
-                _dischargerDataArray[i].ReceiveDischargeCurrent = -channelInfo.ReplyArray[i].BatteryCurrent;
+                _dischargerDataArray[i].ReceiveBatteryVoltage = batteryVoltageArray[i];
+                _dischargerDataArray[i].ReceiveDischargeCurrent = -batteryCurrentArray[i];
 
                 if (!_parameters.DischargerIsTempModule)
                 {
-                    _dischargerDataArray[i].ReceiveDischargeTemp = channelInfo.ReplyArray[i].AuxTemp1;
+                    _dischargerDataArray[i].ReceiveDischargeTemp = auxTemp1Array[i];
                 }
 
-                if (channelInfo.ReplyArray[i].ErrorCode != 0) /// 에러코드 검사
+                if (errorCodeArray[i] != 0) /// 에러코드 검사
                 {
                     ChangeDischargerState(EDischargerState.DeviceError, channel);
                 }
-                else if (channelInfo.ReturnCode != EReturnCode.Success) /// 리턴 코드 검사
+                else if (eReturnCode != EReturnCode.Success) /// 리턴 코드 검사
                 {
                     ChangeDischargerState(EDischargerState.ReturnCodeError, channel);
                 }
-                else if (channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Error) /// 채널 상태 검사
+                else if (channelStatusArray[i] == EChannelStatus.Error) /// 채널 상태 검사
                 {
                     ChangeDischargerState(EDischargerState.ChStatusError, channel);
                 }
-                else if (channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Standby0 ||
-                         channelInfo.ReplyArray[i].ChannelStatus == EChannelStatus.Standby5)
+                else if (channelStatusArray[i] == EChannelStatus.Standby0 ||
+                         channelStatusArray[i] == EChannelStatus.Standby5)
                 {
                     if (_dischargerState[i] != EDischargerState.Pause)
                     {
