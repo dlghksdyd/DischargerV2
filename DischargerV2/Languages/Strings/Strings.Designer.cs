@@ -385,6 +385,15 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Please enter LogFileName과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string EnterLogFileName {
+            get {
+                return ResourceManager.GetString("EnterLogFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Enter Name과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string EnterName {
@@ -426,6 +435,15 @@ namespace DischargerV2.Languages.Strings {
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Exit과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
             }
         }
         
@@ -498,6 +516,15 @@ namespace DischargerV2.Languages.Strings {
         public static string Load {
             get {
                 return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   already exists in the destination folder.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string LogFileIsExists {
+            get {
+                return ResourceManager.GetString("LogFileIsExists", resourceCulture);
             }
         }
         
@@ -700,6 +727,15 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Do you want to exit?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Comment_CloseProgram {
+            get {
+                return ResourceManager.GetString("PopupInfo_Comment_CloseProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Are you sure you want to log out?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string PopupInfo_Comment_Logout {
@@ -709,11 +745,38 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
+        ///   Please restart the program.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Comment_ProgramError {
+            get {
+                return ResourceManager.GetString("PopupInfo_Comment_ProgramError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Confirm Exit과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Title_CloseProgram {
+            get {
+                return ResourceManager.GetString("PopupInfo_Title_CloseProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Confirm Log-out과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string PopupInfo_Title_Logout {
             get {
                 return ResourceManager.GetString("PopupInfo_Title_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Program error.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string PopupInfo_Title_ProgramError {
+            get {
+                return ResourceManager.GetString("PopupInfo_Title_ProgramError", resourceCulture);
             }
         }
         
@@ -790,7 +853,7 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
-        ///   You don&apos;t have permission to view device registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   You don&apos;t have permission to view device registration information.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string PopupWarning_Comment_NoPermissionDevice {
             get {
@@ -799,7 +862,7 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
-        ///   You don&apos;t have permission to view model registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   You don&apos;t have permission to view model registration information.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string PopupWarning_Comment_NoPermissionModel {
             get {
@@ -808,7 +871,7 @@ namespace DischargerV2.Languages.Strings {
         }
         
         /// <summary>
-        ///   You don&apos;t have permission to view user registration information. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   You don&apos;t have permission to view user registration information.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string PopupWarning_Comment_NoPermissionUser {
             get {

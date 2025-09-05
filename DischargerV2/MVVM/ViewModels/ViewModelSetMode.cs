@@ -370,12 +370,16 @@ namespace DischargerV2.MVVM.ViewModels
             }
             else
             {
+                string title = new DynamicString().GetDynamicString("PopupInfo_Title_ProgramError");
+                string comment = new DynamicString().GetDynamicString("PopupInfo_Comment_ProgramError");
+                string confirmText = new DynamicString().GetDynamicString("Confirm");
+
                 // 프로그램 오류 메세지 활성화
                 ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                 {
-                    Title = "Program error",
-                    Comment = "Please restart the program",
-                    ConfirmText = "Ok",
+                    Title = title,
+                    Comment = comment,
+                    ConfirmText = confirmText,
                     CancelVisibility = Visibility.Collapsed,
                 };
 

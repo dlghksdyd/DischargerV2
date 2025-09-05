@@ -61,15 +61,16 @@ namespace DischargerV2.MVVM.ViewModels
                         ViewModelMain viewModelMain = ViewModelMain.Instance;
 
                         var viewModelDischarger = ViewModelDischarger.Instance;
+
                         if (viewModelDischarger.IsDischarging())
                         {
-                            var title = new DynamicString().GetDynamicString("PopupWarning_Title");
-                            var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_CloseProgram");
+                            var title_Warning = new DynamicString().GetDynamicString("PopupWarning_Title");
+                            var comment_Warning = new DynamicString().GetDynamicString("PopupWarning_Comment_CloseProgram");
 
                             ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
-                                Title = title,
-                                Comment = comment,
+                                Title = title_Warning,
+                                Comment = comment_Warning,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
@@ -78,12 +79,16 @@ namespace DischargerV2.MVVM.ViewModels
                             return;
                         }
 
+                        var title_Info = new DynamicString().GetDynamicString("PopupInfo_Title_CloseProgram");
+                        var comment_Info = new DynamicString().GetDynamicString("PopupInfo_Comment_CloseProgram");
+                        var confirmText_Info = new DynamicString().GetDynamicString("Exit");
+
                         ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
                         {
-                            Title = "Confirm Exit",
-                            Comment = "Do you want to exit?",
+                            Title = title_Info,
+                            Comment = comment_Info,
                             CallBackDelegate = Close,
-                            ConfirmText = "Exit"
+                            ConfirmText = confirmText_Info
                         };
                         viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
                         viewModelMain.OpenPopup(ModelMain.EPopup.Info);

@@ -1,7 +1,9 @@
-﻿using DischargerV2.LOG;
+﻿using DischargerV2.Languages.Strings;
+using DischargerV2.LOG;
 using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using System.Diagnostics;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -59,25 +61,28 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelPopup_SetLogFileName()
         {
+            Description = new DynamicString().GetDynamicString("EnterLogFileName");
+
             ExitCommand = new DelegateCommand(Exit);
             CloseCommand = new DelegateCommand(Close);
         }
 
         public void CheckLogFileName()
         {
-            if (Comment == null || Comment == string.Empty)
+            if (Comment == null || Comment.Trim() == string.Empty)
             {
-                Description = "Please enter LogFileName";
+                Description = new DynamicString().GetDynamicString("EnterLogFileName");
                 IsEnabledConfirm = false;
             }
             else
             {
-                bool isExit = LogDischarge.CheckExit(Comment);
+                bool isExists = LogDischarge.CheckExists(Comment);
 
-                if (isExit)
+                if (isExists)
                 {
-                    Description = string.Format(
-                        "대상 폴더에 이름이 \"{0}.csv\"인 파일이 이미 있습니다.", Comment);
+                    var description = new DynamicString().GetDynamicString("LogFileIsExists");
+
+                    Description = $"\"{Comment}.csv\" {description}";
                     IsEnabledConfirm = false;
                 }
                 else

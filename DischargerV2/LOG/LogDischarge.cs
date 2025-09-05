@@ -98,7 +98,7 @@ namespace DischargerV2.LOG
         public static ConcurrentQueue<List<string>> LogQueue = new ConcurrentQueue<List<string>>();
         private static readonly object WriteLock = new object();
 
-        public static bool CheckExit(string fileName)
+        public static bool CheckExists(string fileName)
         {
             string fileNameAll = string.Format("{0}\\{1}.csv", Path, fileName);
 

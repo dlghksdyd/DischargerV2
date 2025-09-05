@@ -1060,7 +1060,6 @@ namespace Ethernet.Client.Discharger
                         packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
                         packetGenerator.Channel(parameter.ChannelNumber);
                         packetGenerator.Parameter(parameter.Index1, parameter.FixedValue);
-                        packetGenerator.Parameter(parameter.Index2, parameter.FixedValue);
                     }
                 }
                 else if (eCommandCode == ECommandCode.LampControl)

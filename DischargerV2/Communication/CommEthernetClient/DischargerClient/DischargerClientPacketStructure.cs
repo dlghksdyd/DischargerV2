@@ -191,9 +191,8 @@ namespace Ethernet.Client.Discharger
             public ECommandCode CommandCode = ECommandCode.SetParameter;
             private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 2;
+            private short NumberOfParameters = 1;
             public EParameterIndex Index1 = EParameterIndex.WorkModeClearAlarm;
-            public EParameterIndex Index2 = EParameterIndex.Start;
             public double FixedValue = 1.0;
         }
 
