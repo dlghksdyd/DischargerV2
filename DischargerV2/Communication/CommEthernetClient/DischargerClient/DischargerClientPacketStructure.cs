@@ -258,8 +258,8 @@ namespace Ethernet.Client.Discharger
                             DataArray[i] = new Data();
 
                             DataArray[i].ChannelNumber = reader.ReadInt16();
-                            DataArray[i].ErrorCode = (uint)reader.ReadInt16();
-                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt32();
+                            DataArray[i].ErrorCode = (uint)reader.ReadInt32();
+                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt16();
                             DataArray[i].BatteryVoltage = reader.ReadDouble();
                             DataArray[i].BatteryCurrent = reader.ReadDouble();
                             DataArray[i].DCIR = reader.ReadDouble();
@@ -314,8 +314,8 @@ namespace Ethernet.Client.Discharger
                             DataArray[i] = new Data_v34();
 
                             DataArray[i].ChannelNumber = reader.ReadInt16();
-                            DataArray[i].ErrorCode = (uint)reader.ReadInt16();
-                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt32();
+                            DataArray[i].ErrorCode = (uint)reader.ReadInt32();
+                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt16();
                             DataArray[i].BatteryVoltage = reader.ReadDouble();
                             DataArray[i].BatteryCurrent = reader.ReadDouble();
                             DataArray[i].DCIR = reader.ReadDouble();

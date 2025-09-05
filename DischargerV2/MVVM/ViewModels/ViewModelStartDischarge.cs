@@ -174,6 +174,8 @@ namespace DischargerV2.MVVM.ViewModels
                     IsRestart = true,
                 });
 
+                ViewModelDischarger.Instance.SetIsPaused(Model.DischargerName, false);
+
                 Thread.Sleep(3000);
 
                 // 최대 세번 retry
@@ -198,10 +200,6 @@ namespace DischargerV2.MVVM.ViewModels
                         break;
                     }
                 }
-
-                ViewModelDischarger.Instance.SetIsPaused(Model.DischargerName, false);
-
-                Thread.Sleep(1000);
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {

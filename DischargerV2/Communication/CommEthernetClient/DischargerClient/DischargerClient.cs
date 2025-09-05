@@ -1266,6 +1266,10 @@ namespace Ethernet.Client.Discharger
                     {
                         ChangeDischargerState(EDischargerState.Ready, channel);
                     }
+                    else if (!_isPaused[i])
+                    {
+                        ChangeDischargerState(EDischargerState.Ready, channel);
+                    }
                 }
                 else
                 {
