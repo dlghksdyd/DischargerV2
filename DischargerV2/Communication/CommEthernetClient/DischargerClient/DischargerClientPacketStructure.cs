@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Media.Media3D;
 
 namespace Ethernet.Client.Discharger
 {
@@ -50,8 +53,24 @@ namespace Ethernet.Client.Discharger
     public enum ECommandCode : short
     {
         None = 0x0,
-        RequestCommand = 0x3001,
-        ChannelInfo = 0x3012,
+
+        SetSafetyCondition = 0x0001,
+        StartDischarge = 0x0002,
+        StopDischarge = 0x0003,
+        ClearAlarm = 0x0004,
+        LampControl = 0x0005,
+
+        SetParameter = 0x3001,
+        GetChannelInfo = 0x3012,
+    }
+
+    public enum EResultCode : short
+    {
+        Success = 0x00,
+        FailWriteCommand = 0x10,
+        FailReadCommand = 0x20,
+        FailReadData = 0x21,
+        FailParseData = 0x30,
     }
 
     public enum EReturnCode : int
@@ -119,83 +138,219 @@ namespace Ethernet.Client.Discharger
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class SetSafetyCondition
+    public class Parameter
     {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
+        public class SetSafetyCondition
         {
-            private ECommandCode CommandCode = ECommandCode.RequestCommand;
-            private short NumberOfChannels = 1;
+            public ECommandCode CommandCode = ECommandCode.SetParameter;
+            private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 4;
-            private EParameterIndex Index1 = EParameterIndex.VoltageUpperLimit;
+            private short NumberOfParameters = 5;
+            public EParameterIndex Index1 = EParameterIndex.VoltageUpperLimit;
             public double VoltageUpperLimitValue;
-            private EParameterIndex Index2 = EParameterIndex.VoltageLowerLimit;
+            public EParameterIndex Index2 = EParameterIndex.VoltageLowerLimit;
             public double VoltageLowerLimitValue;
-            private EParameterIndex Index3 = EParameterIndex.CurrentUpperLimit;
+            public EParameterIndex Index3 = EParameterIndex.CurrentUpperLimit;
             public double CurrentUpperLimitValue;
-            private EParameterIndex Index4 = EParameterIndex.CurrentLowerLimit;
+            public EParameterIndex Index4 = EParameterIndex.CurrentLowerLimit;
             public double CurrentLowerLimitValue;
+            public EParameterIndex Index5 = EParameterIndex.Start;
+            public double FixedValue = 1.0;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
+        public class StartDischarge
+        {
+            public ECommandCode CommandCode = ECommandCode.SetParameter;
+            private short NumberOfChannels;
+            public short ChannelNumber;
+            private short NumberOfParameters = 4;
+            public EParameterIndex Index1 = EParameterIndex.WorkMode;
+            public double WorkMode;
+            public EParameterIndex Index2 = EParameterIndex.SetValue;
+            public double SetValue;
+            public EParameterIndex Index3 = EParameterIndex.LimitingValues;
+            public double LimitingValue;
+            public EParameterIndex Index4 = EParameterIndex.Start;
+            public double FixedValue = 1.0;
+        }
+
+        public class StopDischarge
+        {
+            public ECommandCode CommandCode = ECommandCode.SetParameter;
+            private short NumberOfChannels;
+            public short ChannelNumber;
+            private short NumberOfParameters = 2;
+            public EParameterIndex Index1 = EParameterIndex.WorkMode;
+            public double WorkMode = 0.0;  
+            public EParameterIndex Index2 = EParameterIndex.Start;
+            public double FixedValue = 1.0;
+        }
+
+        public class ClearAlarm
+        {
+            public ECommandCode CommandCode = ECommandCode.SetParameter;
+            private short NumberOfChannels;
+            public short ChannelNumber;
+            private short NumberOfParameters = 2;
+            public EParameterIndex Index1 = EParameterIndex.WorkModeClearAlarm;
+            public EParameterIndex Index2 = EParameterIndex.Start;
+            public double FixedValue = 1.0;
+        }
+
+        public class LampControl
+        {
+            public ECommandCode CommandCode = ECommandCode.SetParameter;
+            private short NumberOfChannels = 1;
+            public short ChannelNumber = 999;
+            private short NumberOfParameters = 1;
+            public EParameterIndex Index1 = EParameterIndex.DioControl;
+            public double DioValue;
+        }
+
         public class Reply
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
+
+            public Reply Parse(byte[] dataBuffer)
+            {
+                using (MemoryStream ms = new MemoryStream(dataBuffer))
+                {
+                    using (BinaryReader reader = new BinaryReader(ms))
+                    {
+                        CommandCode = (ECommandCode)reader.ReadInt16();
+                        ReturnCode = (EReturnCode)reader.ReadInt32();
+                    }
+                }
+                return this;
+            }
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
     public class ChannelInfo
     {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply1
+        public class Reply
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
             public short NumberOfChannels;
+            public Data[] DataArray;
 
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-            public Data[] DataArray = new Data[1];
+            public Reply Parse(byte[] dataBuffer, short channel = -1)
+            {
+                using (MemoryStream ms = new MemoryStream(dataBuffer))
+                {
+                    using (BinaryReader reader = new BinaryReader(ms))
+                    {
+                        CommandCode = (ECommandCode)reader.ReadInt16();
+                        ReturnCode = (EReturnCode)reader.ReadInt32();
+                        NumberOfChannels = reader.ReadInt16();
+
+                        if (channel < 0)
+                        {
+                            channel = NumberOfChannels;
+                        }
+
+                        DataArray = new Data[channel];
+
+                        for (int i = 0; i < channel; i++)
+                        {
+                            DataArray[i] = new Data();
+
+                            DataArray[i].ChannelNumber = reader.ReadInt16();
+                            DataArray[i].ErrorCode = (uint)reader.ReadInt16();
+                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt32();
+                            DataArray[i].BatteryVoltage = reader.ReadDouble();
+                            DataArray[i].BatteryCurrent = reader.ReadDouble();
+                            DataArray[i].DCIR = reader.ReadDouble();
+                            DataArray[i].AuxTemp1 = reader.ReadSingle();
+                            DataArray[i].AuxTemp2 = reader.ReadSingle();
+                            DataArray[i].DOModuleInfo = reader.ReadByte();
+                            DataArray[i].DIModuleInfo = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte0 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte1 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte2 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte3 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte4 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte5 = reader.ReadByte();
+                            DataArray[i].AuxTemp3 = reader.ReadSingle();
+                            DataArray[i].AuxTemp4 = reader.ReadSingle();
+                            DataArray[i].Reservation = reader.ReadDouble();
+                            DataArray[i].ChargeEnergy = reader.ReadDouble();
+                            DataArray[i].DischargeEnergy = reader.ReadDouble();
+                        }
+                    }
+                }
+                return this;
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply2
+        public class Reply_v34
         {
             public ECommandCode CommandCode;
             public EReturnCode ReturnCode;
             public short NumberOfChannels;
+            public Data_v34[] DataArray;
 
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public Data[] DataArray = new Data[2];
+            public Reply_v34 Parse(byte[] dataBuffer, short channel = -1)
+            {
+                using (MemoryStream ms = new MemoryStream(dataBuffer))
+                {
+                    using (BinaryReader reader = new BinaryReader(ms))
+                    {
+                        CommandCode = (ECommandCode)reader.ReadInt16();
+                        ReturnCode = (EReturnCode)reader.ReadInt32();
+                        NumberOfChannels = reader.ReadInt16();
+
+                        if (channel < 0)
+                        {
+                            channel = NumberOfChannels;
+                        }
+
+                        DataArray = new Data_v34[channel];
+
+                        for (int i = 0; i < channel; i++)
+                        {
+                            DataArray[i] = new Data_v34();
+
+                            DataArray[i].ChannelNumber = reader.ReadInt16();
+                            DataArray[i].ErrorCode = (uint)reader.ReadInt16();
+                            DataArray[i].ChannelStatus = (EChannelStatus)reader.ReadInt32();
+                            DataArray[i].BatteryVoltage = reader.ReadDouble();
+                            DataArray[i].BatteryCurrent = reader.ReadDouble();
+                            DataArray[i].DCIR = reader.ReadDouble();
+                            DataArray[i].AuxTemp1 = reader.ReadSingle();
+                            DataArray[i].AuxTemp2 = reader.ReadSingle();
+                            DataArray[i].DOModuleInfo = reader.ReadByte();
+                            DataArray[i].DIModuleInfo = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte0 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte1 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte2 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte3 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte4 = reader.ReadByte();
+                            DataArray[i].DischargeCapacity.byte5 = reader.ReadByte();
+                            DataArray[i].AuxTemp3 = reader.ReadSingle();
+                            DataArray[i].AuxTemp4 = reader.ReadSingle();
+                            DataArray[i].Reservation = reader.ReadDouble();
+                            DataArray[i].ChargeEnergy = reader.ReadDouble();
+                            DataArray[i].DischargeEnergy = reader.ReadDouble();
+
+                            DataArray[i].ChannelValue1 = reader.ReadDouble();
+                            DataArray[i].ChannelValue2 = reader.ReadDouble();
+                            DataArray[i].ChannelValue3 = reader.ReadDouble();
+                            DataArray[i].ChannelValue4 = reader.ReadDouble();
+                            DataArray[i].ChannelValue5 = reader.ReadDouble();
+                            DataArray[i].ChannelValue6 = reader.ReadDouble();
+                            DataArray[i].ChannelValue7 = reader.ReadDouble();
+                            DataArray[i].ChannelValue8 = reader.ReadDouble();
+                        }
+                    }
+                }
+                return this;
+            }
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply1_v34
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
-            public short NumberOfChannels;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
-            public Data_v34[] DataArray = new Data_v34[1];
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply2_v34
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
-            public short NumberOfChannels;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-            public Data_v34[] DataArray = new Data_v34[2];
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public struct Data
+        public class Data
         {
             public short ChannelNumber;
             public uint ErrorCode;
@@ -207,7 +362,7 @@ namespace Ethernet.Client.Discharger
             public float AuxTemp2;
             public byte DOModuleInfo;
             public byte DIModuleInfo;
-            public DischargeCapacity DischargeCapacity;
+            public DischargeCapacity DischargeCapacity = new DischargeCapacity();
             public float AuxTemp3;
             public float AuxTemp4;
             public double Reservation;
@@ -215,26 +370,8 @@ namespace Ethernet.Client.Discharger
             public double DischargeEnergy;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public struct Data_v34 
+        public class Data_v34 : Data
         {
-            public short ChannelNumber;
-            public uint ErrorCode;
-            public EChannelStatus ChannelStatus;
-            public double BatteryVoltage;
-            public double BatteryCurrent;
-            public double DCIR;
-            public float AuxTemp1;
-            public float AuxTemp2;
-            public byte DOModuleInfo;
-            public byte DIModuleInfo;
-            public DischargeCapacity DischargeCapacity;
-            public float AuxTemp3;
-            public float AuxTemp4;
-            public double Reservation;
-            public double ChargeEnergy;
-            public double DischargeEnergy;
-            // sinexcel protocol V3.4부터 추가
             public double ChannelValue1;
             public double ChannelValue2;
             public double ChannelValue3;
@@ -244,112 +381,15 @@ namespace Ethernet.Client.Discharger
             public double ChannelValue7;
             public double ChannelValue8;
         }
-    }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class DischargeCapacity
-    {
-        public byte byte0;
-        public byte byte1;
-        public byte byte2;
-        public byte byte3;
-        public byte byte4;
-        public byte byte5;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class StartDischarge
-    {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
+        public class DischargeCapacity
         {
-            private ECommandCode CommandCode = ECommandCode.RequestCommand;
-            private short NumberOfChannels = 1;
-            public short ChannelNumber;
-            private short NumberOfParameters = 4;
-            private EParameterIndex Index1 = EParameterIndex.WorkMode;
-            public double WorkMode;
-            private EParameterIndex Index2 = EParameterIndex.SetValue;
-            public double SetValue;
-            private EParameterIndex Index3 = EParameterIndex.LimitingValues;
-            public double LimitingValue;
-            private EParameterIndex Index4 = EParameterIndex.Start;
-            private double FixedValue = 1.0;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class StopDischarge
-    {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
-        {
-            private ECommandCode CommandCode = ECommandCode.RequestCommand;
-            private short NumberOfChannels = 1;
-            public short ChannelNumber;
-            private short NumberOfParameters = 2;
-            private EParameterIndex Index1 = EParameterIndex.WorkMode;
-            private double WorkMode = 0.0;  // standby mode
-            private EParameterIndex Index2 = EParameterIndex.Start;
-            private double FixedValue = 1.0;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class ClearAlarm
-    {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
-        {
-            private ECommandCode CommandCode = ECommandCode.RequestCommand;
-            private short NumberOfChannels = 1;
-            public short ChannelNumber;
-            private short NumberOfParameters = 1;
-            private EParameterIndex Index1 = EParameterIndex.WorkModeClearAlarm;
-            private double FixedValue = 1.0;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-    public class LampControl
-    {
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Request
-        {
-            private ECommandCode CommandCode = ECommandCode.RequestCommand;
-            private short NumberOfChannels = 1;
-            public short ChannelNumber;
-            private short NumberOfParameters = 1;
-            private EParameterIndex Index1 = EParameterIndex.DioControl;
-            public double DioValue;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1), Serializable]
-        public class Reply
-        {
-            public ECommandCode CommandCode;
-            public EReturnCode ReturnCode;
+            public byte byte0;
+            public byte byte1;
+            public byte byte2;
+            public byte byte3;
+            public byte byte4;
+            public byte byte5;
         }
     }
 
@@ -412,16 +452,7 @@ namespace Ethernet.Client.Discharger
             // 2. Command (2 bytes)
             packet.AddRange(BitConverter.GetBytes((short)_command));
 
-            if (_command == ECommandCode.ChannelInfo)
-            {
-                // 3. Number of channels (2 bytes)
-                packet.AddRange(BitConverter.GetBytes((short)2));
-
-                // 4. Channel number (2 bytes each)
-                foreach (var ch in _channels)
-                    packet.AddRange(BitConverter.GetBytes(ch));
-            }
-            else if (_command == ECommandCode.RequestCommand)
+            if (_command == ECommandCode.SetParameter)
             {
                 // 3. Number of channels (2 bytes)
                 packet.AddRange(BitConverter.GetBytes((short)1));
@@ -442,6 +473,15 @@ namespace Ethernet.Client.Discharger
                     packet.AddRange(BitConverter.GetBytes(kvp.Value));            // 8 bytes
                 }
             }
+            else if(_command == ECommandCode.GetChannelInfo)
+            {
+                // 3. Number of channels (2 bytes)
+                packet.AddRange(BitConverter.GetBytes((short)2));
+
+                // 4. Channel number (2 bytes each)
+                foreach (var ch in _channels)
+                    packet.AddRange(BitConverter.GetBytes(ch));
+            }
 
             // 7. Tail
             packet.AddRange(_tail.ToByteArray());
@@ -460,7 +500,8 @@ namespace Ethernet.Client.Discharger
             const int TailSize = 2;                     // fixed end marker (0xEEEE)
 
             int totalLength;
-            if (_command == ECommandCode.ChannelInfo)
+
+            if (eCommandCode == ECommandCode.GetChannelInfo)
             {
                 totalLength = HeaderSize + CommandCodeSize + ChannelCountSize + (_numberOfChannels * ChannelEntrySize);
             }

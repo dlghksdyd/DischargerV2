@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using DischargerV2.LOG;
 using Ethernet.Client.Common;
@@ -160,6 +163,7 @@ namespace Ethernet.Client.Discharger
 
         private object _packetLock = new object();
 
+        private int _handle = int.MaxValue;
         private EthernetClient _dischargerClient = null;
         private EthernetClientDischargerStart _parameters = null;
 
@@ -353,9 +357,7 @@ namespace Ethernet.Client.Discharger
             clientStart.IpAddress = _parameters.IpAddress;
             clientStart.EthernetPort = _parameters.EthernetPort;
             clientStart.TimeOutMs = _parameters.TimeOutMs;
-            clientStart.WriteFunction = WriteData;
-            clientStart.ReadFunction = ReadData;
-            clientStart.ParseFunction = ParseData;
+            clientStart.CheckFunction = false;
             _dischargerClient = new EthernetClient();
 
             var result = _dischargerClient.Connect(clientStart);
@@ -363,6 +365,10 @@ namespace Ethernet.Client.Discharger
             {
                 ChangeDischargerState(EDischargerState.Disconnected, _parameters.DischargerChannel);
                 return false;
+            }
+            else
+            {
+                _handle = _dischargerClient.GetHandle();
             }
 
             Thread.Sleep(2000);
@@ -511,6 +517,94 @@ namespace Ethernet.Client.Discharger
             }
         }
 
+        public bool SendCommand_SetSafetyCondition(short channel, double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
+        {
+            try
+            {
+                lock (_packetLock)
+                {
+                    var dischargerData = new LogTrace.DischargerData();
+                    int index = channel - 1;
+
+                    // Sinexcel 방전기의 경우, Current 안전 조건 Min 값은 -Max 값으로 들어가도록 함
+                    if (_parameters.DischargerModel >= EDischargerModel.MBDC_S1)
+                    {
+                        currentMin = -currentMax;
+                    }
+
+                    // 안전 조건 설정
+                    var parameter = new Parameter.SetSafetyCondition()
+                    {
+                        ChannelNumber = channel,
+                        VoltageUpperLimitValue = voltageMax,
+                        VoltageLowerLimitValue = voltageMin,
+                        CurrentUpperLimitValue = currentMax,
+                        CurrentLowerLimitValue = currentMin,
+                    };
+                    var result = Process(ECommandCode.SetSafetyCondition, parameter);
+
+                    bool isOk = (result == EResultCode.Success) ? true : false;
+
+                    if (isOk)
+                    {
+                        // 자체 제작 방전기의 경우, Current 안전 조건 내부 마진 적용 필요
+                        if (_parameters.DischargerModel <= EDischargerModel.MBDC_A2)
+                        {
+                            currentMax += SafetyMarginCurrent;
+                            currentMin -= SafetyMarginCurrent;
+                        }
+
+                        _dischargerDataArray[index].SafetyVoltageMax = voltageMax;
+                        _dischargerDataArray[index].SafetyVoltageMin = voltageMin;
+                        _dischargerDataArray[index].SafetyCurrentMax = currentMax;
+                        _dischargerDataArray[index].SafetyCurrentMin = currentMin;
+                        _dischargerDataArray[index].SafetyTempMax = tempMax;
+                        _dischargerDataArray[index].SafetyTempMin = tempMin;
+
+                        // 방전 Trace Log 저장 - 안전 조건 설정
+                        dischargerData = new LogTrace.DischargerData()
+                        {
+                            Name = _parameters.DischargerName,
+                            Channel = channel,
+                            SafetyVoltageMax = voltageMax,
+                            SafetyVoltageMin = voltageMin,
+                            SafetyCurrentMax = currentMax,
+                            SafetyCurrentMin = currentMin,
+                            SafetyTempMax = tempMax,
+                            SafetyTempMin = tempMin,
+                        };
+                        new LogTrace(ELogDischarge.COMM_OK_SET_SAFETYCONDITION, dischargerData);
+
+                        return true;
+                    }
+                    else
+                    {
+                        // 방전 Trace Log 저장 - 안전 조건 설정 실패
+                        dischargerData = new LogTrace.DischargerData()
+                        {
+                            Name = _parameters.DischargerName,
+                            Channel = channel,
+                            SafetyVoltageMax = voltageMax,
+                            SafetyVoltageMin = voltageMin,
+                            SafetyCurrentMax = currentMax,
+                            SafetyCurrentMin = currentMin,
+                            SafetyTempMax = tempMax,
+                            SafetyTempMin = tempMin,
+                        };
+                        new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, dischargerData);
+
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 방전 Trace Log 저장 - 안전 조건 설정 실패
+                new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, ex);
+                return false;
+            }
+        }
+
         public EDischargerClientError SendCommand_StartDischarge(short channel, EWorkMode workMode, double setValue, double limitingValue)
         {
             try
@@ -535,16 +629,16 @@ namespace Ethernet.Client.Discharger
                         }
 
                         // 동작 시작
-                        var packetGenerator = new DischargerPacketGenerator();
-                        packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                        packetGenerator.Channel(channel);
-                        packetGenerator.Parameter(EParameterIndex.WorkMode, (double)workMode);
-                        packetGenerator.Parameter(EParameterIndex.SetValue, -setValue);
-                        packetGenerator.Parameter(EParameterIndex.LimitingValues, limitingValue);
-                        packetGenerator.Parameter(EParameterIndex.Start, 1);
-                        byte[] request = packetGenerator.GeneratePacket();
+                        var parameter = new Parameter.StartDischarge()
+                        {
+                            ChannelNumber = channel,
+                            WorkMode = (double)workMode,
+                            SetValue = setValue,
+                            LimitingValue = limitingValue,
+                        };
+                        var result = Process(ECommandCode.StartDischarge, parameter);
 
-                        bool isOk = _dischargerClient.ProcessPacket(request);
+                        bool isOk = (result == EResultCode.Success) ? true : false;
 
                         if (isOk)
                         {
@@ -610,94 +704,6 @@ namespace Ethernet.Client.Discharger
             }
         }
 
-        public bool SendCommand_SetSafetyCondition(short channel, double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
-        {
-            try
-            {
-                lock (_packetLock)
-                {
-                    var dischargerData = new LogTrace.DischargerData();
-                    int index = channel - 1;
-
-                    // Sinexcel 방전기의 경우, Current 안전 조건 Min 값은 -Max 값으로 들어가도록 함
-                    if (_parameters.DischargerModel >= EDischargerModel.MBDC_S1)
-                    {
-                        currentMin = -currentMax;
-                    }
-
-                    // 안전 조건 설정
-                    var packetGenerator = new DischargerPacketGenerator();
-                    packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                    packetGenerator.Channel(channel);
-                    packetGenerator.Parameter(EParameterIndex.VoltageUpperLimit, voltageMax);
-                    packetGenerator.Parameter(EParameterIndex.VoltageLowerLimit, voltageMin);
-                    packetGenerator.Parameter(EParameterIndex.CurrentUpperLimit, currentMax);
-                    packetGenerator.Parameter(EParameterIndex.CurrentLowerLimit, currentMin);
-                    packetGenerator.Parameter(EParameterIndex.Start, 1.0);
-                    byte[] request = packetGenerator.GeneratePacket();
-
-                    bool isOk = _dischargerClient.ProcessPacket(request);
-
-                    if (isOk)
-                    {
-                        // 자체 제작 방전기의 경우, Current 안전 조건 내부 마진 적용 필요
-                        if (_parameters.DischargerModel <= EDischargerModel.MBDC_A2)
-                        {
-                            currentMax += SafetyMarginCurrent;
-                            currentMin -= SafetyMarginCurrent;
-                        }
-                        
-                        _dischargerDataArray[index].SafetyVoltageMax = voltageMax;
-                        _dischargerDataArray[index].SafetyVoltageMin = voltageMin;
-                        _dischargerDataArray[index].SafetyCurrentMax = currentMax;
-                        _dischargerDataArray[index].SafetyCurrentMin = currentMin;
-                        _dischargerDataArray[index].SafetyTempMax = tempMax;
-                        _dischargerDataArray[index].SafetyTempMin = tempMin;
-
-                        // 방전 Trace Log 저장 - 안전 조건 설정
-                        dischargerData = new LogTrace.DischargerData()
-                        {
-                            Name = _parameters.DischargerName,
-                            Channel = channel,
-                            SafetyVoltageMax = voltageMax,
-                            SafetyVoltageMin = voltageMin,
-                            SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = currentMin,
-                            SafetyTempMax = tempMax,
-                            SafetyTempMin = tempMin,
-                        };
-                        new LogTrace(ELogDischarge.COMM_OK_SET_SAFETYCONDITION, dischargerData);
-
-                        return true;
-                    }
-                    else
-                    {
-                        // 방전 Trace Log 저장 - 안전 조건 설정 실패
-                        dischargerData = new LogTrace.DischargerData()
-                        {
-                            Name = _parameters.DischargerName,
-                            Channel = channel,
-                            SafetyVoltageMax = voltageMax,
-                            SafetyVoltageMin = voltageMin,
-                            SafetyCurrentMax = currentMax,
-                            SafetyCurrentMin = currentMin,
-                            SafetyTempMax = tempMax,
-                            SafetyTempMin = tempMin,
-                        };
-                        new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, dischargerData);
-
-                        return false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // 방전 Trace Log 저장 - 안전 조건 설정 실패
-                new LogTrace(ELogDischarge.COMM_ERROR_SET_SAFETYCONDITION, ex);
-                return false;
-            }
-        }
-
         public EDischargerClientError SendCommand_StopDischarge(short channel)
         {
             try
@@ -715,14 +721,13 @@ namespace Ethernet.Client.Discharger
                         _dischargerState[index] == EDischargerState.DeviceError)
                     {
                         // 동작 정지
-                        var packetGenerator = new DischargerPacketGenerator();
-                        packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                        packetGenerator.Channel(channel);
-                        packetGenerator.Parameter(EParameterIndex.WorkMode, 0.0);
-                        packetGenerator.Parameter(EParameterIndex.Start, 1.0);
-                        byte[] request = packetGenerator.GeneratePacket();
+                        var parameter = new Parameter.StopDischarge()
+                        {
+                            ChannelNumber = channel,
+                        };
+                        var result = Process(ECommandCode.StopDischarge, parameter);
 
-                        bool isOk = _dischargerClient.ProcessPacket(request);
+                        bool isOk = (result == EResultCode.Success) ? true : false;
 
                         if (isOk)
                         {
@@ -788,14 +793,13 @@ namespace Ethernet.Client.Discharger
                     if (_dischargerState[index] == EDischargerState.Discharging)
                     {
                         // 동작 일시 정지
-                        var packetGenerator = new DischargerPacketGenerator();
-                        packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                        packetGenerator.Channel(channel);
-                        packetGenerator.Parameter(EParameterIndex.WorkMode, 0.0);
-                        packetGenerator.Parameter(EParameterIndex.Start, 1.0);
-                        byte[] request = packetGenerator.GeneratePacket();
+                        var parameter = new Parameter.StopDischarge()
+                        {
+                            ChannelNumber = channel,
+                        };
+                        var result = Process(ECommandCode.StopDischarge, parameter);
 
-                        bool isOk = _dischargerClient.ProcessPacket(request);
+                        bool isOk = (result == EResultCode.Success) ? true : false;
 
                         if (isOk)
                         {
@@ -860,14 +864,13 @@ namespace Ethernet.Client.Discharger
                     var dischargerData = new LogTrace.DischargerData();
 
                     // 에러 해제
-                    var packetGenerator = new DischargerPacketGenerator();
-                    packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                    packetGenerator.Channel(channel);
-                    packetGenerator.Parameter(EParameterIndex.WorkModeClearAlarm, 1.0);
-                    packetGenerator.Parameter(EParameterIndex.Start, 1.0);
-                    byte[] request = packetGenerator.GeneratePacket();
+                    var parameter = new Parameter.ClearAlarm()
+                    {
+                        ChannelNumber = channel,
+                    };
+                    var result = Process(ECommandCode.ClearAlarm, parameter);
 
-                    bool isOk = _dischargerClient.ProcessPacket(request);
+                    bool isOk = (result == EResultCode.Success) ? true : false;
 
                     if (isOk)
                     {
@@ -917,13 +920,13 @@ namespace Ethernet.Client.Discharger
                     }
 
                     // 경광등 제어
-                    var packetGenerator = new DischargerPacketGenerator();
-                    packetGenerator.Command(ECommandCode.RequestCommand, GetPacketSerialNumber());
-                    packetGenerator.Channel(999);
-                    packetGenerator.Parameter(EParameterIndex.DioControl, dioValue);
-                    byte[] request = packetGenerator.GeneratePacket();
+                    var parameter = new Parameter.LampControl()
+                    {
+                        DioValue = dioValue,
+                    };
+                    var result = Process(ECommandCode.LampControl, parameter);
 
-                    bool isOk = _dischargerClient.ProcessPacket(request);
+                    bool isOk = (result == EResultCode.Success) ? true : false;
 
                     if (isOk)
                     {
@@ -975,125 +978,191 @@ namespace Ethernet.Client.Discharger
             lock (_packetLock)
             {
                 // 모니터링
-                var packetGenerator = new DischargerPacketGenerator();
-                packetGenerator.Command(ECommandCode.ChannelInfo, GetPacketSerialNumber());
-                packetGenerator.Channel(_parameters.DischargerChannel);
-                byte[] request = packetGenerator.GeneratePacket();
+                var result = Process(ECommandCode.GetChannelInfo);
 
-                bool isOk = _dischargerClient.ProcessPacket(request);
+                bool isOk = (result == EResultCode.Success) ? true : false;
+                return isOk;
+            }
+        }
 
-                if (isOk != true)
+        private EResultCode Process(ECommandCode eCommandCode, object obj = null)
+        {
+            lock (_packetLock)
+            {
+                // 커맨드 전송
+                var writeResult = WriteCommand(eCommandCode, obj);
+                if (writeResult != EthernetClientStatus.OK)
                 {
-                    return false;
+                    return EResultCode.FailWriteCommand;
                 }
 
-                return true;
+                Thread.Sleep(50);
+
+                // 데이터 가져오기
+                var readResult = ReadCommand(out byte[] readBuffer);
+                if (readResult != EthernetClientStatus.OK)
+                {
+                    return EResultCode.FailReadCommand;
+                }
+
+                // 데이터 파싱
+                var result = ParseData(eCommandCode, readBuffer);
+                return result;
             }
         }
 
-        private bool ReadData(int handle, out byte[] readBuffer)
-        {
-            EthernetClientStatus result = _dischargerClient.Read(handle, out readBuffer);
-            if (result != EthernetClientStatus.OK)
-            {
-                Debug.WriteLine("Read Error: " + result.ToString());
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool WriteData(int handle, byte[] writeBuffer)
-        {
-            if (writeBuffer == null || writeBuffer.Length == 0)
-            {
-                return true;
-            }
-
-            EthernetClientStatus result = _dischargerClient.Write(handle, writeBuffer);
-            if (result != EthernetClientStatus.OK)
-            {
-                Debug.WriteLine("WriteData Write Error: " + result.ToString());
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool ParseData(byte[] readBuffer, byte[] writeBuffer = null)
+        private EthernetClientStatus WriteCommand(ECommandCode eCommandCode, object obj = null)
         {
             try
             {
-                if (readBuffer == null || readBuffer.Length == 0)
+                var packetGenerator = new DischargerPacketGenerator();
+                byte[] writeBuffer = null;
+
+                if (eCommandCode == ECommandCode.SetSafetyCondition)
                 {
-                    return true;
+                    if (obj is Parameter.SetSafetyCondition parameter)
+                    {
+                        packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
+                        packetGenerator.Channel(parameter.ChannelNumber);
+                        packetGenerator.Parameter(parameter.Index1, parameter.VoltageUpperLimitValue);
+                        packetGenerator.Parameter(parameter.Index2, parameter.VoltageLowerLimitValue);
+                        packetGenerator.Parameter(parameter.Index3, parameter.CurrentUpperLimitValue);
+                        packetGenerator.Parameter(parameter.Index4, parameter.CurrentLowerLimitValue);
+                        packetGenerator.Parameter(parameter.Index5, parameter.FixedValue);
+                    }
+                }
+                else if (eCommandCode == ECommandCode.StartDischarge)
+                {
+                    if (obj is Parameter.StartDischarge parameter)
+                    {
+                        packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
+                        packetGenerator.Channel(parameter.ChannelNumber);
+                        packetGenerator.Parameter(parameter.Index1, parameter.WorkMode);
+                        packetGenerator.Parameter(parameter.Index2, parameter.SetValue);
+                        packetGenerator.Parameter(parameter.Index3, parameter.LimitingValue);
+                        packetGenerator.Parameter(parameter.Index4, parameter.FixedValue);
+                    }
+                }
+                else if (eCommandCode == ECommandCode.StopDischarge)
+                {
+                    if (obj is Parameter.StopDischarge parameter)
+                    {
+                        packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
+                        packetGenerator.Channel(parameter.ChannelNumber);
+                        packetGenerator.Parameter(parameter.Index1, parameter.WorkMode);
+                        packetGenerator.Parameter(parameter.Index2, parameter.FixedValue);
+                    }
+                }
+                else if (eCommandCode == ECommandCode.ClearAlarm)
+                {
+                    if (obj is Parameter.ClearAlarm parameter)
+                    {
+                        packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
+                        packetGenerator.Channel(parameter.ChannelNumber);
+                        packetGenerator.Parameter(parameter.Index1, parameter.FixedValue);
+                        packetGenerator.Parameter(parameter.Index2, parameter.FixedValue);
+                    }
+                }
+                else if (eCommandCode == ECommandCode.LampControl)
+                {
+                    if (obj is Parameter.LampControl parameter)
+                    {
+                        packetGenerator.Command(parameter.CommandCode, GetPacketSerialNumber());
+                        packetGenerator.Channel(parameter.ChannelNumber);
+                        packetGenerator.Parameter(parameter.Index1, parameter.DioValue);
+                    }
+                }
+                else if (eCommandCode == ECommandCode.GetChannelInfo)
+                {
+                    packetGenerator.Command(ECommandCode.GetChannelInfo, GetPacketSerialNumber());
+                    packetGenerator.Channel(_parameters.DischargerChannel);
                 }
 
-                /// 커맨드 코드 가져오기
-                byte[] dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, 6);
-                SetSafetyCondition.Reply reply = dataByteArray.FromByteArrayToPacket<SetSafetyCondition.Reply>();
+                writeBuffer = packetGenerator.GeneratePacket();
+                var writeResult = _dischargerClient.Write(_handle, writeBuffer);
 
-                if (reply.CommandCode == ECommandCode.RequestCommand)
+                return writeResult;
+            }
+            catch
+            {
+                return EthernetClientStatus.FAIL_WRITE;
+            }
+        }
+
+        private EthernetClientStatus ReadCommand(out byte[] dataBuffer)
+        {
+            dataBuffer = new byte[0];
+
+            try
+            {
+                var readResult = _dischargerClient.Read(_handle, out byte[] readBuffer);
+                if (readResult != EthernetClientStatus.OK)
                 {
-                    /// 리턴 코드 검사
-                    if (reply.ReturnCode != EReturnCode.Success)
+                    return readResult;
+                }
+
+                // 데이터 추출
+                var extractDataResult = ExtractDataBuffer(readBuffer, out dataBuffer);
+                if (extractDataResult != EResultCode.Success)
+                {
+                    return EthernetClientStatus.FAIL_READ;
+                }
+
+                return readResult;
+            }
+            catch
+            {
+                return EthernetClientStatus.FAIL_READ;
+            }
+        }
+
+        private EResultCode ExtractDataBuffer(byte[] readBuffer, out byte[] dataBuffer)
+        {
+            dataBuffer = new byte[0];
+
+            try
+            {
+                int dataLength = readBuffer.Length - PacketConstant.PACKET_HEADER_SIZE;
+
+                dataBuffer = new byte[dataLength];
+
+                Array.Copy(readBuffer, PacketConstant.PACKET_HEADER_SIZE, dataBuffer, 0, dataLength);
+
+                return EResultCode.Success;
+            }
+            catch
+            {
+                return EResultCode.FailReadData;
+            }
+        }
+
+        private EResultCode ParseData(ECommandCode eCommandCode, byte[] readBuffer)
+        {
+            try
+            {
+                if (eCommandCode <= ECommandCode.SetParameter)
+                {
+                    var value = new Parameter.Reply().Parse(readBuffer);
+
+                    if (value.ReturnCode != EReturnCode.Success)
                     {
                         ChangeDischargerState(EDischargerState.ReturnCodeError, _parameters.DischargerChannel);
                     }
                 }
-                else if (reply.CommandCode == ECommandCode.ChannelInfo)
+                else if (eCommandCode == ECommandCode.GetChannelInfo)
                 {
-                    bool isSingle = (_parameters.DischargerChannel.Length == 1) ? true : false;
+                    object value = null;
 
-                    if (_parameters.DischargerModel == EDischargerModel.MBDC_A1 ||
-                        _parameters.DischargerModel == EDischargerModel.MBDC_A2 ||
-                        _parameters.DischargerModel == EDischargerModel.MBDC_S1)
+                    if (_parameters.DischargerModel <= EDischargerModel.MBDC_S1)
                     {
-                        //short test = isSingle ?
-                        //    (short)new ChannelInfo.Reply1().GetDataLength():
-                        //    (short)new ChannelInfo.Reply2().GetDataLength();
-
-                        short length = isSingle ?
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply1)) :
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply2));
-
-                        //Debug.WriteLine($"GetDataLength = {test}, MarcharSizeOg = {length}");
-
-                        dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
-
-                        if (isSingle)
-                        {
-                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply1>();
-                            UpdateChannelInfoData(packetData);
-                        }
-                        else
-                        {
-                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply2>();
-                            UpdateChannelInfoData(packetData);
-                        }
+                        value = new ChannelInfo.Reply().Parse(readBuffer, _parameters.DischargerChannel.Last());
                     }
-                    else // if (_parameters.DischargerModel == EDischargerModel.MBDC_S2)
+                    else
                     {
-                        short length = isSingle ? 
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply1_v34)) :
-                            (short)Marshal.SizeOf(typeof(ChannelInfo.Reply2_v34));
-
-                        dataByteArray = readBuffer.ExtractSubArray(PacketConstant.PACKET_HEADER_SIZE, length);
-
-                        if (isSingle)
-                        {
-                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply1_v34>();
-                            UpdateChannelInfoData(packetData);
-                        }
-                        else
-                        {
-                            var packetData = dataByteArray.FromByteArrayToPacket<ChannelInfo.Reply2_v34>();
-                            UpdateChannelInfoData(packetData);
-                        }
+                        value = new ChannelInfo.Reply_v34().Parse(readBuffer, _parameters.DischargerChannel.Last());
                     }
-                        
+
+                    UpdateChannelInfoData(value);
                 }
             }
             catch (Exception ex)
@@ -1103,10 +1172,10 @@ namespace Ethernet.Client.Discharger
                 // 방전 Trace Log 저장 - 데이터 수신 실패
                 new LogTrace(ELogDischarge.COMM_ERROR_GET_DATA, readBuffer.GetRawDataHexString());
 
-                return false;
+                return EResultCode.FailParseData;
             }
 
-            return true;
+            return EResultCode.Success;
         }
 
         private void UpdateChannelInfoData(object channelInfo)
@@ -1122,40 +1191,18 @@ namespace Ethernet.Client.Discharger
             double[] auxTemp1Array = new double[numberOfChannel];
             EReturnCode eReturnCode = EReturnCode.Success;
 
-            if (channelInfo is ChannelInfo.Reply1 reply1)
+            if (channelInfo is ChannelInfo.Reply reply)
             {
-                obj = reply1.DataArray;
-                eReturnCode = reply1.ReturnCode;
+                obj = reply.DataArray;
+                eReturnCode = reply.ReturnCode;
             }
-            else if (channelInfo is ChannelInfo.Reply2 reply2)
+            else if (channelInfo is ChannelInfo.Reply_v34 reply_v34)
             {
-                obj = reply2.DataArray;
-                eReturnCode = reply2.ReturnCode;
-            }
-            else if (channelInfo is ChannelInfo.Reply1_v34 reply1_v34)
-            {
-                obj = reply1_v34.DataArray;
-                eReturnCode = reply1_v34.ReturnCode;
-            }
-            else if (channelInfo is ChannelInfo.Reply2_v34 reply2_v34)
-            {
-                obj = reply2_v34.DataArray;
-                eReturnCode = reply2_v34.ReturnCode;
+                obj = reply_v34.DataArray;
+                eReturnCode = reply_v34.ReturnCode;
             }
 
             if (obj == null) return;
-            else if (obj is ChannelInfo.Data[] dataArray)
-            {
-                for (int i = 0; i < numberOfChannel; i++)
-                {
-                    errorCodeArray[i] = dataArray[i].ErrorCode;
-                    dIModuleInfoArray[i] = dataArray[i].DIModuleInfo;
-                    channelStatusArray[i] = dataArray[i].ChannelStatus;
-                    batteryVoltageArray[i] = dataArray[i].BatteryVoltage;
-                    batteryCurrentArray[i] = dataArray[i].BatteryCurrent;
-                    auxTemp1Array[i] = dataArray[i].AuxTemp1;
-                }
-            }
             else if (obj is ChannelInfo.Data_v34[] dataArray_v34)
             {
                 for (int i = 0; i < numberOfChannel; i++)
@@ -1166,6 +1213,18 @@ namespace Ethernet.Client.Discharger
                     batteryVoltageArray[i] = dataArray_v34[i].BatteryVoltage;
                     batteryCurrentArray[i] = dataArray_v34[i].BatteryCurrent;
                     auxTemp1Array[i] = dataArray_v34[i].AuxTemp1;
+                }
+            }
+            else if (obj is ChannelInfo.Data[] dataArray)
+            {
+                for (int i = 0; i < numberOfChannel; i++)
+                {
+                    errorCodeArray[i] = dataArray[i].ErrorCode;
+                    dIModuleInfoArray[i] = dataArray[i].DIModuleInfo;
+                    channelStatusArray[i] = dataArray[i].ChannelStatus;
+                    batteryVoltageArray[i] = dataArray[i].BatteryVoltage;
+                    batteryCurrentArray[i] = dataArray[i].BatteryCurrent;
+                    auxTemp1Array[i] = dataArray[i].AuxTemp1;
                 }
             }
 

@@ -90,7 +90,7 @@ namespace DischargerV2.MVVM.ViewModels
             DischargeTimer?.Stop();
             DischargeTimer = null;
             DischargeTimer = new System.Timers.Timer();
-            DischargeTimer.Interval = 1000;
+            DischargeTimer.Interval = 500;
             DischargeTimer.Elapsed += OneSecondTimer_Elapsed;
             DischargeTimer.Start();
         }
