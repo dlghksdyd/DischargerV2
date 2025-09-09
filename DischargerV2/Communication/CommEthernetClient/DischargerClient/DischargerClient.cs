@@ -1211,7 +1211,7 @@ namespace Ethernet.Client.Discharger
                     channelStatusArray[i] = dataArray_v34[i].ChannelStatus;
                     batteryVoltageArray[i] = dataArray_v34[i].BatteryVoltage;
                     batteryCurrentArray[i] = dataArray_v34[i].BatteryCurrent;
-                    auxTemp1Array[i] = dataArray_v34[i].AuxTemp1;
+                    auxTemp1Array[i] = 0;
                 }
             }
             else if (obj is ChannelInfo.Data[] dataArray)
