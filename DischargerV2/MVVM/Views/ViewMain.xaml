@@ -1,78 +1,87 @@
-﻿<Window x:Class="DischargerV2.MVVM.Views.ViewMain"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:Util="clr-namespace:Utility.Common"
-        xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
-        xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
-        xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
-        xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance vm:ViewModelMain}" 
-        Title="MainWindow" 
-        Height="1030" Width="1920" 
-        MaxHeight="1080" MaxWidth="1920" 
-        WindowStyle="None" ResizeMode="NoResize"
-        WindowState="{Binding Model.WindowState}">
+﻿<Window
+    x:Class="DischargerV2.MVVM.Views.ViewMain"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
+    xmlns:Util="clr-namespace:Utility.Common"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
+    xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+    xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+    Title="MainWindow"
+    Width="1920"
+    Height="1030"
+    MaxWidth="1920"
+    MaxHeight="1080"
+    d:DataContext="{d:DesignInstance vm:ViewModelMain}"
+    ResizeMode="NoResize"
+    WindowState="{Binding Model.WindowState}"
+    WindowStyle="None"
+    mc:Ignorable="d">
 
     <Window.Resources>
         <ResourceDictionary>
-            <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-            <Util:IsStartedToVisibilityConverter x:Key="IsStartedToVisibilityConverter"/>
+            <Util:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <Util:IsStartedToVisibilityConverter x:Key="IsStartedToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid x:Name="xTopGrid" Cursor="">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <view:ViewTopbar Grid.Row="0"/>
-        <!--Main 화면-->
-        <Grid x:Name="xMainGrid" Grid.Row="1"
-              Background="{StaticResource Mex/ResColor/surface_page}">
+        <view:ViewTopbar Grid.Row="0" />
+        <!--  Main 화면  -->
+        <Grid
+            x:Name="xMainGrid"
+            Grid.Row="1"
+            Background="{StaticResource Mex/ResColor/surface_page}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0"
-                    BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-                    BorderThickness="0,0,0,1">
-                <view:ViewTopmenu/>
+            <Border
+                Grid.Row="0"
+                BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+                BorderThickness="0,0,0,1">
+                <view:ViewTopmenu />
             </Border>
-            <Grid Grid.Row="1" 
-                  HorizontalAlignment="Center" Margin="0 20 0 0">
+            <Grid
+                Grid.Row="1"
+                Margin="0,20,0,0"
+                HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <view:ViewMonitor_ChannelState Grid.Row="0"/>
-                <view:ViewDischargerInfoTable Grid.Row="2" x:Name="xViewDischargerInfoTable" />
+                <view:ViewMonitor_ChannelState Grid.Row="0" />
+                <view:ViewDischargerInfoTable x:Name="xViewDischargerInfoTable" Grid.Row="2" />
                 <Grid Grid.Row="4">
                     <view:ViewSetMode>
                         <view:ViewSetMode.Visibility>
-                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
-                                          ConverterParameter="Invert" 
-                                          FallbackValue="Visibility">
+                            <MultiBinding
+                                Converter="{StaticResource IsStartedToVisibilityConverter}"
+                                ConverterParameter="Invert"
+                                FallbackValue="Visibility">
                                 <MultiBinding.Bindings>
-                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
-                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}" />
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}" />
                                 </MultiBinding.Bindings>
                             </MultiBinding>
                         </view:ViewSetMode.Visibility>
                     </view:ViewSetMode>
                     <view:ViewMonitor>
                         <view:ViewMonitor.Visibility>
-                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}"
-                                          FallbackValue="Collapsed">
+                            <MultiBinding Converter="{StaticResource IsStartedToVisibilityConverter}" FallbackValue="Collapsed">
                                 <MultiBinding.Bindings>
-                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}"/>
-                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}"/>
+                                    <Binding Path="Model.IsStartedArray" Source="{x:Static vm:ViewModelMain.Instance}" />
+                                    <Binding Path="Model.DischargerIndex" Source="{x:Static vm:ViewModelMain.Instance}" />
                                 </MultiBinding.Bindings>
                             </MultiBinding>
                         </view:ViewMonitor.Visibility>
@@ -80,63 +89,37 @@
                 </Grid>
             </Grid>
         </Grid>
-        <!--Login-->
-        <view:ViewLogin Grid.Row="1"/>
-        <!--Popup 활성화-->
-        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
-                Background="#22000000" 
-                Visibility="{Binding Model.IsPopupOpen, Mode=TwoWay,
-                                     Converter={StaticResource BoolToVisibilityConverter}, 
-                                     FallbackValue=Collapsed}">
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                <view:ViewPopup_UserSetting Visibility="{Binding Model.PopupVisibility[0], 
-                                                                 Source={x:Static vm:ViewModelMain.Instance}}"
-                                            DataContext="{Binding Model.ViewModelPopup_UserSetting, 
-                                                                  Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_DeviceRegister Visibility="{Binding Model.PopupVisibility[1], 
-                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
-                                               DataContext="{Binding Model.ViewModelPopup_DeviceRegister,
-                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_ModelRegister Visibility="{Binding Model.PopupVisibility[2], 
-                                                                   Source={x:Static vm:ViewModelMain.Instance}}"
-                                              DataContext="{Binding Model.ViewModelPopup_ModelRegister,
-                                                                    Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_Info Visibility="{Binding Model.PopupVisibility[3], 
-                                                          Source={x:Static vm:ViewModelMain.Instance}}"
-                                     DataContext="{Binding Model.ViewModelPopup_Info,
-                                                           Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_Error Visibility="{Binding Model.PopupVisibility[4], 
-                                                           Source={x:Static vm:ViewModelMain.Instance}}"
-                                      DataContext="{Binding Model.ViewModelPopup_Error,
-                                                            Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_Waiting Visibility="{Binding Model.PopupVisibility[5], 
-                                                           Source={x:Static vm:ViewModelMain.Instance}}"
-                                      DataContext="{Binding Model.ViewModelPopup_Waiting,
-                                                            Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_SetLogFileName Visibility="{Binding Model.PopupVisibility[6], 
-                                                                    Source={x:Static vm:ViewModelMain.Instance}}"
-                                               DataContext="{Binding Model.ViewModelPopup_SetLogFileName,
-                                                                     Source={x:Static vm:ViewModelMain.Instance}}"/>
+        <!--  Login  -->
+        <view:ViewLogin Grid.Row="1" />
+        <!--  Popup 활성화  -->
+        <Border
+            Grid.Row="0"
+            Grid.RowSpan="100"
+            Grid.Column="0"
+            Grid.ColumnSpan="100"
+            Background="#22000000"
+            Visibility="{Binding Model.IsPopupOpen, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <view:ViewPopup_UserSetting DataContext="{Binding Model.ViewModelPopup_UserSetting, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[0], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_DeviceRegister DataContext="{Binding Model.ViewModelPopup_DeviceRegister, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[1], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_ModelRegister DataContext="{Binding Model.ViewModelPopup_ModelRegister, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[2], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_Info DataContext="{Binding Model.ViewModelPopup_Info, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[3], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_Error DataContext="{Binding Model.ViewModelPopup_Error, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[4], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_Waiting DataContext="{Binding Model.ViewModelPopup_Waiting, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[5], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_SetLogFileName DataContext="{Binding Model.ViewModelPopup_SetLogFileName, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.PopupVisibility[6], Source={x:Static vm:ViewModelMain.Instance}}" />
             </Grid>
         </Border>
-        <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="100" Grid.ColumnSpan="100" 
-                Background="#22000000" 
-                Visibility="{Binding Model.IsNestedPopupOpen,
-                                     Converter={StaticResource BoolToVisibilityConverter}, 
-                                     FallbackValue=Collapsed}">
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                <view:ViewPopup_CreateNewUser Visibility="{Binding Model.NestedPopupVisibility[0], 
-                                                                   Source={x:Static vm:ViewModelMain.Instance}}"
-                                              DataContext="{Binding Model.ViewModelPopup_CreateNewUser,
-                                                                    Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_EditUser Visibility="{Binding Model.NestedPopupVisibility[1], 
-                                                              Source={x:Static vm:ViewModelMain.Instance}}"
-                                         DataContext="{Binding Model.ViewModelPopup_EditUser, 
-                                                               Source={x:Static vm:ViewModelMain.Instance}}"/>
-                <view:ViewPopup_Warning Visibility="{Binding Model.NestedPopupVisibility[2], 
-                                                             Source={x:Static vm:ViewModelMain.Instance}}"
-                                        DataContext="{Binding Model.ViewModelPopup_Warning, 
-                                                              Source={x:Static vm:ViewModelMain.Instance}}"/>
+        <Border
+            Grid.Row="0"
+            Grid.RowSpan="100"
+            Grid.Column="0"
+            Grid.ColumnSpan="100"
+            Background="#22000000"
+            Visibility="{Binding Model.IsNestedPopupOpen, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <view:ViewPopup_CreateNewUser DataContext="{Binding Model.ViewModelPopup_CreateNewUser, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.NestedPopupVisibility[0], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_EditUser DataContext="{Binding Model.ViewModelPopup_EditUser, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.NestedPopupVisibility[1], Source={x:Static vm:ViewModelMain.Instance}}" />
+                <view:ViewPopup_Warning DataContext="{Binding Model.ViewModelPopup_Warning, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.NestedPopupVisibility[2], Source={x:Static vm:ViewModelMain.Instance}}" />
             </Grid>
         </Border>
     </Grid>

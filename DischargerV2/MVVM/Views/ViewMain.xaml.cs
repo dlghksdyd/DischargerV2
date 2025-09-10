@@ -3,7 +3,9 @@ using DischargerV2.LOG;
 using DischargerV2.MVVM.ViewModels;
 using Sqlite.Common;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using static DischargerV2.LOG.LogTrace;
 
 namespace DischargerV2.MVVM.Views
@@ -20,15 +22,14 @@ namespace DischargerV2.MVVM.Views
 
         public ViewMain()
         {
+            InitializeComponent();
+            this.DataContext = _viewModel;
+
             try
             {
-                InitializeComponent();
-
                 SqliteUtility.InitializeDatabases();
 
                 Instance = this;
-
-                this.DataContext = _viewModel;
 
                 _viewModel.UpdateDischargerInfoTableEvent += _viewModel_UpdateDischargerInfoTableEvent;
             }

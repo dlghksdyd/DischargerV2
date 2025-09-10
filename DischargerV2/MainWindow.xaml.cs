@@ -1,5 +1,11 @@
-﻿using System.Windows;
+﻿using DischargerV2.MVVM.Views;
+using MExpress.Mex;
 using Sqlite.Common;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace DischargerV2
 {
@@ -14,9 +20,24 @@ namespace DischargerV2
         {
             InitializeComponent();
 
-            SqliteUtility.InitializeDatabases();
+            Task.Run(() =>
+            {
+                Thread.Sleep(1000);
 
-            Instance = this;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+
+                    var main = new ViewMain();
+                    main.Loaded += Main_Loaded;
+                    main.Show();
+                });
+
+            });
+        }
+
+        private void Main_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
