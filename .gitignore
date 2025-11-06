@@ -1,7 +1,7 @@
 .vs/*
 
-Smart Discharger/Debug/*
-Smart Discharger/Release/*
+**/Debug/**
+**/Release/**
 
 **/bin/**
 **/obj/**

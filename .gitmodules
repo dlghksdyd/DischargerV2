@@ -1,6 +1,0 @@
-[submodule "mexpress"]
-	path = mexpress
-	url = http://192.168.30.6:20080/mintechsw/mexpress.git
-[submodule "mcommunication"]
-	path = mcommunication
-	url = http://192.168.30.6:20080/mintechsw/mcommunication.git
