@@ -20,7 +20,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Mex:DoubleToGridLengthConverter x:Key="IsDoubleConverter" />
+            <Mex:IsDoubleConverter x:Key="IsDoubleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
