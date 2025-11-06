@@ -27,6 +27,7 @@ namespace DischargerV2.MVVM.Views
         {
             InitializeComponent();
 
+            // This view is not opened via ModalManager; set its own DataContext
             this.DataContext = new ViewModelPopup_Setting();
         }
     }

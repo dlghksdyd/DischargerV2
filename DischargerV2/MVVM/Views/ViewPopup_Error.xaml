@@ -13,6 +13,7 @@
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Error}"
              d:DesignHeight="248" d:DesignWidth="600"
              MinHeight="248" MinWidth="600"
+             Width="600" Height="248"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>

@@ -29,10 +29,7 @@ namespace DischargerV2.MVVM.Views
         {
             InitializeComponent();
 
-            _viewModel = new ViewModelPopup_UserSetting();
-
-            this.DataContext = _viewModel;
-
+            // DataContext is provided by ModalManager via DataTemplate
             this.DataContextChanged += ViewPopup_UserSetting_DataContextChanged;
         }
 
@@ -45,6 +42,8 @@ namespace DischargerV2.MVVM.Views
 
         private void UpdateUI()
         {
+            if (_viewModel == null) return;
+
             xContentPanel.Children.Clear();
 
             xContentPanel.Children.Add(new ViewUserSetting_Add() 

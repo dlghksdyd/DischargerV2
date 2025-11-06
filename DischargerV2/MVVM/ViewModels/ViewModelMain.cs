@@ -43,7 +43,6 @@ namespace DischargerV2.MVVM.ViewModels
             IniDischarge.InitializeIniFile();
 
             InitializeModel();
-            InitializePopup();
         }
 
         public void InitializeModel()
@@ -70,83 +69,6 @@ namespace DischargerV2.MVVM.ViewModels
 
             // 방전기 테이블 갱신
             UpdateDischargerInfoTableEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void OpenPopup(EPopup setPopup)
-        {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup)).Length];
-
-            foreach (EPopup popup in Enum.GetValues(typeof(EPopup)))
-            {
-                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? 
-                    Visibility.Visible : Visibility.Collapsed;
-            }
-
-            if (setPopup.Equals(EPopup.UserSetting))
-            {
-                Model.ViewModelPopup_UserSetting = new ViewModelPopup_UserSetting();
-            }
-            else if (setPopup.Equals(EPopup.DeviceRegister))
-            {
-                Model.ViewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister();
-            }
-            else if (setPopup.Equals(EPopup.ModelRegiseter))
-            {
-                Model.ViewModelPopup_ModelRegister = new ViewModelPopup_ModelRegister();
-            }
-
-            Model.PopupVisibility = popupVisibility;
-            Model.IsPopupOpen = true;
-        }
-
-        public void OpenNestedPopup(ENestedPopup setPopup)
-        {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
-
-            foreach (ENestedPopup popup in Enum.GetValues(typeof(ENestedPopup)))
-            {
-                popupVisibility[(int)popup] = (setPopup.Equals(popup)) ? 
-                    Visibility.Visible : Visibility.Collapsed;
-            }
-
-            Model.NestedPopupVisibility = popupVisibility;
-            Model.IsNestedPopupOpen = true;
-        }
-
-        private void InitializePopup()
-        {
-            OffPopup();
-            OffNestedPopup();
-        }
-
-        public void OffPopup()
-        {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(EPopup)).Length];
-
-            foreach (EPopup popup in Enum.GetValues(typeof(EPopup)))
-            {
-                popupVisibility[(int)popup] = Visibility.Collapsed;
-            }
-
-            Model.PopupVisibility = popupVisibility;
-            Model.IsPopupOpen = false;
-        }
-
-        public void OffNestedPopup()
-        {
-            Visibility[] popupVisibility = new Visibility[Enum.GetValues(typeof(ENestedPopup)).Length];
-
-            foreach (EPopup popup in Enum.GetValues(typeof(ENestedPopup)))
-            {
-                popupVisibility[(int)popup] = Visibility.Collapsed;
-            }
-
-            Model.ViewModelPopup_CreateNewUser = new ViewModelPopup_CreateNewUser();
-            Model.ViewModelPopup_EditUser = new ViewModelPopup_EditUser();
-            Model.ViewModelPopup_Warning = new ViewModelPopup_Warning();
-            
-            Model.NestedPopupVisibility = popupVisibility;
-            Model.IsNestedPopupOpen = false;
         }
 
         /// <summary>

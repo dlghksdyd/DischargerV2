@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Warning}"
              d:DesignHeight="248" d:DesignWidth="600"
-             Height="Auto" MinWidth="600"
+             Height="248" Width="600" MinWidth="600"
              Background="{StaticResource Mex/ResColor/surface_page}">
 
     <UserControl.Resources>

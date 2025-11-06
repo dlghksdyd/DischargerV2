@@ -4,6 +4,7 @@ using DischargerV2.MVVM.Models;
 using Prism.Commands;
 using Prism.Mvvm;
 using System.Diagnostics;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -100,8 +101,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup();
+            ModalManager.Close(this, ModalResult.Cancel);
         }
     }
 }

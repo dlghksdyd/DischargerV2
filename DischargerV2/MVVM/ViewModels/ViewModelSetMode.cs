@@ -24,6 +24,7 @@ using static DischargerV2.LOG.LogTrace;
 using static DischargerV2.MVVM.Models.ModelStartDischarge;
 using static System.Windows.Forms.AxHost;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -256,9 +257,12 @@ namespace DischargerV2.MVVM.ViewModels
                     ConfirmText = confirmText
                 };
 
+                // Keep setting the reference as consumer reads it later
                 ViewModelMain viewModelMain = ViewModelMain.Instance;
                 viewModelMain.SetViewModelPopup_SetLogFileName(viewModelPopup_SetLogFileName);
-                viewModelMain.OpenPopup(ModelMain.EPopup.SetLogFileName);
+
+                // Open via modal manager
+                ModalManager.Open(viewModelPopup_SetLogFileName);
             }
             catch (Exception ex)
             {
@@ -319,15 +323,17 @@ namespace DischargerV2.MVVM.ViewModels
                     var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Start");
                     var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
 
-                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    var viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
                         Title = title,
                         Comment = $"{comment}: {Model.DischargerName}",
                     };
 
-                    ViewModelMain viewModelMain = ViewModelMain.Instance;
-                    viewModelMain.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                    viewModelMain.OpenPopup(ModelMain.EPopup.Waiting);
+                    // UI Thread에서 모달 열기 (비동기)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        ModalManager.Open(viewModelPopup_Waiting);
+                    }));
 
                     StartDischargeDictionary[Model.DischargerName].StartDischarge();
 
@@ -346,16 +352,19 @@ namespace DischargerV2.MVVM.ViewModels
                             title = new DynamicString().GetDynamicString("PopupWarning_Title");
                             comment = new DynamicString().GetDynamicString("PopupWarning_Comment_FailStart");
 
-                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            var viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
                                 Title = title,
                                 Comment = comment,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
-                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
-                            viewModelMain.OffPopup();
+                            // 대기 모달 닫고 경고 모달 열기
+                            Application.Current.Dispatcher.Invoke(new Action(() =>
+                            {
+                                ModalManager.Close(viewModelPopup_Waiting, ModalResult.Cancel);
+                                ModalManager.Open(viewModelPopup_Warning);
+                            }));
                             return;
                         }
                     }
@@ -363,7 +372,11 @@ namespace DischargerV2.MVVM.ViewModels
                     // SetMode -> Monitor 화면 전환
                     ViewModelMain.Instance.SetIsStartedArray(true);
 
-                    viewModelMain.OffPopup();
+                    // 대기 모달 닫기
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        ModalManager.Close(viewModelPopup_Waiting, ModalResult.Ok);
+                    }));
                 });
                 thread.IsBackground = true;
                 thread.Start();
@@ -379,13 +392,13 @@ namespace DischargerV2.MVVM.ViewModels
                 {
                     Title = title,
                     Comment = comment,
+                    Parameter = string.Empty,
                     ConfirmText = confirmText,
                     CancelVisibility = Visibility.Collapsed,
                 };
 
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
-                viewModelMain.OpenPopup(ModelMain.EPopup.Info);
+                // Use new modal manager instead of legacy popup infra
+                ModalManager.Open(viewModelPopup_Info);
                 return;
             }
         }

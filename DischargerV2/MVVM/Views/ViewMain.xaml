@@ -10,6 +10,7 @@
     xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
     xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
     xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+    xmlns:modal="clr-namespace:DischargerV2.Modal"
     Title="MainWindow"
     Width="1920"
     Height="1030"
@@ -91,7 +92,7 @@
         </Grid>
         <!--  Login  -->
         <view:ViewLogin Grid.Row="1" />
-        <!--  Popup 활성화  -->
+        <!--  Popup 활성화 (legacy overlay kept until migration finishes) -->
         <Border
             Grid.Row="0"
             Grid.RowSpan="100"
@@ -122,5 +123,8 @@
                 <view:ViewPopup_Warning DataContext="{Binding Model.ViewModelPopup_Warning, Source={x:Static vm:ViewModelMain.Instance}}" Visibility="{Binding Model.NestedPopupVisibility[2], Source={x:Static vm:ViewModelMain.Instance}}" />
             </Grid>
         </Border>
+
+        <!-- New modal host overlay. Will replace legacy overlays when migration completes -->
+        <ContentPresenter Grid.Row="0" Grid.RowSpan="100" Grid.Column="0" Grid.ColumnSpan="100" Content="{x:Static modal:ModalManager.View}"/>
     </Grid>
 </Window>

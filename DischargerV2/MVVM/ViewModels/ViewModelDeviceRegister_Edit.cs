@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
 using static DischargerV2.LOG.LogTrace;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -102,8 +103,8 @@ namespace DischargerV2.MVVM.ViewModels
             Model.ModuleChannel = "";
             Model.TempChannel = "";
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+            var vm = new ViewModelPopup_DeviceRegister();
+            ModalManager.Open(vm);
         }
 
         private void LoadModelInfoList()

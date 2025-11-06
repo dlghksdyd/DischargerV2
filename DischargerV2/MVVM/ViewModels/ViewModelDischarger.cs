@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using System.Diagnostics;
 using DischargerV2.Languages.Strings;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -802,9 +803,7 @@ namespace DischargerV2.MVVM.ViewModels
                 CallBackDelegate = ResetError,
             };
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_Error(viewModelPopup_Error);
-            viewModelMain.OpenPopup(ModelMain.EPopup.Error);
+            ModalManager.Open(viewModelPopup_Error);
         }
 
         /// <summary>

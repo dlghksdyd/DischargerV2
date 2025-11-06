@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -51,8 +52,7 @@ namespace DischargerV2.MVVM.ViewModels
         
         private void Close()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup();
+            ModalManager.Close(this, ModalResult.Ok);
         }
 
         private void LoadDischargerModelList()

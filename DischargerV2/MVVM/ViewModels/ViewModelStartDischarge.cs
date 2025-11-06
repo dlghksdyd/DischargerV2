@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using static DischargerV2.LOG.LogDischarge;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -102,19 +103,19 @@ namespace DischargerV2.MVVM.ViewModels
 
             Thread thread = new Thread(() =>
             {
+                ViewModelPopup_Waiting viewModelPopup_Waiting = null;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Pause");
                     var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
 
-                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
                         Title = title,
                         Comment = $"{comment}: {Model.DischargerName}",
                     };
 
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                    ModalManager.Open(viewModelPopup_Waiting);
                 });
 
                 ViewModelDischarger.Instance.PauseDischarger(Model.DischargerName);
@@ -138,7 +139,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelMain.Instance.OffPopup();
+                    if (viewModelPopup_Waiting != null)
+                        ModalManager.Close(viewModelPopup_Waiting, ModalResult.Ok);
                 });
             });
             thread.IsBackground = true;
@@ -149,19 +151,18 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Thread thread = new Thread(() =>
             {
+                ViewModelPopup_Waiting viewModelPopup_Waiting = null;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Resume");
                     var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
 
-                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
                         Title = title,
                         Comment = $"{comment}: {Model.DischargerName}",
                     };
-                    
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                    ModalManager.Open(viewModelPopup_Waiting);
                 });
 
                 ViewModelDischarger.Instance.StartDischarger(new StartDischargerCommandParam()
@@ -203,7 +204,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelMain.Instance.OffPopup();
+                    if (viewModelPopup_Waiting != null)
+                        ModalManager.Close(viewModelPopup_Waiting, ModalResult.Ok);
                 });
 
                 _startedTime = DateTime.Now;
@@ -217,19 +219,18 @@ namespace DischargerV2.MVVM.ViewModels
         {
             Thread thread = new Thread(() =>
             {
+                ViewModelPopup_Waiting viewModelPopup_Waiting = null;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     var title = new DynamicString().GetDynamicString("PopupWaiting_Title_Stop");
                     var comment = new DynamicString().GetDynamicString("PopupWaiting_Comment");
 
-                    ViewModelPopup_Waiting viewModelPopup_Waiting = new ViewModelPopup_Waiting()
+                    viewModelPopup_Waiting = new ViewModelPopup_Waiting()
                     {
                         Title = title,
                         Comment = $"{comment}: {Model.DischargerName}",
                     };
-                    
-                    ViewModelMain.Instance.SetViewModelPopup_Waiting(viewModelPopup_Waiting);
-                    ViewModelMain.Instance.OpenPopup(ModelMain.EPopup.Waiting);
+                    ModalManager.Open(viewModelPopup_Waiting);
                 });
 
                 ViewModelDischarger.Instance.StopDischarger(Model.DischargerName);
@@ -255,7 +256,8 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    ViewModelMain.Instance.OffPopup();
+                    if (viewModelPopup_Waiting != null)
+                        ModalManager.Close(viewModelPopup_Waiting, ModalResult.Ok);
                 });
             });
             thread.IsBackground = true;

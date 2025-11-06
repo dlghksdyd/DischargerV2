@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 using static DischargerV2.LOG.LogTrace;
 using static System.Net.Mime.MediaTypeNames;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -90,9 +91,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+            ModalManager.Close(this, ModalResult.Cancel);
         }
 
         private void UpdateEditData()
@@ -103,7 +102,11 @@ namespace DischargerV2.MVVM.ViewModels
 
                 if (isOk)
                 {
-                    Close();
+                    ModalManager.Close(this, ModalResult.Ok);
+
+                    // optionally show user setting again with modal
+                    var vm = new ViewModelPopup_UserSetting();
+                    ModalManager.Open(vm);
                 }
                 else
                 {

@@ -29,39 +29,52 @@ namespace DischargerV2.MVVM.Views
     public partial class ViewPopup_DeviceRegister : UserControl
     {
         private ViewModelPopup_DeviceRegister _viewModel = new ViewModelPopup_DeviceRegister();
+        private bool _isUpdating;
 
         public ViewPopup_DeviceRegister()
         {
             InitializeComponent();
 
-            this.DataContext = _viewModel;
-
+            // DataContext is provided by ModalManager via DataTemplate
             this.DataContextChanged += ViewPopup_DeviceRegister_DataContextChanged;
         }
 
         private void xAddButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.OpenNewData();
+            _viewModel?.OpenNewData();
         }
 
         private void xCloseImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _viewModel.Close();
+            _viewModel?.Close();
         }
 
         private void ViewPopup_DeviceRegister_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             _viewModel = e.NewValue as ViewModelPopup_DeviceRegister;
 
-            UpdateUI(_viewModel.Model.SelectedItem);
+            UpdateUI(_viewModel != null ? _viewModel.Model.SelectedItem : string.Empty);
+        }
+
+        private void ViewDeviceRegister_Add_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_isUpdating) return;
+            if (e.NewValue is bool isVisible && !isVisible) return;
+            UpdateUI(_viewModel != null ? _viewModel.Model.SelectedItem : string.Empty);
         }
 
         private void UpdateUI(string selectedItem = "")
         {
-            if (_viewModel.Model.Content.Count > 0)
+            if (_viewModel == null || _viewModel.Model.Content.Count <= 0)
             {
-                var getType = _viewModel.Model.Content.GetType();
+                xNoDataBorder.Visibility = Visibility.Visible;
+                xContentPanel.Visibility = Visibility.Collapsed;
+                return;
+            }
 
+            _isUpdating = true;
+            try
+            {
                 xNoDataBorder.Visibility = Visibility.Collapsed;
                 xContentPanel.Visibility = Visibility.Visible;
 
@@ -136,18 +149,9 @@ namespace DischargerV2.MVVM.Views
                     }
                 }
             }
-            else
+            finally
             {
-                xNoDataBorder.Visibility = Visibility.Visible;
-                xContentPanel.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void ViewDeviceRegister_Add_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if ((bool)e.NewValue)
-            {
-                xScrollViewer.ScrollToVerticalOffset(0);
+                _isUpdating = false;
             }
         }
     }

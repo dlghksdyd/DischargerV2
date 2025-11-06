@@ -13,7 +13,8 @@
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_Info}"
              d:DesignHeight="248" d:DesignWidth="600"
              MinHeight="248" MinWidth="600"
-             Background="{StaticResource Mex/ResColor/surface_page}">
+             Width="600" Height="248"
+             Background="{StaticResource Mex/ResColor/surface_page}"> 
 
     <UserControl.Resources>
         <Style TargetType="Border">

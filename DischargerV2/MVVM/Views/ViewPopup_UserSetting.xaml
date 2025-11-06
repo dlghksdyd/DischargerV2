@@ -11,7 +11,8 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_UserSetting}"
              d:DesignHeight="660" d:DesignWidth="872"
-             MaxHeight="660" MaxWidth="872">
+             MaxHeight="660" MaxWidth="872"
+             Width="872" Height="660">
     
     <Border Background="{StaticResource Mex/ResColor/surface_primary}"
             CornerRadius="8">

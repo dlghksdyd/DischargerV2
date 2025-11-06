@@ -9,12 +9,12 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MExpress.Mex;
 using DischargerV2.MVVM.ViewModels;
-using System.Windows.Media.Animation;
 
 namespace DischargerV2.MVVM.Views
 {
@@ -27,8 +27,7 @@ namespace DischargerV2.MVVM.Views
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModelPopup_Waiting();
-
+            // DataContext is provided by ModalManager via DataTemplate
             Loaded += ViewPopup_Waiting_Loaded;
         }
 

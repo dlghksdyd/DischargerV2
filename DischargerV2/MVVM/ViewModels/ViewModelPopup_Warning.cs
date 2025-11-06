@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -83,8 +84,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
+            ModalManager.Close(this, ModalResult.Ok);
         }
     }
 }

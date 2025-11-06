@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
 using static DischargerV2.LOG.LogTrace;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -68,9 +69,7 @@ namespace DischargerV2.MVVM.ViewModels
                 Name = Model.Name,
             };
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_EditUser(viewModelPopup_EditUser);
-            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.EditUser);
+            ModalManager.Open(viewModelPopup_EditUser);
         }
 
         public void OpenPopupDelete()
@@ -93,12 +92,11 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 Title = title,
                 Comment = comment,
+                CancelButtonVisibility = Visibility.Visible,
                 CallBackDelegate = DeleteUserInfo,
             };
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+            ModalManager.Open(viewModelPopup_Warning);
         }
 
         public void DeleteUserInfo()
@@ -126,9 +124,9 @@ namespace DischargerV2.MVVM.ViewModels
                     new LogTrace(ELogTrace.SYSTEM_ERROR_DELETE_USER, userData);
                 }
 
-                // 사용자 정보 등록 화면 표시
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+                // 사용자 설정 창 다시 열기
+                var vm = new ViewModelPopup_UserSetting();
+                ModalManager.Open(vm);
             }
             catch (Exception ex)
             {

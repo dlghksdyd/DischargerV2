@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -33,8 +34,8 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void OpenPopupNewUser()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.CreateNewUser);
+            var vm = new ViewModelPopup_CreateNewUser();
+            ModalManager.Open(vm);
         }
     }
 }

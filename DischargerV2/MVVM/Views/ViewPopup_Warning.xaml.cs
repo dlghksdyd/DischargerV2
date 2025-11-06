@@ -25,8 +25,7 @@ namespace DischargerV2.MVVM.Views
         public ViewPopup_Warning()
         {
             InitializeComponent();
-
-            this.DataContext = new ViewModelPopup_Warning();
+            // DataContext is provided by ModalManager via DataTemplate
         }
     }
 }

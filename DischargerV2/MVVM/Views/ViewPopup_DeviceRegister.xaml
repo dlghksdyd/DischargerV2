@@ -12,7 +12,8 @@
              d:DataContext="{d:DesignInstance vm:ViewModelPopup_DeviceRegister}"
              d:DesignHeight="976" d:DesignWidth="1631"
              MinHeight="976" MinWidth="1631"
-             MaxHeight="976" MaxWidth="1631">
+             MaxHeight="976" MaxWidth="1631"
+             Width="1631" Height="976">
 
     <Border Background="{StaticResource Mex/ResColor/surface_page}"
             CornerRadius="8">

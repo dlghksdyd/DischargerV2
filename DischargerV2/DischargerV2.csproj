@@ -217,6 +217,12 @@
     <Compile Include="LOG\Log.cs" />
     <Compile Include="LOG\LogDischarge.cs" />
     <Compile Include="LOG\LogTrace.cs" />
+    <Compile Include="Modal\ModalBaseView.xaml.cs">
+      <DependentUpon>ModalBaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modal\ModalBaseViewModel.cs" />
+    <Compile Include="Modal\ModalManager.cs" />
+    <Compile Include="Modal\ModalResult.cs" />
     <Compile Include="MVVM\Enums\Enums.cs" />
     <Compile Include="MVVM\Models\ModelDeviceRegister.cs" />
     <Compile Include="MVVM\Models\ModelModelRegister.cs" />
@@ -428,6 +434,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modal\ModalBaseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MVVM\Views\ViewModelRegister_Edit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

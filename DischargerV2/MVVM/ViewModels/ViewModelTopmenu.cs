@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -52,9 +53,7 @@ namespace DischargerV2.MVVM.ViewModels
                     CancelButtonVisibility = Visibility.Hidden
                 };
 
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                ModalManager.Open(viewModelPopup_Warning);
                 return;
             }
 

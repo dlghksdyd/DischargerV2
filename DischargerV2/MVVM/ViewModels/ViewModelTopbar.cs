@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using static DischargerV2.LOG.LogTrace;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -58,8 +59,6 @@ namespace DischargerV2.MVVM.ViewModels
                     }
                     else if (name == "xCloseImage")
                     {
-                        ViewModelMain viewModelMain = ViewModelMain.Instance;
-
                         var viewModelDischarger = ViewModelDischarger.Instance;
 
                         if (viewModelDischarger.IsDischarging())
@@ -67,15 +66,14 @@ namespace DischargerV2.MVVM.ViewModels
                             var title_Warning = new DynamicString().GetDynamicString("PopupWarning_Title");
                             var comment_Warning = new DynamicString().GetDynamicString("PopupWarning_Comment_CloseProgram");
 
-                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            var viewModelPopup_Warning = new ViewModelPopup_Warning()
                             {
                                 Title = title_Warning,
                                 Comment = comment_Warning,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
-                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            ModalManager.Open(viewModelPopup_Warning);
                             return;
                         }
 
@@ -87,11 +85,12 @@ namespace DischargerV2.MVVM.ViewModels
                         {
                             Title = title_Info,
                             Comment = comment_Info,
+                            Parameter = string.Empty,
                             CallBackDelegate = Close,
-                            ConfirmText = confirmText_Info
+                            ConfirmText = confirmText_Info,
+                            CancelVisibility = Visibility.Visible
                         };
-                        viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
-                        viewModelMain.OpenPopup(ModelMain.EPopup.Info);
+                        ModalManager.Open(viewModelPopup_Info);
                     }
                 }
             }

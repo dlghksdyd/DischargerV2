@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using static DischargerV2.LOG.LogTrace;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -48,9 +49,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Close()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffNestedPopup();
-            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+            ModalManager.Close(this, ModalResult.Ok);
         }
 
         private int CheckData()

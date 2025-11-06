@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -43,74 +44,72 @@ namespace DischargerV2.MVVM.ViewModels
             {
                 if (e.Source is MexLabel mexLabel)
                 {
-                    ViewModelMain viewModelMain = ViewModelMain.Instance;
                     var name = mexLabel.Name;
 
                     if (name == "xUserSettingLabel")
                     {
                         if (ViewModelLogin.Instance.IsLocalDb() && ViewModelLogin.Instance.IsAdmin())
                         {
-                            viewModelMain.OpenPopup(ModelMain.EPopup.UserSetting);
+                            var vm = new ViewModelPopup_UserSetting();
+                            ModalManager.Open(vm);
                         }
                         else
                         {
                             var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
                             var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionUser");
 
-                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            var vm = new ViewModelPopup_Warning()
                             {
                                 Title = title,
                                 Comment = comment,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
-                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            ModalManager.Open(vm);
                         }
                     }
                     else if (name == "xDeviceRegisterLabel")
                     {
                         if (ViewModelLogin.Instance.IsAdmin())
                         {
-                            
-                            viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+                            var vm = new ViewModelPopup_DeviceRegister();
+                            ModalManager.Open(vm);
                         }
                         else
                         {
                             var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
                             var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionDevice");
 
-                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            var vm = new ViewModelPopup_Warning()
                             {
                                 Title = title,
                                 Comment = comment,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
-                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            ModalManager.Open(vm);
                         }
                     }
                     else if (name == "xModelRegisterLabel")
                     {
                         if (ViewModelLogin.Instance.IsMintech())
                         {
-                            viewModelMain.OpenPopup(ModelMain.EPopup.ModelRegiseter);
+                            var vm = new ViewModelPopup_ModelRegister();
+                            ModalManager.Open(vm);
                         }
                         else
                         {
                             var title = new DynamicString().GetDynamicString("PopupWarning_Title_NoPermission");
                             var comment = new DynamicString().GetDynamicString("PopupWarning_Comment_NoPermissionModel");
 
-                            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+                            var vm = new ViewModelPopup_Warning()
                             {
                                 Title = title,
                                 Comment = comment,
                                 CancelButtonVisibility = Visibility.Hidden
                             };
 
-                            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-                            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+                            ModalManager.Open(vm);
                         }
                     }
                     else if (name == "xLogoutLabel")
@@ -119,16 +118,17 @@ namespace DischargerV2.MVVM.ViewModels
                         string comment = new DynamicString().GetDynamicString("PopupInfo_Comment_Logout");
                         string confirmText = new DynamicString().GetDynamicString("Logout");
 
-                        ViewModelPopup_Info viewModelPopup_Info = new ViewModelPopup_Info()
+                        ViewModelPopup_Info vm = new ViewModelPopup_Info()
                         {
                             Title = title,
                             Comment = comment,
+                            Parameter = string.Empty,
                             CallBackDelegate = Logout,
-                            ConfirmText = confirmText
+                            ConfirmText = confirmText,
+                            CancelVisibility = Visibility.Visible
                         };
 
-                        viewModelMain.SetViewModelPopup_Info(viewModelPopup_Info);
-                        viewModelMain.OpenPopup(ModelMain.EPopup.Info);
+                        ModalManager.Open(vm);
                     }
                 }
             }
@@ -194,9 +194,7 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void Logout()
         {
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.OffPopup();
-
+            // 기존 OffPopup 제거. Logout 로직만 수행.
             ViewModelDischarger viewModelDischarger = ViewModelDischarger.Instance;
             viewModelDischarger.FinalizeDischarger();
 

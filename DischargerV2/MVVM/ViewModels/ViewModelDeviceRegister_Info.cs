@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
 using static DischargerV2.LOG.LogTrace;
+using DischargerV2.Modal;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -107,13 +108,12 @@ namespace DischargerV2.MVVM.ViewModels
 
         private void OpenEditData()
         {
-            ViewModelPopup_DeviceRegister viewModelPopup_DeviceRegister = new ViewModelPopup_DeviceRegister()
+            var vm = new ViewModelPopup_DeviceRegister()
             {
                 SelectedItem = Model.Name
             };
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_DeviceRegister(viewModelPopup_DeviceRegister);
+            ModalManager.Open(vm);
         }
 
         private void OpenPopupDelete()
@@ -132,16 +132,14 @@ namespace DischargerV2.MVVM.ViewModels
                     break;
             }
 
-            ViewModelPopup_Warning viewModelPopup_Warning = new ViewModelPopup_Warning()
+            var vm = new ViewModelPopup_Warning()
             {
                 Title = title,
                 Comment = comment,
                 CallBackDelegate = DeleteDischargerInfo,
             };
 
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_Warning(viewModelPopup_Warning);
-            viewModelMain.OpenNestedPopup(ModelMain.ENestedPopup.Warning);
+            ModalManager.Open(vm);
         }
 
         public void DeleteDischargerInfo()
@@ -179,8 +177,8 @@ namespace DischargerV2.MVVM.ViewModels
                 }
 
                 // 장비 정보 등록 화면 표시
-                ViewModelMain viewModelMain = ViewModelMain.Instance;
-                viewModelMain.OpenPopup(ModelMain.EPopup.DeviceRegister);
+                var vm = new ViewModelPopup_DeviceRegister();
+                ModalManager.Open(vm);
             }
             catch (Exception ex) 
             {

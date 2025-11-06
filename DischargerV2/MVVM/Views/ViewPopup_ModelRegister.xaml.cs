@@ -32,8 +32,7 @@ namespace DischargerV2.MVVM.Views
         {
             InitializeComponent();
 
-            this.DataContext = _viewModel;
-
+            // DataContext is provided by ModalManager via DataTemplate
             this.DataContextChanged += ViewPopup_ModelRegister_DataContextChanged;
         }
 
@@ -41,101 +40,93 @@ namespace DischargerV2.MVVM.Views
         {
             _viewModel = e.NewValue as ViewModelPopup_ModelRegister;
 
-            UpdateUI(_viewModel.Model.SelectedId);
-        }
-
-        private void UpdateUI(int selectedId = -1)
-        {
-            if(_viewModel.Model.Content.Count > 0)
-            {
-                xNoDataBorder.Visibility = Visibility.Collapsed;
-                xContentPanel.Visibility = Visibility.Visible;
-
-                xContentPanel.Children.Clear();
-
-                // New 
-                Binding newDataVisibilityBinding = new Binding();
-                newDataVisibilityBinding.Path = new PropertyPath("NewDataVisibility");
-                newDataVisibilityBinding.Source = _viewModel.Model;
-                newDataVisibilityBinding.Mode = BindingMode.TwoWay;
-
-                ViewModelRegister_Add view_Add = new ViewModelRegister_Add();
-                view_Add.SetBinding(VisibilityProperty, newDataVisibilityBinding);
-                view_Add.IsVisibleChanged += ViewModelRegister_Add_IsVisibleChanged;
-                xContentPanel.Children.Add(view_Add);
-
-                Grid spaceGrid = new Grid() { Height = 16 };
-                spaceGrid.SetBinding(VisibilityProperty, newDataVisibilityBinding);
-                xContentPanel.Children.Add(spaceGrid);
-
-                // TableDischargerModel
-                for (int index = 0; index < _viewModel.Model.Content.Count; index++)
-                {
-                    TableDischargerModel tableDischargerModel = _viewModel.Model.Content[index];
-
-                    // Edit
-                    if (tableDischargerModel.Id == selectedId)
-                    {
-                        ModelModelRegister modelModelRegister = new ModelModelRegister()
-                        {
-                            Id = tableDischargerModel.Id,
-                            DischargerModel = tableDischargerModel.Model.ToString(),
-                            Type = tableDischargerModel.Type.ToString(),
-                            Channel = tableDischargerModel.Channel.ToString(),
-                            VoltSpec = tableDischargerModel.SpecVoltage.ToString(),
-                            CurrSpec = tableDischargerModel.SpecCurrent.ToString(),
-                            VoltMax = tableDischargerModel.SafetyVoltMax.ToString("F1"),
-                            VoltMin = tableDischargerModel.SafetyVoltMin.ToString("F1"),
-                            CurrMax = tableDischargerModel.SafetyCurrentMax.ToString("F1"),
-                            CurrMin = tableDischargerModel.SafetyCurrentMin.ToString("F1"),
-                            TempMax = tableDischargerModel.SafetyTempMax.ToString("F1"),
-                            TempMin = tableDischargerModel.SafetyTempMin.ToString("F1")
-                        };
-                        ViewModelModelRegister_Edit.Instance.SetModelData(modelModelRegister);
-
-                        xContentPanel.Children.Add(new ViewModelRegister_Edit());
-                    }
-                    // Info
-                    else
-                    {
-                        xContentPanel.Children.Add(new ViewModelRegister_Info()
-                        {
-                            DataContext = new ViewModelModelRegister_Info()
-                            {
-                                Id = tableDischargerModel.Id,
-                                DischargerModel = tableDischargerModel.Model.ToString(),
-                                Type = tableDischargerModel.Type.ToString(),
-                                Channel = tableDischargerModel.Channel.ToString(),
-                                VoltSpec = tableDischargerModel.SpecVoltage.ToString(),
-                                CurrSpec = tableDischargerModel.SpecCurrent.ToString(),
-                                VoltMax = tableDischargerModel.SafetyVoltMax.ToString("F1"),
-                                VoltMin = tableDischargerModel.SafetyVoltMin.ToString("F1"),
-                                CurrMax = tableDischargerModel.SafetyCurrentMax.ToString("F1"),
-                                CurrMin = tableDischargerModel.SafetyCurrentMin.ToString("F1"),
-                                TempMax = tableDischargerModel.SafetyTempMax.ToString("F1"),
-                                TempMin = tableDischargerModel.SafetyTempMin.ToString("F1"),
-                            }
-                        });
-                    }
-
-                    if (index < _viewModel.Model.Content.Count - 1)
-                    {
-                        xContentPanel.Children.Add(new Grid() { Height = 16 });
-                    }
-                }
-            }
-            else
-            {
-                xNoDataBorder.Visibility = Visibility.Visible;
-                xContentPanel.Visibility = Visibility.Collapsed;
-            }
+            UpdateUI(_viewModel != null ? _viewModel.Model.SelectedId : -1);
         }
 
         private void ViewModelRegister_Add_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue)
+            UpdateUI(_viewModel != null ? _viewModel.Model.SelectedId : -1);
+        }
+
+        private void UpdateUI(int selectedId = -1)
+        {
+            if(_viewModel == null || _viewModel.Model.Content.Count <= 0)
             {
-                xScrollViewer.ScrollToVerticalOffset(0);
+                xNoDataBorder.Visibility = Visibility.Visible;
+                xContentPanel.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            xNoDataBorder.Visibility = Visibility.Collapsed;
+            xContentPanel.Visibility = Visibility.Visible;
+
+            xContentPanel.Children.Clear();
+
+            // New 
+            Binding newDataVisibilityBinding = new Binding();
+            newDataVisibilityBinding.Path = new PropertyPath("NewDataVisibility");
+            newDataVisibilityBinding.Source = _viewModel.Model;
+            newDataVisibilityBinding.Mode = BindingMode.TwoWay;
+
+            ViewModelRegister_Add view_Add = new ViewModelRegister_Add();
+            view_Add.SetBinding(VisibilityProperty, newDataVisibilityBinding);
+            view_Add.IsVisibleChanged += ViewModelRegister_Add_IsVisibleChanged;
+            xContentPanel.Children.Add(view_Add);
+
+            Grid spaceGrid = new Grid() { Height = 16 };
+            spaceGrid.SetBinding(VisibilityProperty, newDataVisibilityBinding);
+            xContentPanel.Children.Add(spaceGrid);
+
+            // TableDischargerModel
+            for (int index = 0; index < _viewModel.Model.Content.Count; index++)
+            {
+                TableDischargerModel tableDischargerModel = _viewModel.Model.Content[index];
+
+                // Edit
+                if (tableDischargerModel.Id == selectedId)
+                {
+                    ModelModelRegister modelModelRegister = new ModelModelRegister()
+                    {
+                        Id = tableDischargerModel.Id,
+                        DischargerModel = tableDischargerModel.Model.ToString(),
+                        Type = tableDischargerModel.Type.ToString(),
+                        Channel = tableDischargerModel.Channel.ToString(),
+                        VoltSpec = tableDischargerModel.SpecVoltage.ToString(),
+                        CurrSpec = tableDischargerModel.SpecCurrent.ToString(),
+                        VoltMax = tableDischargerModel.SafetyVoltMax.ToString(),
+                        VoltMin = tableDischargerModel.SafetyVoltMin.ToString(),
+                        CurrMax = tableDischargerModel.SafetyCurrentMax.ToString(),
+                        CurrMin = tableDischargerModel.SafetyCurrentMin.ToString(),
+                        TempMax = tableDischargerModel.SafetyTempMax.ToString(),
+                        TempMin = tableDischargerModel.SafetyTempMin.ToString(),
+                    };
+
+                    var view_Edit = new ViewModelRegister_Edit();
+                    (view_Edit.DataContext as ViewModelModelRegister_Edit)?.SetModelData(modelModelRegister);
+                    xContentPanel.Children.Add(view_Edit);
+                }
+                else
+                {
+                    var vmInfo = new ViewModelModelRegister_Info()
+                    {
+                        Id = tableDischargerModel.Id,
+                        DischargerModel = tableDischargerModel.Model.ToString(),
+                        Type = tableDischargerModel.Type.ToString(),
+                        Channel = tableDischargerModel.Channel.ToString(),
+                        VoltSpec = tableDischargerModel.SpecVoltage.ToString(),
+                        CurrSpec = tableDischargerModel.SpecCurrent.ToString(),
+                        VoltMax = tableDischargerModel.SafetyVoltMax.ToString(),
+                        VoltMin = tableDischargerModel.SafetyVoltMin.ToString(),
+                        CurrMax = tableDischargerModel.SafetyCurrentMax.ToString(),
+                        CurrMin = tableDischargerModel.SafetyCurrentMin.ToString(),
+                        TempMax = tableDischargerModel.SafetyTempMax.ToString(),
+                        TempMin = tableDischargerModel.SafetyTempMin.ToString(),
+                    };
+
+                    var view_Info = new ViewModelRegister_Info();
+                    view_Info.DataContext = vmInfo;
+                    xContentPanel.Children.Add(view_Info);
+                }
             }
         }
     }

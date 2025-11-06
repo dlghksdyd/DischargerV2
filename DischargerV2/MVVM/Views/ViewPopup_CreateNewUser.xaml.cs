@@ -25,8 +25,7 @@ namespace DischargerV2.MVVM.Views
         public ViewPopup_CreateNewUser()
         {
             InitializeComponent();
-
-            this.DataContext = new ViewModelPopup_CreateNewUser();
+            // DataContext is provided by ModalManager via DataTemplate
         }
     }
 }
