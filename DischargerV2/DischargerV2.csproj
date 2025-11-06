@@ -404,6 +404,7 @@
     <None Include="Reference\Modal\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </None>
+    <None Include="Reference\Modal\BatteryTypeInfoViewModel.cs" />
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />

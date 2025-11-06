@@ -1,13 +1,18 @@
-﻿using HYSoft.Presentation.Interactivity;
+﻿using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Media;
 
-namespace HYSoft.Presentation.Modal
+namespace DischargerV2.Modal
 {
-    public class ModalBaseViewModel(Brush background) : NotifyPropertyChangedBase
+    public class ModalBaseViewModel : BindableBase
     {
-        private ObservableCollection<ModalInfo> _popupList = [];
+        public ModalBaseViewModel(Brush background)
+        {
+            _background = (SolidColorBrush)background;
+        }
+
+        private ObservableCollection<ModalInfo> _popupList = new();
         public ObservableCollection<ModalInfo> PopupList
         {
             get => _popupList;
@@ -19,7 +24,7 @@ namespace HYSoft.Presentation.Modal
             var info = new ModalInfo()
             {
                 Content = popupViewModel,
-                Background = (SolidColorBrush)background
+                Background = _background
             };
             PopupList.Add(info);
         }
@@ -29,12 +34,14 @@ namespace HYSoft.Presentation.Modal
             var info = PopupList.ToList().Find(p => ReferenceEquals(p.Content, popupViewModel));
             if (info != null) PopupList.Remove(info);
         }
+
+        private readonly SolidColorBrush _background;
     }
 
-    public class ModalInfo : NotifyPropertyChangedBase
+    public class ModalInfo : BindableBase
     {
-        private object? _content;
-        public object? Content
+        private object _content;
+        public object Content
         {
             get => _content;
             set => SetProperty(ref _content, value);

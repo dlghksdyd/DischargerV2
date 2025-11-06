@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HYSoft.Presentation.Modal
+namespace DischargerV2.Modal
 {
     public enum ModalResult
     {

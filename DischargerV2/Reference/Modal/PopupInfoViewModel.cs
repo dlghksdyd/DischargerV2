@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
-using HYSoft.Presentation.Interactivity;
-using HYSoft.Presentation.Interactivity.CommandBehaviors;
-using HYSoft.Presentation.Modal;
+using Prism.Mvvm;
+using Prism.Commands;
+using DischargerV2.Modal;
 
 namespace Mindims.Mvvm.Popup
 {
-    public class PopupInfoViewModel : NotifyPropertyChangedBase
+    public class PopupInfoViewModel : BindableBase
     {
         private double _width = 400;
         public double Width
@@ -56,12 +56,12 @@ namespace Mindims.Mvvm.Popup
             set => SetProperty(ref _cancelStr, value);
         }
         
-        public ICommand OkCommand => new RelayCommand(() =>
+        public ICommand OkCommand => new DelegateCommand(() =>
         {
             ModalManager.Close(this, ModalResult.Ok);
         });
         
-        public ICommand CancelCommand => new RelayCommand(() =>
+        public ICommand CancelCommand => new DelegateCommand(() =>
         {
             ModalManager.Close(this, ModalResult.Cancel);
         });

@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace HYSoft.Presentation.Modal
+namespace DischargerV2.Modal
 {
     /// <summary>
-    /// ModalBaseView.xaml에 대한 상호 작용 논리
+    /// ModalBaseView.xaml interaction logic
     /// </summary>
     public partial class ModalBaseView : UserControl
     {
