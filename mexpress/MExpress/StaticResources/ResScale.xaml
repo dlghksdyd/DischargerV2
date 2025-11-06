@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:Double x:Key="Mex/ResScale/scale_0">0</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_25">1</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_50">2</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_100">4</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_200">8</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_300">12</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_400">16</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_500">20</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_600">24</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_700">28</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_800">32</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_900">36</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_1000">40</sys:Double>
+    <sys:Double x:Key="Mex/ResScale/scale_1100">64</sys:Double>
+</ResourceDictionary>
+    

@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Mex="clr-namespace:MExpress.Mex">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColor.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Mex:ColorSet_CheckBox x:Key="Mex/ResColorSet_CheckBox/Primary"
+                           BorderDefault="{StaticResource Mex/ResColor/border_primary}"
+                           BorderHover="{StaticResource Mex/ResColor/border_action_hover}"
+                           BorderDisabled="{StaticResource Mex/ResColor/surface_disabled_selected}"
+                           BorderPressed="{StaticResource Mex/ResColor/border_action_pressed}"
+
+                           BackgroundDefault="{StaticResource Mex/ResColor/surface_primary}"
+                           BackgroundHover="{StaticResource Mex/ResColor/surface_action_hover2}"
+                           BackgroundDisabled="{StaticResource Mex/ResColor/surface_disabled}"
+                           BackgroundPressed="{StaticResource Mex/ResColor/surface_action_pressed2}"
+                           
+                           StrokeDefault="{StaticResource Mex/ResColor/icon_on_action}"
+                           StrokeHover="{StaticResource Mex/ResColor/icon_on_action}"
+                           StrokeDisabled="{StaticResource Mex/ResColor/icon_disabled}"
+                           StrokePressed="{StaticResource Mex/ResColor/icon_on_action}"
+                           
+                           BorderDefault_Selected="{StaticResource Mex/ResColor/border_action}"
+                           BorderHover_Selected="{StaticResource Mex/ResColor/border_action_hover}"
+                           BorderDisabled_Selected="{StaticResource Mex/ResColor/surface_disabled_selected}"
+                           BorderPressed_Selected="{StaticResource Mex/ResColor/border_action_pressed}"
+
+                           BackgroundDefault_Selected="{StaticResource Mex/ResColor/surface_action}"
+                           BackgroundHover_Selected="{StaticResource Mex/ResColor/surface_action_hover}"
+                           BackgroundDisabled_Selected="{StaticResource Mex/ResColor/surface_disabled}"
+                           BackgroundPressed_Selected="{StaticResource Mex/ResColor/surface_action_pressed}"
+                           
+                           StrokeDefault_Selected="{StaticResource Mex/ResColor/icon_on_action}"
+                           StrokeHover_Selected="{StaticResource Mex/ResColor/icon_on_action}"
+                           StrokeDisabled_Selected="{StaticResource Mex/ResColor/icon_disabled}"
+                           StrokePressed_Selected="{StaticResource Mex/ResColor/icon_on_action}">
+    </Mex:ColorSet_CheckBox>
+
+    <Mex:ColorSet_CheckBox x:Key="Mex/ResColorSet_CheckBox/Primary_Dark"
+                           BorderDefault="{StaticResource Mex/ResColor/dark_border_primary}"
+                           BorderHover="{StaticResource Mex/ResColor/dark_border_action_hover}"
+                           BorderDisabled="{StaticResource Mex/ResColor/dark_border_disabled}"
+                           BorderPressed="{StaticResource Mex/ResColor/dark_border_action_pressed}"
+
+                           BackgroundDefault="{StaticResource Mex/ResColor/dark_surface_primary}"
+                           BackgroundHover="{StaticResource Mex/ResColor/dark_surface_action_hover2}"
+                           BackgroundDisabled="{StaticResource Mex/ResColor/dark_surface_disabled}"
+                           BackgroundPressed="{StaticResource Mex/ResColor/dark_surface_action_pressed2}"
+                           
+                           StrokeDefault="{StaticResource Mex/ResColor/dark_icon_on_action}"
+                           StrokeHover="{StaticResource Mex/ResColor/dark_icon_on_action}"
+                           StrokeDisabled="{StaticResource Mex/ResColor/dark_icon_disabled}"
+                           StrokePressed="{StaticResource Mex/ResColor/dark_icon_on_action}"
+                           
+                           BorderDefault_Selected="{StaticResource Mex/ResColor/dark_border_action}"
+                           BorderHover_Selected="{StaticResource Mex/ResColor/dark_border_action_hover}"
+                           BorderDisabled_Selected="{StaticResource Mex/ResColor/dark_surface_disabled_selected}"
+                           BorderPressed_Selected="{StaticResource Mex/ResColor/dark_border_action_pressed}"
+
+                           BackgroundDefault_Selected="{StaticResource Mex/ResColor/dark_surface_action}"
+                           BackgroundHover_Selected="{StaticResource Mex/ResColor/dark_surface_action_hover}"
+                           BackgroundDisabled_Selected="{StaticResource Mex/ResColor/dark_surface_disabled}"
+                           BackgroundPressed_Selected="{StaticResource Mex/ResColor/dark_surface_action_pressed}"
+                           
+                           StrokeDefault_Selected="{StaticResource Mex/ResColor/dark_icon_on_action}"
+                           StrokeHover_Selected="{StaticResource Mex/ResColor/dark_icon_on_action}"
+                           StrokeDisabled_Selected="{StaticResource Mex/ResColor/dark_icon_disabled}"
+                           StrokePressed_Selected="{StaticResource Mex/ResColor/dark_icon_on_action}">
+    </Mex:ColorSet_CheckBox>
+</ResourceDictionary>

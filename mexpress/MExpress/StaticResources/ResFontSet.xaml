@@ -1,0 +1,214 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Mex="clr-namespace:MExpress.Mex">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResFont.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--Pretendard // Web-->
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h1"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_1}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_1}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h2"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_2}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_2}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h3"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_3}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_3}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h4"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_4}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_4}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h5"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_semibold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_5}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/semibold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_5}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h6"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_semibold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_6}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/semibold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_6}">
+    </Mex:FontSet>
+
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_lg_medium"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_lg}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_lg}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_lg_regular"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_regular}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_lg}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/regular}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_lg}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_md_medium"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_md}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_md}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_sm_medium"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_sm}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_sm}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_xs_medium"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_xs}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_xs}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_md_semibold"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_semibold}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_md}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/semibold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_md}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_md_regular"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_regular}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_md}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/regular}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_md}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_sm_regular"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_regular}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_sm}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/regular}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_sm}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_xs_regular"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_regular}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_xs}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/regular}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_xs}">
+    </Mex:FontSet>
+
+    <!--Pretendard // Kiosk-->
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h1_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_1_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_1_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h2_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_2_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_2_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h3_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_3_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_3_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h4_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_4_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_4_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h5_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_5_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_5_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h6_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/pretendard_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_6_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_6_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_lg_medium_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_lg_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_lg_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_md_medium_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_md_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_md_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_sm_medium_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_sm_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_sm_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/body_xs_medium_kiosk_pretendard"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_medium}"
+                 FontSize="{StaticResource Mex/ResFontSize/body_xs_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/medium}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/body_xs_kiosk}">
+    </Mex:FontSet>
+
+    <!--SUITE // Kiosk-->
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h1_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_extrabold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_1_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/extrabold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_1_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h2_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_extrabold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_2_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/extrabold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_2_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h3_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_extrabold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_3_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_3_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h4_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_extrabold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_4_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_4_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h5_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_5_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_5_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h6_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_6_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_6_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h7_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_7_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_7_kiosk}">
+    </Mex:FontSet>
+    <Mex:FontSet x:Key="Mex/ResFontSet/heading_h8_kiosk_suite"
+                 FontFamily="{StaticResource Mex/ResFontFimily/suite_bold}"
+                 FontSize="{StaticResource Mex/ResFontSize/heading_8_kiosk}"
+                 FontWeight="{StaticResource Mex/ResFontWeight/bold}"
+                 FontHeight="{StaticResource Mex/ResFontHeight/heading_8_kiosk}">
+    </Mex:FontSet>
+
+</ResourceDictionary>

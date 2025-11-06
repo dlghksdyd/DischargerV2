@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{677ACF60-8CDB-44AE-BBCE-6DD0ECEFCF25}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <RootNamespace>MExpress</RootNamespace>
+    <AssemblyName>MExpress</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.1\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="Prism, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Core.9.0.537\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Container.Abstractions, Version=9.0.106.9543, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Container.Abstractions.9.0.106\lib\net47\Prism.Container.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Events, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Events.9.0.537\lib\net47\Prism.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=9.0.537.60525, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Wpf.9.0.537\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.8.0.10\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Component\MexButton\MexButton.cs" />
+    <Compile Include="Component\MexCalendar\MexCalendar.cs" />
+    <Compile Include="Component\MexCheckBox\MexCheckBox.cs" />
+    <Compile Include="Component\MexComboBox\MexComboBox.cs" />
+    <Compile Include="Component\MexComboBoxHB\MexComboBoxHB.cs" />
+    <Compile Include="Component\MexDatePicker\MexDatePicker.cs" />
+    <Compile Include="Component\MexLabel\MexLabel.cs" />
+    <Compile Include="Component\MexItemBox\MexItemBox.cs" />
+    <Compile Include="Component\MexListBox\MexListBox.cs" />
+    <Compile Include="Component\MexPasswordBox\MexPasswordBox.cs" />
+    <Compile Include="Component\MexRadioButton\MexRadioButton.cs" />
+    <Compile Include="Example\ExampleMexDatePicker.xaml.cs">
+      <DependentUpon>ExampleMexDatePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexCalendar.xaml.cs">
+      <DependentUpon>ExampleMexCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexComboBox.xaml.cs">
+      <DependentUpon>ExampleMexComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexItemBox.xaml.cs">
+      <DependentUpon>ExampleMexItemBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Component\MexTextBlock_Inheritance\MexTextBlock_Inheritance.cs" />
+    <Compile Include="Mex\ResColorSet_ComboBoxItem.cs" />
+    <Compile Include="Mex\ResColorSet_DatePicker.cs" />
+    <Compile Include="Mex\ResImageView.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResImageView.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\RelayCommand.cs" />
+    <Compile Include="Component\MexScrollViewer\MexScrollViewer.cs" />
+    <Compile Include="Component\MexTable\MexTable.cs" />
+    <Compile Include="Component\MexTable\MexTableHeader.cs" />
+    <Compile Include="Component\MexTable\MexTableRow.cs" />
+    <Compile Include="Component\MexTextBlock\MexTextBlock.cs" />
+    <Compile Include="Component\MexTextBox\MexTextBox.cs" />
+    <Compile Include="Example\ExampleMexComboBoxHB.xaml.cs">
+      <DependentUpon>ExampleMexComboBoxHB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexScrollViewer.xaml.cs">
+      <DependentUpon>ExampleMexScrollViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexTable.xaml.cs">
+      <DependentUpon>ExampleMexTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexTextBlock.xaml.cs">
+      <DependentUpon>ExampleMexTextBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexCheckBox.xaml.cs">
+      <DependentUpon>ExampleMexCheckBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mex\ResBorder.cs" />
+    <Compile Include="Mex\ResColor.cs" />
+    <Compile Include="Mex\ResColorSet_Button.cs" />
+    <Compile Include="Mex\ResColorSet_CheckBox.cs" />
+    <Compile Include="Mex\ResColorSet_ComboBox.cs" />
+    <Compile Include="Mex\ResColorSet_ItemBox.cs" />
+    <Compile Include="Mex\ResColorSet_RadioButton.cs" />
+    <Compile Include="Mex\ResColorSet_TextBox.cs" />
+    <Compile Include="Mex\ResFont.cs" />
+    <Compile Include="Mex\ResFontSet.cs" />
+    <Compile Include="Mex\ResImage.cs" />
+    <Compile Include="Mex\ResImageSet_Component.cs" />
+    <Compile Include="Mex\ResImageSet_Toggle.cs" />
+    <Compile Include="Mex\ResScale.cs" />
+    <Compile Include="StaticResources\ResUserDefinedType.cs" />
+    <Compile Include="Example\ExampleMexButton.xaml.cs">
+      <DependentUpon>ExampleMexButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexLabel.xaml.cs">
+      <DependentUpon>ExampleMexLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexPasswordBox.xaml.cs">
+      <DependentUpon>ExampleMexPasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexTextBox.xaml.cs">
+      <DependentUpon>ExampleMexTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Example\ExampleMexRadioButton.xaml.cs">
+      <DependentUpon>ExampleMexRadioButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Utility\CommonUtility.cs" />
+    <Compile Include="Utility\Converter.cs" />
+    <EmbeddedResource Include="Mex\ResImageView.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResImageView.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Font\Pretendard-Black.otf" />
+    <Resource Include="Font\Pretendard-Bold.otf" />
+    <Resource Include="Font\Pretendard-ExtraBold.otf" />
+    <Resource Include="Font\Pretendard-ExtraLight.otf" />
+    <Resource Include="Font\Pretendard-Light.otf" />
+    <Resource Include="Font\Pretendard-Medium.otf" />
+    <Resource Include="Font\Pretendard-Regular.otf" />
+    <Resource Include="Font\Pretendard-SemiBold.otf" />
+    <Resource Include="Font\Pretendard-Thin.otf" />
+    <Resource Include="Font\SUITE-Bold.otf" />
+    <Resource Include="Font\SUITE-ExtraBold.otf" />
+    <Resource Include="Font\SUITE-Heavy.otf" />
+    <Resource Include="Font\SUITE-Light.otf" />
+    <Resource Include="Font\SUITE-Medium.otf" />
+    <Resource Include="Font\SUITE-Regular.otf" />
+    <Resource Include="Font\SUITE-SemiBold.otf" />
+    <None Include="Utility\app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\mintech_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Component\MexButton\MexButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexCalendar\MexCalendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexCheckBox\MexCheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexComboBox\MexComboBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexComboBoxHB\MexComboBoxHB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexDatePicker\MexDatePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexLabel\MexLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexListBox\MexListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Component\MexPasswordBox\MexPasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexRadioButton\MexRadioButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexScrollViewer\MexScrollViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexTextBlock\MexTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexItemBox\MexItemBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Component\MexTextBox\MexTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexDatePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexCalendar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexItemBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_ComboBoxItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_ComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_ItemBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_DatePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexComboBoxHB.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexScrollViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexCheckBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Example\ExampleMexButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexPasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Example\ExampleMexRadioButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResColor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_RadioButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResColorSet_CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResFontSet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResFont.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResImageSet_Toggle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StaticResources\ResImageSet_Component.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StaticResources\ResScale.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\visibility.png" />
+    <Resource Include="Image\visibility_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Archive\python-3.10.11-amd64.exe" />
+    <Content Include="Archive\python-3.10.11.exe" />
+    <Resource Include="Image\asterisk.png" />
+    <Resource Include="Image\check.png" />
+    <Resource Include="Image\Inbox.png" />
+    <Resource Include="Image\logout.png" />
+    <Resource Include="Image\person.png" />
+    <Resource Include="Image\settings.png" />
+    <Resource Include="Image\storage.png" />
+    <Resource Include="Image\add.png" />
+    <Resource Include="Image\error_outline.png" />
+    <Resource Include="Image\exit_to_app.png" />
+    <Resource Include="Image\pause.png" />
+    <Resource Include="Image\person_add.png" />
+    <Resource Include="Image\play_arrow.png" />
+    <Resource Include="Image\play_arrow_outline.png" />
+    <Resource Include="Image\refresh.png" />
+    <Resource Include="Image\remove.png" />
+    <Resource Include="Image\get_app.png" />
+    <Resource Include="Image\info.png" />
+    <None Include="Image\downloading.png" />
+    <Resource Include="Image\not_started.png" />
+    <Resource Include="Image\pause_circle.png" />
+    <Resource Include="Image\electric_bolt.png" />
+    <Resource Include="Image\lock_outlined.png" />
+    <Resource Include="Image\mintech_logo_min_size.png" />
+    <Resource Include="Image\fact_check_outlined.png" />
+    <Resource Include="Image\label_outlined.png" />
+    <Resource Include="Image\list_alt.png" />
+    <Resource Include="Image\move_up_outlined.png" />
+    <Resource Include="Image\keyboard_double_arrow_right_outlined.png" />
+    <Resource Include="Image\keyboard_double_arrow_left_outlined.png" />
+    <Resource Include="Image\add_circle_outlined.png" />
+    <Resource Include="Image\calendar_month_outlined.png" />
+    <Resource Include="Image\print_outlined.png" />
+    <Resource Include="Image\stop_circle.png" />
+    <Resource Include="Image\search_outlined.png" />
+    <Resource Include="Image\arrow_circle_right_outlined.png" />
+    <Resource Include="Image\check_circle_outlined.png" />
+    <Resource Include="Image\not_interested_outlined.png" />
+    <Resource Include="Image\navigate_next.png" />
+    <Resource Include="Image\add_chart.png" />
+    <Resource Include="Image\home.png" />
+    <Resource Include="Image\play_circle_outlined.png" />
+    <Resource Include="Image\cable_outlined.png" />
+    <Resource Include="Image\cancel_outlined.png" />
+    <Resource Include="Image\restart_alt_outlined.png" />
+    <Resource Include="Image\iso_share_outlined.png" />
+    <Resource Include="Image\navigate_before.png" />
+    <Resource Include="Image\settings_ethernet.png" />
+    <Resource Include="Image\dvr_outlined.png" />
+    <Resource Include="Image\qr_code_scanner_outlined.png" />
+    <Resource Include="Image\progress_circle.png" />
+    <Resource Include="Image\warning_amber_outlined.png" />
+    <Resource Include="Image\upload_outlined.png" />
+    <Resource Include="Image\first_page_outlined.png" />
+    <Resource Include="Image\bluetooth_connected_outlined.png" />
+    <Resource Include="Image\bluetooth_disabled_outlined.png" />
+    <Resource Include="Image\link_off_outlined.png" />
+    <Resource Include="Image\link_outlined.png" />
+    <Resource Include="Image\question_mark_outlined.png" />
+    <Resource Include="Image\battery_charging_full_outlined.png" />
+    <Resource Include="Image\car_crash_outlined.png" />
+    <Resource Include="Image\battery_0_bar_outlined.png" />
+    <Resource Include="Image\place.png" />
+    <Resource Include="Image\chemical_compound.png" />
+    <Resource Include="Image\flame.png" />
+    <Resource Include="Image\humidity.png" />
+    <Resource Include="Image\pitch.png" />
+    <Resource Include="Image\roll.png" />
+    <Resource Include="Image\shock.png" />
+    <Resource Include="Image\temperature.png" />
+    <Resource Include="Image\ip_address.png" />
+    <Resource Include="Image\arrow_drop_down.png" />
+    <Resource Include="Image\arrow_drop_up.png" />
+    <Resource Include="Image\signal_cellular_4_bar.png" />
+    <Resource Include="Image\angle.png" />
+    <Resource Include="Image\notification_important.png" />
+    <Resource Include="Image\change_circle.png" />
+    <Resource Include="Image\clear_alarm.png" />
+    <Resource Include="Image\volume_off.png" />
+    <Resource Include="Image\volume_up.png" />
+    <Resource Include="Image\error.png" />
+    <Resource Include="Image\expand_circle_down.png" />
+    <Resource Include="Image\mintech_logo_white.png" />
+    <Resource Include="Image\play_circle_filled.png" />
+    <Resource Include="Image\block.png" />
+    <Resource Include="Image\dataset_linked.png" />
+    <Resource Include="Image\link.png" />
+    <Resource Include="Image\play_circle_filled_mirror.png" />
+    <Resource Include="Image\progress_circle_1.png" />
+    <Content Include="Script\ConvertStyleResourceToInstance.py" />
+    <None Include="Script\RunScript.bat" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Image\icon_discharger.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\bg_login.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\warning_amber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\expand_more.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\expand_less.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call "$(ProjectDir)Script\RunScript.bat"</PreBuildEvent>
+  </PropertyGroup>
+</Project>

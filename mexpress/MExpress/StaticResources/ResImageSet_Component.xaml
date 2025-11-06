@@ -1,0 +1,480 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Mex="clr-namespace:MExpress.Mex">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColor.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResImage.xaml"></ResourceDictionary>
+        <ResourceDictionary>
+            <Mex:ImageColorConverter x:Key="ImageColorConverter"></Mex:ImageColorConverter>
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--ButtonPrimary-->
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/LoadButtonPrimary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/get_app},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/get_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/get_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/get_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SaveButtonPrimary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SettingsButtonPrimary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/settings},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/StopButtonPrimary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/stop_circle},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/stop_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/stop_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/stop_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/NextButtonPrimary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/play_circle_filled},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/play_circle_filled}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/play_circle_filled}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/play_circle_filled}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <!--ButtonSecondary-->
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/PreviousButtonSecondary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/play_circle_filled_mirror},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/play_circle_filled_mirror}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/play_circle_filled_mirror}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/play_circle_filled_mirror}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/StopButtonSecondary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/block},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_secondary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/block}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_secondary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/block}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_secondary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/block}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <!--ButtonTertiary-->
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/FinishButtonTertiary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/exit_to_app},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/exit_to_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/exit_to_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/exit_to_app}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SettingsButtonTertiary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/settings},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/StartButtonTertiary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/play_arrow_outline},
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/play_arrow_outline}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/play_arrow_outline}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/play_arrow_outline}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_disabled}}">
+    </Mex:ImageSet_Component>
+    <!--ButtonOutline-->
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/AddDeviceButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/AddUserButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/person_add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/person_add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/person_add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/person_add}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/ChartButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/add_chart}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/add_chart}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/add_chart}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/add_chart}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/EditButtonIconOutline"
+                        ImageDefault="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                        ImageHover="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                        ImagePressed="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                        ImageDisabled="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SettingsButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/ResumeButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/not_started}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/not_started}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/not_started}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/not_started}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/PauseButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/pause_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/pause_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/pause_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/pause_circle}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/PrintButtonOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/print_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/print_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_hover}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/print_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/print_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <!--ButtonIcon-->
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/BeforeButtonIcon"
+                        ImageDefault="{Binding Source={StaticResource Mex/ResImage/navigate_before}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                        ImageHover="{Binding Source={StaticResource Mex/ResImage/navigate_before}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                        ImagePressed="{Binding Source={StaticResource Mex/ResImage/navigate_before}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                        ImageDisabled="{Binding Source={StaticResource Mex/ResImage/navigate_before}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/CheckButtonIcon"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/check}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/check}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/check}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/check}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/CloseButtonIcon"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/close}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/close}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/close}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/close}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/DeleteButtonIcon"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/delete}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/delete}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/delete}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/delete}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/EditButtonIcon"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/edit}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/HomeButton_TertiaryOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/home}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/home}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/home}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/home}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SettingButton_TertiaryOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/settings}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/TestInterfaceButton_TertiaryOutline"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/settings_ethernet}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/settings_ethernet}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/settings_ethernet}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_tertiary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/settings_ethernet}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/NextButtonIcon"
+                        ImageDefault="{Binding Source={StaticResource Mex/ResImage/navigate_next}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                        ImageHover="{Binding Source={StaticResource Mex/ResImage/navigate_next}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                        ImagePressed="{Binding Source={StaticResource Mex/ResImage/navigate_next}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                        ImageDisabled="{Binding Source={StaticResource Mex/ResImage/navigate_next}, 
+                                            Converter={StaticResource ImageColorConverter}, 
+                                            ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/SaveButtonIcon"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_action_pressed}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/save}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/not_interested_outlined_button_secondary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/not_interested_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/not_interested_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/not_interested_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/not_interested_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/play_circle_outlined_button_tertiary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/play_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/play_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/play_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/play_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/cancel_outlined_button_secondary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/cancel_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/cancel_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/cancel_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/cancel_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/cable_outlined_button_secondary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/cable_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/cable_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/cable_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_primary}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/cable_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+    <Mex:ImageSet_Component x:Key="Mex/ResImageSet_Component/check_circle_outlined_button_primary"
+                            ImageDefault="{Binding Source={StaticResource Mex/ResImage/check_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageHover="{Binding Source={StaticResource Mex/ResImage/check_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImagePressed="{Binding Source={StaticResource Mex/ResImage/check_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_on_action}}"
+                            ImageDisabled="{Binding Source={StaticResource Mex/ResImage/check_circle_outlined}, 
+                                                Converter={StaticResource ImageColorConverter}, 
+                                                ConverterParameter={StaticResource Mex/ResColor/icon_disabled}}">
+    </Mex:ImageSet_Component>
+</ResourceDictionary>

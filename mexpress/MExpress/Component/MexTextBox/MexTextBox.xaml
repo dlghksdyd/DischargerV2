@@ -1,0 +1,86 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MExpress.Mex">
+
+    <local:TextPaddingOffsetConverter x:Key="TextPaddingOffsetConverter"/>
+    
+    <Style TargetType="{x:Type local:MexTextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MexTextBox}">
+                    <Border x:Name="xBorder"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Background="{TemplateBinding Background}" 
+                            Padding="{TemplateBinding Padding}"
+                            Focusable="False">
+                        <Grid x:Name="xGrid" Focusable="False">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="xLeftImage" Grid.Column="0"
+                                   Width="{TemplateBinding ImageWidth}"
+                                   Height="{TemplateBinding ImageHeight}"
+                                   Source="{TemplateBinding ImageLeft}"/>
+                            <Grid Grid.Column="1" Focusable="False"
+                                  Height="{TemplateBinding FontHeight}">
+                                <TextBlock x:Name="xWaterMarkTextBlock"
+                                           Visibility="{TemplateBinding WaterMarkVisibility}"
+                                           Text="{TemplateBinding WaterMark}"
+                                           Foreground="{TemplateBinding WaterMarkForeground}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           FontWeight="{TemplateBinding FontWeight}"
+                                           Margin="{Binding TextPadding, 
+                                                            RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                                            Converter={StaticResource TextPaddingOffsetConverter}, 
+                                                            ConverterParameter=2}"
+                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Focusable="False"/>
+                                <TextBox x:Name="xTextBox" 
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         Text="{Binding Text, 
+                                                        RelativeSource={RelativeSource Mode=TemplatedParent}, 
+                                                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         FontFamily="{TemplateBinding FontFamily}"
+                                         FontSize="{TemplateBinding FontSize}"
+                                         FontWeight="{TemplateBinding FontWeight}"
+                                         Margin="{TemplateBinding TextPadding}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch"
+                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                         TextWrapping="{TemplateBinding TextWrapping}" 
+                                         AcceptsReturn="{TemplateBinding AcceptsReturn}"
+                                         Focusable="{TemplateBinding Focusable}"
+                                         IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            </Grid>
+                            <Image x:Name="xRightImage" Grid.Column="2"
+                                   Width="{TemplateBinding ImageWidth}"
+                                   Height="{TemplateBinding ImageHeight}"
+                                   Source="{TemplateBinding ImageRight}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ImageLeft" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="xLeftImage" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="ImageRight" Value="{x:Null}">
+                            <Setter Property="Visibility" TargetName="xRightImage" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>

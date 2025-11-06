@@ -1,0 +1,45 @@
+﻿<Window x:Class="MExpress.Example.ExampleMexComboBoxHB"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MExpress.Example"
+        xmlns:Mex="clr-namespace:MExpress.Mex"
+        mc:Ignorable="d"
+        Title="ExampleMexComboBoxHB" Height="450" Width="800">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MExpress;component/Themes/Generic.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Mex:MexComboBoxHB Grid.Row="0"
+                         x:Name="xMexComboBox_1"
+                         Width="200" Height="40"/>
+        <Mex:MexComboBoxHB Grid.Row="1"
+                         x:Name="xMexComboBox_2"
+                         Width="300" Height="60"
+                         BorderThickness="2"
+                         CornerRadius="0"
+                         FontSet="{StaticResource Mex/ResFontSet/body_lg_medium}"
+                         ImageSizeDropDown="35"
+                         ImageSetDropDown="{StaticResource Mex/ResImageSet_Toggle/DropdownOpen}"
+                         ItemSourceHeight="60"
+                         ItemSourceViewCount="3"
+                         ItemSourcePadding="55,10,55,10"
+                         ColorSet="{StaticResource Mex/ResColorSet_ComboBox/Primary}"
+                         Padding="20,5,20,5"
+                         HorizontalContentAlignment="Right"
+                         VerticalContentAlignment="Center"/>
+    </Grid>
+    
+</Window>
