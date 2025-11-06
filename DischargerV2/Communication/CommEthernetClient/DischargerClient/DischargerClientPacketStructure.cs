@@ -143,9 +143,7 @@ namespace Ethernet.Client.Discharger
         public class SetSafetyCondition
         {
             public ECommandCode CommandCode = ECommandCode.SetParameter;
-            private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 5;
             public EParameterIndex Index1 = EParameterIndex.VoltageUpperLimit;
             public double VoltageUpperLimitValue;
             public EParameterIndex Index2 = EParameterIndex.VoltageLowerLimit;
@@ -161,9 +159,7 @@ namespace Ethernet.Client.Discharger
         public class StartDischarge
         {
             public ECommandCode CommandCode = ECommandCode.SetParameter;
-            private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 4;
             public EParameterIndex Index1 = EParameterIndex.WorkMode;
             public double WorkMode;
             public EParameterIndex Index2 = EParameterIndex.SetValue;
@@ -177,9 +173,7 @@ namespace Ethernet.Client.Discharger
         public class StopDischarge
         {
             public ECommandCode CommandCode = ECommandCode.SetParameter;
-            private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 2;
             public EParameterIndex Index1 = EParameterIndex.WorkMode;
             public double WorkMode = 0.0;  
             public EParameterIndex Index2 = EParameterIndex.Start;
@@ -189,9 +183,7 @@ namespace Ethernet.Client.Discharger
         public class ClearAlarm
         {
             public ECommandCode CommandCode = ECommandCode.SetParameter;
-            private short NumberOfChannels;
             public short ChannelNumber;
-            private short NumberOfParameters = 1;
             public EParameterIndex Index1 = EParameterIndex.WorkModeClearAlarm;
             public double FixedValue = 1.0;
         }
@@ -199,9 +191,7 @@ namespace Ethernet.Client.Discharger
         public class LampControl
         {
             public ECommandCode CommandCode = ECommandCode.SetParameter;
-            private short NumberOfChannels = 1;
             public short ChannelNumber = 999;
-            private short NumberOfParameters = 1;
             public EParameterIndex Index1 = EParameterIndex.DioControl;
             public double DioValue;
         }

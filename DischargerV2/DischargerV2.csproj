@@ -390,6 +390,20 @@
     <Compile Include="MVVM\Views\ViewPopup_Setting.xaml.cs">
       <DependentUpon>ViewPopup_Setting.xaml</DependentUpon>
     </Compile>
+    <None Include="Reference\Modal\App.xaml.cs" />
+    <None Include="Reference\Modal\ModalBaseView.xaml.cs">
+      <DependentUpon>ModalBaseView.xaml</DependentUpon>
+    </None>
+    <None Include="Reference\Modal\ModalBaseViewModel.cs" />
+    <None Include="Reference\Modal\ModalManager.cs" />
+    <None Include="Reference\Modal\ModalResult.cs" />
+    <None Include="Reference\Modal\PopupInfoView.xaml.cs">
+      <DependentUpon>PopupInfoView.xaml</DependentUpon>
+    </None>
+    <None Include="Reference\Modal\PopupInfoViewModel.cs" />
+    <None Include="Reference\Modal\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </None>
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />
@@ -565,6 +579,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <None Include="Reference\Modal\ModalBaseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Reference\Modal\PopupInfoView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Reference\Modal\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -644,6 +670,7 @@
     <Resource Include="icon_discharger.ico" />
     <Content Include="Scripts\copy_config.py" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -1,118 +1,134 @@
-﻿<UserControl x:Class="DischargerV2.MVVM.Views.ViewSetMode_StepData"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Util="clr-namespace:Utility.Common"
-             xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress" 
-             xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
-             xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
-             xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance vm:ViewModelSetMode_StepData}"
-             d:DesignHeight="84" d:DesignWidth="887"
-             MinHeight="84" MinWidth="887">
+﻿<UserControl
+    x:Class="DischargerV2.MVVM.Views.ViewSetMode_StepData"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Mex="clr-namespace:MExpress.Mex;assembly=MExpress"
+    xmlns:Util="clr-namespace:Utility.Common"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:DischargerV2.MVVM.Models"
+    xmlns:view="clr-namespace:DischargerV2.MVVM.Views"
+    xmlns:vm="clr-namespace:DischargerV2.MVVM.ViewModels"
+    MinWidth="887"
+    MinHeight="84"
+    d:DataContext="{d:DesignInstance vm:ViewModelSetMode_StepData}"
+    d:DesignHeight="84"
+    d:DesignWidth="887"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <Mex:IsDoubleConverter x:Key="IsDoubleConverter"/>
-            <Util:IsStringEmptyToBoolConverter x:Key="IsStringEmptyToBoolConverter"/>
+            <Mex:DoubleToGridLengthConverter x:Key="IsDoubleConverter" />
+            <Util:IsStringEmptyToBoolConverter x:Key="IsStringEmptyToBoolConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border BorderBrush="{StaticResource Mex/ResColor/border_primary}"
-            BorderThickness="1"
-            CornerRadius="8"
-            Background="{StaticResource Mex/ResColor/surface_page}">
+    <Border
+        Background="{StaticResource Mex/ResColor/surface_page}"
+        BorderBrush="{StaticResource Mex/ResColor/border_primary}"
+        BorderThickness="1"
+        CornerRadius="8">
         <Grid Margin="20,0,20,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="16"/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="16"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition Width="16" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Mex:MexTextBlock x:Name="xNoTextBlock" Grid.Column="0" IsTabStop="False"
-                              Text="{Binding Model.No, Mode=TwoWay, 
-                                             FallbackValue=1}"
-                              Foreground="{StaticResource Mex/ResColor/text_body}"
-                              FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
-                              VerticalContentAlignment="Center"
-                              HorizontalContentAlignment="Center"/>
-            <StackPanel Orientation="Vertical" Grid.Column="2"
-                        Margin="20,0,20,0"
-                        VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}" 
-                                  IsTabStop="False"
-                                  Foreground="{StaticResource Mex/ResColor/text_body}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                <Grid Height="4"/>
-                <Mex:MexTextBox x:Name="xVoltTextBox" TabIndex="0"
-                                Padding="12,8,12,8"
-                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
-                                Text="{Binding Model.Voltage, 
-                                               Mode=TwoWay, 
-                                               Converter={StaticResource IsDoubleConverter}}"
-                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"/>
+            <Mex:MexTextBlock
+                x:Name="xNoTextBlock"
+                Grid.Column="0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                FontSet="{StaticResource Mex/ResFontSet/body_md_medium}"
+                Foreground="{StaticResource Mex/ResColor/text_body}"
+                IsTabStop="False"
+                Text="{Binding Model.No, Mode=TwoWay, FallbackValue=1}" />
+            <StackPanel
+                Grid.Column="2"
+                Margin="20,0,20,0"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <Mex:MexTextBlock
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    Foreground="{StaticResource Mex/ResColor/text_body}"
+                    IsTabStop="False"
+                    Text="{Binding Source={StaticResource DynamicString}, Path=[Voltage]}" />
+                <Grid Height="4" />
+                <Mex:MexTextBox
+                    x:Name="xVoltTextBox"
+                    Padding="12,8,12,8"
+                    ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    TabIndex="0"
+                    Text="{Binding Model.Voltage, Mode=TwoWay, Converter={StaticResource IsDoubleConverter}}"
+                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}" />
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Column="3"
-                        Margin="20,0,20,0"
-                        VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}" 
-                                  IsTabStop="False"
-                                  Foreground="{StaticResource Mex/ResColor/text_body}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                <Grid Height="4"/>
-                <Mex:MexTextBox x:Name="xCurrTextBox" TabIndex="1"
-                                Padding="12,8,12,8"
-                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
-                                Text="{Binding Model.Current, 
-                                               Mode=TwoWay, 
-                                               Converter={StaticResource IsDoubleConverter}}"
-                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                TextChanged="xCurrTextBox_TextChanged">
-                </Mex:MexTextBox>
+            <StackPanel
+                Grid.Column="3"
+                Margin="20,0,20,0"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <Mex:MexTextBlock
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    Foreground="{StaticResource Mex/ResColor/text_body}"
+                    IsTabStop="False"
+                    Text="{Binding Source={StaticResource DynamicString}, Path=[Current]}" />
+                <Grid Height="4" />
+                <Mex:MexTextBox
+                    x:Name="xCurrTextBox"
+                    Padding="12,8,12,8"
+                    ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    TabIndex="1"
+                    Text="{Binding Model.Current, Mode=TwoWay, Converter={StaticResource IsDoubleConverter}}"
+                    TextChanged="xCurrTextBox_TextChanged"
+                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}" />
             </StackPanel>
-            <StackPanel Orientation="Vertical" Grid.Column="4"
-                        Margin="20,0,20,0"
-                        VerticalAlignment="Center">
-                <Mex:MexTextBlock Text="{Binding Source={StaticResource DynamicString}, Path=[CRate]}" 
-                                  IsTabStop="False"
-                                  Foreground="{StaticResource Mex/ResColor/text_body}"
-                                  FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"/>
-                <Grid Height="4"/>
-                <Mex:MexTextBox x:Name="xCRateTextBox" TabIndex="2"
-                                Padding="12,8,12,8"
-                                WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}"
-                                Text="{Binding Model.CRate, 
-                                               Mode=TwoWay, 
-                                               Converter={StaticResource IsDoubleConverter}}"
-                                IsEnabled="{Binding Path=Model.StandardCapacity,
-                                                    Source={x:Static vm:ViewModelSetMode_Step.Instance},
-                                                    Converter={StaticResource IsStringEmptyToBoolConverter}}"
-                                FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
-                                ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
-                                TextChanged="xCRateTextBox_TextChanged">
-                </Mex:MexTextBox>
+            <StackPanel
+                Grid.Column="4"
+                Margin="20,0,20,0"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <Mex:MexTextBlock
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    Foreground="{StaticResource Mex/ResColor/text_body}"
+                    IsTabStop="False"
+                    Text="{Binding Source={StaticResource DynamicString}, Path=[CRate]}" />
+                <Grid Height="4" />
+                <Mex:MexTextBox
+                    x:Name="xCRateTextBox"
+                    Padding="12,8,12,8"
+                    ColorSet="{StaticResource Mex/ResColorSet_TextBox/Primary}"
+                    FontSet="{StaticResource Mex/ResFontSet/body_md_regular}"
+                    IsEnabled="{Binding Path=Model.StandardCapacity, Source={x:Static vm:ViewModelSetMode_Step.Instance}, Converter={StaticResource IsStringEmptyToBoolConverter}}"
+                    TabIndex="2"
+                    Text="{Binding Model.CRate, Mode=TwoWay, Converter={StaticResource IsDoubleConverter}}"
+                    TextChanged="xCRateTextBox_TextChanged"
+                    WaterMark="{Binding Source={StaticResource DynamicString}, Path=[Enter]}" />
             </StackPanel>
-            <Mex:MexButton x:Name="xDeleteButton" Grid.Column="6"
-                           Width="48" Height="48" Padding="12"
-                           BorderThickness="1"
-                           CornerRadius="8"
-                           ImageWidth="24" ImageHeight="24"
-                           ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseButtonIcon}"
-                           ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}">
+            <Mex:MexButton
+                x:Name="xDeleteButton"
+                Grid.Column="6"
+                Width="48"
+                Height="48"
+                Padding="12"
+                BorderThickness="1"
+                ColorSet="{StaticResource Mex/ResColorSet_Button/IconOutline}"
+                CornerRadius="8"
+                ImageHeight="24"
+                ImageSetLeft="{StaticResource Mex/ResImageSet_Component/CloseButtonIcon}"
+                ImageWidth="24">
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Click">
-                        <b:InvokeCommandAction Command="{Binding DeleteStepInfoCommand, 
-                                                                 Source={x:Static vm:ViewModelSetMode_Step.Instance}}"
-                                               CommandParameter="{Binding Model}"
-                                               PassEventArgsToCommand="False"/>
+                        <b:InvokeCommandAction
+                            Command="{Binding DeleteStepInfoCommand, Source={x:Static vm:ViewModelSetMode_Step.Instance}}"
+                            CommandParameter="{Binding Model}"
+                            PassEventArgsToCommand="False" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
             </Mex:MexButton>

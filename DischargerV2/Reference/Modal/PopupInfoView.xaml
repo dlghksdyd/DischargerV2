@@ -1,0 +1,110 @@
+﻿<UserControl
+    x:Class="Mindims.Mvvm.Popup.PopupInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:hy="http://schemas.hysoft.com/wpf/2025/xaml"
+    xmlns:local="clr-namespace:Mindims.Mvvm.Popup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="{Binding Width}"
+    Height="{Binding Height}"
+    d:DataContext="{d:DesignInstance local:PopupInfoViewModel,
+                                     IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <hy:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Border BorderThickness="0" CornerRadius="8">
+        <Border.Effect>
+            <DropShadowEffect
+                BlurRadius="8"
+                Opacity="0.3"
+                ShadowDepth="5"
+                Color="Black" />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border
+                Grid.Row="0"
+                Padding="12,6"
+                Background="{hy:Color PopupTitleSurface}"
+                BorderBrush="{hy:Color PopupBorder}"
+                BorderThickness="1,1,1,0"
+                CornerRadius="8 8 0 0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <hy:HyIcon
+                        Width="28"
+                        Height="28"
+                        Margin="0,0,12,0"
+                        Source="Info"
+                        Color="{hy:Color PopupTitleText}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontSize="{hy:FontSize Xl}"
+                        Foreground="{hy:Color PopupTitleText}"
+                        Text="{Binding Title}" />
+                </Grid>
+            </Border>
+            <Border
+                Grid.Row="1"
+                Padding="16"
+                Background="{hy:Color PopupContentSurface}"
+                BorderBrush="{hy:Color PopupBorder}"
+                BorderThickness="1,0,1,1"
+                CornerRadius="0 0 8 8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <hy:HyScrollViewer
+                        Margin="0,0,0,16"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+                        <hy:HyTextBox
+                            Padding="0"
+                            VerticalContentAlignment="Top"
+                            Background="Transparent"
+                            FontSize="{hy:FontSize Lg}"
+                            FontWeight="Bold"
+                            Foreground="{hy:Color PopupContentText}"
+                            Text="{Binding Message}"
+                            TextWrapping="Wrap" />
+                    </hy:HyScrollViewer>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <hy:HyButton
+                            Grid.Column="1"
+                            Padding="32,0,32,0"
+                            Command="{Binding OkCommand}"
+                            Content="{Binding OkStr}"
+                            FontSize="{hy:FontSize Lg}" />
+                        <hy:HyButton
+                            Grid.Column="2"
+                            Margin="16,0,0,0"
+                            Padding="32,0,32,0"
+                            Background="{hy:Color ButtonSecondaryBg}"
+                            BorderBrush="{hy:Color ButtonSecondaryBorder}"
+                            Command="{Binding CancelCommand}"
+                            Content="{Binding CancelStr}"
+                            FontSize="{hy:FontSize Lg}"
+                            Foreground="{hy:Color ButtonSecondaryFg}"
+                            Visibility="{Binding IsCancel, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
