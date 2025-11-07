@@ -396,6 +396,7 @@
     <None Include="Reference\Crevis\clsDefine.cs" />
     <None Include="Reference\Crevis\cls_devCREVIS.cs" />
     <None Include="Reference\Crevis\Crevis.ini" />
+    <None Include="Reference\Crevis\GL-9089_User Manual_REV1.02.pdf" />
     <None Include="Reference\Crevis\MainFrame.cs">
       <SubType>Form</SubType>
     </None>

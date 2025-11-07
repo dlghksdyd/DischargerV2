@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
+using System.Text;
 
 namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
 {
@@ -15,13 +16,13 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
     {
         // ---- Win32 INI helpers (local) ----
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        private static extern int GetPrivateProfileString(string section, string key, string def, System.Text.StringBuilder retVal, int size, string filePath);
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
         private static string ReadIniValue(string path, string section, string key, string defaultValue)
         {
             try
             {
-                var sb = new System.Text.StringBuilder(1024);
+                var sb = new StringBuilder(1024);
                 GetPrivateProfileString(section, key, defaultValue ?? string.Empty, sb, sb.Capacity, path);
                 return sb.ToString();
             }
@@ -30,6 +31,37 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 Debug.WriteLine($"CrevisClient.ReadIniValue error: {ex.Message}");
                 return defaultValue;
             }
+        }
+
+        // ---- MODBUS constants (from manual sections 8.1.x / 8.2.x) ----
+        private enum ModbusFunction : byte
+        {
+            ReadCoils = 0x01,
+            ReadDiscreteInputs = 0x02,
+            ReadHoldingRegisters = 0x03,
+            ReadInputRegisters = 0x04,
+            // others omitted for brevity
+        }
+
+        // ---- MBAP state ----
+        private ushort _transactionId = 0; // auto increment per request
+        public byte UnitId { get; set; } = 0x01; // configurable if needed
+        private ushort _lastRequestedStartAddress = 0;
+        private ushort _lastRequestedQuantity = 0;
+
+        // Helper: bytes -> hex string (truncated)
+        private static string BytesToHex(byte[] data, int count, int maxBytes = 256)
+        {
+            if (data == null || count <= 0) return string.Empty;
+            int len = Math.Min(count, Math.Min(data.Length, maxBytes));
+            var sb = new StringBuilder(len * 3);
+            for (int i = 0; i < len; i++)
+            {
+                sb.Append(data[i].ToString("X2"));
+                if (i < len - 1) sb.Append(' ');
+            }
+            if (count > len) sb.Append(" ...");
+            return sb.ToString();
         }
 
         // ---- Configuration / counts ----
@@ -428,6 +460,38 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             Disconnected?.Invoke(Index);
         }
 
+        // ---- Build MODBUS Read Input Registers request (FC=0x04) ----
+        private byte[] BuildReadInputRegistersRequest(ushort startAddr, ushort quantity)
+        {
+            // MBAP: Transaction(2) + Protocol(2=0) + Length(2) + UnitId(1)
+            // PDU: Function(1) + Start(2) + Quantity(2)
+            // Total = 7 + 5 = 12 bytes
+            _transactionId++; // wrap automatically with ushort
+            _lastRequestedStartAddress = startAddr;
+            _lastRequestedQuantity = quantity;
+            var frame = new byte[12];
+            // Transaction
+            frame[0] = (byte)(_transactionId >> 8);
+            frame[1] = (byte)(_transactionId & 0xFF);
+            // Protocol ID = 0
+            frame[2] = 0x00;
+            frame[3] = 0x00;
+            // Length = UnitId(1) + PDU(5) = 6
+            frame[4] = 0x00;
+            frame[5] = 0x06;
+            // Unit Id
+            frame[6] = UnitId;
+            // Function
+            frame[7] = (byte)ModbusFunction.ReadInputRegisters;
+            // Start address
+            frame[8] = (byte)(startAddr >> 8);
+            frame[9] = (byte)(startAddr & 0xFF);
+            // Quantity
+            frame[10] = (byte)(quantity >> 8);
+            frame[11] = (byte)(quantity & 0xFF);
+            return frame;
+        }
+
         // ---- Timer callback ----
         private void OnBaseTimerElapsed()
         {
@@ -468,11 +532,11 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             if (!IsConnected || Socket == null) return;
             try
             {
-                byte[] readreq = new byte[12];
-                readreq[7] = 0x04;
-                readreq[9] = 0x00;
-                readreq[11] = (byte)_totalChannelCount;
-                Socket.Send(readreq);
+                // Request totalChannelCount registers starting at 0
+                ushort quantity = (ushort)_totalChannelCount;
+                var readReq = BuildReadInputRegistersRequest(0, quantity);
+                Debug.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] CREVIS TX Dev={Index + 1} {IpAddress}:{IpPort} TID={_transactionId} FC=0x04 Start=0 Qty={quantity} Frame={BytesToHex(readReq, readReq.Length)}");
+                Socket.Send(readReq);
             }
             catch (Exception ex)
             {
@@ -480,7 +544,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             }
         }
 
-        // ---- Reader ----
+        // ---- Reader thread ----
         private void TcpReadThreadFunc()
         {
             while (!_stopRequestedFlag)
@@ -533,6 +597,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     return;
                 }
 
+                Debug.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] CREVIS RX Dev={Index + 1} {IpAddress}:{IpPort} Len={bytesRead} Data={BytesToHex(_receiveBuffer, bytesRead)}");
                 ReceivedByteCount = bytesRead;
             }
             catch (Exception ex)
@@ -547,44 +612,99 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 return;
             }
 
-            if (ReceivedByteCount >= (_totalChannelCount * 2 + 9))
+            ProcessModbusResponse();
+            _lastLoopTime = DateTime.Now;
+        }
+
+        // ---- MODBUS response parser (supports FC04 & error response) ----
+        private void ProcessModbusResponse()
+        {
+            try
             {
-                try
+                if (ReceivedByteCount < 9) // minimal MBAP + error PDU size
+                    return;
+
+                // MBAP
+                ushort rxTid = (ushort)((_receiveBuffer[0] << 8) | _receiveBuffer[1]);
+                ushort protocol = (ushort)((_receiveBuffer[2] << 8) | _receiveBuffer[3]);
+                ushort lengthField = (ushort)((_receiveBuffer[4] << 8) | _receiveBuffer[5]);
+                byte unitId = _receiveBuffer[6];
+                byte function = _receiveBuffer[7];
+
+                if (protocol != 0)
                 {
-                    if (_receiveBuffer[5] > (_totalChannelCount * 2))
+                    Debug.WriteLine($"MODBUS RX protocol id invalid: {protocol}");
+                    return;
+                }
+
+                // Error response (function | 0x80)
+                if ((function & 0x80) != 0)
+                {
+                    if (ReceivedByteCount >= 9)
                     {
-                        short rawShortValue = 0;
-                        float[] values = new float[_totalChannelCount];
-                        int temperatureIndex = 0;
-                        string logMsg = string.Empty;
+                        byte exceptionCode = _receiveBuffer[8];
+                        Debug.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] CREVIS RX ERR Dev={Index + 1} TID={rxTid} FC=0x{(function & 0x7F):X2} ExCode=0x{exceptionCode:X2}");
+                    }
+                    return;
+                }
 
-                        for (int i = 0; i < _totalChannelCount; i++)
-                        {
-                            rawShortValue = (short)((_receiveBuffer[9 + i * 2] << 8) + _receiveBuffer[9 + i * 2 + 1]);
-                            if (i >= _voltageChannelCount)
-                            {
-                                float val = ((float)rawShortValue / 10.0f) + (temperatureIndex < _calibrationOffsets.Length ? _calibrationOffsets[temperatureIndex] : 0f);
-                                values[i] = val;
-                                temperatureIndex++;
-                            }
-                            else
-                            {
-                                values[i] = ((float)rawShortValue / 10.0f);
-                            }
-                            logMsg += " " + values[i].ToString();
-                        }
+                if (function != (byte)ModbusFunction.ReadInputRegisters)
+                {
+                    Debug.WriteLine($"Unsupported MODBUS function 0x{function:X2}");
+                    return;
+                }
 
-                        WriteLog("  >> R, " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "]" + logMsg);
-                        ReadCrevisData?.Invoke(Index, values);
+                // For FC04: PDU = FC(1) + ByteCount(1) + Data(ByteCount)
+                if (ReceivedByteCount < 9) return; // need at least FC + ByteCount
+                byte byteCount = _receiveBuffer[8];
+                int expectedDataBytes = _lastRequestedQuantity * 2;
+                if (byteCount != expectedDataBytes)
+                {
+                    Debug.WriteLine($"ByteCount mismatch. PDU ByteCount={byteCount}, Expected={expectedDataBytes}");
+                    if (ReceivedByteCount < 9 + byteCount) return; // still ensure bounds
+                }
+
+                int totalNeeded = 9 + byteCount; // MBAP(7) + FC + ByteCount + Data
+                if (ReceivedByteCount < totalNeeded)
+                {
+                    Debug.WriteLine($"Incomplete MODBUS frame. Have={ReceivedByteCount}, Need={totalNeeded}");
+                    return;
+                }
+
+                int registerCount = byteCount / 2;
+                float[] values = new float[_totalChannelCount];
+                int temperatureIndex = 0;
+                var sbTemps = new StringBuilder();
+                string voltLog = string.Empty;
+
+                for (int reg = 0; reg < Math.Min(registerCount, _totalChannelCount); reg++)
+                {
+                    int dataIndex = 9 + reg * 2;
+                    short raw = (short)((_receiveBuffer[dataIndex] << 8) | _receiveBuffer[dataIndex + 1]);
+                    if (reg >= _voltageChannelCount)
+                    {
+                        float val = ((float)raw / 10.0f) + (temperatureIndex < _calibrationOffsets.Length ? _calibrationOffsets[temperatureIndex] : 0f);
+                        values[reg] = val;
+                        if (sbTemps.Length > 0) sbTemps.Append(", ");
+                        sbTemps.Append(val.ToString("F1"));
+                        temperatureIndex++;
+                    }
+                    else
+                    {
+                        float val = ((float)raw / 10.0f);
+                        values[reg] = val;
+                        voltLog += " " + val.ToString();
                     }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"CrevisClient.ReadSocketOnce process buffer error: {ex.Message}");
-                }
-            }
 
-            _lastLoopTime = DateTime.Now;
+                Debug.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] CREVIS RX OK Dev={Index + 1} TID={rxTid} Unit={unitId} Regs={registerCount} Voltages:{voltLog} Temps:[{sbTemps}] ");
+                WriteLog($">> TID={rxTid} FC04 Voltages:{voltLog} Temps:[{sbTemps}] ");
+                ReadCrevisData?.Invoke(Index, values);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.ProcessModbusResponse error: {ex.Message}");
+            }
         }
 
         // ---- Comm check ----
@@ -717,7 +837,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 string folder = Path.Combine(basePath, "device", "CrevisAUX", DateTime.Now.ToString("yyyy_MM_dd"));
                 Directory.CreateDirectory(folder);
                 string file = Path.Combine(folder, "Crevis_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_Device" + (Index + 1).ToString("D2") + ".log");
-                _logWriter = new StreamWriter(file, true, System.Text.Encoding.UTF8);
+                _logWriter = new StreamWriter(file, true, Encoding.UTF8);
                 WriteLog("Created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 WriteLog("-------------------------------------------------");
             }
