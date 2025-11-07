@@ -25,7 +25,11 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 GetPrivateProfileString(section, key, defaultValue ?? string.Empty, sb, sb.Capacity, path);
                 return sb.ToString();
             }
-            catch { return defaultValue; }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.ReadIniValue error: {ex.Message}");
+                return defaultValue;
+            }
         }
 
         // ---- Configuration / counts ----
@@ -207,7 +211,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 _baseTimer100ms?.Stop();
                 _baseTimer100ms?.Dispose();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.Dispose error: {ex.Message}");
+            }
         }
 
         // ---- Public: Initialize clients from Crevis.ini ----
@@ -308,7 +315,11 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             // Close old socket if any
             lock (_socketLock)
             {
-                try { Socket?.Close(0); } catch { }
+                try { Socket?.Close(0); }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CrevisClient.StartTcp close socket error: {ex.Message}");
+                }
                 Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             }
 
@@ -335,15 +346,30 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
 
             // start threads
             _stopRequestedFlag = false;
-            if (_readerThread == null || !_readerThread.IsAlive)
+            try
             {
-                _readerThread = new Thread(TcpReadThreadFunc) { IsBackground = true };
-                _readerThread.Start();
+                if (_readerThread == null || !_readerThread.IsAlive)
+                {
+                    _readerThread = new Thread(TcpReadThreadFunc) { IsBackground = true };
+                    _readerThread.Start();
+                }
             }
-            if (_communicationCheckThread == null || !_communicationCheckThread.IsAlive)
+            catch (Exception ex)
             {
-                _communicationCheckThread = new Thread(StartCommChk) { IsBackground = true };
-                _communicationCheckThread.Start();
+                Debug.WriteLine($"CrevisClient.StartTcp start reader thread error: {ex.Message}");
+            }
+
+            try
+            {
+                if (_communicationCheckThread == null || !_communicationCheckThread.IsAlive)
+                {
+                    _communicationCheckThread = new Thread(StartCommChk) { IsBackground = true };
+                    _communicationCheckThread.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.StartTcp start commcheck thread error: {ex.Message}");
             }
 
             SetTimer(1, 1000); // 1 sec request
@@ -363,7 +389,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     if (!_readerThread.Join(500)) _readerThread.Abort();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.StopTcp reader thread stop error: {ex.Message}");
+            }
             finally { _readerThread = null; }
 
             try
@@ -373,13 +402,24 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     if (!_communicationCheckThread.Join(500)) _communicationCheckThread.Abort();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.StopTcp commcheck thread stop error: {ex.Message}");
+            }
             finally { _communicationCheckThread = null; }
 
             lock (_socketLock)
             {
-                try { Socket?.Shutdown(SocketShutdown.Both); } catch { }
-                try { Socket?.Close(); } catch { }
+                try { Socket?.Shutdown(SocketShutdown.Both); }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CrevisClient.StopTcp socket shutdown error: {ex.Message}");
+                }
+                try { Socket?.Close(); }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CrevisClient.StopTcp socket close error: {ex.Message}");
+                }
                 Socket = null;
             }
 
@@ -449,7 +489,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 {
                     ReadSocketOnce();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CrevisClient.TcpReadThreadFunc error: {ex.Message}");
+                }
                 Thread.Sleep(0);
             }
         }
@@ -481,16 +524,25 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 bytesRead = Socket.Receive(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None);
                 if (bytesRead <= 0)
                 {
-                    try { Socket.Close(); } catch { }
+                    try { Socket.Close(); }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"CrevisClient.ReadSocketOnce close socket error: {ex.Message}");
+                    }
                     _lastLoopTime = DateTime.Now;
                     return;
                 }
 
                 ReceivedByteCount = bytesRead;
             }
-            catch
+            catch (Exception ex)
             {
-                try { Socket?.Close(); } catch { }
+                try { Socket?.Close(); }
+                catch (Exception ex2)
+                {
+                    Debug.WriteLine($"CrevisClient.ReadSocketOnce inner close socket error: {ex2.Message}");
+                }
+                Debug.WriteLine($"CrevisClient.ReadSocketOnce poll/recv error: {ex.Message}");
                 _lastLoopTime = DateTime.Now;
                 return;
             }
@@ -526,7 +578,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                         ReadCrevisData?.Invoke(Index, values);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CrevisClient.ReadSocketOnce process buffer error: {ex.Message}");
+                }
             }
 
             _lastLoopTime = DateTime.Now;
@@ -603,7 +658,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.SetCalibFactor error: {ex.Message}");
+            }
         }
 
         private bool IsServerAlive(string hostName)
@@ -616,7 +674,11 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     return reply.Status == IPStatus.Success;
                 }
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.IsServerAlive error: {ex.Message}");
+                return false;
+            }
         }
 
         public bool IsSocketConnected()
@@ -633,12 +695,14 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 Socket.Send(Array.Empty<byte>(), 0, 0, SocketFlags.None);
                 return true;
             }
-            catch (SocketException)
+            catch (SocketException ex)
             {
+                Debug.WriteLine($"CrevisClient.IsSocketConnected socket error: {ex.Message}");
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine($"CrevisClient.IsSocketConnected error: {ex.Message}");
                 return false;
             }
         }
@@ -657,7 +721,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 WriteLog("Created at " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 WriteLog("-------------------------------------------------");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.OpenLog error: {ex.Message}");
+            }
         }
 
         private void CloseLog()
@@ -670,7 +737,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                     _logWriter.Close();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.CloseLog error: {ex.Message}");
+            }
             finally { _logWriter = null; }
         }
 
@@ -682,7 +752,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 _logWriter.WriteLine(msg);
                 _logWriter.Flush();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"CrevisClient.WriteLog error: {ex.Message}");
+            }
         }
     }
 }

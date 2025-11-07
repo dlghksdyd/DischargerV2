@@ -1,14 +1,17 @@
-﻿using DischargerV2.Ini;
+﻿using DischargerV2.Communication.CommEthernetClient.CrevisClient;
+using DischargerV2.Ini;
 using DischargerV2.MVVM.Models;
 using Prism.Mvvm;
 using SqlClient.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using static DischargerV2.MVVM.Models.ModelMain;
+using System.Text;
 
 namespace DischargerV2.MVVM.ViewModels
 {
@@ -36,14 +39,70 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        // Crevis
+        private List<CrevisClient> _crevisClients = new List<CrevisClient>();
+
         public ViewModelMain()
         {
             _instance = this;
 
             IniDischarge.InitializeIniFile();
+            IniCrevis.InitializeIniFile();
 
             InitializeModel();
             InitializePopup();
+            InitializeCrevisClients();
+        }
+
+        private static string ReadIniValue(string path, string section, string key, string defaultValue)
+        {
+            try
+            {
+                var sb = new StringBuilder(1024);
+                Ini.Ini.GetPrivateProfileString(section, key, defaultValue ?? string.Empty, sb, sb.Capacity, path);
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ViewModelMain.ReadIniValue error: {ex.Message}");
+                return defaultValue;
+            }
+        }
+
+        private void InitializeCrevisClients()
+        {
+            try
+            {
+                string iniPath = IniCrevis.CrevisIniPath;
+
+                // Create clients from INI (Enabled, IpAddress, TempChannelCount, VoltChannelCount, Calibration)
+                _crevisClients = CrevisClient.InitializeFromIni(iniPath, null);
+
+                // Apply Port to IpPort if specified in ini
+                int deviceCount = 1;
+                int.TryParse(ReadIniValue(iniPath, "General", "DeviceCount", "1"), out deviceCount);
+                deviceCount = Math.Max(1, deviceCount);
+
+                for (int i = 0; i < Math.Min(deviceCount, _crevisClients.Count); i++)
+                {
+                    string section = $"Device{i}";
+
+                    // Port
+                    int port = _crevisClients[i].IpPort; // default
+                    int.TryParse(ReadIniValue(iniPath, section, "Port", port.ToString()), out port);
+                    _crevisClients[i].IpPort = port;
+
+                    // If enabled, start communication
+                    if (_crevisClients[i].ControlEnabled)
+                    {
+                        _crevisClients[i].StartTcp();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ViewModelMain.InitializeCrevisClients error: {ex.Message}");
+            }
         }
 
         public void InitializeModel()

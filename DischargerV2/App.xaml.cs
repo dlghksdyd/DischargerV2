@@ -17,15 +17,6 @@ namespace DischargerV2
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            try
-            {
-                DischargerV2.Ini.IniCrevis.InitializeIniFile();
-            }
-            catch
-            {
-                // swallow initialization errors to not block app start
-            }
-
             base.OnStartup(e);
         }
     }
