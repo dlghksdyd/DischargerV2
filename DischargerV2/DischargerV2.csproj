@@ -193,6 +193,7 @@
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />
     <Compile Include="Communication\CommSerialClient\TempModuleClient\TempModuleClient.cs" />
+    <Compile Include="Communication\CommSqlClient\ServerDbContext.cs" />
     <Compile Include="Communication\CommSqlite\SqliteProcessor.cs" />
     <Compile Include="Communication\CommSqlite\SqliteStructure.cs" />
     <Compile Include="Communication\CommSqlClient\ServProcessor.cs" />
@@ -392,19 +393,19 @@
     <Compile Include="MVVM\Views\ViewPopup_Setting.xaml.cs">
       <DependentUpon>ViewPopup_Setting.xaml</DependentUpon>
     </Compile>
-    <None Include="Reference\clsDefine.cs" />
-    <None Include="Reference\cls_devCREVIS.cs" />
-    <None Include="Reference\Crevis.ini" />
-    <None Include="Reference\MainFrame.cs">
+    <None Include="Reference\Crevis\clsDefine.cs" />
+    <None Include="Reference\Crevis\cls_devCREVIS.cs" />
+    <None Include="Reference\Crevis\Crevis.ini" />
+    <None Include="Reference\Crevis\MainFrame.cs">
       <SubType>Form</SubType>
     </None>
-    <None Include="Reference\MainFrame.Designer.cs">
+    <None Include="Reference\Crevis\MainFrame.Designer.cs">
       <DependentUpon>MainFrame.cs</DependentUpon>
     </None>
-    <None Include="Reference\frmSetting.cs">
+    <None Include="Reference\Crevis\frmSetting.cs">
       <SubType>Form</SubType>
     </None>
-    <None Include="Reference\frmSetting.Designer.cs">
+    <None Include="Reference\Crevis\frmSetting.Designer.cs">
       <DependentUpon>frmSetting.cs</DependentUpon>
     </None>
     <Compile Include="Repository\RepoLog.cs" />
@@ -615,10 +616,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Reference\frmSetting.resx">
+    <None Include="Reference\Crevis\frmSetting.resx">
       <DependentUpon>frmSetting.cs</DependentUpon>
     </None>
-    <None Include="Reference\MainFrame.resx">
+    <None Include="Reference\Crevis\MainFrame.resx">
       <DependentUpon>MainFrame.cs</DependentUpon>
     </None>
     <None Include="Config\OCV.csv" />
@@ -662,7 +663,8 @@
   <ItemGroup>
     <Resource Include="Images\en-US.png" />
     <Resource Include="Images\ko-KR.png" />
-    <None Include="Reference\System_Setting.xml" />
+    <None Include="Reference\Crevis\System_Setting.xml" />
+    <None Include="Reference\Mssql\IFT_HISTORY_ALARM.sql" />
     <Content Include="Scripts\update_msi_file_name.py" />
     <Content Include="Scripts\update_msi_version_info.py" />
     <Resource Include="icon_discharger.ico" />
