@@ -95,7 +95,11 @@ namespace DischargerV2.MVVM.ViewModels
                     // If enabled, start communication
                     if (_crevisClients[i].ControlEnabled)
                     {
-                        _crevisClients[i].StartTcp();
+                        var result = _crevisClients[i].StartTcp();
+                        if (!result)
+                        {
+                            Debug.WriteLine($"Crevis TCP 시작 실패: Device={i}, Port={_crevisClients[i].IpPort}");
+                        }
                     }
                 }
             }

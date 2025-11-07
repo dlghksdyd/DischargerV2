@@ -197,10 +197,10 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
                 AutoReset = true,
                 Enabled = false
             };
-            _baseTimer100ms.Elapsed += TimerEvent100Callback;
+            _baseTimer100ms.Elapsed += (s, e) => OnBaseTimerElapsed();
 
             // 기본 핸들러 등록
-            ReadCrevisData += OnReadCREVIS;
+            ReadCrevisData += (_, values) => OnReadCrevis(values);
         }
 
         public void Dispose()
@@ -429,7 +429,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
         }
 
         // ---- Timer callback ----
-        private void TimerEvent100Callback(object sender, ElapsedEventArgs e)
+        private void OnBaseTimerElapsed()
         {
             try
             {
@@ -622,7 +622,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
         }
 
         // ---- Default snapshot updater ----
-        private void OnReadCREVIS(int deviceIndex, float[] values)
+        private void OnReadCrevis(float[] values)
         {
             if (values == null) return;
 
