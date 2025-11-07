@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -22,80 +24,96 @@ namespace SqlClient.Server
 
     public static class SqlClientUserInfo 
     {
-        private static readonly string ClassName = "dbo.MST_USER_INFO";
-
         public static TABLE_MST_USER_INFO FindUserInfo(string userId, string password)
         {
-            var userInfoList = GetData();
+            try
+            {
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
+                {
+                    // Trim inputs for comparison consistency
+                    userId = userId?.Trim();
+                    password = password?.Trim();
 
-            return userInfoList.Find(x => x.USER_ID == userId && x.PASSWD == password);
+                    var user = ctx.MST_USER_INFO
+                        .FirstOrDefault(x => x.USER_ID == userId && x.PASSWD == password);
+
+                    if (user == null) return null;
+
+                    // Normalize string values as original logic did (Trim)
+                    return new TABLE_MST_USER_INFO
+                    {
+                        SERIAL = user.SERIAL,
+                        USER_ID = user.USER_ID?.Trim(),
+                        USER_NM = user.USER_NM?.Trim(),
+                        PASSWD = user.PASSWD?.Trim(),
+                        ADMIN_GROUP = user.ADMIN_GROUP?.Trim(),
+                        USE_YN = user.USE_YN?.Trim(),
+                    };
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static List<TABLE_MST_USER_INFO> GetData()
         {
-            List<TABLE_MST_USER_INFO> table = new List<TABLE_MST_USER_INFO>();
-
-            using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+            try
             {
-                connection.Open();
-
-                string query = @"SELECT * FROM " + ClassName;
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        TABLE_MST_USER_INFO tableMstUserInfo = new TABLE_MST_USER_INFO
+                    // Materialize then trim to mimic previous behavior
+                    return ctx.MST_USER_INFO
+                        .AsEnumerable()
+                        .Select(u => new TABLE_MST_USER_INFO
                         {
-                            USER_ID = reader["USER_ID"].ToString().Trim(),
-                            USER_NM = reader["USER_NM"].ToString().Trim(),
-                            PASSWD = reader["PASSWD"].ToString().Trim(),
-                            ADMIN_GROUP = reader["ADMIN_GROUP"].ToString().Trim(),
-                            USE_YN = reader["USE_YN"].ToString().Trim(),
-                        };
-
-                        table.Add(tableMstUserInfo);
-                    }
+                            SERIAL = u.SERIAL,
+                            USER_ID = u.USER_ID?.Trim(),
+                            USER_NM = u.USER_NM?.Trim(),
+                            PASSWD = u.PASSWD?.Trim(),
+                            ADMIN_GROUP = u.ADMIN_GROUP?.Trim(),
+                            USE_YN = u.USE_YN?.Trim(),
+                        })
+                        .ToList();
                 }
             }
-
-            return table;
+            catch
+            {
+                return new List<TABLE_MST_USER_INFO>();
+            }
         }
     }
 
     public static class SqlClientStatus
     {
-        private static readonly string ClassName = "dbo.SYS_STS_SDC";
-
         public static bool InsertData_Init(TABLE_SYS_STS_SDC data)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    var entity = ctx.SYS_STS_SDC
+                        .FirstOrDefault(x => x.MC_CD == data.MC_CD && x.MC_CH == data.MC_CH);
 
-                    string query = $@"
-                            IF EXISTS (SELECT * FROM {ClassName} WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}')
-                                BEGIN
-                                    UPDATE {ClassName} SET
-                                    DischargerName='{data.DischargerName}',
-                                    MC_DTM=GETDATE()
-                                    WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'
-                                END 
-                            ELSE 
-                                BEGIN
-                                   INSERT INTO {ClassName}
-                                   (MC_CD,MC_CH,DischargerName,MC_DTM)
-                                   VALUES('{data.MC_CD}','{data.MC_CH}','{data.DischargerName}',GETDATE())
-                                END";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (entity != null)
                     {
-                        command.ExecuteNonQuery();
+                        entity.DischargerName = data.DischargerName;
+                        entity.MC_DTM = DateTime.Now;
                     }
+                    else
+                    {
+                        entity = new TABLE_SYS_STS_SDC
+                        {
+                            MC_CD = data.MC_CD,
+                            MC_CH = data.MC_CH,
+                            DischargerName = data.DischargerName,
+                            MC_DTM = DateTime.Now,
+                        };
+                        ctx.SYS_STS_SDC.Add(entity);
+                    }
+
+                    ctx.SaveChanges();
                 }
                 return true;
             }
@@ -109,21 +127,20 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    var entity = ctx.SYS_STS_SDC
+                        .FirstOrDefault(x => x.MC_CD == data.MC_CD && x.MC_CH == data.MC_CH);
 
-                    string query = $"UPDATE {ClassName} SET " +
-                        $"USER_ID='{data.USER_ID}'," +
-                        $"DischargerVoltage='{data.DischargerVoltage}'," +
-                        $"DischargerCurrent='{data.DischargerCurrent}'," +
-                        $"DischargerTemp='{data.DischargerTemp}'," +
-                        $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (entity != null)
                     {
-                        command.ExecuteNonQuery();
+                        entity.USER_ID = data.USER_ID;
+                        entity.DischargerVoltage = data.DischargerVoltage;
+                        entity.DischargerCurrent = data.DischargerCurrent;
+                        entity.DischargerTemp = data.DischargerTemp;
+                        entity.MC_DTM = DateTime.Now;
+
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
@@ -138,20 +155,19 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    var entity = ctx.SYS_STS_SDC
+                        .FirstOrDefault(x => x.MC_CD == data.MC_CD && x.MC_CH == data.MC_CH);
 
-                    string query = $"UPDATE {ClassName} SET " +
-                        $"USER_ID='{data.USER_ID}'," +
-                        $"DischargerState='{data.DischargerState}'," +
-                        $"ProgressTime='{data.ProgressTime}'," +
-                        $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (entity != null)
                     {
-                        command.ExecuteNonQuery();
+                        entity.USER_ID = data.USER_ID;
+                        entity.DischargerState = data.DischargerState;
+                        entity.ProgressTime = data.ProgressTime;
+                        entity.MC_DTM = DateTime.Now;
+
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
@@ -166,21 +182,20 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    var entity = ctx.SYS_STS_SDC
+                        .FirstOrDefault(x => x.MC_CD == data.MC_CD && x.MC_CH == data.MC_CH);
 
-                    string query = $"UPDATE {ClassName} SET " +
-                        $"USER_ID='{data.USER_ID}'," +
-                        $"DischargeMode='{data.DischargeMode}'," +
-                        $"DischargeTarget='{data.DischargeTarget}'," +
-                        $"LogFileName='{data.LogFileName}'," +
-                        $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (entity != null)
                     {
-                        command.ExecuteNonQuery();
+                        entity.USER_ID = data.USER_ID;
+                        entity.DischargeMode = data.DischargeMode;
+                        entity.DischargeTarget = data.DischargeTarget;
+                        entity.LogFileName = data.LogFileName;
+                        entity.MC_DTM = DateTime.Now;
+
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
@@ -195,21 +210,20 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    var entity = ctx.SYS_STS_SDC
+                        .FirstOrDefault(x => x.MC_CD == data.MC_CD && x.MC_CH == data.MC_CH);
 
-                    string query = $"UPDATE {ClassName} SET " +
-                        $"USER_ID='{data.USER_ID}'," +
-                        $"DischargeCapacity_Ah='{data.DischargeCapacity_Ah}'," +
-                        $"DischargeCapacity_kWh='{data.DischargeCapacity_kWh}'," +
-                        $"DischargePhase='{data.DischargePhase}'," +
-                        $"MC_DTM=GETDATE() " +
-                        $"WHERE MC_CD='{data.MC_CD}' AND MC_CH='{data.MC_CH}'";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    if (entity != null)
                     {
-                        command.ExecuteNonQuery();
+                        entity.USER_ID = data.USER_ID;
+                        entity.DischargeCapacity_Ah = data.DischargeCapacity_Ah;
+                        entity.DischargeCapacity_kWh = data.DischargeCapacity_kWh;
+                        entity.DischargePhase = data.DischargePhase;
+                        entity.MC_DTM = DateTime.Now;
+
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
@@ -224,31 +238,33 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
+                    // IFT_HISTORY_ALARM SP logic with EF:
+                    // Insert when NOT EXISTS for the tuple (MTYPE, MC_CD, Alarm_Time, Alarm_Desc)
+                    string mtype = string.IsNullOrWhiteSpace(data.MTYPE) ? "SDC" : data.MTYPE;
 
-                    using (SqlCommand command = new SqlCommand())
+                    bool exists = ctx.QLT_HISTORY_ALARM.Any(x =>
+                        x.MTYPE == mtype &&
+                        x.MC_CD == data.MC_CD &&
+                        x.Alarm_Time == data.Alarm_Time &&
+                        x.Alarm_Desc == data.Alarm_Desc);
+
+                    if (!exists)
                     {
-                        command.Connection = connection;
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.CommandText = "dbo.IFT_HISTORY_ALARM";
-
-                        command.Parameters.Add("@MTYPE", SqlDbType.VarChar, 50);
-                        command.Parameters.Add("@MC_CD", SqlDbType.VarChar, 7);
-                        command.Parameters.Add("@CH_NO", SqlDbType.Int);
-                        command.Parameters.Add("@Alarm_Time", SqlDbType.DateTime2);
-                        command.Parameters.Add("@Alarm_Code", SqlDbType.Int);
-                        command.Parameters.Add("@Alarm_Desc", SqlDbType.VarChar, 80);
-
-                        command.Parameters["@MTYPE"].Value = "SDC";
-                        command.Parameters["@MC_CD"].Value = data.MC_CD;
-                        command.Parameters["@CH_NO"].Value = data.CH_NO;
-                        command.Parameters["@Alarm_Time"].Value = data.Alarm_Time;
-                        command.Parameters["@Alarm_Code"].Value = data.Alarm_Code;
-                        command.Parameters["@Alarm_Desc"].Value = data.Alarm_Desc;
-
-                        command.ExecuteNonQuery();
+                        var row = new TABLE_QLT_HISTORY_ALARM
+                        {
+                            MTYPE = mtype,
+                            MC_CD = data.MC_CD,
+                            CH_NO = data.CH_NO,
+                            Alarm_Treat = data.Alarm_Treat,
+                            Alarm_Time = data.Alarm_Time,
+                            Alarm_Code = data.Alarm_Code,
+                            Alarm_Desc = data.Alarm_Desc,
+                            Alarm_NewInserted = data.Alarm_NewInserted,
+                        };
+                        ctx.QLT_HISTORY_ALARM.Add(row);
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
@@ -263,16 +279,13 @@ namespace SqlClient.Server
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(SqlClient.ConnectionString))
+                using (var ctx = new ServerDbContext(SqlClient.ConnectionString))
                 {
-                    connection.Open();
-
-                    string query = $"DELETE {ClassName} " +
-                        $"WHERE MC_CD='{machineCode}'";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    var rows = ctx.SYS_STS_SDC.Where(x => x.MC_CD == machineCode).ToList();
+                    if (rows.Count > 0)
                     {
-                        command.ExecuteNonQuery();
+                        ctx.SYS_STS_SDC.RemoveRange(rows);
+                        ctx.SaveChanges();
                     }
                 }
                 return true;
