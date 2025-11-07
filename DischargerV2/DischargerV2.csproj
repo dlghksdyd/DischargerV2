@@ -188,6 +188,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Communication\CommEthernetClient\CrevisClient\CrevisClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientUtility.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClient.cs" />
     <Compile Include="Communication\CommEthernetClient\DischargerClient\DischargerClientPacketStructure.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Communication\CommSqlClient\ServProcessor.cs" />
     <Compile Include="Communication\CommSqlClient\ServStructure.cs" />
     <Compile Include="Ini\Ini.cs" />
+    <Compile Include="Ini\IniCrevis.cs" />
     <Compile Include="Ini\IniDischarge.cs" />
     <Compile Include="Languages\Strings\DynamicString.cs" />
     <Compile Include="Languages\Strings\Strings.Designer.cs">
@@ -390,6 +392,21 @@
     <Compile Include="MVVM\Views\ViewPopup_Setting.xaml.cs">
       <DependentUpon>ViewPopup_Setting.xaml</DependentUpon>
     </Compile>
+    <None Include="Reference\clsDefine.cs" />
+    <None Include="Reference\cls_devCREVIS.cs" />
+    <None Include="Reference\Crevis.ini" />
+    <None Include="Reference\MainFrame.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="Reference\MainFrame.Designer.cs">
+      <DependentUpon>MainFrame.cs</DependentUpon>
+    </None>
+    <None Include="Reference\frmSetting.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="Reference\frmSetting.Designer.cs">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+    </None>
     <Compile Include="Repository\RepoLog.cs" />
     <Compile Include="Repository\RepoLoginUser.cs" />
     <Compile Include="Repository\RepoTempModule.cs" />
@@ -598,6 +615,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Reference\frmSetting.resx">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+    </None>
+    <None Include="Reference\MainFrame.resx">
+      <DependentUpon>MainFrame.cs</DependentUpon>
+    </None>
     <None Include="Config\OCV.csv" />
     <None Include="Config\SqliteDischargerErrorCode.db" />
     <None Include="Config\SqliteDischargerInfo.db" />
@@ -639,11 +662,13 @@
   <ItemGroup>
     <Resource Include="Images\en-US.png" />
     <Resource Include="Images\ko-KR.png" />
+    <None Include="Reference\System_Setting.xml" />
     <Content Include="Scripts\update_msi_file_name.py" />
     <Content Include="Scripts\update_msi_version_info.py" />
     <Resource Include="icon_discharger.ico" />
     <Content Include="Scripts\copy_config.py" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
