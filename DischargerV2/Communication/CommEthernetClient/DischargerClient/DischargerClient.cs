@@ -432,9 +432,16 @@ namespace Ethernet.Client.Discharger
             }
         }
 
-        public void SetReceiveTemp(double temp, int channel = 0)
+        public void SetReceiveTemp(double temp, int channel)
         {
-            _dischargerDataArray[channel].ReceiveDischargeTemp = temp;
+            try
+            {
+                int index = channel - 1;
+                if (_dischargerDataArray == null) return;
+                if (index < 0 || index >= _dischargerDataArray.Length) return;
+                _dischargerDataArray[index].ReceiveDischargeTemp = temp;
+            }
+            catch { }
         }
 
         public EDischargerState GetState(int channel = 1)

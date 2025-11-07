@@ -109,6 +109,24 @@ namespace DischargerV2.MVVM.ViewModels
             }
         }
 
+        // Expose temperature value for binding rules
+        public double GetCrevisTemperature(int deviceIndex, int tempChannelIndex)
+        {
+            try
+            {
+                if (_crevisClients == null) return double.NaN;
+                if (deviceIndex < 0 || deviceIndex >= _crevisClients.Count) return double.NaN;
+                var temps = _crevisClients[deviceIndex]?.LastTemperatures;
+                if (temps == null) return double.NaN;
+                if (tempChannelIndex < 0 || tempChannelIndex >= temps.Length) return double.NaN;
+                return temps[tempChannelIndex];
+            }
+            catch
+            {
+                return double.NaN;
+            }
+        }
+
         public void InitializeModel()
         {
             // 기존 값 초기화

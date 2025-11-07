@@ -658,7 +658,33 @@ namespace DischargerV2.MVVM.ViewModels
                                 var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
 
                                 Model[i].DischargerData.ReceiveDischargeTemp = temp;
-                                _clients[dischargerName].SetReceiveTemp(temp);
+                                _clients[dischargerName].SetReceiveTemp(temp, dischargerChannel);
+                            }
+                        }
+                        else
+                        {
+                            // Crevis 사용 조건: TableDischargerInfo.IsTempModule == false
+                            // TempModuleChannel -> Crevis Device index, TempChannel -> 시작 온도 채널 인덱스 (0 기반)
+                            var table = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
+                            if (table != null && !table.IsTempModule)
+                            {
+                                int deviceIndex = 0;
+                                int baseTempChannel = 0; // 시작 채널
+                                int channelCount = table.DischargerChannel; // 전체 채널 개수
+                                try { deviceIndex = int.Parse(table.TempModuleChannel ?? "0"); } catch { deviceIndex = 0; }
+                                try { baseTempChannel = int.Parse(table.TempChannel ?? "0"); } catch { baseTempChannel = 0; }
+
+                                // 모델 인스턴스 채널은 1 기반 -> 0 기반 보정
+                                int zeroBasedChannelOrder = Model[i].DischargerChannel - 1;
+                                // 다채널일 경우 TempChannel이 채널 개수에 따라 1씩 증가
+                                int effectiveTempChannel = baseTempChannel + zeroBasedChannelOrder;
+
+                                double tempVal = ViewModelMain.Instance.GetCrevisTemperature(deviceIndex, effectiveTempChannel);
+                                if (!double.IsNaN(tempVal))
+                                {
+                                    Model[i].DischargerData.ReceiveDischargeTemp = tempVal;
+                                    _clients[dischargerName].SetReceiveTemp(tempVal, dischargerChannel);
+                                }
                             }
                         }
 
