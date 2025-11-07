@@ -52,7 +52,7 @@ namespace DischargerV2.MVVM.ViewModels
             get { return _selectedModel; }
             set
             {
-                SetProperty(ref _selectedModel, value);
+                try { SetProperty(ref _selectedModel, value); } catch (Exception ex) { Debug.WriteLine(ex); }
             }
         }
 
@@ -62,7 +62,7 @@ namespace DischargerV2.MVVM.ViewModels
             get { return _selectedDischargerName; }
             set
             {
-                SetProperty(ref _selectedDischargerName, value);
+                try { SetProperty(ref _selectedDischargerName, value); } catch (Exception ex) { Debug.WriteLine(ex); }
             }
         }
 
@@ -72,7 +72,7 @@ namespace DischargerV2.MVVM.ViewModels
             get { return _allChannelCount; }
             set
             {
-                SetProperty(ref _allChannelCount, value);
+                try { SetProperty(ref _allChannelCount, value); } catch (Exception ex) { Debug.WriteLine(ex); }
             }
         }
 
@@ -82,7 +82,7 @@ namespace DischargerV2.MVVM.ViewModels
             get { return _connectedChannelCount; }
             set
             {
-                SetProperty(ref _connectedChannelCount, value);
+                try { SetProperty(ref _connectedChannelCount, value); } catch (Exception ex) { Debug.WriteLine(ex); }
             }
         }
 
@@ -92,7 +92,7 @@ namespace DischargerV2.MVVM.ViewModels
             get { return _faultChannelCount; }
             set
             {
-                SetProperty(ref _faultChannelCount, value);
+                try { SetProperty(ref _faultChannelCount, value); } catch (Exception ex) { Debug.WriteLine(ex); }
             }
         }
 
@@ -107,124 +107,162 @@ namespace DischargerV2.MVVM.ViewModels
 
         public ViewModelDischarger()
         {
-            InitializeModel();
+            try { InitializeModel(); } catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void Initialize()
         {
-            InitializeModel();
-            InitializeDischarger();
+            try
+            {
+                InitializeModel();
+                InitializeDischarger();
+            }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void InitializeModel()
         {
-            int No = 1;
-
-            FinalizeModel();
-
-            _dischargerInfos = SqliteDischargerInfo.GetData();
-            List<TableDischargerInfo> infos = _dischargerInfos;
-
-            Model.Clear();
-
-            for (int index = 0; index < infos.Count; index++)
+            try
             {
-                var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
+                int No = 1;
 
-                // 자체 제작 방전기의 경우, Voltage 안전 조건 마진 적용 필요
-                dischargerInfo.SafetyVoltageMin -= EthernetClientDischarger.SafetyMarginVoltage;
-                dischargerInfo.SafetyVoltageMax += EthernetClientDischarger.SafetyMarginVoltage;
+                FinalizeModel();
 
-                int channel = dischargerInfo.Channel;
-                
-                for (int i = 0; i < channel; i++)
+                _dischargerInfos = SqliteDischargerInfo.GetData();
+                List<TableDischargerInfo> infos = _dischargerInfos;
+
+                Model.Clear();
+
+                for (int index = 0; index < infos.Count; index++)
                 {
-                    var model = new ModelDischarger();
+                    var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
 
-                    model.DischargerInfo = dischargerInfo;
-                    model.DischargerIndex = index;
-                    model.No = No.ToString();
-                    No++;
+                    // 자체 제작 방전기의 경우, Voltage 안전 조건 마진 적용 필요
+                    dischargerInfo.SafetyVoltageMin -= EthernetClientDischarger.SafetyMarginVoltage;
+                    dischargerInfo.SafetyVoltageMax += EthernetClientDischarger.SafetyMarginVoltage;
 
-                    if (channel > 1)
+                    int channel = dischargerInfo.Channel;
+
+                    for (int i = 0; i < channel; i++)
                     {
-                        model.DischargerInfo.Channel = (short)(i + 1);
-                        model.DischargerName = $"{infos[index].DischargerName}_{i + 1}";
-                    }
-                    else
-                    {
-                        model.DischargerName = $"{infos[index].DischargerName}";
-                    }
+                        try
+                        {
+                            var model = new ModelDischarger();
 
-                    model.DischargerChannel = i + 1;
-                    model.PropertyChanged += Model_PropertyChanged;
+                            model.DischargerInfo = dischargerInfo;
+                            model.DischargerIndex = index;
+                            model.No = No.ToString();
+                            No++;
 
-                    Model.Add(model);
+                            if (channel > 1)
+                            {
+                                model.DischargerInfo.Channel = (short)(i + 1);
+                                model.DischargerName = $"{infos[index].DischargerName}_{i + 1}";
+                            }
+                            else
+                            {
+                                model.DischargerName = $"{infos[index].DischargerName}";
+                            }
+
+                            model.DischargerChannel = i + 1;
+                            model.PropertyChanged += Model_PropertyChanged;
+
+                            Model.Add(model);
+                        }
+                        catch (Exception ex) { Debug.WriteLine(ex); }
+                    }
                 }
+
+                ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
+
+                Thread thread = new Thread(() =>
+                {
+                    try
+                    {
+                        Thread.Sleep(1000);
+                        SelectDischarger(0);
+                    }
+                    catch (Exception ex) { Debug.WriteLine(ex); }
+                });
+                thread.IsBackground = true;
+                thread.Start();
             }
-
-            ViewModelTempModule.Instance.InitializeTempModuleDictionary(infos);
-
-            Thread thread = new Thread(() =>
+            catch (Exception ex)
             {
-                Thread.Sleep(1000);
-                SelectDischarger(0);
-            });
-            thread.IsBackground = true;
-            thread.Start();
+                Debug.WriteLine(ex);
+            }
         }
 
         public void InitializeDischarger()
         {
-            FinalizeDischarger();
-
-            _dischargerInfos = SqliteDischargerInfo.GetData();
-            List<TableDischargerInfo> infos = _dischargerInfos;
-
-            for (int index = 0; index < infos.Count; index++)
+            try
             {
-                var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
+                FinalizeDischarger();
 
-                InitializeDischargerClients(dischargerInfo);
+                _dischargerInfos = SqliteDischargerInfo.GetData();
+                List<TableDischargerInfo> infos = _dischargerInfos;
+
+                for (int index = 0; index < infos.Count; index++)
+                {
+                    try
+                    {
+                        var dischargerInfo = InitializeDischargerInfos(infos[index].DischargerName);
+                        InitializeDischargerClients(dischargerInfo);
+                    }
+                    catch (Exception exItem) { Debug.WriteLine(exItem); }
+                }
+
+                OneSecondTimer?.Stop();
+                OneSecondTimer = new System.Timers.Timer();
+                OneSecondTimer.Elapsed += CopyDataFromDischargerClientToModel;
+                OneSecondTimer.Interval = 1000;
+                OneSecondTimer.Start();
             }
-
-            OneSecondTimer?.Stop();
-            OneSecondTimer = new System.Timers.Timer();
-            OneSecondTimer.Elapsed += CopyDataFromDischargerClientToModel;
-            OneSecondTimer.Interval = 1000;
-            OneSecondTimer.Start();
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void FinalizeModel()
         {
-            foreach (var model in Model)
+            try
             {
-                model.PropertyChanged -= Model_PropertyChanged;
+                foreach (var model in Model)
+                {
+                    try { model.PropertyChanged -= Model_PropertyChanged; } catch (Exception exSub) { Debug.WriteLine(exSub); }
+                }
+                Model.Clear();
             }
-            Model.Clear();
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void FinalizeDischarger()
         {
-            OneSecondTimer?.Stop();
-            OneSecondTimer = null;
-
-            foreach (var client in _clients)
+            try
             {
-                client.Value.Stop();
+                OneSecondTimer?.Stop();
+                OneSecondTimer = null;
+
+                foreach (var client in _clients)
+                {
+                    try { client.Value.Stop(); } catch (Exception exStop) { Debug.WriteLine(exStop); }
+                }
+                _clients.Clear();
             }
-            _clients.Clear();
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (sender is ModelDischarger modelDischarger)
+            try
             {
-                if (e.PropertyName == nameof(ModelDischarger.DischargerState))
+                if (sender is ModelDischarger modelDischarger)
                 {
-                    UpdateChannelState(modelDischarger);
+                    if (e.PropertyName == nameof(ModelDischarger.DischargerState))
+                    {
+                        UpdateChannelState(modelDischarger);
+                    }
                 }
             }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public bool StartDischarger(StartDischargerCommandParam param)
@@ -239,11 +277,9 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전 동작 시작
                 var isOk = _clients[dischargerName].SendCommand_StartDischarge(
                     channel, EWorkMode.CcCvMode, param.Voltage, param.Current);
 
-                // 방전 동작 시작 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
                 dischargerComm.EWorkMode = EWorkMode.CcCvMode;
                 dischargerComm.SetValue_Voltage = param.Voltage;
@@ -283,24 +319,23 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                if (isRestart != null)
+                try
                 {
-                    if (isRestart == false)
+                    if (isRestart != null)
                     {
-                        new LogTrace(ELogTrace.SYSTEM_ERROR_START_DISCHARGE, ex);
-                    }
-                    else
-                    {
-                        new LogTrace(ELogTrace.SYSTEM_ERROR_RESTART_DISCHARGE, ex);
+                        if (isRestart == false)
+                        {
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_START_DISCHARGE, ex);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_RESTART_DISCHARGE, ex);
+                        }
                     }
                 }
+                catch (Exception ex2) { Debug.WriteLine(ex2); }
 
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
+                Debug.WriteLine(ex);
                 return returnValue;
             }
         }
@@ -314,10 +349,8 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전 동작 정지
                 var isOk = _clients[dischargerName].SendCommand_StopDischarge(channel);
 
-                // 방전 동작 정지 Trace Log 저장
                 LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk == EDischargerClientError.Ok)
@@ -331,13 +364,12 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_STOP_DISCHARGE, ex);
+                Debug.WriteLine(ex);
+                try
+                {
+                    new LogTrace(ELogTrace.SYSTEM_ERROR_STOP_DISCHARGE, ex);
+                }
+                catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
@@ -350,10 +382,8 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전 동작 일시 정지
                 var isOk = _clients[dischargerName].SendCommand_PauseDischarge(channel);
 
-                // 방전 동작 일시 정지 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk == EDischargerClientError.Ok)
@@ -367,13 +397,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_PAUSE_DISCHARGE, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_PAUSE_DISCHARGE, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
@@ -390,15 +415,11 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
+                Debug.WriteLine(ex);
             }
         }
 
-        public void SetSafetyCondition(string getDischargerName, 
+        public void SetSafetyCondition(string getDischargerName,
             double voltageMax, double voltageMin, double currentMax, double currentMin, double tempMax, double tempMin)
         {
             try
@@ -408,10 +429,8 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전 안전 조건 설정
                 bool isOk = _clients[dischargerName].SendCommand_SetSafetyCondition(channel, voltageMax, voltageMin, currentMax, currentMin, tempMax, tempMin);
 
-                // 방전기 안전 조건 설정 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk)
@@ -425,13 +444,8 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_SET_SAFETYCONDITION, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_SET_SAFETYCONDITION, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
@@ -444,10 +458,8 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전기 상태 설정
                 bool isOk = _clients[dischargerName].ChangeDischargerState(eDischargerState, channel);
 
-                // 방전기 상태 설정 Trace Log 저장
                 var dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
                 dischargerComm.EDischargerState = eDischargerState;
 
@@ -462,79 +474,81 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_SET_STATE, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_SET_STATE, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
         public bool IsDischarging()
         {
-            foreach (var state in Model.ToList().ConvertAll(x => x.DischargerState))
+            try
             {
-                if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+                foreach (var state in Model.ToList().ConvertAll(x => x.DischargerState))
                 {
-                    return true;
+                    if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-
-            return false;
+            catch (Exception ex) { Debug.WriteLine(ex); return false; }
         }
 
         private DischargerInfo InitializeDischargerInfos(string name)
         {
-            List<TableDischargerInfo> infoTable = _dischargerInfos;
-            TableDischargerInfo info = infoTable.Find(x => x.DischargerName == name);
-
-            List<TableDischargerModel> modelTable = SqliteDischargerModel.GetData();
-            modelTable = (from one in modelTable where one.Model == info.Model select one).ToList();
-            modelTable = (from one in modelTable where one.Type == info.Type select one).ToList();
-            modelTable = (from one in modelTable where one.Channel == info.DischargerChannel select one).ToList();
-            modelTable = (from one in modelTable where one.SpecVoltage == info.SpecVoltage select one).ToList();
-            modelTable = (from one in modelTable where one.SpecCurrent == info.SpecCurrent select one).ToList();
-            TableDischargerModel model = modelTable.First();
-
-            DischargerInfo dischargerInfo = new DischargerInfo();
-            dischargerInfo.Model = model.Model;
-            dischargerInfo.Name = name;
-            dischargerInfo.Channel = info.DischargerChannel;
-            dischargerInfo.IsTempModule = info.IsTempModule;
-            dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
-            dischargerInfo.EthernetPort = 10004;
-            dischargerInfo.TimeOutMs = 2000;
-            dischargerInfo.SpecVoltage = info.SpecVoltage;
-            dischargerInfo.SpecCurrent = info.SpecCurrent;
-            dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;
-            dischargerInfo.SafetyVoltageMin = model.SafetyVoltMin;
-            dischargerInfo.SafetyCurrentMax = model.SafetyCurrentMax;
-            dischargerInfo.SafetyCurrentMin = model.SafetyCurrentMin;
-            dischargerInfo.SafetyTempMax = model.SafetyTempMax;
-            dischargerInfo.SafetyTempMin = model.SafetyTempMin;
-
-            // Server DB 사용 (통합 관제 연동)
-            if (!ViewModelLogin.Instance.IsLocalDb())
+            try
             {
-                // MC_CD 받아오기
-                string machineCode = GetIniData<string>(EIniData.MachineCode);
-                MachineCode = machineCode;
+                List<TableDischargerInfo> infoTable = _dischargerInfos;
+                TableDischargerInfo info = infoTable.Find(x => x.DischargerName == name);
 
-                // Insert Init Data 
-                for (int i = 0; i < info.DischargerChannel; i++)
+                List<TableDischargerModel> modelTable = SqliteDischargerModel.GetData();
+                modelTable = (from one in modelTable where one.Model == info.Model select one).ToList();
+                modelTable = (from one in modelTable where one.Type == info.Type select one).ToList();
+                modelTable = (from one in modelTable where one.Channel == info.DischargerChannel select one).ToList();
+                modelTable = (from one in modelTable where one.SpecVoltage == info.SpecVoltage select one).ToList();
+                modelTable = (from one in modelTable where one.SpecCurrent == info.SpecCurrent select one).ToList();
+                TableDischargerModel model = modelTable.First();
+
+                DischargerInfo dischargerInfo = new DischargerInfo();
+                dischargerInfo.Model = model.Model;
+                dischargerInfo.Name = name;
+                dischargerInfo.Channel = info.DischargerChannel;
+                dischargerInfo.IsTempModule = info.IsTempModule;
+                dischargerInfo.IpAddress = IPAddress.Parse(info.IpAddress);
+                dischargerInfo.EthernetPort = 10004;
+                dischargerInfo.TimeOutMs = 2000;
+                dischargerInfo.SpecVoltage = info.SpecVoltage;
+                dischargerInfo.SpecCurrent = info.SpecCurrent;
+                dischargerInfo.SafetyVoltageMax = model.SafetyVoltMax;
+                dischargerInfo.SafetyVoltageMin = model.SafetyVoltMin;
+                dischargerInfo.SafetyCurrentMax = model.SafetyCurrentMax;
+                dischargerInfo.SafetyCurrentMin = model.SafetyCurrentMin;
+                dischargerInfo.SafetyTempMax = model.SafetyTempMax;
+                dischargerInfo.SafetyTempMin = model.SafetyTempMin;
+
+                if (!ViewModelLogin.Instance.IsLocalDb())
                 {
-                    var insertData = new TABLE_SYS_STS_SDC();
-                    insertData.MC_CD = machineCode;
-                    insertData.MC_CH = i + 1;
-                    insertData.DischargerName = $"{name}_{i + 1}";
+                    try
+                    {
+                        string machineCode = GetIniData<string>(EIniData.MachineCode);
+                        MachineCode = machineCode;
 
-                    SqlClientStatus.InsertData_Init(insertData);
+                        for (int i = 0; i < info.DischargerChannel; i++)
+                        {
+                            var insertData = new TABLE_SYS_STS_SDC();
+                            insertData.MC_CD = machineCode;
+                            insertData.MC_CH = i + 1;
+                            insertData.DischargerName = $"{name}_{i + 1}";
+                            SqlClientStatus.InsertData_Init(insertData);
+                        }
+                    }
+                    catch (Exception exDb) { Debug.WriteLine(exDb); }
                 }
-            }
 
-            return dischargerInfo;
+                return dischargerInfo;
+            }
+            catch (Exception ex) { Debug.WriteLine(ex); return new DischargerInfo(); }
         }
 
         private void InitializeDischargerClients(DischargerInfo info)
@@ -581,39 +595,35 @@ namespace DischargerV2.MVVM.ViewModels
                 Thread thread = new Thread(
                     delegate ()
                     {
-                        // 방전기 연결
-                        bool isOk = _clients[info.Name].Start(parameters);
+                        try
+                        {
+                            bool isOk = _clients[info.Name].Start(parameters);
+                            LogTrace.DischargerData dischargerComm = new LogTrace.DischargerData()
+                            {
+                                Name = info.Name,
+                                EDischargerModel = info.Model,
+                                Channel = info.Channel,
+                                IpAddress = info.IpAddress,
+                            };
 
-                        // 방전기 연결 Trace Log 저장
-                        LogTrace.DischargerData dischargerComm = new LogTrace.DischargerData()
-                        {
-                            Name = info.Name,
-                            EDischargerModel = info.Model,
-                            Channel = info.Channel,
-                            IpAddress = info.IpAddress,
-                        };
-
-                        if (isOk)
-                        {
-                            new LogTrace(ELogTrace.SYSTEM_OK_CONNECT_DISCHARGER, dischargerComm);
+                            if (isOk)
+                            {
+                                new LogTrace(ELogTrace.SYSTEM_OK_CONNECT_DISCHARGER, dischargerComm);
+                            }
+                            else
+                            {
+                                new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, dischargerComm);
+                            }
                         }
-                        else
-                        {
-                            new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, dischargerComm);
-                        }
+                        catch (Exception exThread) { Debug.WriteLine(exThread); }
                     });
                 thread.IsBackground = true;
                 thread.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_CONNECT_DISCHARGER, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
@@ -641,106 +651,106 @@ namespace DischargerV2.MVVM.ViewModels
                     EDischargerState state = EDischargerState.None;
                     TimeSpan diff = new TimeSpan(0);
 
-                    Application.Current.Dispatcher.Invoke(() =>
+                    try
                     {
-                        // 방전기로 수신받은 데이터 가져오기
-                        Model[i].DischargerData = _clients[dischargerName].GetDatas(dischargerChannel);
-                        Model[i].DischargerState = _clients[dischargerName].GetState(dischargerChannel);
-
-                        // 온도 모듈이 있을 경우 온도 모듈 데이터 사용
-                        var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
-                        if (dischargerInfo != null && dischargerInfo.IsTempModule)
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
-                            int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
-                            if (index >= 0)
+                            try
                             {
-                                var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
-                                var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+                                Model[i].DischargerData = _clients[dischargerName].GetDatas(dischargerChannel);
+                                Model[i].DischargerState = _clients[dischargerName].GetState(dischargerChannel);
 
-                                Model[i].DischargerData.ReceiveDischargeTemp = temp;
-                                _clients[dischargerName].SetReceiveTemp(temp, dischargerChannel);
-                            }
-                        }
-                        else
-                        {
-                            // Crevis 사용 조건: TableDischargerInfo.IsTempModule == false
-                            // TempModuleChannel -> Crevis Device index, TempChannel -> 시작 온도 채널 인덱스 (0 기반)
-                            var table = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
-                            if (table != null && !table.IsTempModule)
-                            {
-                                int deviceIndex = 0;
-                                int baseTempChannel = 0; // 시작 채널
-                                int channelCount = table.DischargerChannel; // 전체 채널 개수
-                                try { deviceIndex = int.Parse(table.TempModuleChannel ?? "0"); } catch { deviceIndex = 0; }
-                                try { baseTempChannel = int.Parse(table.TempChannel ?? "0"); } catch { baseTempChannel = 0; }
-
-                                // 모델 인스턴스 채널은 1 기반 -> 0 기반 보정
-                                int zeroBasedChannelOrder = Model[i].DischargerChannel - 1;
-                                // 다채널일 경우 TempChannel이 채널 개수에 따라 1씩 증가
-                                int effectiveTempChannel = baseTempChannel + zeroBasedChannelOrder;
-
-                                double tempVal = ViewModelMain.Instance.GetCrevisTemperature(deviceIndex, effectiveTempChannel);
-                                if (!double.IsNaN(tempVal))
+                                var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
+                                if (dischargerInfo != null && dischargerInfo.IsTempModule)
                                 {
-                                    Model[i].DischargerData.ReceiveDischargeTemp = tempVal;
-                                    _clients[dischargerName].SetReceiveTemp(tempVal, dischargerChannel);
+                                    int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
+                                    if (index >= 0)
+                                    {
+                                        var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
+                                        var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+
+                                        Model[i].DischargerData.ReceiveDischargeTemp = temp;
+                                        _clients[dischargerName].SetReceiveTemp(temp, dischargerChannel);
+                                    }
                                 }
+                                else
+                                {
+                                    var table = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
+                                    if (table != null && !table.IsTempModule)
+                                    {
+                                        int deviceIndex = 0;
+                                        int baseTempChannel = 0;
+                                        int channelCount = table.DischargerChannel;
+                                        try { deviceIndex = int.Parse(table.TempModuleChannel ?? "0"); } catch { deviceIndex = 0; }
+                                        try { baseTempChannel = int.Parse(table.TempChannel ?? "0"); } catch { baseTempChannel = 0; }
+
+                                        int zeroBasedChannelOrder = Model[i].DischargerChannel - 1;
+                                        int effectiveTempChannel = baseTempChannel + zeroBasedChannelOrder;
+
+                                        double tempVal = ViewModelMain.Instance.GetCrevisTemperature(deviceIndex, effectiveTempChannel);
+                                        if (!double.IsNaN(tempVal))
+                                        {
+                                            Model[i].DischargerData.ReceiveDischargeTemp = tempVal;
+                                            _clients[dischargerName].SetReceiveTemp(tempVal, dischargerChannel);
+                                        }
+                                    }
+                                }
+
+                                state = Model[i].DischargerState;
+                                SetStateColor(i);
+                                SetProgressTime(i, out diff);
+                                SetVisibility(i);
                             }
-                        }
+                            catch (Exception exInner) { Debug.WriteLine(exInner); }
+                        });
+                    }
+                    catch (Exception exDisp) { Debug.WriteLine(exDisp); }
 
-                        state = Model[i].DischargerState;
-
-                        // 방전 상태별 색상 설정
-                        SetStateColor(i);
-
-                        // 방전 동작 시, 경과 시간 설정
-                        SetProgressTime(i, out diff);
-
-                        // Reconnect, ErrorAlarm, ShortAvailable 표시 설정
-                        SetVisibility(i);
-                    });
-
-                    // Server DB 사용 (통합 관제 연동)
-                    if (!ViewModelLogin.Instance.IsLocalDb())
+                    try
                     {
-                        var updateData = new TABLE_SYS_STS_SDC();
-                        updateData.MC_CD = MachineCode;
-                        updateData.MC_CH = Model[i].DischargerChannel;
-                        updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
-
-                        updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F3");
-                        updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F3");
-                        updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F3");
-
-                        updateData.DischargerState = state.ToString();
-                        updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
-
-                        SqlClientStatus.UpdateData_Monitoring(updateData);
-                        SqlClientStatus.UpdateData_StateNTime(updateData);
-
-                        if (state == EDischargerState.SafetyOutOfRange ||
-                            state == EDischargerState.ReturnCodeError ||
-                            state == EDischargerState.ChStatusError ||
-                            state == EDischargerState.DeviceError)
+                        if (!ViewModelLogin.Instance.IsLocalDb())
                         {
-                            TableDischargerErrorCode tableDischargerErrorCode = SqliteDischargerErrorCode.GetData().Find(x => x.Code == Model[i].DischargerData.ErrorCode);
+                            var updateData = new TABLE_SYS_STS_SDC();
+                            updateData.MC_CD = MachineCode;
+                            updateData.MC_CH = Model[i].DischargerChannel;
+                            updateData.USER_ID = ViewModelLogin.Instance.Model.UserId;
 
-                            var alarmData = new TABLE_QLT_HISTORY_ALARM();
-                            alarmData.MC_CD = MachineCode;
-                            alarmData.CH_NO = Model[i].DischargerChannel;
-                            alarmData.Alarm_Time = DateTime.Now;
-                            alarmData.Alarm_Code = (int)Model[i].DischargerData.ErrorCode;
-                            alarmData.Alarm_Desc = (tableDischargerErrorCode != null) ? tableDischargerErrorCode.Description : string.Empty;
+                            updateData.DischargerVoltage = Model[i].DischargerData.ReceiveBatteryVoltage.ToString("F3");
+                            updateData.DischargerCurrent = Model[i].DischargerData.ReceiveDischargeCurrent.ToString("F3");
+                            updateData.DischargerTemp = Model[i].DischargerData.ReceiveDischargeTemp.ToString("F3");
 
-                            SqlClientStatus.UpdateData_Alarm(alarmData);
+                            updateData.DischargerState = state.ToString();
+                            updateData.ProgressTime = $"{diff.Hours.ToString("D2")}:{diff.Minutes.ToString("D2")}:{diff.Seconds.ToString("D2")}";
+
+                            SqlClientStatus.UpdateData_Monitoring(updateData);
+                            SqlClientStatus.UpdateData_StateNTime(updateData);
+
+                            if (state == EDischargerState.SafetyOutOfRange ||
+                                state == EDischargerState.ReturnCodeError ||
+                                state == EDischargerState.ChStatusError ||
+                                state == EDischargerState.DeviceError)
+                            {
+                                try
+                                {
+                                    TableDischargerErrorCode tableDischargerErrorCode = SqliteDischargerErrorCode.GetData().Find(x => x.Code == Model[i].DischargerData.ErrorCode);
+
+                                    var alarmData = new TABLE_QLT_HISTORY_ALARM();
+                                    alarmData.MC_CD = MachineCode;
+                                    alarmData.CH_NO = Model[i].DischargerChannel;
+                                    alarmData.Alarm_Time = DateTime.Now;
+                                    alarmData.Alarm_Code = (int)Model[i].DischargerData.ErrorCode;
+                                    alarmData.Alarm_Desc = (tableDischargerErrorCode != null) ? tableDischargerErrorCode.Description : string.Empty;
+
+                                    SqlClientStatus.UpdateData_Alarm(alarmData);
+                                }
+                                catch (Exception exAlarm) { Debug.WriteLine(exAlarm); }
+                            }
                         }
                     }
+                    catch (Exception exServer) { Debug.WriteLine(exServer); }
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void SelectDischarger(int selectedIndex, bool IsSetDischargerName = true)
@@ -760,83 +770,86 @@ namespace DischargerV2.MVVM.ViewModels
                     ViewModelSetMode.Instance.SetDischargerName(selectedDischargerName);
                 }
             }
-            catch { }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         public void OpenPopupError(string dischargerName)
         {
-            int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
-            uint errorCode = Model[index].DischargerData.ErrorCode;
-
-            List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
-            TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
-
-            string title = string.Empty;
-            string comment = string.Empty;
-
-            string _channel = new DynamicString().GetDynamicString("Channel");
-            string _unknownError = new DynamicString().GetDynamicString("PopupError_Comment_UnknownError");
-            string _description = new DynamicString().GetDynamicString("PopupError_Comment_Description");
-            string _errorCode = new DynamicString().GetDynamicString("PopupError_Comment_ErrorCode");
-            string _cause = new DynamicString().GetDynamicString("PopupError_Comment_Cause");
-            string _solution = new DynamicString().GetDynamicString("PopupError_Comment_Solution");
-            string _unknown = new DynamicString().GetDynamicString("PopupError_Comment_Unknown");
-
-            if (tableDischargerErrorCode == null)
+            try
             {
-                title = new DynamicString().GetDynamicString("PopupError_Title_Unknown");
-                comment = 
-                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
-                    $"{_unknownError}\n" +
-                    $"({_errorCode}: 0x{errorCode.ToString("X")})\n\n" +
-                    $"{_cause}: \n" +
-                    $"{_unknown}\n\n" +
-                    $"{_solution}: \n" +
-                    $"{_unknown}";
+                int index = Model.ToList().FindIndex(x => x.DischargerName == dischargerName);
+                uint errorCode = Model[index].DischargerData.ErrorCode;
+
+                List<TableDischargerErrorCode> tableDischargerErrorCodeList = SqliteDischargerErrorCode.GetData();
+                TableDischargerErrorCode tableDischargerErrorCode = tableDischargerErrorCodeList.Find(x => x.Code == errorCode);
+
+                string title = string.Empty;
+                string comment = string.Empty;
+
+                string _channel = new DynamicString().GetDynamicString("Channel");
+                string _unknownError = new DynamicString().GetDynamicString("PopupError_Comment_UnknownError");
+                string _description = new DynamicString().GetDynamicString("PopupError_Comment_Description");
+                string _errorCode = new DynamicString().GetDynamicString("PopupError_Comment_ErrorCode");
+                string _cause = new DynamicString().GetDynamicString("PopupError_Comment_Cause");
+                string _solution = new DynamicString().GetDynamicString("PopupError_Comment_Solution");
+                string _unknown = new DynamicString().GetDynamicString("PopupError_Comment_Unknown");
+
+                if (tableDischargerErrorCode == null)
+                {
+                    title = new DynamicString().GetDynamicString("PopupError_Title_Unknown");
+                    comment =
+                        $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                        $"{_unknownError}\n" +
+                        $"({_errorCode}: 0x{errorCode.ToString("X")})\n\n" +
+                        $"{_cause}: \n" +
+                        $"{_unknown}\n\n" +
+                        $"{_solution}: \n" +
+                        $"{_unknown}";
+                }
+                else if (tableDischargerErrorCode.Code == 0xA00000FF)
+                {
+                    title = tableDischargerErrorCode.Title;
+                    comment =
+                        $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                        $"{tableDischargerErrorCode.Description} {_description}\n" +
+                        $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")} (0x{Model[index].DischargerData.DiModuleInfo.ToString("X2")}))\n\n" +
+                        $"{_cause}: \n" +
+                        $"{tableDischargerErrorCode.Cause}\n\n" +
+                        $"{_solution}: \n" +
+                        $"{tableDischargerErrorCode.Action}";
+                }
+                else
+                {
+                    title = tableDischargerErrorCode.Title;
+                    comment =
+                        $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
+                        $"{tableDischargerErrorCode.Description} {_description}\n" +
+                        $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")})\n\n" +
+                        $"{_cause}: \n" +
+                        $"{tableDischargerErrorCode.Cause}\n\n" +
+                        $"{_solution}: \n" +
+                        $"{tableDischargerErrorCode.Action}";
+                }
+
+                ViewModelPopup_Error viewModelPopup_Error = new ViewModelPopup_Error()
+                {
+                    Title = title,
+                    Comment = comment,
+                    Parameter = dischargerName,
+                    CallBackDelegate = ResetError,
+                };
+
+                try
+                {
+                    ViewModelMain viewModelMain = ViewModelMain.Instance;
+                    viewModelMain.SetViewModelPopup_Error(viewModelPopup_Error);
+                    viewModelMain.OpenPopup(ModelMain.EPopup.Error);
+                }
+                catch (Exception exPopup) { Debug.WriteLine(exPopup); }
             }
-            // 접점부 에러 발생 시, DIO 상태 값 표시 추가
-            else if (tableDischargerErrorCode.Code == 0xA00000FF)
-            {
-                title = tableDischargerErrorCode.Title;
-                comment = 
-                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
-                    $"{tableDischargerErrorCode.Description} {_description}\n" +
-                    $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")} (0x{Model[index].DischargerData.DiModuleInfo.ToString("X2")}))\n\n" +
-                    $"{_cause}: \n" +
-                    $"{tableDischargerErrorCode.Cause}\n\n" +
-                    $"{_solution}: \n" +
-                    $"{tableDischargerErrorCode.Action}";
-            }
-            else
-            {
-                title = tableDischargerErrorCode.Title;
-                comment =
-                    $"{dischargerName} ({_channel}: {Model[index].DischargerInfo.Channel})\n\n" +
-                    $"{tableDischargerErrorCode.Description} {_description}\n" +
-                    $"({_errorCode}: 0x{tableDischargerErrorCode.Code.ToString("X")})\n\n" +
-                    $"{_cause}: \n" +
-                    $"{tableDischargerErrorCode.Cause}\n\n" +
-                    $"{_solution}: \n" +
-                    $"{tableDischargerErrorCode.Action}";
-            }
-
-            ViewModelPopup_Error viewModelPopup_Error = new ViewModelPopup_Error()
-            {
-                Title = title,
-                Comment = comment,
-                Parameter = dischargerName,
-                CallBackDelegate = ResetError,
-            };
-
-            ViewModelMain viewModelMain = ViewModelMain.Instance;
-            viewModelMain.SetViewModelPopup_Error(viewModelPopup_Error);
-            viewModelMain.OpenPopup(ModelMain.EPopup.Error);
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
-        /// <summary>
-        /// 방전기 에러 해제 
-        /// </summary>
-        /// <param name="getDischargerName"></param>
         public void ResetError(string getDischargerName)
         {
             try
@@ -846,10 +859,8 @@ namespace DischargerV2.MVVM.ViewModels
                 short channel = (discharger.Length > 1) ?
                     Convert.ToInt16(discharger[1]) : (short)1;
 
-                // 방전기 에러 해제
                 bool isOk = _clients[dischargerName].SendCommand_ClearAlarm(channel);
 
-                // 방전기 에러 해제 Trace Log 저장
                 DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
 
                 if (isOk)
@@ -863,26 +874,20 @@ namespace DischargerV2.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_CLEAR_ALARM, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_CLEAR_ALARM, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
-        /// <summary>
-        /// 방전기 재 연결
-        /// </summary>
-        /// <param name="getDischargerName"></param>
         public void ReconnectDischarger(string getDischargerName)
         {
             try
             {
                 int index = Model.ToList().FindIndex(x => x.DischargerName == getDischargerName);
-                Model[index].ReconnectVisibility = Visibility.Collapsed;
+                if (index >= 0)
+                {
+                    try { Model[index].ReconnectVisibility = Visibility.Collapsed; } catch (Exception exVis) { Debug.WriteLine(exVis); }
+                }
 
                 string[] discharger = getDischargerName.Split('_');
                 string dischargerName = discharger[0];
@@ -891,167 +896,182 @@ namespace DischargerV2.MVVM.ViewModels
 
                 Thread thread = new Thread(() =>
                 {
-                    // 방전기 재 연결
-                    bool isOk = _clients[dischargerName].Restart();
-
-                    // 방전기 재 연결 Trace Log 저장
-                    LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
-
-                    if (isOk)
+                    try
                     {
-                        new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_DISCHARGER, dischargerComm);
+                        bool isOk = _clients[dischargerName].Restart();
+                        LogTrace.DischargerData dischargerComm = _clients[dischargerName].GetLogSystemDischargerData(channel);
+
+                        if (isOk)
+                        {
+                            new LogTrace(ELogTrace.SYSTEM_OK_RECONNECT_DISCHARGER, dischargerComm);
+                        }
+                        else
+                        {
+                            new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, dischargerComm);
+                        }
                     }
-                    else
-                    {
-                        new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, dischargerComm);
-                    }
+                    catch (Exception exThread) { Debug.WriteLine(exThread); }
                 });
                 thread.IsBackground = true;
                 thread.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error 발생\n\n" +
-                    $"ClassName: {this.GetType().Name}\n" +
-                    $"Function: {System.Reflection.MethodBase.GetCurrentMethod().Name}\n" +
-                    $"Exception: {ex.Message}");
-
-                new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, ex);
+                Debug.WriteLine(ex);
+                try { new LogTrace(ELogTrace.SYSTEM_ERROR_RECONNECT_DISCHARGER, ex); } catch (Exception ex2) { Debug.WriteLine(ex2); }
             }
         }
 
         private object _channelStateLock = new object();
         private void UpdateChannelState(ModelDischarger modelDischarger)
         {
-            lock (_channelStateLock)
+            try
             {
-                ConnectedChannelCount = 0;
-                FaultChannelCount = 0;
-
-                foreach (var model in Model)
+                lock (_channelStateLock)
                 {
-                    AllChannelCount = Model.Count;
-
-                    if (model.DischargerState == EDischargerState.Ready ||
-                        model.DischargerState == EDischargerState.Discharging ||
-                        model.DischargerState == EDischargerState.Pause)
+                    try
                     {
-                        if (model == modelDischarger)
+                        ConnectedChannelCount = 0;
+                        FaultChannelCount = 0;
+
+                        foreach (var model in Model)
                         {
-                            ViewModelSetMode_Preset.Instance.GetCurrentSoc(model);
-                        }
+                            try { AllChannelCount = Model.Count; } catch (Exception exCount) { Debug.WriteLine(exCount); }
 
-                        ConnectedChannelCount += 1;
+                            if (model.DischargerState == EDischargerState.Ready ||
+                                model.DischargerState == EDischargerState.Discharging ||
+                                model.DischargerState == EDischargerState.Pause)
+                            {
+                                if (model == modelDischarger)
+                                {
+                                    try { ViewModelSetMode_Preset.Instance.GetCurrentSoc(model); } catch (Exception exSoc) { Debug.WriteLine(exSoc); }
+                                }
+
+                                ConnectedChannelCount += 1;
+                            }
+                            else
+                            {
+                                FaultChannelCount += 1;
+                            }
+                        }
                     }
-                    else
-                    {
-                        FaultChannelCount += 1;
-                    }
+                    catch (Exception exIter) { Debug.WriteLine(exIter); }
                 }
             }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         private void SetStateColor(int index)
         {
-            var state = Model[index].DischargerState;
+            try
+            {
+                var state = Model[index].DischargerState;
 
-            if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
-            {
-                Model[index].StateColor = ResColor.icon_disabled;
+                if (state == EDischargerState.None || state == EDischargerState.Disconnected || state == EDischargerState.Connecting)
+                {
+                    Model[index].StateColor = ResColor.icon_disabled;
+                }
+                else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
+                {
+                    Model[index].StateColor = ResColor.icon_success;
+                }
+                else if (state == EDischargerState.Pause)
+                {
+                    Model[index].StateColor = ResColor.icon_primary;
+                }
+                else
+                {
+                    Model[index].StateColor = ResColor.icon_error;
+                }
             }
-            else if (state == EDischargerState.Ready || state == EDischargerState.Discharging)
-            {
-                Model[index].StateColor = ResColor.icon_success;
-            }
-            else if (state == EDischargerState.Pause)
-            {
-                Model[index].StateColor = ResColor.icon_primary;
-            }
-            else
-            {
-                Model[index].StateColor = ResColor.icon_error;
-            }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         private void SetProgressTime(int index, out TimeSpan diff)
         {
             diff = new TimeSpan(0);
-
-            var state = Model[index].DischargerState;
-            var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
-            
-            if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+            try
             {
-                diff = DateTime.Now - dischargingStartTime;
+                var state = Model[index].DischargerState;
+                var dischargingStartTime = Model[index].DischargerData.DischargingStartTime;
 
-                var hours = diff.Hours.ToString("D2");
-                var mins = diff.Minutes.ToString("D2");
-                var seconds = diff.Seconds.ToString("D2");
+                if (state == EDischargerState.Discharging || state == EDischargerState.Pause)
+                {
+                    diff = DateTime.Now - dischargingStartTime;
 
-                Model[index].ProgressTime = $"{hours}:{mins}:{seconds}";
+                    var hours = diff.Hours.ToString("D2");
+                    var mins = diff.Minutes.ToString("D2");
+                    var seconds = diff.Seconds.ToString("D2");
+
+                    Model[index].ProgressTime = $"{hours}:{mins}:{seconds}";
+                }
             }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         private void SetVisibility(int index)
         {
-            var state = Model[index].DischargerState;
+            try
+            {
+                var state = Model[index].DischargerState;
 
-            // ShortAvailable 표시 설정
-            if (state != EDischargerState.Discharging)
-            {
-                Model[index].ShortAvailableVisibility = Visibility.Hidden;
-            }
-            else
-            {
-                // 만약 전압이 1V 이하이고, 전류가 10A 이하이면 short available 아이콘 표시
-                if (Model[index].DischargerData.ReceiveBatteryVoltage <= 1.0 &&
-                    Model[index].DischargerData.ReceiveDischargeCurrent <= 10.0)
-                {
-                    Model[index].ShortAvailableVisibility = Visibility.Visible;
-                }
-                else
+                // ShortAvailable 표시 설정
+                if (state != EDischargerState.Discharging)
                 {
                     Model[index].ShortAvailableVisibility = Visibility.Hidden;
                 }
-            }
-
-            // Reconnect, ErrorAlarm 표시 설정
-            if (state == EDischargerState.Disconnected)
-            {
-                Model[index].ReconnectVisibility = Visibility.Visible;
-                Model[index].ErrorVisibility = Visibility.Collapsed;
-            }
-            else if (state == EDischargerState.SafetyOutOfRange ||
-                     state == EDischargerState.ReturnCodeError ||
-                     state == EDischargerState.ChStatusError ||
-                     state == EDischargerState.DeviceError)
-            {
-                Model[index].ReconnectVisibility = Visibility.Collapsed;
-                Model[index].ErrorVisibility = Visibility.Visible;
-            }
-            else
-            {
-                Model[index].ReconnectVisibility = Visibility.Collapsed;
-                Model[index].ErrorVisibility = Visibility.Collapsed;
-            }
-
-            // 온도 모듈 Reconnect 표시 설정
-            if (!ViewModelTempModule.Instance.IsTempModuleUsed(Model[index].DischargerName))
-            {
-                Model[index].TempReconnectVisibility = Visibility.Collapsed;
-            }
-            else
-            {
-                if (!ViewModelTempModule.Instance.IsConnected(Model[index].DischargerName))
+                else
                 {
-                    Model[index].TempReconnectVisibility = Visibility.Visible;
+                    // 만약 전압이 1V 이하이고, 전류가 10A 이하이면 short available 아이콘 표시
+                    if (Model[index].DischargerData.ReceiveBatteryVoltage <= 1.0 &&
+                        Model[index].DischargerData.ReceiveDischargeCurrent <= 10.0)
+                    {
+                        Model[index].ShortAvailableVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Model[index].ShortAvailableVisibility = Visibility.Hidden;
+                    }
+                }
+
+                // Reconnect, ErrorAlarm 표시 설정
+                if (state == EDischargerState.Disconnected)
+                {
+                    Model[index].ReconnectVisibility = Visibility.Visible;
+                    Model[index].ErrorVisibility = Visibility.Collapsed;
+                }
+                else if (state == EDischargerState.SafetyOutOfRange ||
+                         state == EDischargerState.ReturnCodeError ||
+                         state == EDischargerState.ChStatusError ||
+                         state == EDischargerState.DeviceError)
+                {
+                    Model[index].ReconnectVisibility = Visibility.Collapsed;
+                    Model[index].ErrorVisibility = Visibility.Visible;
                 }
                 else
                 {
+                    Model[index].ReconnectVisibility = Visibility.Collapsed;
+                    Model[index].ErrorVisibility = Visibility.Collapsed;
+                }
+
+                // 온도 모듈 Reconnect 표시 설정
+                if (!ViewModelTempModule.Instance.IsTempModuleUsed(Model[index].DischargerName))
+                {
                     Model[index].TempReconnectVisibility = Visibility.Collapsed;
                 }
+                else
+                {
+                    if (!ViewModelTempModule.Instance.IsConnected(Model[index].DischargerName))
+                    {
+                        Model[index].TempReconnectVisibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Model[index].TempReconnectVisibility = Visibility.Collapsed;
+                    }
+                }
             }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
     }
 }
