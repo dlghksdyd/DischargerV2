@@ -1,0 +1,280 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Mex="clr-namespace:MExpress.Mex">
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_50">#fffbe6e0</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_100">#fff9ded5</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_200">#fff3bdab</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_300">#ffec9c82</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_400">#ffe67b58</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_500">#ffe05a2e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_600">#ffb34825</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_700">#ff86361c</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_800">#ff5a2412</Color>
+    <Color x:Key="Mex/ResColorBrand/color_bright_orange_900">#ff431b0e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_50">#ffdde9f3</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_100">#ffd2e2ef</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_200">#ffa5c4de</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_300">#ff78a7ce</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_400">#ff4b89bd</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_500">#ff1e6cad</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_600">#ff18568a</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_700">#ff124168</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_800">#ff0c2b45</Color>
+    <Color x:Key="Mex/ResColorBrand/color_navy_blue_900">#ff092034</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_50">#ffdbf6db</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_100">#ffcff3cf</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_200">#ff9ee79e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_300">#ff6edc6e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_400">#ff3dd03d</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_500">#ff0dc40d</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_600">#ff0a9d0a</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_700">#ff087608</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_800">#ff054e05</Color>
+    <Color x:Key="Mex/ResColorBrand/color_green_900">#ff043b04</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_50">#ffdceefc</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_100">#ffd0e8fb</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_200">#ffa1d2f6</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_300">#ff73bbf2</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_400">#ff44a5ed</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_500">#ff158ee9</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_600">#ff1172ba</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_700">#ff0d558c</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_800">#ff08395d</Color>
+    <Color x:Key="Mex/ResColorBrand/color_blue_900">#ff062b46</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_50">#fffdf7da</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_100">#fffcf4ce</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_200">#fff9e89d</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_300">#fff6dd6b</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_400">#fff3d13a</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_500">#fff0c609</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_600">#ffc09e07</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_700">#ff907705</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_800">#ff604f04</Color>
+    <Color x:Key="Mex/ResColorBrand/color_yellow_900">#ff483b03</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_50">#fffadddd</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_100">#fff8d1d1</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_200">#fff2a3a3</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_300">#ffeb7675</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_400">#ffe54847</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_500">#ffde1a19</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_600">#ffb21514</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_700">#ff85100f</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_800">#ff590a0a</Color>
+    <Color x:Key="Mex/ResColorBrand/color_red_900">#ff430807</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_50">#fffafafa</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_100">#fff5f5f5</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_200">#ffeeeeee</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_300">#ffe0e0e0</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_400">#ffbdbdbd</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_500">#ff9e9e9e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_600">#ff757575</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_700">#ff616161</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_800">#ff424242</Color>
+    <Color x:Key="Mex/ResColorBrand/color_light_grey_900">#ff212121</Color>
+    <Color x:Key="Mex/ResColorBrand/color_black">#ff000000</Color>
+    <Color x:Key="Mex/ResColorBrand/color_white">#ffffffff</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_50">#ff111111</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_100">#ff272727</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_200">#ff3e3e3e</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_300">#ff555555</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_400">#ff6b6b6b</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_500">#ff828282</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_600">#ffa4a4a4</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_700">#ffc6c6c6</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_800">#ffdddddd</Color>
+    <Color x:Key="Mex/ResColorBrand/color_dark_grey_900">#fff4f4f4</Color>
+    <Color x:Key="Mex/ResColorBrand/color_transparent">#00000000</Color>
+
+    <StaticResource x:Key="Mex/ResColorAlias/primary_50" ResourceKey="Mex/ResColorBrand/color_bright_orange_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_100" ResourceKey="Mex/ResColorBrand/color_bright_orange_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_200" ResourceKey="Mex/ResColorBrand/color_bright_orange_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_300" ResourceKey="Mex/ResColorBrand/color_bright_orange_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_400" ResourceKey="Mex/ResColorBrand/color_bright_orange_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_default" ResourceKey="Mex/ResColorBrand/color_bright_orange_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_600" ResourceKey="Mex/ResColorBrand/color_bright_orange_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_700" ResourceKey="Mex/ResColorBrand/color_bright_orange_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_800" ResourceKey="Mex/ResColorBrand/color_bright_orange_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/primary_900" ResourceKey="Mex/ResColorBrand/color_bright_orange_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_50" ResourceKey="Mex/ResColorBrand/color_navy_blue_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_100" ResourceKey="Mex/ResColorBrand/color_navy_blue_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_200" ResourceKey="Mex/ResColorBrand/color_navy_blue_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_300" ResourceKey="Mex/ResColorBrand/color_navy_blue_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_400" ResourceKey="Mex/ResColorBrand/color_navy_blue_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_default" ResourceKey="Mex/ResColorBrand/color_navy_blue_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_600" ResourceKey="Mex/ResColorBrand/color_navy_blue_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_700" ResourceKey="Mex/ResColorBrand/color_navy_blue_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_800" ResourceKey="Mex/ResColorBrand/color_navy_blue_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/secondary_900" ResourceKey="Mex/ResColorBrand/color_navy_blue_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_50" ResourceKey="Mex/ResColorBrand/color_red_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_100" ResourceKey="Mex/ResColorBrand/color_red_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_200" ResourceKey="Mex/ResColorBrand/color_red_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_300" ResourceKey="Mex/ResColorBrand/color_red_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_400" ResourceKey="Mex/ResColorBrand/color_red_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_default" ResourceKey="Mex/ResColorBrand/color_red_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_600" ResourceKey="Mex/ResColorBrand/color_red_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_700" ResourceKey="Mex/ResColorBrand/color_red_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_800" ResourceKey="Mex/ResColorBrand/color_red_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/error_900" ResourceKey="Mex/ResColorBrand/color_red_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_50" ResourceKey="Mex/ResColorBrand/color_green_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_100" ResourceKey="Mex/ResColorBrand/color_green_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_200" ResourceKey="Mex/ResColorBrand/color_green_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_300" ResourceKey="Mex/ResColorBrand/color_green_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_400" ResourceKey="Mex/ResColorBrand/color_green_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_default" ResourceKey="Mex/ResColorBrand/color_green_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_600" ResourceKey="Mex/ResColorBrand/color_green_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_700" ResourceKey="Mex/ResColorBrand/color_green_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_800" ResourceKey="Mex/ResColorBrand/color_green_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/success_900" ResourceKey="Mex/ResColorBrand/color_green_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_50" ResourceKey="Mex/ResColorBrand/color_yellow_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_100" ResourceKey="Mex/ResColorBrand/color_yellow_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_200" ResourceKey="Mex/ResColorBrand/color_yellow_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_300" ResourceKey="Mex/ResColorBrand/color_yellow_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_400" ResourceKey="Mex/ResColorBrand/color_yellow_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_default" ResourceKey="Mex/ResColorBrand/color_yellow_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_600" ResourceKey="Mex/ResColorBrand/color_yellow_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_700" ResourceKey="Mex/ResColorBrand/color_yellow_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_800" ResourceKey="Mex/ResColorBrand/color_yellow_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/warning_900" ResourceKey="Mex/ResColorBrand/color_yellow_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_50" ResourceKey="Mex/ResColorBrand/color_blue_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_100" ResourceKey="Mex/ResColorBrand/color_blue_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_200" ResourceKey="Mex/ResColorBrand/color_blue_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_300" ResourceKey="Mex/ResColorBrand/color_blue_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_400" ResourceKey="Mex/ResColorBrand/color_blue_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_default" ResourceKey="Mex/ResColorBrand/color_blue_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_600" ResourceKey="Mex/ResColorBrand/color_blue_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_700" ResourceKey="Mex/ResColorBrand/color_blue_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_800" ResourceKey="Mex/ResColorBrand/color_blue_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/infomation_900" ResourceKey="Mex/ResColorBrand/color_blue_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_50" ResourceKey="Mex/ResColorBrand/color_light_grey_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_100" ResourceKey="Mex/ResColorBrand/color_light_grey_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_200" ResourceKey="Mex/ResColorBrand/color_light_grey_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_300" ResourceKey="Mex/ResColorBrand/color_light_grey_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_400" ResourceKey="Mex/ResColorBrand/color_light_grey_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_500" ResourceKey="Mex/ResColorBrand/color_light_grey_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_600" ResourceKey="Mex/ResColorBrand/color_light_grey_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_700" ResourceKey="Mex/ResColorBrand/color_light_grey_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_800" ResourceKey="Mex/ResColorBrand/color_light_grey_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_900" ResourceKey="Mex/ResColorBrand/color_light_grey_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_black" ResourceKey="Mex/ResColorBrand/color_black"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_light_white" ResourceKey="Mex/ResColorBrand/color_white"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_50" ResourceKey="Mex/ResColorBrand/color_dark_grey_50"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_100" ResourceKey="Mex/ResColorBrand/color_dark_grey_100"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_200" ResourceKey="Mex/ResColorBrand/color_dark_grey_200"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_300" ResourceKey="Mex/ResColorBrand/color_dark_grey_300"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_400" ResourceKey="Mex/ResColorBrand/color_dark_grey_400"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_500" ResourceKey="Mex/ResColorBrand/color_dark_grey_500"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_600" ResourceKey="Mex/ResColorBrand/color_dark_grey_600"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_700" ResourceKey="Mex/ResColorBrand/color_dark_grey_700"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_800" ResourceKey="Mex/ResColorBrand/color_dark_grey_800"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_900" ResourceKey="Mex/ResColorBrand/color_dark_grey_900"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_black" ResourceKey="Mex/ResColorBrand/color_black"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/neutral_dark_white" ResourceKey="Mex/ResColorBrand/color_white"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/color_white" ResourceKey="Mex/ResColorBrand/color_white"></StaticResource>
+    <StaticResource x:Key="Mex/ResColorAlias/color_transparent" ResourceKey="Mex/ResColorBrand/color_transparent"></StaticResource>
+
+    <SolidColorBrush x:Key="Mex/ResColor/text_headings" Color="{x:Static Mex:ResColorAlias.neutral_light_900}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_body" Color="{x:Static Mex:ResColorAlias.neutral_light_700}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action_hover" Color="{x:Static Mex:ResColorAlias.primary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_placeholder" Color="{x:Static Mex:ResColorAlias.neutral_light_500}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_infomation" Color="{x:Static Mex:ResColorAlias.infomation_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_infomation2" Color="{x:Static Mex:ResColorAlias.secondary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_success" Color="{x:Static Mex:ResColorAlias.success_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_warning" Color="{x:Static Mex:ResColorAlias.warning_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_error" Color="{x:Static Mex:ResColorAlias.error_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_on_action" Color="{x:Static Mex:ResColorAlias.color_white}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_on_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_700}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action_hover_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/text_action_pressed_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_600}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/surface_page" Color="{x:Static Mex:ResColorAlias.neutral_light_50}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_primary" Color="{x:Static Mex:ResColorAlias.neutral_light_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_secondary" Color="{x:Static Mex:ResColorAlias.neutral_light_300}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_success" Color="{x:Static Mex:ResColorAlias.success_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_200}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_disabled_selected" Color="{x:Static Mex:ResColorAlias.neutral_light_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_error" Color="{x:Static Mex:ResColorAlias.error_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_error2" Color="{x:Static Mex:ResColorAlias.error_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_warning" Color="{x:Static Mex:ResColorAlias.warning_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_infomation" Color="{x:Static Mex:ResColorAlias.infomation_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_action_hover" Color="{x:Static Mex:ResColorAlias.primary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_action_hover2" Color="{x:Static Mex:ResColorAlias.primary_100}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_action_pressed2" Color="{x:Static Mex:ResColorAlias.primary_200}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_secondary_hover" Color="{x:Static Mex:ResColorAlias.neutral_light_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_secondary_pressed" Color="{x:Static Mex:ResColorAlias.neutral_light_500}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_tertiary_hover" Color="{x:Static Mex:ResColorAlias.secondary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_tertiary_pressed" Color="{x:Static Mex:ResColorAlias.secondary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_error_hover" Color="{x:Static Mex:ResColorAlias.error_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_error_pressed" Color="{x:Static Mex:ResColorAlias.error_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/surface_white" Color="{x:Static Mex:ResColorAlias.color_white}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/icon_primary" Color="{x:Static Mex:ResColorAlias.neutral_light_700}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_secondary" Color="{x:Static Mex:ResColorAlias.neutral_light_500}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_infomation" Color="{x:Static Mex:ResColorAlias.infomation_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_success" Color="{x:Static Mex:ResColorAlias.success_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_warning" Color="{x:Static Mex:ResColorAlias.warning_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_error" Color="{x:Static Mex:ResColorAlias.error_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_action_hover" Color="{x:Static Mex:ResColorAlias.primary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_on_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_700}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_on_action" Color="{x:Static Mex:ResColorAlias.color_white}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/icon_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/border_primary" Color="{x:Static Mex:ResColorAlias.neutral_light_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_secondary" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_tertiary" Color="{x:Static Mex:ResColorAlias.secondary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_infomation" Color="{x:Static Mex:ResColorAlias.infomation_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_success" Color="{x:Static Mex:ResColorAlias.success_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_warning" Color="{x:Static Mex:ResColorAlias.warning_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_error" Color="{x:Static Mex:ResColorAlias.error_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_disabled" Color="{x:Static Mex:ResColorAlias.neutral_light_300}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_hover" Color="{x:Static Mex:ResColorAlias.primary_300}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_hover2" Color="{x:Static Mex:ResColorAlias.neutral_light_500}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_hover3" Color="{x:Static Mex:ResColorBrand.color_navy_blue_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_pressed2" Color="{x:Static Mex:ResColorAlias.neutral_light_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_action_pressed3" Color="{x:Static Mex:ResColorAlias.secondary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/border_selected" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/table_action_hover" Color="{x:Static Mex:ResColorAlias.primary_50}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/table_selected" Color="{x:Static Mex:ResColorAlias.primary_300}"></SolidColorBrush>
+
+    <!--Dark-->
+    <SolidColorBrush x:Key="Mex/ResColor/dark_text_headings" Color="{x:Static Mex:ResColorAlias.neutral_dark_900}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_text_body" Color="{x:Static Mex:ResColorAlias.neutral_dark_700}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_text_on_disabled" Color="{x:Static Mex:ResColorAlias.neutral_dark_700}"/>
+
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_page" Color="{x:Static Mex:ResColorAlias.neutral_dark_50}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_primary" Color="{x:Static Mex:ResColorAlias.neutral_dark_100}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_disabled" Color="{x:Static Mex:ResColorAlias.neutral_dark_200}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_disabled_selected" Color="{x:Static Mex:ResColorAlias.neutral_dark_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_action_hover" Color="{x:Static Mex:ResColorAlias.primary_600}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_action_hover2" Color="{x:Static Mex:ResColorAlias.primary_800}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_surface_action_pressed2" Color="{x:Static Mex:ResColorAlias.primary_700}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/dark_icon_primary" Color="{x:Static Mex:ResColorAlias.neutral_light_700}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_icon_on_action" Color="{x:Static Mex:ResColorAlias.color_white}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_icon_disabled" Color="{x:Static Mex:ResColorAlias.neutral_dark_400}"></SolidColorBrush>
+
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_primary" Color="{x:Static Mex:ResColorAlias.neutral_dark_400}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_action" Color="{x:Static Mex:ResColorAlias.primary_default}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_action_hover" Color="{x:Static Mex:ResColorAlias.primary_600}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_action_pressed" Color="{x:Static Mex:ResColorAlias.primary_400}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_selected" Color="{x:Static Mex:ResColorAlias.primary_default}"/>
+    <SolidColorBrush x:Key="Mex/ResColor/dark_border_disabled" Color="{x:Static Mex:ResColorAlias.neutral_dark_300}"/>
+
+    <SolidColorBrush x:Key="Mex/ResColor/white" Color="{x:Static Mex:ResColorAlias.color_white}"></SolidColorBrush>
+    <SolidColorBrush x:Key="Mex/ResColor/transparent" Color="{x:Static Mex:ResColorAlias.color_transparent}"></SolidColorBrush>
+</ResourceDictionary>
+

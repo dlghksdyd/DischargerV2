@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Mex="clr-namespace:MExpress.Mex">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/MExpress;component/StaticResources/ResColor.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Mex:ColorSet_RadioButton x:Key="Mex/ResColorSet_RadioButton/Primary"
+                              BorderDefault="{StaticResource Mex/ResColor/border_primary}"
+                              BorderHover="{StaticResource Mex/ResColor/border_action_hover}"
+                              BorderPressed="{StaticResource Mex/ResColor/border_action_pressed}"
+                              BorderDisabled="{StaticResource Mex/ResColor/border_disabled}"
+
+                              BackgroundDefault="{StaticResource Mex/ResColor/surface_primary}"
+                              BackgroundHover="{StaticResource Mex/ResColor/surface_action_hover2}"
+                              BackgroundPressed="{StaticResource Mex/ResColor/surface_action_pressed2}"
+                              BackgroundDisabled="{StaticResource Mex/ResColor/surface_disabled}"
+
+                              EllipseDefault="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipseHover="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipsePressed="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipseDisabled="{StaticResource Mex/ResColor/surface_primary}"
+                              
+                              BorderDefault_Selected="{StaticResource Mex/ResColor/border_action}"
+                              BorderHover_Selected="{StaticResource Mex/ResColor/border_action_hover}"
+                              BorderPressed_Selected="{StaticResource Mex/ResColor/border_action_pressed}"
+                              BorderDisabled_Selected="{StaticResource Mex/ResColor/border_disabled}"
+                              
+                              BackgroundDefault_Selected="{StaticResource Mex/ResColor/surface_action}"
+                              BackgroundHover_Selected="{StaticResource Mex/ResColor/surface_action_hover}"
+                              BackgroundPressed_Selected="{StaticResource Mex/ResColor/surface_action_pressed}"
+                              BackgroundDisabled_Selected="{StaticResource Mex/ResColor/surface_disabled}"
+                              
+                              EllipseDefault_Selected="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipseHover_Selected="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipsePressed_Selected="{StaticResource Mex/ResColor/surface_primary}"
+                              EllipseDisabled_Selected="{StaticResource Mex/ResColor/surface_primary}">
+
+    </Mex:ColorSet_RadioButton>
+</ResourceDictionary>
