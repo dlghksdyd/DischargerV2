@@ -663,20 +663,8 @@ namespace DischargerV2.MVVM.ViewModels
                                 var dischargerInfo = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
                                 if (dischargerInfo != null && dischargerInfo.IsTempModule)
                                 {
-                                    int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
-                                    if (index >= 0)
-                                    {
-                                        var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
-                                        var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
-
-                                        Model[i].DischargerData.ReceiveDischargeTemp = temp;
-                                        _clients[dischargerName].SetReceiveTemp(temp, dischargerChannel);
-                                    }
-                                }
-                                else
-                                {
                                     var table = _dischargerInfos.Find(x => x.DischargerName == dischargerName);
-                                    if (table != null && !table.IsTempModule)
+                                    if (table != null)
                                     {
                                         int deviceIndex = 0;
                                         int baseTempChannel = 0;
@@ -693,6 +681,18 @@ namespace DischargerV2.MVVM.ViewModels
                                             Model[i].DischargerData.ReceiveDischargeTemp = tempVal;
                                             _clients[dischargerName].SetReceiveTemp(tempVal, dischargerChannel);
                                         }
+                                    }
+                                }
+                                else
+                                {
+                                    int index = ViewModelTempModule.Instance.Model.TempModuleComportList.FindIndex(x => x == dischargerInfo.TempModuleComPort);
+                                    if (index >= 0)
+                                    {
+                                        var tempDatas = ViewModelTempModule.Instance.Model.TempDatas;
+                                        var temp = tempDatas[index][int.Parse(dischargerInfo.TempChannel)];
+
+                                        Model[i].DischargerData.ReceiveDischargeTemp = temp;
+                                        _clients[dischargerName].SetReceiveTemp(temp, dischargerChannel);
                                     }
                                 }
 

@@ -51,6 +51,8 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             {0x0B, "Gateway Target Device Failed to Respond"},
         };
 
+        public bool IsLogUsed = false;
+        
         // Logging verbosity
         public bool VerboseLogging { get; set; } = true;
 
@@ -252,6 +254,7 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
             catch (SocketException serr) { Debug.WriteLine($"MODBUS Connect error: {serr.Message}"); }
             if (Socket == null || !Socket.Connected) { IsConnected = false; Disconnected?.Invoke(Index); return false; }
             IsConnected = true;
+
             OpenLog();
             _cts = new CancellationTokenSource();
             StartReaderThread();
@@ -513,6 +516,8 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
         // File logging
         private void OpenLog()
         {
+            if (!IsLogUsed) return;
+
             try
             {
                 CloseLog();
@@ -528,10 +533,14 @@ namespace DischargerV2.Communication.CommEthernetClient.CrevisClient
         }
         private void CloseLog()
         {
+            if (!IsLogUsed) return;
+
             try { _logWriter?.Flush(); _logWriter?.Close(); } catch (Exception ex) { Debug.WriteLine($"CloseLog error: {ex.Message}"); } finally { _logWriter = null; }
         }
         private void WriteLog(string msg)
         {
+            if (!IsLogUsed) return;
+
             try { _logWriter?.WriteLine(msg); _logWriter?.Flush(); } catch (Exception ex) { Debug.WriteLine($"WriteLog error: {ex.Message}"); }
         }
     }
