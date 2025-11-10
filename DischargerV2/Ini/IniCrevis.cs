@@ -40,7 +40,7 @@ namespace DischargerV2.Ini
                 {
                     No = 0,
                     Enabled = true,
-                    Ip = "192.168.0.60",
+                    Ip = "192.168.1.61",
                     Port = 502,
                     TempChannelCount = 2,
                     Calibrations = new List<int> { 0, 0 }
